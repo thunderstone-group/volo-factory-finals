@@ -1,0 +1,39 @@
+{
+ "run_id": "4ef5a779acf2",
+ "status": "FAILED",
+ "passed": 0,
+ "failed": 0,
+ "pass_rate": 0.0,
+ "tokens": 295595,
+ "duration_seconds": 877,
+ "failure_reason": "Failed to enumerate Playwright tests before execution",
+ "submission_id": "faf295559b7f",
+ "requirement_id": "hackathon--sheet",
+ "finished_at": "2026-09-24T14:51:07.134444",
+ "display_name": "volo-oneshot-165aece2-seed-reach",
+ "model_name": "deepseek-v4-flash",
+ "feature_implemented_count": 0,
+ "feature_total_count": 0,
+ "cost": {
+  "amount": 1.27533,
+  "currency": "CNY"
+ },
+ "steps": [
+  {
+   "key": "deploy_agent",
+   "status": "completed",
+   "description": "Done"
+  },
+  {
+   "key": "start_agent",
+   "status": "completed",
+   "description": "Done"
+  },
+  {
+   "key": "run_tests",
+   "status": "failed",
+   "description": "Failed to enumerate Playwright tests before execution"
+  }
+ ],
+ "failed_tests": []
+}

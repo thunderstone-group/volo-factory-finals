@@ -1,0 +1,12 @@
+[
+  {
+    "interface": "en0",
+    "resolved_ip": "189.1.235.72",
+    "request_sha256": "cbfc1c8abca93f22717fed256d9893f939fe71247e0742f662f752affff983e4",
+    "request_bytes": 466192,
+    "http_status": 200,
+    "curl_exit": 0,
+    "seconds": 420.699,
+    "received_bytes": 19164108
+  }
+]

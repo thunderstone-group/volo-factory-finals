@@ -1,0 +1,27 @@
+{
+  "filterDialogVisible": true,
+  "clearSelectionVisible": true,
+  "events": [
+    {
+      "kind": "mousedown",
+      "tag": "BUTTON",
+      "action": "open-filter-dialog",
+      "name": "Filter Region",
+      "connectedAfter": true
+    },
+    {
+      "kind": "mouseup",
+      "tag": "BUTTON",
+      "action": "open-filter-dialog",
+      "name": "Filter Region",
+      "connectedAfter": true
+    },
+    {
+      "kind": "click",
+      "tag": "BUTTON",
+      "action": "open-filter-dialog",
+      "name": "Filter Region",
+      "connectedAfter": true
+    }
+  ]
+}

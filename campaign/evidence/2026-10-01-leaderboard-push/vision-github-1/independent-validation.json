@@ -1,0 +1,14 @@
+{
+  "app": "vision-github-1",
+  "generation": {
+    "task": "github",
+    "model": "deepseek-v4-flash-vision-exp",
+    "package_sha256": "c2a2b32a5ed1ff709859cfe3989143cc44bc1343d8937d8ed20e110eb6f518b0",
+    "exit": 0,
+    "seconds": 3114.8
+  },
+  "observed_at": "2026-10-02T02:22:40.616965+08:00",
+  "judge_exit_code": 0,
+  "stdout": "{\"app\": \"vision-github-1\", \"judge\": \"gh8\", \"counts\": {\"pass\": 64, \"error\": 15, \"fail\": 23}, \"seconds\": 154.1, \"coverage\": {\"total\": 100, \"parsed\": 87}}\n{\"app\": \"vision-github-1\", \"judge\": \"gh99\", \"counts\": {\"error\": 21, \"pass\": 65, \"fail\": 16}, \"seconds\": 187.2, \"coverage\": {\"total\": 100, \"parsed\": 81}}\n",
+  "stderr": ""
+}

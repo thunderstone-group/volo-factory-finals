@@ -1,0 +1,381 @@
+{
+ "tests": [
+  {
+   "title": "REQ-5-1-1: List and Filter Repository Issues - Scenario 1",
+   "file": "50-REQ-5-1-1.spec.cjs",
+   "line": 159,
+   "status": "pass",
+   "seconds": 0.21,
+   "error": "",
+   "start": "2026-09-27T13:49:25.567Z"
+  },
+  {
+   "title": "REQ-5-1-1: List and Filter Repository Issues - Scenario 2",
+   "file": "50-REQ-5-1-1.spec.cjs",
+   "line": 179,
+   "status": "pass",
+   "seconds": 0.18,
+   "error": "",
+   "start": "2026-09-27T13:49:25.873Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 1",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 162,
+   "status": "pass",
+   "seconds": 0.17,
+   "error": "",
+   "start": "2026-09-27T13:49:26.064Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 2",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 177,
+   "status": "pass",
+   "seconds": 0.15,
+   "error": "",
+   "start": "2026-09-27T13:49:26.241Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 3",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 187,
+   "status": "pass",
+   "seconds": 0.18,
+   "error": "",
+   "start": "2026-09-27T13:49:26.401Z"
+  },
+  {
+   "title": "REQ-5-2-1: Create a Repository Issue - Scenario 1",
+   "file": "52-REQ-5-2-1.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.23,
+   "error": "",
+   "start": "2026-09-27T13:49:26.591Z"
+  },
+  {
+   "title": "REQ-5-2-1: Create a Repository Issue - Scenario 2",
+   "file": "52-REQ-5-2-1.spec.cjs",
+   "line": 176,
+   "status": "pass",
+   "seconds": 0.45,
+   "error": "",
+   "start": "2026-09-27T13:49:26.826Z"
+  },
+  {
+   "title": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 1",
+   "file": "53-REQ-5-2-2.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.33,
+   "error": "",
+   "start": "2026-09-27T13:49:27.280Z"
+  },
+  {
+   "title": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 2",
+   "file": "53-REQ-5-2-2.spec.cjs",
+   "line": 185,
+   "status": "pass",
+   "seconds": 0.26,
+   "error": "",
+   "start": "2026-09-27T13:49:27.618Z"
+  },
+  {
+   "title": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 1",
+   "file": "54-REQ-5-2-3.spec.cjs",
+   "line": 159,
+   "status": "pass",
+   "seconds": 0.29,
+   "error": "",
+   "start": "2026-09-27T13:49:27.884Z"
+  },
+  {
+   "title": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 2",
+   "file": "54-REQ-5-2-3.spec.cjs",
+   "line": 177,
+   "status": "pass",
+   "seconds": 0.41,
+   "error": "",
+   "start": "2026-09-27T13:49:28.175Z"
+  },
+  {
+   "title": "REQ-5-3-1: Assign or Unassign Issue Participants - Scenario 1",
+   "file": "55-REQ-5-3-1.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.34,
+   "error": "",
+   "start": "2026-09-27T13:49:28.590Z"
+  },
+  {
+   "title": "REQ-5-3-2: Apply Labels to an Issue - Scenario 1",
+   "file": "56-REQ-5-3-2.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.32,
+   "error": "",
+   "start": "2026-09-27T13:49:28.931Z"
+  },
+  {
+   "title": "REQ-5-3-3: Assign Issues and Pull Requests to a Milestone - Scenario 1",
+   "file": "57-REQ-5-3-3.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.26,
+   "error": "",
+   "start": "2026-09-27T13:49:29.258Z"
+  },
+  {
+   "title": "REQ-5-4: Close or Reopen an Issue - Scenario 1",
+   "file": "58-REQ-5-4.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.28,
+   "error": "",
+   "start": "2026-09-27T13:49:29.524Z"
+  },
+  {
+   "title": "REQ-5-4: Close or Reopen an Issue - Scenario 2",
+   "file": "58-REQ-5-4.spec.cjs",
+   "line": 180,
+   "status": "pass",
+   "seconds": 0.22,
+   "error": "",
+   "start": "2026-09-27T13:49:29.804Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 165,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:49:30.026Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 194,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T13:49:40.290Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 214,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:49:40.585Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 1",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 162,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:49:50.853Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 2",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 177,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T13:50:01.229Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 3",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 190,
+   "status": "pass",
+   "seconds": 0.19,
+   "error": "",
+   "start": "2026-09-27T13:50:01.517Z"
+  },
+  {
+   "title": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+   "file": "61-REQ-6-2-2.spec.cjs",
+   "line": 161,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:50:01.717Z"
+  },
+  {
+   "title": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 2",
+   "file": "61-REQ-6-2-2.spec.cjs",
+   "line": 175,
+   "status": "pass",
+   "seconds": 0.23,
+   "error": "",
+   "start": "2026-09-27T13:50:11.976Z"
+  },
+  {
+   "title": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1",
+   "file": "62-REQ-6-2-3.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.36,
+   "error": "",
+   "start": "2026-09-27T13:50:12.302Z"
+  },
+  {
+   "title": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 2",
+   "file": "62-REQ-6-2-3.spec.cjs",
+   "line": 187,
+   "status": "pass",
+   "seconds": 0.46,
+   "error": "",
+   "start": "2026-09-27T13:50:12.664Z"
+  },
+  {
+   "title": "REQ-6-2-4: Create a Draft Pull Request - Scenario 1",
+   "file": "63-REQ-6-2-4.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:50:13.134Z"
+  },
+  {
+   "title": "REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+   "file": "63-REQ-6-2-4.spec.cjs",
+   "line": 183,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:50:23.405Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 160,
+   "status": "pass",
+   "seconds": 0.24,
+   "error": "",
+   "start": "2026-09-27T13:50:33.772Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 179,
+   "status": "pass",
+   "seconds": 0.19,
+   "error": "",
+   "start": "2026-09-27T13:50:34.110Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 3",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 192,
+   "status": "pass",
+   "seconds": 0.18,
+   "error": "",
+   "start": "2026-09-27T13:50:34.306Z"
+  },
+  {
+   "title": "REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+   "file": "65-REQ-6-3-2.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T13:50:34.495Z"
+  },
+  {
+   "title": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1",
+   "file": "66-REQ-6-3-3.spec.cjs",
+   "line": 159,
+   "status": "pass",
+   "seconds": 0.27,
+   "error": "",
+   "start": "2026-09-27T13:50:34.699Z"
+  },
+  {
+   "title": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2",
+   "file": "66-REQ-6-3-3.spec.cjs",
+   "line": 173,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:50:34.969Z"
+  },
+  {
+   "title": "REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+   "file": "67-REQ-6-3-4.spec.cjs",
+   "line": 160,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:50:45.247Z"
+  },
+  {
+   "title": "REQ-6-3-4: Submit a Pull Request Review - Scenario 2",
+   "file": "67-REQ-6-3-4.spec.cjs",
+   "line": 176,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:50:55.615Z"
+  },
+  {
+   "title": "REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1",
+   "file": "68-REQ-6-4.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.4,
+   "error": "",
+   "start": "2026-09-27T13:51:05.986Z"
+  },
+  {
+   "title": "REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+   "file": "69-REQ-6-5.spec.cjs",
+   "line": 160,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:51:06.488Z"
+  },
+  {
+   "title": "REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+   "file": "69-REQ-6-5.spec.cjs",
+   "line": 184,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:51:16.766Z"
+  },
+  {
+   "title": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 1",
+   "file": "70-REQ-6-6.spec.cjs",
+   "line": 159,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:51:27.135Z"
+  },
+  {
+   "title": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 2",
+   "file": "70-REQ-6-6.spec.cjs",
+   "line": 175,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T13:51:37.499Z"
+  }
+ ],
+ "stats": {
+  "startTime": "2026-09-27T13:49:25.285Z",
+  "duration": 142356.156,
+  "expected": 28,
+  "skipped": 0,
+  "unexpected": 13,
+  "flaky": 0
+ }
+}

@@ -1,0 +1,34 @@
+{
+  "task": "github",
+  "judge_exit": 0,
+  "scores": [
+    {
+      "app": "generate-contracts-github",
+      "judge": "gh99",
+      "counts": {
+        "error": 24,
+        "pass": 67,
+        "fail": 11
+      },
+      "seconds": 191.7,
+      "coverage": {
+        "total": 100,
+        "parsed": 78
+      }
+    },
+    {
+      "app": "generate-contracts-github",
+      "judge": "gh8",
+      "counts": {
+        "pass": 71,
+        "error": 15,
+        "fail": 17
+      },
+      "seconds": 144.0,
+      "coverage": {
+        "total": 100,
+        "parsed": 88
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "github": {
+    "before": [
+      {
+        "id": "REQ-6-1#contract-1",
+        "status": "fail",
+        "message": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "id": "REQ-6-3-4#contract-1",
+        "status": "fail",
+        "message": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "id": "REQ-3-2-1#contract-1",
+        "status": "fail",
+        "message": "The expression evaluated to a falsy value:\n\n  Reflect.apply(value, target, args)\n"
+      },
+      {
+        "id": "REQ-5-2-2#contract-1",
+        "status": "fail",
+        "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      }
+    ],
+    "after": [
+      {
+        "id": "REQ-6-1#contract-1",
+        "status": "pass",
+        "message": ""
+      },
+      {
+        "id": "REQ-6-3-4#contract-1",
+        "status": "pass",
+        "message": ""
+      },
+      {
+        "id": "REQ-3-2-1#contract-1",
+        "status": "pass",
+        "message": ""
+      },
+      {
+        "id": "REQ-5-2-2#contract-1",
+        "status": "pass",
+        "message": ""
+      }
+    ]
+  },
+  "sheet": {
+    "before": [
+      {
+        "id": "REQ-2-2-2#contract-1",
+        "status": "fail",
+        "message": "Expected values to be strictly equal:\n\n'' !== 'z'\n"
+      },
+      {
+        "id": "REQ-2-2-1#contract-2",
+        "status": "fail",
+        "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Pivot field is no longer available. Select a new field.'\n- undefined\n"
+      },
+      {
+        "id": "REQ-4-1-2#contract-3",
+        "status": "fail",
+        "message": "Expected values to be strictly equal:\n\n'=A21' !== '=#REF!'\n"
+      },
+      {
+        "id": "REQ-4-2-2#contract-4",
+        "status": "fail",
+        "message": "Expected values to be strictly equal:\n\n'null' !== '#REF!'\n"
+      }
+    ],
+    "after": [
+      {
+        "id": "REQ-2-2-2#contract-1",
+        "status": "pass",
+        "message": ""
+      },
+      {
+        "id": "REQ-2-2-1#contract-2",
+        "status": "pass",
+        "message": ""
+      },
+      {
+        "id": "REQ-4-1-2#contract-3",
+        "status": "pass",
+        "message": ""
+      },
+      {
+        "id": "REQ-4-2-2#contract-4",
+        "status": "pass",
+        "message": ""
+      }
+    ]
+  }
+}

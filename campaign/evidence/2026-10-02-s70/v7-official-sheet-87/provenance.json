@@ -1,0 +1,16 @@
+{
+  "archive": "v7-sheet-87-delivery.zip",
+  "sha256": "0688a90b22866980887b13242f3aeff4274be98e20bbd8e42f4a6a361320ff92",
+  "files": [
+    "backend/package-lock.json",
+    "backend/package.json",
+    "backend/server.js",
+    "frontend/package-lock.json",
+    "frontend/package.json",
+    "frontend/public/app.js",
+    "frontend/public/index.html",
+    "frontend/public/lib/arc.js",
+    "frontend/public/seed.js",
+    "frontend/public/styles.css"
+  ]
+}

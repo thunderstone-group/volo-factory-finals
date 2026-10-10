@@ -1,0 +1,9 @@
+{
+  "origin": "Exact captured v8 model-written tests and verified probe definitions",
+  "model_api_calls": 0,
+  "tests": 100,
+  "targets": [
+    "REQ-2-2-1#contract-1",
+    "REQ-4-1-2#contract-1"
+  ]
+}

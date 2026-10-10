@@ -1,0 +1,202 @@
+{
+  "record_type": "selftest",
+  "counts_on_leaderboard": false,
+  "id": "41cdafb4-7db0-437c-a624-d1aa7759282f",
+  "githubId": "134906805",
+  "githubLogin": "Daily-AC",
+  "taskId": "github-stage-1-req-test",
+  "createdAt": 1790987784119,
+  "status": "failed",
+  "result": {
+    "submission_id": "41cdafb4-7db0-437c-a624-d1aa7759282f",
+    "task_id": "github-stage-1-req-test",
+    "visibility": "public",
+    "status": "failed",
+    "passed": 24,
+    "total": 30,
+    "detail": "6/30 tests failed",
+    "tests": [
+      {
+        "title": "REQ-1-1-1-sign-up.spec.ts REQ-1-1-1: Register a New GitHub Account - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-1-sign-up.spec.ts REQ-1-1-1: Register a New GitHub Account - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-1-sign-up.spec.ts REQ-1-1-1: Register a New GitHub Account - Scenario 3",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-2-sign-in.spec.ts REQ-1-1-2: Sign In with an Existing Account - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-2-sign-in.spec.ts REQ-1-1-2: Sign In with an Existing Account - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-2-sign-in.spec.ts REQ-1-1-2: Sign In with an Existing Account - Scenario 3",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-2-sign-in.spec.ts REQ-1-1-2: Sign In with an Existing Account - Scenario 4",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-3-password-recovery.spec.ts REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-3-password-recovery.spec.ts REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-1-3-password-recovery.spec.ts REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 3",
+        "ok": false,
+        "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('recovery-success', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('recovery-success', { exact: true }).first()",
+        "screenshot": "output/REQ-1-1-3-password-recover-adb54-Verified-Email---Scenario-3/test-failed-1.png"
+      },
+      {
+        "title": "REQ-1-2-sign-out.spec.ts REQ-1-2: Sign Out and End the Current Web Session - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-2-sign-out.spec.ts REQ-1-2: Sign Out and End the Current Web Session - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-1-3-change-password.spec.ts REQ-1-3: Change Account Password - Scenario 1",
+        "ok": false,
+        "error": "Test timeout of 60000ms exceeded.",
+        "screenshot": "output/REQ-1-3-change-password-RE-c618d-count-Password---Scenario-1/test-failed-1.png"
+      },
+      {
+        "title": "REQ-1-3-change-password.spec.ts REQ-1-3: Change Account Password - Scenario 2",
+        "ok": false,
+        "error": "Test timeout of 60000ms exceeded.",
+        "screenshot": "output/REQ-1-3-change-password-RE-45b52-count-Password---Scenario-2/test-failed-1.png"
+      },
+      {
+        "title": "REQ-1-3-change-password.spec.ts REQ-1-3: Change Account Password - Scenario 3",
+        "ok": false,
+        "error": "Test timeout of 60000ms exceeded.",
+        "screenshot": "output/REQ-1-3-change-password-RE-3ef14-count-Password---Scenario-3/test-failed-1.png"
+      },
+      {
+        "title": "REQ-2-1-1-browse-organization-repositories.spec.ts REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-1-1-browse-organization-repositories.spec.ts REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-1-2-create-organization.spec.ts REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-1-2-create-organization.spec.ts REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-1-2-create-organization.spec.ts REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-2-1-create-team.spec.ts REQ-2-2-1: Create an Organization Team - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-2-1-create-team.spec.ts REQ-2-2-1: Create an Organization Team - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-2-2-manage-team-membership.spec.ts REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-2-2-manage-team-membership.spec.ts REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-2-3-add-organization-member.spec.ts REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+        "ok": false,
+        "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Member', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('Member', { exact: true }) resolved to 6 elements:\n    1) <span class=\"role\">Member</span> aka getByText('Member').nth(3)\n    2) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(1)\n    3) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(2)\n    4) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(3)\n    5) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(4)\n    6) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(5)\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Member', { exact: true })",
+        "screenshot": "output/REQ-2-2-3-add-organization-7c557-ization-Member---Scenario-1/test-failed-1.png"
+      },
+      {
+        "title": "REQ-2-2-3-add-organization-member.spec.ts REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-2-4-remove-organization-member.spec.ts REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-2-4-remove-organization-member.spec.ts REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-3-grant-repository-access.spec.ts REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-2-3-grant-repository-access.spec.ts REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+        "ok": false,
+        "error": "Test timeout of 60000ms exceeded.",
+        "screenshot": "output/REQ-2-3-grant-repository-a-52073-ople-and-Teams---Scenario-2/test-failed-1.png"
+      }
+    ]
+  },
+  "updatedAt": 1790988048866
+}

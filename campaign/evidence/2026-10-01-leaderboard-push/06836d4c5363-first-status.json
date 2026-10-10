@@ -1,0 +1,81 @@
+{
+  "id": "06836d4c5363",
+  "submission_id": "91bc50f2f30d",
+  "display_name": "volo-baseline-bfddd36c-20261001",
+  "model_name": "deepseek-v4-flash",
+  "original_filename": "submission-076347b75e67.zip",
+  "catalog": "competition",
+  "competition_id": "hackathon",
+  "billing_mode": "self_funded",
+  "evaluation_started_at": null,
+  "settled_at": null,
+  "requirement_id": "hackathon--sheet",
+  "runtime": "python",
+  "agent_source": "upload",
+  "status": "RUNNING",
+  "score": null,
+  "test_pass_rate": null,
+  "passed_count": 0,
+  "failed_count": 0,
+  "run_duration_seconds": null,
+  "token_count": null,
+  "token_cost_usd": null,
+  "token_cost_currency": null,
+  "feature_implemented_count": 0,
+  "feature_total_count": 0,
+  "feature_implementation_rate": null,
+  "created_at": "2026-10-01T15:21:46.272216",
+  "started_at": "2026-10-01T15:21:49.905121",
+  "finished_at": null,
+  "failure_reason": null,
+  "steps": [
+    {
+      "key": "deploy_agent",
+      "title": "Preparing environment",
+      "status": "completed",
+      "description": "Done",
+      "logs": [
+        "Traceability initialized with 42 requirements and 100 scenarios",
+        "Running environment preflight",
+        "Environment preflight passed"
+      ]
+    },
+    {
+      "key": "start_agent",
+      "title": "Running agent",
+      "status": "running",
+      "description": "Running uploaded agent",
+      "logs": [
+        "Installing agent dependencies",
+        "Agent dependencies installed",
+        "Launching generation agent",
+        "Still working: Launching generation agent",
+        "Still working: Launching generation agent"
+      ]
+    },
+    {
+      "key": "run_tests",
+      "title": "Evaluating result",
+      "status": "pending",
+      "description": "Evaluation pending",
+      "logs": []
+    }
+  ],
+  "stdout_path": "/var/lib/arcbench/executor-workspaces/b34c975b641f407c91940efbddeade5e/06836d4c5363/generation-1/workspace/template/.arc/stdout.log",
+  "stderr_path": null,
+  "result_path": null,
+  "workspace_path": "/var/lib/arcbench/executor-workspaces/b34c975b641f407c91940efbddeade5e/06836d4c5363/generation-1/workspace",
+  "logs_available": true,
+  "tests": [],
+  "node_states": {},
+  "can_pause": true,
+  "can_resume": false,
+  "can_rewind": false,
+  "can_manual_edit": false,
+  "manual_edit_node_id": null,
+  "manual_edit_phase": null,
+  "manual_edit_dirty": false,
+  "pause_available": true,
+  "can_cancel": true,
+  "can_continue": false
+}

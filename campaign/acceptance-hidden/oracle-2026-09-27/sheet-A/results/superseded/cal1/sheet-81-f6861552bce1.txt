@@ -1,0 +1,18 @@
+/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 32: 71035 Terminated: 15          ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 47/48
+--- timedOut: REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'B2', exact: true })
+    Expected: "#REF!"
+    Received: "#ERROR!"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'B2', exact: true })
+        13 × locator resolved to <div data-r="2" data-c="2" data-id="B2" data-cell="B2" role="gridcell" aria-label="B2" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "#ERROR!"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }

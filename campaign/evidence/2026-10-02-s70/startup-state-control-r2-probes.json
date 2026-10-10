@@ -1,0 +1,42 @@
+[
+  {
+    "requirement": "REQ-6-5",
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "setup": "globalThis.ARC={state:JSON.parse(JSON.stringify(SEED))};",
+    "precondition": "assert.ok(ARC.state.users.length>0);assert.ok(ARC.state.repositories.length>0);",
+    "id": "REQ-6-5#contract-81",
+    "explanation": "Public requirement explicitly supplies a Maintain account. Actual roleFor must resolve at least one such startup account/repository pair, without inventing or mutating fixtures.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "roleFor",
+        "kind": "function",
+        "alias": "roleFor"
+      }
+    ],
+    "subject": "roleFor",
+    "check": "const roles=ARC.state.repositories.flatMap(r=>ARC.state.users.map(u=>roleFor(r,u)));assert.ok(roles.includes('Maintain'),'The actual startup accounts have no Maintain permission on any repository');"
+  },
+  {
+    "requirement": "REQ-6-5",
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "setup": "globalThis.ARC={state:JSON.parse(JSON.stringify(SEED))};",
+    "precondition": "assert.ok(ARC.state.users.length>0);assert.ok(ARC.state.repositories.length>0);",
+    "id": "REQ-6-5#contract-82",
+    "explanation": "Public requirement supplies separate Open PRs for eligible and missing-approval cases. Observe the unchanged startup PRs with the actual merge predicate.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "mergeBlocked",
+        "kind": "function",
+        "alias": "mergeBlocked"
+      }
+    ],
+    "subject": "mergeBlocked",
+    "check": "const open=ARC.state.pulls.filter(p=>p.state==='Open');const conditions=open.map(p=>mergeBlocked(p,ARC.state.repositories.find(r=>r.id===p.repoId)));assert.ok(open.length>=2,'The required separate Open success/refusal fixtures are not present');assert.ok(conditions.some(x=>!x),'There is no initially eligible Open PR');assert.ok(conditions.includes('Review required by branch protection'),'There is no Open PR blocked by the missing required approval');"
+  }
+]

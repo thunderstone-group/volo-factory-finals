@@ -1,0 +1,33 @@
+{
+  "finish_reason": "stop",
+  "changed": [
+    "frontend/public/app.js"
+  ],
+  "skipped_hunks": [],
+  "syntax_checks": "passed",
+  "seconds": 203.9,
+  "usage": {
+    "calls": 1,
+    "draft_call_limit": 1,
+    "repair_call_limit": 0,
+    "completed_calls": 1,
+    "failed_calls": 0,
+    "failure_limit": 1,
+    "refused_calls": 0,
+    "known_prompt_tokens": 85297,
+    "prompt_tokens": 85297,
+    "known_completion_tokens": 41388,
+    "completion_tokens": 41388,
+    "unknown_usage_calls": [],
+    "estimated_cost_cny": 0.250849,
+    "estimated_repair_cost_cny": 0,
+    "repair_cny_limit": 10.0,
+    "side_calls": 0,
+    "fallback_model": null,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 1
+    },
+    "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  "scope": "Controlled initial-screen navigation repair from public requirements. Must verify unchanged permissions/business behavior and organizer feedback before adoption."
+}

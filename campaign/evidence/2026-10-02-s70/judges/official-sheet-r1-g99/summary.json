@@ -1,0 +1,13 @@
+{
+  "app": "official-sheet-r1",
+  "judge": "g99",
+  "counts": {
+    "pass": 93,
+    "fail": 7
+  },
+  "seconds": 61.1,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

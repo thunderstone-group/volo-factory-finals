@@ -1,0 +1,12 @@
+{
+  "record_type": "selftest",
+  "counts_on_leaderboard": false,
+  "id": "2ecc5d8f-3d7f-4e68-b00b-0f637cf288f0",
+  "task_id": "github-stage-2-req-test",
+  "package": {
+    "path": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/official-github-refreshed/official-github-46-app.zip",
+    "bytes": 39894,
+    "sha256": "e4d684922f6d0494e67f6f826f7612be9f24fe85df53ed451c38dfe0620bb178"
+  },
+  "url": "https://arcbench-selftest-web.vercel.app/submissions/2ecc5d8f-3d7f-4e68-b00b-0f637cf288f0"
+}

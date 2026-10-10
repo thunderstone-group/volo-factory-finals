@@ -1,0 +1,17 @@
+{
+  "source": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/.oneshot-iylqcs_n/app",
+  "progress_phase": "receiving",
+  "completed_calls": 5,
+  "file_hashes": {
+    "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+    "frontend/public/index.html": "83e6e9d7ac0557fd1177c629188e64fc0fe15e936d9af75695e6ead6272989bc",
+    "frontend/public/styles.css": "3e7fd71383c242cd93d99e83a48f5da21171c7405c2d321032c1b00a22b9b4b8",
+    "frontend/public/seed.js": "47aef695da4c79adae1c4c1ef41281723942fa00cb882a1c4d4f4f13346496fc",
+    "frontend/public/app.js": "3d28df3626284429ed5da2df8572ce29f8dd57728b6c406abbc67fd5bf7d9b92",
+    "frontend/public/lib/arc.js": "c98584e246ab1b9abeedc5e112f67581e07a9fe7d4f694345d5d1aec84bbce51",
+    "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9",
+    "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+  },
+  "source_unchanged_during_copy": true,
+  "not_final_delivery": true
+}

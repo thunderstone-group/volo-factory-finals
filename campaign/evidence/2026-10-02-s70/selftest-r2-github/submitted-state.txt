@@ -1,0 +1,5 @@
+Browser tab: 845014942, Title: "GitHub 题 · 第一阶段 · ArcBench 自测", URL: "https://arcbench-selftest-web.vercel.app/submissions/d210ad11-cc2e-440e-8fb2-637e0163e830".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~						86 text 50 秒
+~						91 text 约 6 分 30 秒
+The focused UI element is 1 AXWebArea GitHub 题 · 第一阶段 · ArcBench 自测, URL: arcbench-selftest-web.vercel.app/submissions/d210ad11-cc2e-440e-8fb2-637e0163e830

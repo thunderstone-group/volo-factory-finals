@@ -1,0 +1,23 @@
+const col = async (page, c) => JSON.stringify(await Promise.all([1, 2, 3, 4].map((r) => cell(page, `${c}${r}`).innerText())));
+test('probe row insert', async ({ page }) => {
+  test.setTimeout(40000);
+  await createWorkbook(page);
+  await setCells(page, [['A1', 'Region'], ['A2', 'East'], ['A3', 'North']]);
+  await expect(cell(page, 'A3')).toHaveText('North');
+  await page.getByRole('rowheader', { name: '3', exact: true }).click({ button: 'right' });
+  const items = await page.getByRole('menuitem').evaluateAll((els) => els.map((e) => e.textContent.trim()));
+  console.log('U1 menu items', JSON.stringify(items));
+  await menuItem(page, 'Insert 1 row above').click();
+  await page.waitForTimeout(800);
+  console.log('U2 after insert A1..A4', await col(page, 'A'));
+  const alerts = (await page.locator('body').innerText()).match(/(error|fail|cannot)[^\n]*/i);
+  console.log('U3 message', alerts ? alerts[0] : 'none');
+  await page.reload();
+  await expect(cell(page, 'A1')).toHaveText('Region');
+  console.log('U4 after reload A1..A4', await col(page, 'A'));
+  await cell(page, 'A3').click();
+  await page.getByRole('rowheader', { name: '3', exact: true }).click({ button: 'right' });
+  await menuItem(page, 'Insert 1 row above').click();
+  await page.waitForTimeout(800);
+  console.log('U5 second try after selecting A3 first', await col(page, 'A'));
+});

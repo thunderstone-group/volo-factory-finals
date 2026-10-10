@@ -1,0 +1,13 @@
+{
+  "app": "contract-repair-sheet",
+  "judge": "g99",
+  "counts": {
+    "pass": 90,
+    "fail": 10
+  },
+  "seconds": 78.6,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

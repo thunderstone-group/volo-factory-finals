@@ -1,0 +1,63 @@
+{
+  "change": "Removed only the incidental startup PR count == 3 from preconditions. It was not a public constraint and prevented adding the explicitly missing separate PR. Requirement assertions unchanged.",
+  "removed": [
+    "assert.strictEqual(ARC.state.pulls.filter(function (p) { return p.repoId === 'r1'; }).length, 3);"
+  ],
+  "probe": {
+    "id": "REQ-6-5#contract-2",
+    "requirement": "REQ-6-5",
+    "explanation": "REQ-6-5 explicitly requires seed data to supply separate Open PRs for the success and refusal scenarios: the eligible PR targets protected main with a current non-author approval and test success, and the blocked PR targets a protected branch, lacks the required valid approval, and shows the disabled button with 'Review required by branch protection'. This is a startup-coverage claim evaluated only with the real initializer and the real non-mutating predicate: in the seeded repository r1 the only Open PR is p1, which mergeBlocked reports as mergeable, while the only PR that the seeded rule would block (p2, base main, no valid approval) is seeded Closed; no distinct Open PR is therefore available for the refusal scenario. The check also verifies the success scenario still exists, so the failure isolates the missing distinct blocked record rather than a broken predicate. Nothing is created or granted in setup.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "mergeBlocked",
+        "kind": "function",
+        "alias": "mergeBlocked"
+      }
+    ],
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "subject": "mergeBlocked",
+    "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'repo', params: [] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };",
+    "precondition": "assert.strictEqual(ARC.state.session, null);\nassert.ok(ARC.state.repositories.some(function (r) { return r.id === 'r1'; }));\nassert.ok(ARC.state.protectionRules.some(function (r) { return r.repoId === 'r1' && r.branch === 'main' && r.requireApproval && r.requireCheck; }));",
+    "check": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nvar open = ARC.state.pulls.filter(function (p) { return p.repoId === 'r1' && p.state === 'Open'; });\nvar eligible = open.filter(function (p) { return mergeBlocked(p, repo) === null; });\nvar blocked = open.filter(function (p) { return mergeBlocked(p, repo) === 'Review required by branch protection'; });\nassert.ok(eligible.length >= 1, 'seed must provide the mergeable Open PR for the success scenario');\nassert.ok(blocked.length >= 1, 'seed must provide a separate Open PR blocked with Review required by branch protection for the refusal scenario');",
+    "requirement_text": "On an eligible PR, Merge pull request and then Confirm merge are buttons; confirming displays Merged, and that state remains after reload. A blocked PR keeps a visible disabled Merge pull request button and explains its unmet review or protection condition before any click. Seed data supplies a Maintain account and separate Open PRs for success and refusal. The eligible PR targets protected main, has a current non-author approval and test: success, and has no conflicts. The blocked PR targets a protected branch and lacks the required valid approval; its disabled button is accompanied by Review required by branch protection. Each seed state is restored independently before reuse. “Merge” is the only write operation that writes the current compare commit's changes from an Open PR into the base branch; it is not simply marking the PR as complete. Only Maintain, Admin, or organization Owner may merge from the PR detail page using the sole supported “Create a merge commit” method; the merge confirmation area should display satisfied and unsatisfied conditions. Before confirmation, the system rereads the target branch head, current compare commit, merge-conflict state, and protection rules — there must be no valid Request changes; if the target is protected, each enabled rule requirement is enforced independently, requiring 1 valid non-author Approve for the current compare commit when Require 1 approval is enabled and requiring `test` success when Require status check test is enabled. An unprotected target has no additional approval-count or check-success requirement, but merging still requires no merge conflicts and no valid Request changes review. After validation succeeds, the system atomically creates a merge commit whose parents are the target-branch head at merge time and the current compare commit, updates the target-branch head, sets the PR to Merged, and stores the merger, time, and resulting commit identifier. If any condition is unsatisfied or persistence fails, the page explains the applicable reason and neither the target branch nor PR changes; a missing required approval displays “Review required by branch protection”. Merged is terminal. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-4 (Submit a Pull Request Review) and REQ-6-1 (Protect Branches with Review and Status-Check Requirements); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  "results": {
+    "official-github-r2": [
+      {
+        "id": "REQ-6-5#contract-2",
+        "status": "fail",
+        "calls": {
+          "mergeBlocked": 2,
+          "protectionFor": 2,
+          "st": 10,
+          "hasRequestChanges": 2,
+          "approvalCount": 2,
+          "branchHead": 2
+        },
+        "assertions": 2,
+        "phase": "check",
+        "error_name": "AssertionError",
+        "message": "seed must provide a separate Open PR blocked with Review required by branch protection for the refusal scenario",
+        "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: seed must provide a separate Open PR blocked with Review required by branch protection for the refusal scenario\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:8:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+      }
+    ],
+    "startup-seed-repair-r2": [
+      {
+        "id": "REQ-6-5#contract-2",
+        "status": "pass",
+        "calls": {
+          "mergeBlocked": 4,
+          "protectionFor": 4,
+          "st": 18,
+          "hasRequestChanges": 4,
+          "approvalCount": 4,
+          "branchHead": 4
+        },
+        "assertions": 2
+      }
+    ]
+  }
+}

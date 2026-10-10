@@ -1,0 +1,13 @@
+{
+  "candidate": "requirement-safe-v11",
+  "zip_sha256": "cd0f596905b202bd5b79c040e7478ed65c204d51fb0c59c02c23beacc59baa5c",
+  "source_commit": "cbd2c986a3df286a9e8d0117f6d50653ddfd2294",
+  "draft_pr": "https://github.com/thunderstone-group/volo-factory/pull/118",
+  "formal_submission_replaced": false,
+  "formal_current_submission": "12e3bab723fd",
+  "awaiting": [
+    "complete GitHub generated app and fixed judge",
+    "complete Sheet generated app and both fixed judges"
+  ],
+  "selection_rule": "Compare completed candidate behavior and cost. Preserve existing valid submission if the safety candidate is inferior or has insufficient evidence."
+}

@@ -1,0 +1,59 @@
+{
+  "g99": {
+    "baseline_counts": {
+      "pass": 66,
+      "fail": 9,
+      "error": 26
+    },
+    "candidate_counts": {
+      "pass": 91,
+      "fail": 9
+    },
+    "gained": [
+      "REQ-5-1-1",
+      "REQ-5-1-1#2",
+      "REQ-5-1-1#3",
+      "REQ-5-1-1#4",
+      "REQ-5-1-1#5",
+      "REQ-5-1-1#6",
+      "REQ-5-1-2",
+      "REQ-5-1-2#2",
+      "REQ-5-1-2#3",
+      "REQ-5-1-2#4",
+      "REQ-5-1-2#5",
+      "REQ-5-2-1",
+      "REQ-5-2-1#2",
+      "REQ-5-2-1#3",
+      "REQ-5-2-1#4",
+      "REQ-5-2-1#5",
+      "REQ-5-2-1#6",
+      "REQ-5-3-1",
+      "REQ-5-3-1#2",
+      "REQ-5-3-1#3",
+      "REQ-5-3-1#4",
+      "REQ-5-3-1#5",
+      "REQ-5-3-1#6",
+      "REQ-5-3-1#7",
+      "REQ-5-3-1#8",
+      "REQ-5-3-1#9"
+    ],
+    "lost": [
+      "REQ-3-1-1#2"
+    ],
+    "limitation": "Baseline has a shared Rename workbook setup failure that blocks a whole group, so total counts do not provide a comparable score delta."
+  },
+  "cov99n-arm": {
+    "baseline_counts": {
+      "pass": 96,
+      "fail": 4
+    },
+    "candidate_counts": {
+      "pass": 97,
+      "fail": 3
+    },
+    "gained": [
+      "REQ-4-2-2#2"
+    ],
+    "lost": []
+  }
+}

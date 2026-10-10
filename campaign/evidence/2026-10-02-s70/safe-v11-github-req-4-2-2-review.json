@@ -1,0 +1,18 @@
+{
+  "requirement": "REQ-4-2-2",
+  "baseline": "generate-source-scope-v10-github",
+  "candidate": "generate-requirement-safe-v11-github",
+  "fixed_suite_unchanged": true,
+  "raw_candidate_passed": 107,
+  "raw_candidate_total": 111,
+  "assessment": "The frozen exact-text locator rejects the candidate DOM although the required path and numeric additions/deletions are visible. This does not establish a missing product feature.",
+  "candidate_markup": "<li>src/search.ts <span>+2</span> <span>-1</span></li>",
+  "candidate_source": "application/frontend/public/app.js:647-649",
+  "baseline_source": "application/frontend/public/app.js:729",
+  "public_requirements_lines": [
+    1263,
+    1278
+  ],
+  "limitation": "Two independent generations cannot isolate a particular prompt or scaffold change; official evaluator behavior is unknown.",
+  "action": "Retain raw 107/111 and one gain/one loss. Do not alter the suite or application solely for this locator."
+}

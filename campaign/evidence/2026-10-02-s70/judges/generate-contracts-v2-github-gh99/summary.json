@@ -1,0 +1,14 @@
+{
+  "app": "generate-contracts-v2-github",
+  "judge": "gh99",
+  "counts": {
+    "error": 20,
+    "pass": 64,
+    "fail": 18
+  },
+  "seconds": 173.2,
+  "coverage": {
+    "total": 100,
+    "parsed": 82
+  }
+}

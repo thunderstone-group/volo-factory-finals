@@ -1,0 +1,17 @@
+{
+  "case": "sheet-official80",
+  "counts": {
+    "pass": 88,
+    "fail": 5,
+    "error": 8
+  },
+  "entry_checks": {},
+  "ordinary_checks": {
+    "pass": 88,
+    "fail": 5,
+    "error": 8
+  },
+  "seconds": 96.2,
+  "unavailable": null,
+  "model_api_calls": 0
+}

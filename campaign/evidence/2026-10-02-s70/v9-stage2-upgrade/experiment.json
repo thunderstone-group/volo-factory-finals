@@ -1,0 +1,9 @@
+{
+  "purpose": "Reproduce actual stage2 inherited template, with preserved requirement assets",
+  "package_sha256": "d71cca378b9d5b0350c8bfa7c5d208547548f2ddf0bd0c82d3982eb75f5da770",
+  "source_stage1_run": "5e8c8d7d3f14",
+  "failed_stage2_run": "c71b18944cdb",
+  "model": "deepseek-v4-flash-vision-exp",
+  "credit": "practice",
+  "is_formal": false
+}

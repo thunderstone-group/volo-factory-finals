@@ -1,0 +1,2008 @@
+id: ROOT
+name: Github Finals Proxy Evolution Light
+type: FOLDER
+description: |-
+  Light evolution requirements for the participant's actual GitHub-like finals base. Extend issue discovery, repository metadata, discussion management and pull-request review. Actions, Packages, Wiki, project boards, notification delivery, real-time collaboration and external Git protocols remain out of scope.
+
+  Benchmark interaction contract: Every scenario starts at the application home entry in a fresh browser context, signed out. Authentication, when required, uses the original Sign in link, Username or email and masked Password inputs, and Sign in button. Navigation controls may be links or buttons with the exact accessible names stated below; form actions are buttons. Every named control or landmark is unique within its stated scope and visible when used. Inputs have associated labels matching the stated names. Named regions and dialogs expose those accessible roles and names. Native or custom selectors expose combobox and option semantics; a collapsed custom selector displays only the selected option. Lists expose list and listitem semantics in reading order. Status and alert messages have matching accessible names and visible text. Checked, selected and pressed states use their corresponding ARIA/native semantics. An absent control has zero matching accessible elements. Seed records described in GIVEN steps exist in the initial application state, rather than being created by another test. All EV-suffixed resources are distinct records; mutations affect only the current scenario's records. Original accounts and credentials are reused without changing credentials or shared account preferences. All 30 scenarios must work in any order on one continuously running application with a fresh browser context per test and no server reset. Persistence means saved application data survives navigation and reload. No private setup API, implementation-specific URL, framework, database key, CSS selector or particular markup structure is required. Preserve all original behavior except the explicitly described extension; unchanged controls retain their original names and semantics.
+dependencies: []
+children:
+- id: EV-1.1
+  name: Filter issues with combined qualifiers
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-1-1
+  dependencies:
+  - REQ-5-1-1
+  description: |-
+    Extend Search issues with conjunctive is:open, is:closed, label:<name> and author:<username> qualifiers; unqualified text still matches titles. Qualifiers override the selected status tab. Issue titles lists only matching titles, newest first.
+
+    The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.1" when this action is available. The current page exposes "repo-admin/evolution-EV-1.1" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one input labelled "Search issues". A visible region named "Issues" contains the controls and content within it in the scenario. The region named "Issues" exposes "Issue titles" as a list. The list named "Issue titles" in the region named "Issues" contains listitems with the exact stated visible text, in reading order. The region named "Issues" exposes "Open EV-1.1" as a link.
+  scenarios:
+  - name: Filter issues with combined qualifiers
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.1" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. Issues are "Bug EV-1.1" (Closed, label bug, author issue-editor),
+        "Open EV-1.1" (Open, bug, issue-editor), and "Other EV-1.1" (Closed, docs, issue-commenter).
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.1" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.1" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.1" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user enters "is:closed label:bug author:issue-editor" in the "Search issues" field
+        in the current page.
+    - keyword: THEN
+      content: 'The "Issue titles" list in the region named "Issues" contains exactly these entries in
+        order: ["Bug EV-1.1"].'
+    - keyword: THEN
+      content: The link named "Open EV-1.1" is absent in the region named "Issues".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: 'The "Issue titles" list in the region named "Issues" contains exactly these entries in
+        order: ["Bug EV-1.1"].'
+- id: EV-1.2
+  name: Sort the filtered issue list
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-1-1
+  dependencies:
+  - REQ-5-1-1
+  description: |-
+    Add Issue sort with Newest and Oldest options to the Issues region. Sorting operates on the filtered set and persists in the current page after reload.
+
+    The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.2" when this action is available. The current page exposes "repo-admin/evolution-EV-1.2" as a heading. The current page contains one link or button named "Issues" when this action is available. A visible region named "Issues" contains the controls and content within it in the scenario. The region named "Issues" exposes "Issue sort" as a combobox. The combobox labelled "Issue sort" in the region named "Issues" provides the option "Oldest". The region named "Issues" exposes "Issue titles" as a list. The list named "Issue titles" in the region named "Issues" contains listitems with the exact stated visible text, in reading order. The combobox labelled "Issue sort" in the region named "Issues" provides the option "Newest".
+  scenarios:
+  - name: Sort the filtered issue list
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.2" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. Open issues "First EV-1.2", "Second EV-1.2", "Third EV-1.2"
+        were created on 2030-01-01, 2030-01-02 and 2030-01-03 respectively, with no other issues.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.2" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.2" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.2" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user selects "Oldest" in the "Issue sort" combobox in the region named "Issues".
+    - keyword: THEN
+      content: 'The "Issue titles" list in the region named "Issues" contains exactly these entries in
+        order: ["First EV-1.2", "Second EV-1.2", "Third EV-1.2"].'
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The "Issue sort" combobox in the region named "Issues" has selected option "Oldest".
+    - keyword: WHEN
+      content: The user selects "Newest" in the "Issue sort" combobox in the region named "Issues".
+    - keyword: THEN
+      content: 'The "Issue titles" list in the region named "Issues" contains exactly these entries in
+        order: ["Third EV-1.2", "Second EV-1.2", "First EV-1.2"].'
+- id: EV-1.3
+  name: Filter draft pull requests by author
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-6-2-1
+  dependencies:
+  - REQ-6-2-1
+  description: |-
+    Extend the Pull requests list with Search pull requests supporting conjunctive is:draft, is:open and author:<username>. Draft is distinct from ready Open. The Pull request titles list reflects the results.
+
+    The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.3" when this action is available. The current page exposes "repo-admin/evolution-EV-1.3" as a heading. The current page contains one link or button named "Pull requests" when this action is available. The current page contains one input labelled "Search pull requests". A visible region named "Pull requests" contains the controls and content within it in the scenario. The region named "Pull requests" exposes "Pull request titles" as a list. The list named "Pull request titles" in the region named "Pull requests" contains listitems with the exact stated visible text, in reading order.
+  scenarios:
+  - name: Filter draft pull requests by author
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.3" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. PRs are "Draft EV-1.3" (Draft, pr-author), "Ready EV-1.3"
+        (Open, pr-author), and "Other EV-1.3" (Draft, pr-contributor); all compare feature to main.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.3" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.3" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.3" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Pull requests" in the current page.
+    - keyword: WHEN
+      content: The user enters "is:draft author:pr-author" in the "Search pull requests" field in the
+        current page.
+    - keyword: THEN
+      content: 'The "Pull request titles" list in the region named "Pull requests" contains exactly these
+        entries in order: ["Draft EV-1.3"].'
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: 'The "Pull request titles" list in the region named "Pull requests" contains exactly these
+        entries in order: ["Draft EV-1.3"].'
+- id: EV-1.4
+  name: Close an issue as not planned
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-4
+  dependencies:
+  - REQ-5-4
+  description: |-
+    Add Close reason with Completed (default) and Not planned. Close issue stores both Closed and the selected reason; Reopen issue clears the reason. Existing immediate close behavior and operation permissions remain.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.4" when this action is available. The current page exposes "repo-admin/evolution-EV-1.4" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Declined EV-1.4" when this action is available. The current page exposes "Declined EV-1.4" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Close reason" as a combobox. The combobox labelled "Close reason" in the region named "Issue" provides the option "Not planned". The region named "Issue" exposes "Close issue" as a button. The region named "Issue" contains the exact visible text "Closed as not planned" once when specified. The region named "Issue" contains the exact visible text "Keep this description." once when specified. The region named "Issue" exposes "Reopen issue" as a button. The region named "Issue" contains the exact visible text "Open" once when specified. The region named "Issue" exposes "Closed as not planned" as a status.
+  scenarios:
+  - name: Close an issue as not planned
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.4" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Declined EV-1.4" is Open, with description "Keep this
+        description." and no closure reason.
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.4" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.4" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.4" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Declined EV-1.4" in the current page.
+    - keyword: THEN
+      content: The heading named "Declined EV-1.4" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user selects "Not planned" in the "Close reason" combobox in the region named "Issue".
+    - keyword: WHEN
+      content: The user clicks the button named "Close issue" in the region named "Issue".
+    - keyword: THEN
+      content: The exact text "Closed as not planned" is visible exactly once in the region named "Issue".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Closed as not planned" is visible exactly once in the region named "Issue".
+    - keyword: THEN
+      content: The exact text "Keep this description." is visible exactly once in the region named "Issue".
+    - keyword: WHEN
+      content: The user clicks the button named "Reopen issue" in the region named "Issue".
+    - keyword: THEN
+      content: The exact text "Open" is visible exactly once in the region named "Issue".
+    - keyword: THEN
+      content: The status named "Closed as not planned" is absent in the region named "Issue".
+- id: EV-1.5
+  name: Preview a Markdown issue comment
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-2-3
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    Extend the comment editor with Preview and Write buttons. Preview renders Markdown emphasis without publishing or changing the draft. Returning to Write retains the draft; Comment publishes once.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.5" when this action is available. The current page exposes "repo-admin/evolution-EV-1.5" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Preview EV-1.5" when this action is available. The current page exposes "Preview EV-1.5" as a heading. The current page contains one input labelled "Comment". A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Preview" as a button. A visible region named "Comment preview" contains the controls and content within it in the scenario. The region named "Comment preview" contains the exact visible text "Reviewed" once when specified. The region named "Issue" exposes "Write" as a button. The region named "Issue" exposes "Comment" as a button. A visible region named "Discussion" contains the controls and content within it in the scenario. The region named "Discussion" contains the exact visible text "Reviewed carefully." once when specified.
+  scenarios:
+  - name: Preview a Markdown issue comment
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.5" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Preview EV-1.5" is Open and has no comments.
+    - keyword: GIVEN
+      content: The original verified account "issue-commenter" has email "issue-commenter@example.test"
+        and password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-commenter" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.5" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.5" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.5" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Preview EV-1.5" in the current page.
+    - keyword: THEN
+      content: The heading named "Preview EV-1.5" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "**Reviewed** carefully." in the "Comment" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Preview" in the region named "Issue".
+    - keyword: THEN
+      content: The exact text "Reviewed" is visible exactly once in the region named "Comment preview".
+    - keyword: WHEN
+      content: The user clicks the button named "Write" in the region named "Issue".
+    - keyword: THEN
+      content: The "Comment" field in the current page displays "**Reviewed** carefully.".
+    - keyword: WHEN
+      content: The user clicks the button named "Comment" in the region named "Issue".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Reviewed carefully." is visible exactly once in the region named "Discussion".
+- id: EV-1.6
+  name: Preview a Markdown file before committing
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-4
+  dependencies:
+  - REQ-4-4
+  description: |-
+    Extend the new-file editor with Preview file rendering Markdown in File preview and Edit file returning to the draft. Preview creates no commit. Commit changes retains the original file validation and permission rules.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.6" when this action is available. The current page exposes "repo-admin/evolution-EV-1.6" as a heading. The current page contains one link or button named "Add file" when this action is available. The current page contains one link or button named "Create new file" when this action is available. The current page contains one input labelled "File name". The current page contains one input labelled "File contents". The current page exposes "Preview file" as a button. A visible region named "File preview" contains the controls and content within it in the scenario. The region named "File preview" exposes "Guide EV-1.6" as a heading. The current page exposes "Edit file" as a button. The current page contains one input labelled "Commit message". The current page exposes "Commit changes" as a button. The current page contains the exact visible text "docs/guide.md" once when specified.
+  scenarios:
+  - name: Preview a Markdown file before committing
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.6" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. main contains README.md with "Initial file". docs/guide.md
+        does not exist.
+    - keyword: GIVEN
+      content: The original verified account "file-contributor" has email "file-contributor@example.test"
+        and password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "file-contributor" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.6" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.6" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.6" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Add file" in the current page.
+    - keyword: WHEN
+      content: The user activates "Create new file" in the current page.
+    - keyword: WHEN
+      content: The user enters "docs/guide.md" in the "File name" field in the current page.
+    - keyword: WHEN
+      content: The user enters "# Guide EV-1.6\n\n**Useful** documentation." in the "File contents" field
+        in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Preview file" in the current page.
+    - keyword: THEN
+      content: The heading named "Guide EV-1.6" is visible exactly once in the region named "File preview".
+    - keyword: WHEN
+      content: The user clicks the button named "Edit file" in the current page.
+    - keyword: THEN
+      content: The "File contents" field in the current page displays "# Guide EV-1.6\n\n**Useful** documentation.".
+    - keyword: WHEN
+      content: The user enters "Add guide EV-1.6" in the "Commit message" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Commit changes" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "docs/guide.md" is visible exactly once in the current page.
+- id: EV-1.7
+  name: Convert an open pull request to draft
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-6-2-4
+  dependencies:
+  - REQ-6-2-4
+  description: |-
+    The author of an unmerged Open PR can use Convert to draft and confirm in Convert to draft. Draft disables merging and preserves branches and content. Ready for review continues to restore Open using the original workflow.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.7" when this action is available. The current page exposes "repo-admin/evolution-EV-1.7" as a heading. The current page contains one link or button named "Pull requests" when this action is available. The current page contains one link or button named "Draft conversion EV-1.7" when this action is available. The current page exposes "Draft conversion EV-1.7" as a heading. A visible region named "Pull request" contains the controls and content within it in the scenario. The region named "Pull request" exposes "Convert to draft" as a button. The current page exposes "Convert to draft" as a dialog. A visible dialog named "Convert to draft" contains the controls and content within it in the scenario. The dialog named "Convert to draft" exposes "Convert to draft" as a button. The region named "Pull request" contains the exact visible text "Draft" once when specified. The region named "Pull request" exposes "Merge pull request" as a button. The button named "Merge pull request" exposes its disabled state in the region named "Pull request". The region named "Pull request" contains the exact visible text "Work in progress." once when specified.
+  scenarios:
+  - name: Convert an open pull request to draft
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.7" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Draft conversion EV-1.7" is an Open PR by pr-author
+        comparing feature-ev-1.7 to main, with description "Work in progress." and no merge conflicts.
+    - keyword: GIVEN
+      content: The original verified account "pr-author" has email "pr-author@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "pr-author" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.7" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.7" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.7" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Pull requests" in the current page.
+    - keyword: WHEN
+      content: The user activates "Draft conversion EV-1.7" in the current page.
+    - keyword: THEN
+      content: The heading named "Draft conversion EV-1.7" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Convert to draft" in the region named "Pull request".
+    - keyword: THEN
+      content: The dialog named "Convert to draft" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Convert to draft" in the dialog named "Convert to draft".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Draft" is visible exactly once in the region named "Pull request".
+    - keyword: THEN
+      content: The button named "Merge pull request" in the region named "Pull request" has disabled state
+        "true".
+    - keyword: THEN
+      content: The exact text "Work in progress." is visible exactly once in the region named "Pull request".
+- id: EV-1.8
+  name: Switch the pull request diff layout
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-6-3-2
+  dependencies:
+  - REQ-6-3-2
+  description: |-
+    Files changed adds Diff layout with Unified and Split. The selected layout persists after reload without changing the diff. Split exposes separate Before and After regions; Unified exposes Unified diff. Each contains the corresponding changed source text.
+
+    The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.8" when this action is available. The current page exposes "repo-admin/evolution-EV-1.8" as a heading. The current page contains one link or button named "Pull requests" when this action is available. The current page contains one link or button named "Layout EV-1.8" when this action is available. The current page exposes "Layout EV-1.8" as a heading. The current page contains one link or button named "Files changed" when this action is available. The current page exposes "Diff layout" as a combobox. The combobox labelled "Diff layout" in the current page provides the option "Split". A visible region named "Before" contains the controls and content within it in the scenario. The region named "Before" contains the exact visible text "hello before" once when specified. A visible region named "After" contains the controls and content within it in the scenario. The region named "After" contains the exact visible text "hello after" once when specified. The combobox labelled "Diff layout" in the current page provides the option "Unified". A visible region named "Unified diff" contains the controls and content within it in the scenario. The region named "Unified diff" contains the exact visible text "-hello before" once when specified. The region named "Unified diff" contains the exact visible text "+hello after" once when specified.
+  scenarios:
+  - name: Switch the pull request diff layout
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.8" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Layout EV-1.8" is Open, with one changed file src/message.txt
+        replacing "hello before" with "hello after".
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.8" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.8" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.8" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Pull requests" in the current page.
+    - keyword: WHEN
+      content: The user activates "Layout EV-1.8" in the current page.
+    - keyword: THEN
+      content: The heading named "Layout EV-1.8" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user activates "Files changed" in the current page.
+    - keyword: WHEN
+      content: The user selects "Split" in the "Diff layout" combobox in the current page.
+    - keyword: THEN
+      content: The exact text "hello before" is visible exactly once in the region named "Before".
+    - keyword: THEN
+      content: The exact text "hello after" is visible exactly once in the region named "After".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The "Diff layout" combobox in the current page has selected option "Split".
+    - keyword: WHEN
+      content: The user selects "Unified" in the "Diff layout" combobox in the current page.
+    - keyword: THEN
+      content: The exact text "-hello before" is visible exactly once in the region named "Unified diff".
+    - keyword: THEN
+      content: The exact text "+hello after" is visible exactly once in the region named "Unified diff".
+- id: EV-1.9
+  name: Search labels before applying one
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-3-2
+  dependencies:
+  - REQ-5-3-2
+  description: |-
+    The issue Labels picker adds Filter labels. It filters repository labels case-insensitively as typed; applying a result still immediately saves the relationship. A nonmatching label is absent while filtering.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.9" when this action is available. The current page exposes "repo-admin/evolution-EV-1.9" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Label search EV-1.9" when this action is available. The current page exposes "Label search EV-1.9" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Labels" as a button. The current page contains one input labelled "Filter labels". The current page exposes "documentation" as a option. The current page exposes "bug" as a option. The region named "Issue" contains the exact visible text "documentation" once when specified.
+  scenarios:
+  - name: Search labels before applying one
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.9" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Label search EV-1.9" is Open and unlabeled. Repository
+        labels are bug, documentation and enhancement.
+    - keyword: GIVEN
+      content: The original verified account "issue-editor" has email "issue-editor@example.test" and
+        password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-editor" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.9" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.9" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.9" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Label search EV-1.9" in the current page.
+    - keyword: THEN
+      content: The heading named "Label search EV-1.9" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Labels" in the region named "Issue".
+    - keyword: WHEN
+      content: The user enters "DOC" in the "Filter labels" field in the current page.
+    - keyword: THEN
+      content: The option named "documentation" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The option named "bug" is absent in the current page.
+    - keyword: WHEN
+      content: The user clicks the option named "documentation" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "documentation" is visible exactly once in the region named "Issue".
+- id: EV-1.10
+  name: Swap comparison branches
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-6-2-2
+  dependencies:
+  - REQ-6-2-2
+  description: |-
+    The Compare page adds Swap branches, exchanging Base and Compare without writing either branch. Comparing uses the exchanged selection and shows a persisted Comparison summary after reload.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-1.10" when this action is available. The current page exposes "repo-admin/evolution-EV-1.10" as a heading. The current page contains one link or button named "Pull requests" when this action is available. The current page contains one link or button named "New pull request" when this action is available. The current page exposes "Base" as a combobox. The combobox labelled "Base" in the current page provides the option "main". The current page exposes "Compare" as a combobox. The combobox labelled "Compare" in the current page provides the option "feature-ev-1.10". The current page exposes "Swap branches" as a button. The current page exposes "Compare changes" as a button. A visible region named "Comparison summary" contains the controls and content within it in the scenario. The region named "Comparison summary" contains the exact visible text "base: feature-ev-1.10; compare: main" once when specified.
+  scenarios:
+  - name: Swap comparison branches
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-1.10" is owned by repo-admin. The original account
+        repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. main and feature-ev-1.10 are distinct branches with
+        differences; file src/compare.txt differs between them.
+    - keyword: GIVEN
+      content: The original verified account "pr-contributor" has email "pr-contributor@example.test"
+        and password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "pr-contributor" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-1.10" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-1.10" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-1.10" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Pull requests" in the current page.
+    - keyword: WHEN
+      content: The user activates "New pull request" in the current page.
+    - keyword: WHEN
+      content: The user selects "main" in the "Base" combobox in the current page.
+    - keyword: WHEN
+      content: The user selects "feature-ev-1.10" in the "Compare" combobox in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Swap branches" in the current page.
+    - keyword: THEN
+      content: The "Base" combobox in the current page has selected option "feature-ev-1.10".
+    - keyword: THEN
+      content: The "Compare" combobox in the current page has selected option "main".
+    - keyword: WHEN
+      content: The user clicks the button named "Compare changes" in the current page.
+    - keyword: THEN
+      content: 'The exact text "base: feature-ev-1.10; compare: main" is visible exactly once in the region
+        named "Comparison summary".'
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: 'The exact text "base: feature-ev-1.10; compare: main" is visible exactly once in the region
+        named "Comparison summary".'
+- id: EV-2.1
+  name: Star and unstar a repository
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-3
+  - REQ-1-1-2
+  description: |-
+    Signed-in users can Star a readable repository. Star count is the number of distinct accounts; Star becomes Unstar. Both changes persist after reload.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.1" when this action is available. The current page exposes "repo-admin/evolution-EV-2.1" as a heading. The current page exposes "Star" as a button. A visible region named "Repository social" contains the controls and content within it in the scenario. The region named "Repository social" contains the exact visible text "1 star" once when specified. The current page exposes "Unstar" as a button. The region named "Repository social" contains the exact visible text "0 stars" once when specified.
+  scenarios:
+  - name: Star and unstar a repository
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.1" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. This repository has no stars.
+    - keyword: GIVEN
+      content: The original verified account "repo-owner" has email "repo-owner@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-owner" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.1" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.1" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.1" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user clicks the button named "Star" in the current page.
+    - keyword: THEN
+      content: The exact text "1 star" is visible exactly once in the region named "Repository social".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The button named "Unstar" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Unstar" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "0 stars" is visible exactly once in the region named "Repository social".
+    - keyword: THEN
+      content: The button named "Star" is visible exactly once in the current page.
+- id: EV-2.2
+  name: Keep stars specific to each account
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.1
+  description: |-
+    Starring is account-specific: another account sees the aggregate count but retains its own Star action. Signing out preserves the stored star.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.2" when this action is available. The current page exposes "repo-admin/evolution-EV-2.2" as a heading. The current page exposes "Star" as a button. The current page contains one link or button named "Sign out" when this action is available. The current page exposes "Sign out" as a dialog. A visible dialog named "Sign out" contains the controls and content within it in the scenario. The dialog named "Sign out" exposes "Confirm sign out" as a button. The current page exposes "Sign in" as a link. A visible region named "Repository social" contains the controls and content within it in the scenario. The region named "Repository social" contains the exact visible text "1 star" once when specified. The current page exposes "Unstar" as a button.
+  scenarios:
+  - name: Keep stars specific to each account
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.2" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. This repository has no stars.
+    - keyword: GIVEN
+      content: The original verified account "repo-owner" has email "repo-owner@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-owner" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.2" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.2" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.2" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user clicks the button named "Star" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Account menu" in the current page.
+    - keyword: WHEN
+      content: The user activates "Sign out" in the current page.
+    - keyword: THEN
+      content: The dialog named "Sign out" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Confirm sign out" in the dialog named "Sign out".
+    - keyword: THEN
+      content: The link named "Sign in" is visible exactly once in the current page.
+    - keyword: GIVEN
+      content: The original verified account "issue-viewer" has email "issue-viewer@example.test" and
+        password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-viewer" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.2" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.2" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.2" is visible exactly once in the current
+        page.
+    - keyword: THEN
+      content: The button named "Star" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The exact text "1 star" is visible exactly once in the region named "Repository social".
+    - keyword: WHEN
+      content: The user clicks the button named "Account menu" in the current page.
+    - keyword: WHEN
+      content: The user activates "Sign out" in the current page.
+    - keyword: THEN
+      content: The dialog named "Sign out" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Confirm sign out" in the dialog named "Sign out".
+    - keyword: THEN
+      content: The link named "Sign in" is visible exactly once in the current page.
+    - keyword: GIVEN
+      content: The original verified account "repo-owner" has email "repo-owner@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-owner" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.2" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.2" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.2" is visible exactly once in the current
+        page.
+    - keyword: THEN
+      content: The button named "Unstar" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The exact text "1 star" is visible exactly once in the region named "Repository social".
+- id: EV-2.3
+  name: Edit repository topics
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-3
+  description: |-
+    Admins edit comma-separated Topics through Edit topics. Save trims, deduplicates and lowercases topics; the Topics list persists across navigation. Topic names contain lowercase letters, digits and hyphens.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.3" when this action is available. The current page exposes "repo-admin/evolution-EV-2.3" as a heading. The current page exposes "Edit topics" as a button. A visible dialog named "Edit topics" contains the controls and content within it in the scenario. The dialog named "Edit topics" contains one input labelled "Topics". The dialog named "Edit topics" exposes "Save" as a button. A visible region named "About" contains the controls and content within it in the scenario. The region named "About" exposes "Topics" as a list. The list named "Topics" in the region named "About" contains listitems with the exact stated visible text, in reading order.
+  scenarios:
+  - name: Edit repository topics
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.3" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. This repository has no topics.
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.3" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.3" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.3" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user clicks the button named "Edit topics" in the current page.
+    - keyword: WHEN
+      content: The user enters "TypeScript, docs, typescript" in the "Topics" field in the dialog named
+        "Edit topics".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Edit topics".
+    - keyword: THEN
+      content: 'The "Topics" list in the region named "About" contains exactly these entries in order:
+        ["typescript", "docs"].'
+    - keyword: WHEN
+      content: The user returns to the application home entry.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.3" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.3" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.3" is visible exactly once in the current
+        page.
+    - keyword: THEN
+      content: 'The "Topics" list in the region named "About" contains exactly these entries in order:
+        ["typescript", "docs"].'
+- id: EV-2.4
+  name: Restrict topic editing to administrators
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.3
+  description: |-
+    Read users can read topic metadata but cannot access Edit topics.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.4" when this action is available. The current page exposes "repo-admin/evolution-EV-2.4" as a heading. A visible region named "About" contains the controls and content within it in the scenario. The region named "About" exposes "Topics" as a list. The list named "Topics" in the region named "About" contains listitems with the exact stated visible text, in reading order. The current page exposes "Edit topics" as a button.
+  scenarios:
+  - name: Restrict topic editing to administrators
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.4" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. Topics are api and docs.
+    - keyword: GIVEN
+      content: The original verified account "issue-viewer" has email "issue-viewer@example.test" and
+        password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-viewer" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.4" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.4" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.4" is visible exactly once in the current
+        page.
+    - keyword: THEN
+      content: 'The "Topics" list in the region named "About" contains exactly these entries in order:
+        ["api", "docs"].'
+    - keyword: THEN
+      content: The button named "Edit topics" is absent in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The button named "Edit topics" is absent in the current page.
+- id: EV-2.5
+  name: Archive a repository
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-4
+  description: |-
+    An Admin can Archive repository from General settings and confirm by entering its exact name. Archiving persists and makes repository content read-only, including issue creation; it preserves existing issues.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.5" when this action is available. The current page exposes "repo-admin/evolution-EV-2.5" as a heading. The current page contains one link or button named "Settings" when this action is available. The current page contains one link or button named "General" when this action is available. The current page exposes "Archive repository" as a button. A visible dialog named "Archive repository" contains the controls and content within it in the scenario. The dialog named "Archive repository" contains one input labelled "Repository name". The dialog named "Archive repository" exposes "Archive" as a button. A visible region named "Repository status" contains the controls and content within it in the scenario. The region named "Repository status" contains the exact visible text "Archived" once when specified. The current page contains one link or button named "Issues" when this action is available. The current page exposes "Preserved EV-2.5" as a link. The current page exposes "New issue" as a link. The current page exposes "New issue" as a button.
+  scenarios:
+  - name: Archive a repository
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.5" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. The repository is active with one Open issue "Preserved
+        EV-2.5".
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.5" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.5" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.5" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Settings" in the current page.
+    - keyword: WHEN
+      content: The user activates "General" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Archive repository" in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.5" in the "Repository name" field in the dialog named "Archive
+        repository".
+    - keyword: WHEN
+      content: The user clicks the button named "Archive" in the dialog named "Archive repository".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Archived" is visible exactly once in the region named "Repository status".
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: THEN
+      content: The link named "Preserved EV-2.5" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The link named "New issue" is absent in the current page.
+    - keyword: THEN
+      content: The button named "New issue" is absent in the current page.
+- id: EV-2.6
+  name: Read an archived repository as a visitor
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.5
+  description: |-
+    Visitors can browse archived public repositories and issue descriptions; Archived remains visible and New issue is absent.
+
+    The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.6" when this action is available. The current page exposes "repo-admin/evolution-EV-2.6" as a heading. A visible region named "Repository status" contains the controls and content within it in the scenario. The region named "Repository status" contains the exact visible text "Archived" once when specified. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Read only EV-2.6" when this action is available. The current page exposes "Read only EV-2.6" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" contains the exact visible text "Historical discussion." once when specified. The region named "Issue" exposes "Close issue" as a button.
+  scenarios:
+  - name: Read an archived repository as a visitor
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.6" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. The repository is archived with Open issue "Read only
+        EV-2.6", description "Historical discussion.".
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.6" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.6" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.6" is visible exactly once in the current
+        page.
+    - keyword: THEN
+      content: The exact text "Archived" is visible exactly once in the region named "Repository status".
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Read only EV-2.6" in the current page.
+    - keyword: THEN
+      content: The heading named "Read only EV-2.6" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The exact text "Historical discussion." is visible exactly once in the region named "Issue".
+    - keyword: THEN
+      content: The button named "Close issue" is absent in the region named "Issue".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Historical discussion." is visible exactly once in the region named "Issue".
+- id: EV-2.7
+  name: Create a repository label
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-3-2
+  description: |-
+    Admins open Labels from Issues and use New label to create a unique label with Label name, Description and six-digit hex Color. Created labels appear as named regions and are available in issue label pickers.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.7" when this action is available. The current page exposes "repo-admin/evolution-EV-2.7" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Labels" when this action is available. The current page exposes "New label" as a button. A visible dialog named "New label" contains the controls and content within it in the scenario. The dialog named "New label" contains one input labelled "Label name". The dialog named "New label" contains one input labelled "Description". The dialog named "New label" contains one input labelled "Color". The dialog named "New label" exposes "Create label" as a button. A visible region named "priority-ev-2.7" contains the controls and content within it in the scenario. The region named "priority-ev-2.7" contains the exact visible text "Ship this first." once when specified. The current page contains one link or button named "Apply EV-2.7" when this action is available. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Labels" as a button. The current page exposes "priority-ev-2.7" as a option. The region named "Issue" contains the exact visible text "priority-ev-2.7" once when specified.
+  scenarios:
+  - name: Create a repository label
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.7" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. No label named priority-ev-2.7 exists; issue "Apply EV-2.7"
+        is Open and unlabeled.
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.7" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.7" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.7" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Labels" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "New label" in the current page.
+    - keyword: WHEN
+      content: The user enters "priority-ev-2.7" in the "Label name" field in the dialog named "New label".
+    - keyword: WHEN
+      content: The user enters "Ship this first." in the "Description" field in the dialog named "New
+        label".
+    - keyword: WHEN
+      content: The user enters "#ff8800" in the "Color" field in the dialog named "New label".
+    - keyword: WHEN
+      content: The user clicks the button named "Create label" in the dialog named "New label".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Ship this first." is visible exactly once in the region named "priority-ev-2.7".
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Apply EV-2.7" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Labels" in the region named "Issue".
+    - keyword: WHEN
+      content: The user clicks the option named "priority-ev-2.7" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "priority-ev-2.7" is visible exactly once in the region named "Issue".
+- id: EV-2.8
+  name: Rename an applied repository label
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.7
+  description: |-
+    Admins can Edit a repository label. Renaming updates the label record and all its issue associations atomically without duplicating labels.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.8" when this action is available. The current page exposes "repo-admin/evolution-EV-2.8" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Labels" when this action is available. A visible region named "old-ev-2.8" contains the controls and content within it in the scenario. The region named "old-ev-2.8" exposes "Edit" as a button. A visible dialog named "Edit label" contains the controls and content within it in the scenario. The dialog named "Edit label" contains one input labelled "Label name". The dialog named "Edit label" contains one input labelled "Description". The dialog named "Edit label" exposes "Save" as a button. The current page exposes "renamed-ev-2.8" as a region. The current page exposes "old-ev-2.8" as a region. The current page contains one link or button named "Linked EV-2.8" when this action is available. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" contains the exact visible text "renamed-ev-2.8" once when specified.
+  scenarios:
+  - name: Rename an applied repository label
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: 'The public repository "evolution-EV-2.8" is owned by repo-admin. The original account
+        repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. Label old-ev-2.8 with description "Old description"
+        and color #aaaaaa is applied to "Linked EV-2.8".'
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.8" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.8" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.8" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Labels" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Edit" in the region named "old-ev-2.8".
+    - keyword: WHEN
+      content: The user enters "renamed-ev-2.8" in the "Label name" field in the dialog named "Edit label".
+    - keyword: WHEN
+      content: The user enters "New description" in the "Description" field in the dialog named "Edit
+        label".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Edit label".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The region named "renamed-ev-2.8" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The region named "old-ev-2.8" is absent in the current page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Linked EV-2.8" in the current page.
+    - keyword: THEN
+      content: The exact text "renamed-ev-2.8" is visible exactly once in the region named "Issue".
+- id: EV-2.9
+  name: Create a milestone with a due date
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-3-3
+  description: |-
+    Admins can create milestones on the Milestones page using Title, Description and Due date (YYYY-MM-DD). Newly created milestones become selectable on issue details.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.9" when this action is available. The current page exposes "repo-admin/evolution-EV-2.9" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Milestones" when this action is available. The current page exposes "New milestone" as a button. A visible dialog named "New milestone" contains the controls and content within it in the scenario. The dialog named "New milestone" contains one input labelled "Title". The dialog named "New milestone" contains one input labelled "Description". The dialog named "New milestone" contains one input labelled "Due date". The dialog named "New milestone" exposes "Create milestone" as a button. A visible region named "Release EV-2.9" contains the controls and content within it in the scenario. The region named "Release EV-2.9" contains the exact visible text "2030-10-31" once when specified. The current page contains one link or button named "Schedule EV-2.9" when this action is available. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Milestone" as a button. The current page exposes "Release EV-2.9" as a option. The region named "Issue" contains the exact visible text "Release EV-2.9" once when specified.
+  scenarios:
+  - name: Create a milestone with a due date
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.9" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. No milestone named "Release EV-2.9" exists. "Schedule
+        EV-2.9" is an Open issue without a milestone.
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.9" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.9" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.9" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Milestones" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "New milestone" in the current page.
+    - keyword: WHEN
+      content: The user enters "Release EV-2.9" in the "Title" field in the dialog named "New milestone".
+    - keyword: WHEN
+      content: The user enters "October delivery" in the "Description" field in the dialog named "New
+        milestone".
+    - keyword: WHEN
+      content: The user enters "2030-10-31" in the "Due date" field in the dialog named "New milestone".
+    - keyword: WHEN
+      content: The user clicks the button named "Create milestone" in the dialog named "New milestone".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "2030-10-31" is visible exactly once in the region named "Release EV-2.9".
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Schedule EV-2.9" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Milestone" in the region named "Issue".
+    - keyword: WHEN
+      content: The user clicks the option named "Release EV-2.9" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Release EV-2.9" is visible exactly once in the region named "Issue".
+- id: EV-2.10
+  name: Close and reopen a milestone
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.9
+  description: |-
+    Admins may Close milestone and Reopen milestone. Each transition persists without altering title, description, due date or linked issues.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-2.10" when this action is available. The current page exposes "repo-admin/evolution-EV-2.10" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Milestones" when this action is available. A visible region named "Cycle EV-2.10" contains the controls and content within it in the scenario. The region named "Cycle EV-2.10" exposes "Close milestone" as a button. The region named "Cycle EV-2.10" contains the exact visible text "Closed" once when specified. The region named "Cycle EV-2.10" exposes "Reopen milestone" as a button. The region named "Cycle EV-2.10" contains the exact visible text "Open" once when specified. The region named "Cycle EV-2.10" contains the exact visible text "Preserve scope" once when specified.
+  scenarios:
+  - name: Close and reopen a milestone
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-2.10" is owned by repo-admin. The original account
+        repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. Milestone "Cycle EV-2.10" is Open, due 2030-12-01,
+        with description "Preserve scope".
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-2.10" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-2.10" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-2.10" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Milestones" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Close milestone" in the region named "Cycle EV-2.10".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Closed" is visible exactly once in the region named "Cycle EV-2.10".
+    - keyword: WHEN
+      content: The user clicks the button named "Reopen milestone" in the region named "Cycle EV-2.10".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Open" is visible exactly once in the region named "Cycle EV-2.10".
+    - keyword: THEN
+      content: The exact text "Preserve scope" is visible exactly once in the region named "Cycle EV-2.10".
+- id: EV-3.1
+  name: Lock an issue conversation
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    Admins can Lock conversation, select Lock reason and confirm Lock. A locked issue persists its reason; ordinary Write users cannot add comments until an Admin unlocks it. Existing discussion remains readable.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.1" when this action is available. The current page exposes "repo-admin/evolution-EV-3.1" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Lock EV-3.1" when this action is available. The current page exposes "Lock EV-3.1" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Lock conversation" as a button. A visible dialog named "Lock conversation" contains the controls and content within it in the scenario. The dialog named "Lock conversation" exposes "Lock reason" as a combobox. The combobox labelled "Lock reason" in the dialog named "Lock conversation" provides the option "Off-topic". The dialog named "Lock conversation" exposes "Lock" as a button. The region named "Issue" contains the exact visible text "Locked: Off-topic" once when specified. The current page contains one link or button named "Sign out" when this action is available. The current page exposes "Sign out" as a dialog. A visible dialog named "Sign out" contains the controls and content within it in the scenario. The dialog named "Sign out" exposes "Confirm sign out" as a button. The current page exposes "Sign in" as a link. The region named "Issue" exposes "Comment" as a button. The region named "Issue" contains the exact visible text "Retain context." once when specified.
+  scenarios:
+  - name: Lock an issue conversation
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.1" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Lock EV-3.1" is Open and unlocked, with description
+        "Retain context.".
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.1" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.1" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.1" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Lock EV-3.1" in the current page.
+    - keyword: THEN
+      content: The heading named "Lock EV-3.1" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Lock conversation" in the region named "Issue".
+    - keyword: WHEN
+      content: The user selects "Off-topic" in the "Lock reason" combobox in the dialog named "Lock conversation".
+    - keyword: WHEN
+      content: The user clicks the button named "Lock" in the dialog named "Lock conversation".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: 'The exact text "Locked: Off-topic" is visible exactly once in the region named "Issue".'
+    - keyword: WHEN
+      content: The user clicks the button named "Account menu" in the current page.
+    - keyword: WHEN
+      content: The user activates "Sign out" in the current page.
+    - keyword: THEN
+      content: The dialog named "Sign out" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Confirm sign out" in the dialog named "Sign out".
+    - keyword: THEN
+      content: The link named "Sign in" is visible exactly once in the current page.
+    - keyword: GIVEN
+      content: The original verified account "issue-commenter" has email "issue-commenter@example.test"
+        and password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-commenter" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.1" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.1" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.1" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Lock EV-3.1" in the current page.
+    - keyword: THEN
+      content: The heading named "Lock EV-3.1" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The button named "Comment" is absent in the region named "Issue".
+    - keyword: THEN
+      content: The exact text "Retain context." is visible exactly once in the region named "Issue".
+- id: EV-3.2
+  name: Deny issue locking to a read user
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-3.1
+  description: |-
+    Only Admins manage conversation locks. Read users see neither Lock conversation nor Unlock conversation, while issue content is readable.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.2" when this action is available. The current page exposes "repo-admin/evolution-EV-3.2" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Lock permission EV-3.2" when this action is available. The current page exposes "Lock permission EV-3.2" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" contains the exact visible text "Readable content." once when specified. The region named "Issue" exposes "Lock conversation" as a button. The region named "Issue" exposes "Unlock conversation" as a button.
+  scenarios:
+  - name: Deny issue locking to a read user
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.2" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Lock permission EV-3.2" is Open, unlocked, with description
+        "Readable content.".
+    - keyword: GIVEN
+      content: The original verified account "issue-viewer" has email "issue-viewer@example.test" and
+        password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-viewer" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.2" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.2" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.2" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Lock permission EV-3.2" in the current page.
+    - keyword: THEN
+      content: The heading named "Lock permission EV-3.2" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The exact text "Readable content." is visible exactly once in the region named "Issue".
+    - keyword: THEN
+      content: The button named "Lock conversation" is absent in the region named "Issue".
+    - keyword: THEN
+      content: The button named "Unlock conversation" is absent in the region named "Issue".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The button named "Lock conversation" is absent in the region named "Issue".
+- id: EV-3.3
+  name: Pin an issue to the repository list
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-1-1
+  - REQ-5-1-2
+  description: |-
+    Admins can Pin issue. Pinned issues displays pinned issue titles in pin order above the normal issue list. Pinning persists after leaving the repository.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.3" when this action is available. The current page exposes "repo-admin/evolution-EV-3.3" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Pinned EV-3.3" when this action is available. The current page exposes "Pinned EV-3.3" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Pin issue" as a button. A visible region named "Pinned issues" contains the controls and content within it in the scenario. The region named "Pinned issues" exposes "Pinned issue titles" as a list. The list named "Pinned issue titles" in the region named "Pinned issues" contains listitems with the exact stated visible text, in reading order.
+  scenarios:
+  - name: Pin an issue to the repository list
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.3" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Pinned EV-3.3" is Open and unpinned; no other issue
+        is pinned.
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.3" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.3" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.3" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Pinned EV-3.3" in the current page.
+    - keyword: THEN
+      content: The heading named "Pinned EV-3.3" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Pin issue" in the region named "Issue".
+    - keyword: WHEN
+      content: The user returns to the application home entry.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.3" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.3" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.3" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: THEN
+      content: 'The "Pinned issue titles" list in the region named "Pinned issues" contains exactly these
+        entries in order: ["Pinned EV-3.3"].'
+- id: EV-3.4
+  name: Unpin an issue without deleting it
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-3.3
+  description: |-
+    Admins can Unpin issue. Removing a pin removes only the pin relationship; the ordinary issue list and discussion remain.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.4" when this action is available. The current page exposes "repo-admin/evolution-EV-3.4" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Unpin EV-3.4" when this action is available. The current page exposes "Unpin EV-3.4" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Unpin issue" as a button. The region named "Issue" exposes "Pin issue" as a button. A visible region named "Pinned issues" contains the controls and content within it in the scenario. The region named "Pinned issues" exposes "Pinned issue titles" as a list. The list named "Pinned issue titles" in the region named "Pinned issues" contains listitems with the exact stated visible text, in reading order. A visible region named "Issues" contains the controls and content within it in the scenario. The region named "Issues" exposes "Unpin EV-3.4" as a link.
+  scenarios:
+  - name: Unpin an issue without deleting it
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.4" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Unpin EV-3.4" is Open and pinned, with description "Keep
+        this issue.".
+    - keyword: GIVEN
+      content: The original verified account "repo-admin" has email "repo-admin@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "repo-admin" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.4" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.4" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.4" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Unpin EV-3.4" in the current page.
+    - keyword: THEN
+      content: The heading named "Unpin EV-3.4" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Unpin issue" in the region named "Issue".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The button named "Pin issue" is visible exactly once in the region named "Issue".
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: THEN
+      content: 'The "Pinned issue titles" list in the region named "Pinned issues" contains exactly these
+        entries in order: [].'
+    - keyword: THEN
+      content: The link named "Unpin EV-3.4" is visible exactly once in the region named "Issues".
+- id: EV-3.5
+  name: Toggle a thumbs-up reaction
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-1-2
+  description: |-
+    Signed-in readers can toggle a Thumbs up reaction on an issue. The button exposes pressed state, Reaction count shows the distinct account count, and reload preserves both.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.5" when this action is available. The current page exposes "repo-admin/evolution-EV-3.5" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "React EV-3.5" when this action is available. The current page exposes "React EV-3.5" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Thumbs up" as a button. The button named "Thumbs up" exposes its pressed state in the region named "Issue". A visible region named "Reaction count" contains the controls and content within it in the scenario. The region named "Reaction count" contains the exact visible text "1 reaction" once when specified. The region named "Reaction count" contains the exact visible text "0 reactions" once when specified.
+  scenarios:
+  - name: Toggle a thumbs-up reaction
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.5" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "React EV-3.5" is Open with no reactions.
+    - keyword: GIVEN
+      content: The original verified account "issue-viewer" has email "issue-viewer@example.test" and
+        password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-viewer" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.5" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.5" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.5" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "React EV-3.5" in the current page.
+    - keyword: THEN
+      content: The heading named "React EV-3.5" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Thumbs up" in the region named "Issue".
+    - keyword: THEN
+      content: The button named "Thumbs up" in the region named "Issue" has pressed state "true".
+    - keyword: THEN
+      content: The exact text "1 reaction" is visible exactly once in the region named "Reaction count".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The button named "Thumbs up" in the region named "Issue" has pressed state "true".
+    - keyword: WHEN
+      content: The user clicks the button named "Thumbs up" in the region named "Issue".
+    - keyword: THEN
+      content: The exact text "0 reactions" is visible exactly once in the region named "Reaction count".
+- id: EV-3.6
+  name: Create and use a saved reply
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    A signed-in account manages Saved replies from its Account menu. New saved reply stores a Reply title and Reply body for that account. Insert saved reply on an issue copies the selected body into Comment without publishing it; publishing uses Comment.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.6" when this action is available. The current page exposes "repo-admin/evolution-EV-3.6" as a heading. The current page contains one link or button named "Saved replies" when this action is available. The current page exposes "New saved reply" as a button. A visible dialog named "Saved reply" contains the controls and content within it in the scenario. The dialog named "Saved reply" contains one input labelled "Reply title". The dialog named "Saved reply" contains one input labelled "Reply body". The dialog named "Saved reply" exposes "Save" as a button. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Reply EV-3.6" when this action is available. The current page exposes "Reply EV-3.6" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Insert saved reply" as a button. The current page exposes "Thanks EV-3.6" as a option. The current page contains one input labelled "Comment". The region named "Issue" exposes "Comment" as a button. A visible region named "Discussion" contains the controls and content within it in the scenario. The region named "Discussion" contains the exact visible text "Thanks for the reproducible example." once when specified.
+  scenarios:
+  - name: Create and use a saved reply
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.6" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Reply EV-3.6" is Open with no comments. issue-commenter
+        has no saved reply "Thanks EV-3.6".
+    - keyword: GIVEN
+      content: The original verified account "issue-commenter" has email "issue-commenter@example.test"
+        and password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-commenter" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.6" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.6" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.6" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user clicks the button named "Account menu" in the current page.
+    - keyword: WHEN
+      content: The user activates "Saved replies" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "New saved reply" in the current page.
+    - keyword: WHEN
+      content: The user enters "Thanks EV-3.6" in the "Reply title" field in the dialog named "Saved reply".
+    - keyword: WHEN
+      content: The user enters "Thanks for the reproducible example." in the "Reply body" field in the
+        dialog named "Saved reply".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Saved reply".
+    - keyword: WHEN
+      content: The user returns to the application home entry.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.6" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.6" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.6" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Reply EV-3.6" in the current page.
+    - keyword: THEN
+      content: The heading named "Reply EV-3.6" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Insert saved reply" in the region named "Issue".
+    - keyword: WHEN
+      content: The user clicks the option named "Thanks EV-3.6" in the current page.
+    - keyword: THEN
+      content: The "Comment" field in the current page displays "Thanks for the reproducible example.".
+    - keyword: WHEN
+      content: The user clicks the button named "Comment" in the region named "Issue".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Thanks for the reproducible example." is visible exactly once in the region
+        named "Discussion".
+- id: EV-3.7
+  name: Edit an authored issue comment
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    A comment author can Edit comment within that discussion article, change Comment body and Save comment. The updated body and Edited indicator persist with the original author.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.7" when this action is available. The current page exposes "repo-admin/evolution-EV-3.7" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Edit comment EV-3.7" when this action is available. The current page exposes "Edit comment EV-3.7" as a heading. A visible article named "Comment by issue-commenter" contains the controls and content within it in the scenario. The article named "Comment by issue-commenter" exposes "Edit comment" as a button. A visible dialog named "Edit comment" contains the controls and content within it in the scenario. The dialog named "Edit comment" contains one input labelled "Comment body". The dialog named "Edit comment" exposes "Save comment" as a button. The article named "Comment by issue-commenter" contains the exact visible text "Revised comment EV-3.7" once when specified. The article named "Comment by issue-commenter" contains the exact visible text "Edited" once when specified. The current page exposes "Save comment" as a button.
+  scenarios:
+  - name: Edit an authored issue comment
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.7" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Edit comment EV-3.7" has exactly one comment with body
+        "Original comment EV-3.7", by issue-commenter, whose article accessible name is "Comment by issue-commenter".
+    - keyword: GIVEN
+      content: The original verified account "issue-commenter" has email "issue-commenter@example.test"
+        and password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-commenter" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.7" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.7" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.7" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Edit comment EV-3.7" in the current page.
+    - keyword: THEN
+      content: The heading named "Edit comment EV-3.7" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Edit comment" in the article named "Comment by issue-commenter".
+    - keyword: WHEN
+      content: The user enters "Revised comment EV-3.7" in the "Comment body" field in the dialog named
+        "Edit comment".
+    - keyword: WHEN
+      content: The user clicks the button named "Save comment" in the dialog named "Edit comment".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Revised comment EV-3.7" is visible exactly once in the article named "Comment
+        by issue-commenter".
+    - keyword: THEN
+      content: The exact text "Edited" is visible exactly once in the article named "Comment by issue-commenter".
+    - keyword: THEN
+      content: The button named "Save comment" is absent in the current page.
+- id: EV-3.8
+  name: Confirm deletion of an authored comment
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    A comment author can Delete comment. Cancel preserves the comment; Delete confirms removal. Deletion persists and leaves the issue description intact.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.8" when this action is available. The current page exposes "repo-admin/evolution-EV-3.8" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Delete comment EV-3.8" when this action is available. The current page exposes "Delete comment EV-3.8" as a heading. A visible article named "Comment by issue-commenter" contains the controls and content within it in the scenario. The article named "Comment by issue-commenter" exposes "Delete comment" as a button. A visible dialog named "Delete comment" contains the controls and content within it in the scenario. The dialog named "Delete comment" exposes "Cancel" as a button. A visible region named "Discussion" contains the controls and content within it in the scenario. The region named "Discussion" contains the exact visible text "Disposable EV-3.8" once when specified. The dialog named "Delete comment" exposes "Delete" as a button. The region named "Discussion" exposes "Comment by issue-commenter" as a article. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" contains the exact visible text "Keep the issue body." once when specified.
+  scenarios:
+  - name: Confirm deletion of an authored comment
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.8" is owned by repo-admin. The original account repo-admin
+        has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have
+        Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own
+        PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this
+        scenario belong only to this repository. "Delete comment EV-3.8" has description "Keep the issue
+        body." and one issue-commenter comment "Disposable EV-3.8" in article "Comment by issue-commenter".
+    - keyword: GIVEN
+      content: The original verified account "issue-commenter" has email "issue-commenter@example.test"
+        and password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-commenter" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.8" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.8" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.8" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Delete comment EV-3.8" in the current page.
+    - keyword: THEN
+      content: The heading named "Delete comment EV-3.8" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Delete comment" in the article named "Comment by issue-commenter".
+    - keyword: WHEN
+      content: The user clicks the button named "Cancel" in the dialog named "Delete comment".
+    - keyword: THEN
+      content: The exact text "Disposable EV-3.8" is visible exactly once in the region named "Discussion".
+    - keyword: WHEN
+      content: The user clicks the button named "Delete comment" in the article named "Comment by issue-commenter".
+    - keyword: WHEN
+      content: The user clicks the button named "Delete" in the dialog named "Delete comment".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The article named "Comment by issue-commenter" is absent in the region named "Discussion".
+    - keyword: THEN
+      content: The exact text "Keep the issue body." is visible exactly once in the region named "Issue".
+- id: EV-3.9
+  name: Complete an issue task-list item
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-2
+  description: |-
+    Markdown task-list items in an issue description render as labelled checkboxes. Write users can toggle them; the saved Markdown and task progress update together and persist. Other text and tasks remain unchanged.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.9" when this action is available. The current page exposes "repo-admin/evolution-EV-3.9" as a heading. The current page contains one link or button named "Issues" when this action is available. The current page contains one link or button named "Checklist EV-3.9" when this action is available. The current page exposes "Checklist EV-3.9" as a heading. A visible region named "Issue" contains the controls and content within it in the scenario. The region named "Issue" exposes "Add tests" as a checkbox. The region named "Issue" contains the exact visible text "1 of 2 tasks complete" once when specified. The checkbox named "Add tests" exposes its checked state in the region named "Issue". The region named "Issue" exposes "Update docs" as a checkbox. The checkbox named "Update docs" exposes its checked state in the region named "Issue". The region named "Issue" exposes "Edit issue description" as a button. The current page contains one input labelled "Issue description".
+  scenarios:
+  - name: Complete an issue task-list item
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: |-
+        The public repository "evolution-EV-3.9" is owned by repo-admin. The original account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in this scenario belong only to this repository. "Checklist EV-3.9" has description "- [ ] Add tests
+        - [ ] Update docs" and no completed tasks.
+    - keyword: GIVEN
+      content: The original verified account "issue-editor" has email "issue-editor@example.test" and
+        password "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "issue-editor" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.9" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.9" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.9" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Issues" in the current page.
+    - keyword: WHEN
+      content: The user activates "Checklist EV-3.9" in the current page.
+    - keyword: THEN
+      content: The heading named "Checklist EV-3.9" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user checks "Add tests" in the region named "Issue".
+    - keyword: THEN
+      content: The exact text "1 of 2 tasks complete" is visible exactly once in the region named "Issue".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The checkbox named "Add tests" in the region named "Issue" has checked state "true".
+    - keyword: THEN
+      content: The checkbox named "Update docs" in the region named "Issue" has checked state "false".
+    - keyword: WHEN
+      content: The user clicks the button named "Edit issue description" in the region named "Issue".
+    - keyword: THEN
+      content: The "Issue description" field in the current page displays "- [x] Add tests\n- [ ] Update
+        docs".
+- id: EV-3.10
+  name: Resolve and reopen a review thread
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-6-3-3
+  description: |-
+    Review participants and PR authors can Resolve conversation and Unresolve conversation on a review thread. Resolution persists and preserves every comment; it does not change PR status or approval decisions.
+
+    The current page contains one link or button named "Sign in" when this action is available. The current page contains one input labelled "Username or email". The current page contains one input labelled "Password". The current page exposes "Sign in" as a button. The current page exposes "Account menu" as a button. The current page contains one input labelled "Search". The current page contains one link or button named "evolution-EV-3.10" when this action is available. The current page exposes "repo-admin/evolution-EV-3.10" as a heading. The current page contains one link or button named "Pull requests" when this action is available. The current page contains one link or button named "Resolve EV-3.10" when this action is available. The current page exposes "Resolve EV-3.10" as a heading. The current page contains one link or button named "Files changed" when this action is available. A visible region named "Thread EV-3.10" contains the controls and content within it in the scenario. The region named "Thread EV-3.10" exposes "Resolve conversation" as a button. The region named "Thread EV-3.10" contains the exact visible text "Resolved" once when specified. The region named "Thread EV-3.10" contains the exact visible text "Handle the empty case." once when specified. The region named "Thread EV-3.10" exposes "Unresolve conversation" as a button.
+  scenarios:
+  - name: Resolve and reopen a review thread
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public repository "evolution-EV-3.10" is owned by repo-admin. The original account
+        repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. "Resolve EV-3.10" is an Open PR by pr-author. Files
+        changed contains unresolved thread "Thread EV-3.10" with pr-reviewer comment "Handle the empty
+        case." on src/search.ts.
+    - keyword: GIVEN
+      content: The original verified account "pr-reviewer" has email "pr-reviewer@example.test" and password
+        "Valid-password-123!". Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user activates "Sign in" in the current page.
+    - keyword: WHEN
+      content: The user enters "pr-reviewer" in the "Username or email" field in the current page.
+    - keyword: WHEN
+      content: The user enters "Valid-password-123!" in the "Password" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Sign in" in the current page.
+    - keyword: THEN
+      content: The button named "Account menu" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user enters "evolution-EV-3.10" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Search" field in the current page.
+    - keyword: WHEN
+      content: The user activates "evolution-EV-3.10" in the current page.
+    - keyword: THEN
+      content: The heading named "repo-admin/evolution-EV-3.10" is visible exactly once in the current
+        page.
+    - keyword: WHEN
+      content: The user activates "Pull requests" in the current page.
+    - keyword: WHEN
+      content: The user activates "Resolve EV-3.10" in the current page.
+    - keyword: THEN
+      content: The heading named "Resolve EV-3.10" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user activates "Files changed" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Resolve conversation" in the region named "Thread EV-3.10".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "Resolved" is visible exactly once in the region named "Thread EV-3.10".
+    - keyword: THEN
+      content: The exact text "Handle the empty case." is visible exactly once in the region named "Thread
+        EV-3.10".
+    - keyword: WHEN
+      content: The user clicks the button named "Unresolve conversation" in the region named "Thread EV-3.10".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The button named "Resolve conversation" is visible exactly once in the region named "Thread
+        EV-3.10".

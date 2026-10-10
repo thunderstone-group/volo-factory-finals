@@ -1,0 +1,47 @@
+{
+  "at": "2026-10-02T06:20:13.032337+08:00",
+  "candidate_sha256": "1d509a809cc5f5e7bb52523a76b3627c331cfd76d77e496d9fa18646e037314d",
+  "formal_gate": {
+    "complete_fresh_generation": true,
+    "source_review_must_run": true,
+    "all_source_probes_unjudged_blocks": true,
+    "independent_github": {
+      "baseline": [
+        69,
+        66
+      ],
+      "minimum_each": [
+        66,
+        63
+      ],
+      "minimum_sum": 135
+    },
+    "independent_sheet": {
+      "baseline": [
+        89,
+        93
+      ],
+      "minimum_each": [
+        86,
+        90
+      ],
+      "minimum_sum": 182
+    }
+  },
+  "interpretation": "Local criteria are directional regression gates, not predictors or substitutes for official score. Both official tasks must belong to the same exact submission.",
+  "checks": {
+    "oneshot": {
+      "run": 259,
+      "passed": 256,
+      "skipped": 3
+    },
+    "legacy": {
+      "run": 226,
+      "passed": 214,
+      "skipped": 12
+    },
+    "gitleaks_source_findings": 0,
+    "gitleaks_package_findings": 0,
+    "configured_credentials_in_zip": 0
+  }
+}

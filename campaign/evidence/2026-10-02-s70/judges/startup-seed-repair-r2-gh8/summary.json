@@ -1,0 +1,14 @@
+{
+  "app": "startup-seed-repair-r2",
+  "judge": "gh8",
+  "counts": {
+    "pass": 64,
+    "error": 13,
+    "fail": 25
+  },
+  "seconds": 165.8,
+  "coverage": {
+    "total": 100,
+    "parsed": 89
+  }
+}

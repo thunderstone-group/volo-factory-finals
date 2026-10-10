@@ -1,0 +1,130 @@
+{
+  "all_done": true,
+  "tasks": {
+    "github": {
+      "yaml_valid": true,
+      "requirements": 30,
+      "scenarios": 30,
+      "tests_enumerated": 30,
+      "change": 10,
+      "add": 20,
+      "tests_exactly_derived_from_scenarios": true,
+      "official_helper_sha256": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+      "freeze_version": 1,
+      "frozen_manifest_sha256": "569f6719e9eed44a28365ef64c036c75d0405df2010cdb1e34f8f0093a92e83b",
+      "reference_app_sha256": "6a6363710cfd20068a93e8e9ca5208d437759f82bdea9a2ab92a2b9af884a318",
+      "baseline_proxy": {
+        "passed": 0,
+        "total": 30,
+        "wall_seconds": 358.041
+      },
+      "reference_proxy_runs": [
+        {
+          "passed": 30,
+          "wall_seconds": 62.742
+        },
+        {
+          "passed": 30,
+          "wall_seconds": 67.309
+        }
+      ],
+      "regression": {
+        "v6-fixed-independent": {
+          "baseline": {
+            "counts": {
+              "pass": 107,
+              "fail": 4
+            },
+            "seconds": 194.3,
+            "unavailable": null
+          },
+          "reference": {
+            "counts": {
+              "pass": 107,
+              "fail": 4
+            },
+            "seconds": 203.3,
+            "unavailable": null
+          },
+          "lost": [],
+          "gained": []
+        }
+      }
+    },
+    "sheet": {
+      "yaml_valid": true,
+      "requirements": 30,
+      "scenarios": 30,
+      "tests_enumerated": 30,
+      "change": 10,
+      "add": 20,
+      "tests_exactly_derived_from_scenarios": true,
+      "official_helper_sha256": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+      "freeze_version": 3,
+      "frozen_manifest_sha256": "1278fbd112df8a197a60558401b9c1ad70cd1d7fe04c0722ad2e6cf538541d99",
+      "reference_app_sha256": "d95a204e528af77fd8ee46bd901997817546123cc24c120d295d9399d053667d",
+      "baseline_proxy": {
+        "passed": 0,
+        "total": 30,
+        "wall_seconds": 357.401
+      },
+      "reference_proxy_runs": [
+        {
+          "passed": 30,
+          "wall_seconds": 95.811
+        },
+        {
+          "passed": 30,
+          "wall_seconds": 90.78
+        }
+      ],
+      "regression": {
+        "g99": {
+          "baseline": {
+            "counts": {
+              "pass": 66,
+              "fail": 9,
+              "error": 26
+            },
+            "seconds": 407.0,
+            "unavailable": null
+          },
+          "reference": {
+            "counts": {
+              "pass": 66,
+              "fail": 9,
+              "error": 26
+            },
+            "seconds": 411.6,
+            "unavailable": null
+          },
+          "lost": [],
+          "gained": []
+        },
+        "cov99n-arm": {
+          "baseline": {
+            "counts": {
+              "pass": 96,
+              "fail": 4
+            },
+            "seconds": 241.6,
+            "unavailable": null
+          },
+          "reference": {
+            "counts": {
+              "pass": 97,
+              "fail": 3
+            },
+            "seconds": 246.2,
+            "unavailable": null
+          },
+          "lost": [],
+          "gained": [
+            "REQ-4-2-2#2"
+          ]
+        }
+      }
+    }
+  },
+  "external_source_apps_unchanged": true
+}

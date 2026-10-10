@@ -1,0 +1,40 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:275:1 › REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持
+[1A[2K  1) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:275:1 › REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  getByRole('gridcell', { name: 'B2', exact: true })
+    Expected: [32m"#[7mREF[27m!"[39m
+    Received: [31m"#[7mERROR[27m!"[39m
+
+    Call log:
+    [2m  - Expect "toHaveText" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('gridcell', { name: 'B2', exact: true })[22m
+    [2m    13 × locator resolved to <div data-r="2" data-c="2" data-id="B2" data-cell="B2" role="gridcell" aria-label="B2" aria-selected="true" class="cell selected">…</div>[22m
+    [2m       - unexpected value "#ERROR!"[22m
+
+
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+      71 |
+      72 | async function expectFormula(page, ref, value) {
+        at expectCells (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:69:86)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:283:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-81/artifacts/20-REQ-2-2-2-REQ-2-2-2-S2-删除公式直接引用的-B-列后显示引用错误，重新打开后保持/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-81/artifacts/20-REQ-2-2-2-REQ-2-2-2-S2-删除公式直接引用的-B-列后显示引用错误，重新打开后保持/error-context.md
+
+
+[1A[2K  1 failed
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:275:1 › REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持 

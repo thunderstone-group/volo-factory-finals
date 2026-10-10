@@ -1,0 +1,167 @@
+{
+  "r1-github": {
+    "task": "github-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r1/gh/template",
+    "copy": "calibration/apps/v3/r1-github",
+    "app_sha256": "c23b4a7174a920bc05cf882f6fc93161435cbf51504b5633d94a9813ce6ab5ee",
+    "source_component_sha256": {
+      "frontend": "6b065dbe60008a10dce5d671c4841f83861dcdf37bc7e7e9f616d4fa9ef91dc8",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "r1-sheet": {
+    "task": "sheet-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r1/sh/template",
+    "copy": "calibration/apps/v3/r1-sheet",
+    "app_sha256": "3b712617134fea45ab129ef965f3084892147c5768f2ee38cbaa844aec87cb2e",
+    "source_component_sha256": {
+      "frontend": "6f41784f6b35ccf461c75ccf2759c4cee33fcdd76d6db570a681a6e0742be3ba",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "r2-github": {
+    "task": "github-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r2/gh/template",
+    "copy": "calibration/apps/v3/r2-github",
+    "app_sha256": "f5206aee0c9406ac0184e1012157b9811a7021feb2bb148fc0955759d3432b4e",
+    "source_component_sha256": {
+      "frontend": "d652a7f0836d89fd23e2c7135917740768301946ea9cd7d2c68f916dfbede34d",
+      "backend": "d20ace1fa76120fe3e7448096426eb9b114909317d3a268497c83fb5e18d5379"
+    }
+  },
+  "r2-sheet": {
+    "task": "sheet-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r2/sh/template",
+    "copy": "calibration/apps/v3/r2-sheet",
+    "app_sha256": "c0191d985af9d6ce27e4ed64e98af666b08c854c02bb6f4e6e59dc0a86e33f9f",
+    "source_component_sha256": {
+      "frontend": "5787a7ab9edd2ce575c5ae84e02a58ef29fa9436a28276349882425f76c53699",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "r3-github": {
+    "task": "github-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r3/gh/template",
+    "copy": "calibration/apps/v3/r3-github",
+    "app_sha256": "743f77c123f5375e68c45d38fc745197c486760dae4068acfc9dc3585e168188",
+    "source_component_sha256": {
+      "frontend": "720f59e52a4a2df129113e0d171bb2f32dfd91c284c0e024d6f42e4880ff959d",
+      "backend": "7878fcaea9986375d4ef83583ea18b6a90ea73a1ac09956b4e06c593a9299800"
+    }
+  },
+  "r3-sheet": {
+    "task": "sheet-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r3/sh/template",
+    "copy": "calibration/apps/v3/r3-sheet",
+    "app_sha256": "e2e926949d3c99a98a15dba6abcb43bc3f7018d88b10010e46dbb1d78d7c3f98",
+    "source_component_sha256": {
+      "frontend": "84be41566e4c629de23c63cb111059c9c3e217db050e2596ceb2377f3549780a",
+      "backend": "6dd44582c9c765a03070763e4e4e3680dd97113cb3438c4b00a5620f9c06970c"
+    }
+  },
+  "r4-github": {
+    "task": "github-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r4/gh/template",
+    "copy": "calibration/apps/v3/r4-github",
+    "app_sha256": "a59e1118a72573aad8f579a6d78f72c54fa66fb1fcf5ac16da26b59107484396",
+    "source_component_sha256": {
+      "frontend": "612a5549a27e918c820baaf1ed66f222203d1846ef0de494a7e99c849f7972eb",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "r4-sheet": {
+    "task": "sheet-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r4/sh/template",
+    "copy": "calibration/apps/v3/r4-sheet",
+    "app_sha256": "d1223036c7a130ac94f316031a97932dbc648ec76a8cbf0340057850a5b33d5d",
+    "source_component_sha256": {
+      "frontend": "50c61602b6347794320f6e9c25771c16743e92ded87c5df6612c588c5e6532a1",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "r5-github": {
+    "task": "github-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r5/gh/template",
+    "copy": "calibration/apps/v3/r5-github",
+    "app_sha256": "8a4e7491638992685934898573ca16c2cea760b1eaa22adafe9efafad24e82e6",
+    "source_component_sha256": {
+      "frontend": "6785d25acc24ed95f2d0e772277da9e1fbba8795d0f92d5b08cc6553eb6e838d",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "r5-sheet": {
+    "task": "sheet-real",
+    "cohort": "official",
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r5/sh/template",
+    "copy": "calibration/apps/v3/r5-sheet",
+    "app_sha256": "396c6202a0942c96d3a9a63c1cf76643bff01c7ce6093f96d771c47c25950170",
+    "source_component_sha256": {
+      "frontend": "b7b4dc2429ae51975a5f61aeed4dc71a6b182aefc39fd66969cc7c824f53fee1",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "local-github-real-c340ea0e8e-s1": {
+    "task": "github-real",
+    "cohort": "local",
+    "source": "~/projects/arcbench-campaign/finals-local/runs/github-real-c340ea0e8e-s1/workspace",
+    "copy": "calibration/apps/v3/local-github-real-c340ea0e8e-s1",
+    "app_sha256": "8f1c1567b922fc06a32b5367399474bae8cb7dab0d3d50f80628c3baf2e855f3",
+    "source_component_sha256": {
+      "frontend": "4387ee00bcff664b78b835059447a1c0d88b6ba342460ec52298143ac806e0fa",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "local-github-real-c452126573-s1": {
+    "task": "github-real",
+    "cohort": "local",
+    "source": "~/projects/arcbench-campaign/finals-local/runs/github-real-c452126573-s1/workspace",
+    "copy": "calibration/apps/v3/local-github-real-c452126573-s1",
+    "app_sha256": "111f122c4b5db363c67705a6903a9af1a01398d9d83efe1c7ccfdbc92246b2b5",
+    "source_component_sha256": {
+      "frontend": "d1759e5111d64ea371f0fe1cf94be5904f24a0d943c5a93c446cc47e4c49b096",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "local-github-real-place3c0294d9-s2": {
+    "task": "github-real",
+    "cohort": "local",
+    "source": "~/projects/arcbench-campaign/finals-local/runs/github-real-place3c0294d9-s2/workspace",
+    "copy": "calibration/apps/v3/local-github-real-place3c0294d9-s2",
+    "app_sha256": "befc40e054d272d4eaf7fc2f0f1b7e50a87ec39852aa654a920c0cbe653acfb6",
+    "source_component_sha256": {
+      "frontend": "dac18e27f9c5058fb1153e491524099617895224ef5f19a41826aa3e65cb76f2",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "local-sheet-real-c340ea0e8e-s1": {
+    "task": "sheet-real",
+    "cohort": "local",
+    "source": "~/projects/arcbench-campaign/finals-local/runs/sheet-real-c340ea0e8e-s1/workspace",
+    "copy": "calibration/apps/v3/local-sheet-real-c340ea0e8e-s1",
+    "app_sha256": "48639d1feb3f962c0114a13cfd941160284bbe275a2b32901b7c183ae9b2c9eb",
+    "source_component_sha256": {
+      "frontend": "ea1a4139413dcc6a64bce79716e60bb6f1e048e9abd79f72b44d0e11b75ab196",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  },
+  "local-sheet-real-c452126573-s1": {
+    "task": "sheet-real",
+    "cohort": "local",
+    "source": "~/projects/arcbench-campaign/finals-local/runs/sheet-real-c452126573-s1/workspace",
+    "copy": "calibration/apps/v3/local-sheet-real-c452126573-s1",
+    "app_sha256": "4fc6fe8496e4baeddf4bc96afced83855766f9280b1dcef8cda82e4443a23ee0",
+    "source_component_sha256": {
+      "frontend": "c751e9e0c2c3e471c0ceef7f9a98cee506fdd580dfbbc24d72a39dce23e8c572",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    }
+  }
+}

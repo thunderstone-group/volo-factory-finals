@@ -1,0 +1,32 @@
+{
+  "task": "sheet",
+  "judge_exit": 0,
+  "scores": [
+    {
+      "app": "generate-contracts-sheet",
+      "judge": "g99",
+      "counts": {
+        "pass": 91,
+        "fail": 9
+      },
+      "seconds": 71.8,
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      }
+    },
+    {
+      "app": "generate-contracts-sheet",
+      "judge": "cov99n-arm",
+      "counts": {
+        "pass": 90,
+        "fail": 10
+      },
+      "seconds": 91.2,
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      }
+    }
+  ]
+}

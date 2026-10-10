@@ -1,0 +1,43 @@
+--- before/frontend/public/app.js
++++ after/frontend/public/app.js
+@@ -1514,6 +1514,24 @@
+     }
+   };
+ 
++  // A row or column shift that would push a complete record, a validation rule or a filter range
++  // past the last row/column of the worksheet cannot be carried out as a whole. The operation is
++  // then rejected with an error and the grid keeps its pre-operation structure; silently dropping
++  // the records that fall off the end (a partial movement) is never allowed (REQ-2-2-1/REQ-2-2-2).
++  function shiftOverflows(sheet, map) {
++    const cells = (sheet && sheet.cells) || {};
++    for (const key of Object.keys(cells)) {
++      if (rawOf(sheet, key) === '') continue;
++      const p = parseCell(key);
++      if (!p) continue;
++      if (!map({ r: p.r, c: p.c })) return true;
++    }
++    for (const rule of (sheet && sheet.rules) || []) {
++      if (!mapRect(rule.range, map)) return true;
++    }
++    if (sheet && sheet.filter && !mapRect(sheet.filter, map)) return true;
++    return false;
++  }
+   function insertRow(rowNum, above) {
+     const wb = currentWb();
+     const sheet = activeSheet(wb);
+@@ -1523,6 +1541,7 @@
+       if (p.r >= at) { const r = p.r + 1; return r > ROWS ? null : { r: r, c: p.c }; }
+       return { r: p.r, c: p.c };
+     };
++    if (shiftOverflows(sheet, map)) { ARC.notify('Cannot insert row: the worksheet is full'); return; }
+     pushHistory(wb);
+     remapSheet(sheet, map);
+     repairPivots(wb, sheet.id, map);
+@@ -1557,6 +1576,7 @@
+       if (p.c >= at) { const c = p.c + 1; return c > COLS ? null : { r: p.r, c: c }; }
+       return { r: p.r, c: p.c };
+     };
++    if (shiftOverflows(sheet, map)) { ARC.notify('Cannot insert column: the worksheet is full'); return; }
+     pushHistory(wb);
+     remapSheet(sheet, map);
+     repairPivots(wb, sheet.id, map);

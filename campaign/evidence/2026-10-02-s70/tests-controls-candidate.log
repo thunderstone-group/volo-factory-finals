@@ -1,0 +1,212 @@
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] kimi-k2.7-code-highspeed failed 3 times; this call is retried on qwen3.7-plus
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] deepseek-v4-flash failed 3 times; this call is retried on kimi-k2.7-code-highspeed
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] kimi-k2.7-code-highspeed failed 3 times; this call is retried on deepseek-v4-flash
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] kimi-k2.7-code failed 3 times; this call is retried on deepseek-v4-flash
+[oneshot] the reply broke the file framing before any complete file (unterminated file before next block: a.js); asking again
+[oneshot] the output was cut off between two files; continuing
+[oneshot] the output was cut off between two files; continuing
+[oneshot] call 1 refused (HTTP 429); waiting 15 s (15 of 1200 s for this call)
+[oneshot] call 2 refused (HTTP 429); waiting 30 s (45 of 1200 s for this call)
+[oneshot] call 3 refused (HTTP 429); waiting 60 s (105 of 1200 s for this call)
+[oneshot] call 1 refused (HTTP 401); waiting 15 s (15 of 1200 s for this call)
+[oneshot] call 2 refused (HTTP 401); waiting 30 s (45 of 1200 s for this call)
+[oneshot] call 3 refused (HTTP 401); waiting 60 s (105 of 1200 s for this call)
+[oneshot] call 4 refused (HTTP 401); waiting 120 s (225 of 1200 s for this call)
+[oneshot] call 5 refused (HTTP 401); waiting 240 s (465 of 1200 s for this call)
+[oneshot] the reply has no file blocks; asking again
+[oneshot] the reply has no file blocks; asking again
+[oneshot] the reply has no file blocks; asking again
+[oneshot] the stream ended with finish_reason=content_filter; continuing the draft on kimi-k2.7-code-highspeed
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] the stream ended with finish_reason=content_filter; continuing the draft on deepseek-v4-flash
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] the stream ended with finish_reason=content_filter; continuing the draft
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] the stream ended with finish_reason=content_filter; continuing the draft on synthetic-fallback
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] call 2 failed; bounded retry in 5 s
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] the output was cut off inside `frontend/build.js`; continuing
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] ignored 1 line(s) outside file blocks
+[oneshot] closing an unterminated final block at finish_reason=stop
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] synthetic-model failed 3 times; this call is retried on synthetic-fallback
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] ignored 2 line(s) outside file blocks
+[oneshot] call 1 refused (HTTP 401); waiting 15 s (15 of 20 s for this call)
+[oneshot] ignored 1 line(s) outside file blocks
+[oneshot] the reply has no file blocks; asking again
+[oneshot] the reply has no file blocks; asking again
+[oneshot] the reply has no file blocks; asking again
+[oneshot] the reply has no file blocks; asking again
+[oneshot] the reply has no file blocks; asking again
+[oneshot] the reply has no file blocks; asking again
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] the output was cut off inside `backend/server.js`; continuing
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] call 1 was cut (StreamError) after 1547 characters; keeping its complete file blocks
+[oneshot] the output was cut off inside `frontend/public/app.js`; continuing
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.091373, "reason": "model stream failed (StreamError)"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "global model failure limit reached (2)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0914}
+~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/main.py:2227: ResourceWarning: unclosed file <_io.BufferedReader name=4>
+  smoke, executed = smoke_check(stage, requirements, browser)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 3.5, "cost_cny": 0.089833, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 7.0, "repair_cny": 0.0898}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.089833, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 7.0, "repair_cny": 0.0898}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 0.0, "cost_cny": 0.089811, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.1, "repair_cny": 0.0898}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 2}, "seconds": 3.5, "cost_cny": 0.090311, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 2}, "failing": [], "errors": [], "seconds": 7.0, "repair_cny": 0.0903}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"error": 1}, "seconds": 3.5, "cost_cny": 0.089833, "reason": "the scenario recheck could not run: Chromium is unavailable (browser): synthetic"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"error": 1}, "seconds": 3.5, "cost_cny": 0.089833, "reason": "the scenario recheck could not run: Chromium is unavailable (browser): synthetic"}
+[oneshot] repair end {"rounds": 2, "accepted": 0, "stopped": "repair call limit reached (2)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 10.5, "repair_cny": 0.1797}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 3.5, "cost_cny": 0.090301, "reason": "the change broke 1 passing scenario(s): REQ-1, and fixed only 1"}
+[oneshot] repair round {"round": 2, "accepted": true, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 2}, "seconds": 3.5, "cost_cny": 0.091455, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 2, "accepted": 1, "stopped": null, "counts_after": {"pass": 2}, "failing": [], "errors": [], "seconds": 10.5, "repair_cny": 0.1818}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 3, "passing_before": 1, "counts_after": {"fail": 1, "pass": 3}, "seconds": 3.5, "cost_cny": 0.09163, "reason": "3 more scenario(s) pass, 1 lost"}
+[oneshot] repair round {"round": 2, "accepted": true, "failing_before": 1, "passing_before": 3, "counts_after": {"pass": 4}, "seconds": 3.5, "cost_cny": 0.096606, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 2, "accepted": 2, "stopped": null, "counts_after": {"pass": 4}, "failing": [], "errors": [], "seconds": 10.5, "repair_cny": 0.1882}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 3.5, "cost_cny": 0.107846, "reason": "a static gate that was clean now flags: backend registers no process.on('uncaughtException' / 'unhandledRejection') handler: one thrown request handler ends the Node process and every later test fails"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 6.9, "repair_cny": 0.1078}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {}, "seconds": 0.0, "cost_cny": 0.09592, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0959}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.0, "cost_cny": 0.095168, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0952}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.0, "cost_cny": 0.095597, "reason": "the change removed quoted vocabulary (0 -> 1 missing)"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.0, "repair_cny": 0.0956}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.090265, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "the scenario check could not run: RuntimeError: synthetic executor crash", "counts_after": null, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0903}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.090434, "reason": "the scenario recheck could not run: RuntimeError: synthetic executor crash"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.1, "repair_cny": 0.0904}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1, "pass": 2}, "seconds": 3.5, "cost_cny": 0.089995, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1, "error": 1, "unparsed": 1}, "failing": ["REQ-1"], "errors": ["REQ-2"], "seconds": 7.0, "repair_cny": 0.09}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {"fail": 1, "pass": 1}, "seconds": 3.5, "cost_cny": 0.091599, "reason": "the application works again"}
+[oneshot] repair round {"round": 2, "accepted": true, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 2}, "seconds": 3.5, "cost_cny": 0.097163, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 2, "accepted": 2, "stopped": null, "counts_after": {"pass": 2}, "failing": [], "errors": [], "seconds": 7.2, "repair_cny": 0.1888}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.4, "repair_cny": 0}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.7, "cost_cny": 0.112977, "reason": "the application is still broken as a whole: backend `node server.js` exited with code 1 before answering GET /api/health: /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/tmpc8ewdiuq/.oneshot-"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": null, "failing": [], "errors": [], "seconds": 1.3, "repair_cny": 0.113}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.090093, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.091146, "reason": "no failing scenario passes after the change"}
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/threading.py:914: ResourceWarning: unclosed file <_io.BufferedReader name=4>
+  del self._target, self._args, self._kwargs
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.091146, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 4, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.091146, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 4, "accepted": 0, "stopped": "4 repairs in a row were discarded", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 17.4, "repair_cny": 0.3635}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+[oneshot] call 2 failed; bounded retry in 0 s
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {}, "seconds": 3.5, "cost_cny": 0.090189, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 11.9, "repair_cny": 0.0902}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.6, "repair_cny": 0}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 3.5, "cost_cny": 0.098613, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 7.0, "repair_cny": 0.0986}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.4, "repair_cny": 0}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.091275, "reason": "the application works again"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": null, "seconds": 0.1, "cost_cny": 0.094812, "reason": "no follow-up for the syntax problem: repair call limit reached (2)"}
+[oneshot] repair end {"rounds": 2, "accepted": 1, "stopped": "repair call limit reached (2)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 3.7, "repair_cny": 0.1861}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.0, "cost_cny": 0.100452, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.1005}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.0, "cost_cny": 0.096839, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0968}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": "model stream failed (StreamError)"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "global model failure limit reached (1)", "counts_after": null, "failing": [], "errors": [], "seconds": 8.4, "repair_cny": 0.0}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.08926, "reason": "path escapes the output directory: ../escape.js"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair round {"round": 4, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair round {"round": 5, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair round {"round": 6, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair end {"rounds": 6, "accepted": 0, "stopped": "global model failure limit reached (5)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.6, "repair_cny": 0.0893}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {}, "seconds": 3.5, "cost_cny": 0.094407, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.7, "repair_cny": 0.0944}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 3.5, "cost_cny": 0.099566, "reason": "a static gate that was clean now flags: 1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or ext"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 7.0, "repair_cny": 0.0996}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.6, "repair_cny": 0}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {}, "seconds": 3.5, "cost_cny": 0.108808, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 4.2, "repair_cny": 0.1088}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.2, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 4.6, "repair_cny": 0}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 0, "counts_after": {"pass": 1, "fail": 1}, "seconds": 3.5, "cost_cny": 2.38, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair spend limit reached (CNY 2.38 spent, the next call is estimated at 1.17, limit 2)", "counts_after": {"pass": 1, "fail": 1}, "failing": ["REQ-2"], "errors": [], "seconds": 6.9, "repair_cny": 2.38}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.1, "cost_cny": 0.096515, "reason": "the change renamed quoted control(s): choose fields"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.1, "repair_cny": 0.0965}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": null, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.6, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 8.4, "repair_cny": 0}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 2, "passing_before": 1, "counts_after": {"fail": 2, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 2, "accepted": true, "failing_before": 2, "passing_before": 1, "counts_after": {"pass": 2, "fail": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "1 more scenario(s) pass"}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 1, "passing_before": 2, "counts_after": {"pass": 2, "fail": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 3, "accepted": 1, "stopped": "repair call limit reached (3)", "counts_after": {"pass": 2, "fail": 1}, "failing": ["REQ-2"], "errors": [], "seconds": 0.1, "repair_cny": 0.002}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 2, "passing_before": 1, "counts_after": {"pass": 3}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "the change removed quoted vocabulary (0 -> 1 missing)"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 2, "pass": 1}, "failing": ["REQ-1", "REQ-2"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 6, "passing_before": 1, "counts_after": {"pass": 7}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "6 more scenario(s) pass (outweighs: the change removed quoted vocabulary (0 -> 1 missing))"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 7}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 3, "passing_before": 1, "counts_after": {"pass": 3, "fail": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "2 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (1)", "counts_after": {"pass": 3, "fail": 1}, "failing": ["REQ-3"], "errors": [], "seconds": 0.0, "repair_cny": 0.0007}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 3, "passing_before": 1, "counts_after": null, "seconds": 0.0, "cost_cny": 0.00067, "reason": "the change broke 1 passing scenario(s): REQ-8, and fixed only 2"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 3, "pass": 1}, "failing": ["REQ-1", "REQ-2", "REQ-3"], "errors": [], "seconds": 0.0, "repair_cny": 0.0007}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": null, "seconds": 0.0, "cost_cny": 0.00067, "reason": "the change broke 1 passing scenario(s): REQ-8, and fixed only 1"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1, "pass": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.0, "repair_cny": 0.0007}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 1, "counts_after": {"pass": 3}, "seconds": 0.1, "cost_cny": 0.00134, "reason": "2 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 3}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0013}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 2, "counts_after": {"pass": 3, "fail": 1}, "seconds": 0.1, "cost_cny": 0.00134, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (2)", "counts_after": {"pass": 3, "fail": 1}, "failing": ["REQ-2"], "errors": [], "seconds": 0.1, "repair_cny": 0.0013}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 3, "passing_before": 1, "counts_after": {"pass": 3, "fail": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "3 more scenario(s) pass, 1 lost"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (1)", "counts_after": {"pass": 3, "fail": 1}, "failing": ["REQ-4"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 3, "passing_before": 1, "counts_after": null, "seconds": 0.1, "cost_cny": 0.00067, "reason": "the change broke 1 passing scenario(s): REQ-4, and fixed only 2"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 3, "pass": 1}, "failing": ["REQ-1", "REQ-2", "REQ-3"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 3, "passing_before": 1, "counts_after": {"pass": 4}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "3 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 4}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 1, "counts_after": {"pass": 3}, "seconds": 0.0, "cost_cny": 0.00134, "reason": "2 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 3}, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0013}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": "model HTTP 400"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 4, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 5, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 5, "accepted": 0, "stopped": "4 repairs in a row were discarded", "counts_after": {"fail": 1, "pass": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.3, "repair_cny": 0.0027}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 4, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 5, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 6, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 7, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 7, "accepted": 0, "stopped": "4 repairs in a row were discarded", "counts_after": {"fail": 6, "pass": 1}, "failing": ["REQ-1", "REQ-2", "REQ-3", "REQ-4", "REQ-5", "REQ-6"], "errors": [], "seconds": 0.3, "repair_cny": 0.0047}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 3, "fail": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "3 more scenario(s) pass, 1 lost"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (1)", "counts_after": {"pass": 3, "fail": 1}, "failing": ["REQ-4"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+[oneshot] second suite skipped: repair call limit reached (24)
+----------------------------------------------------------------------
+Ran 267 tests in 246.428s
+
+OK (skipped=3)

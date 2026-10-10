@@ -1,0 +1,10 @@
+{
+  "judge": "v6-fixed",
+  "counts": {
+    "pass": 107,
+    "fail": 4
+  },
+  "seconds": 46.6,
+  "unavailable": null,
+  "model_calls": 0
+}

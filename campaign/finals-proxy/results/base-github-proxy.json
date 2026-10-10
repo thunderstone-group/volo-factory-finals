@@ -1,0 +1,269 @@
+{
+  "task": "github",
+  "app_dir": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v7-official-github-79/application",
+  "app_sha256": "72c64d2452f809b5fdb4d317192b0b81da475360ef55ea9d0232d434adb8d4d5",
+  "frozen_manifest_sha256": "569f6719e9eed44a28365ef64c036c75d0405df2010cdb1e34f8f0093a92e83b",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "EV-1.1: Filter issues with combined qualifiers",
+      "file": "01-EV-1.1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10127,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.1', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.1', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.1', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.1', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/01-EV-1.1.spec.ts:15:17"
+    },
+    {
+      "name": "EV-1.2: Sort the filtered issue list",
+      "file": "02-EV-1.2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10112,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.2', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.2', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.2', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.2', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/02-EV-1.2.spec.ts:15:17"
+    },
+    {
+      "name": "EV-1.3: Filter draft pull requests by author",
+      "file": "03-EV-1.3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10094,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.3', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.3', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.3', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.3', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/03-EV-1.3.spec.ts:15:17"
+    },
+    {
+      "name": "EV-1.4: Close an issue as not planned",
+      "file": "04-EV-1.4.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10083,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.4', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.4', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.4', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.4', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/04-EV-1.4.spec.ts:26:17"
+    },
+    {
+      "name": "EV-1.5: Preview a Markdown issue comment",
+      "file": "05-EV-1.5.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10088,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.5', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.5', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.5', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.5', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/05-EV-1.5.spec.ts:26:17"
+    },
+    {
+      "name": "EV-1.6: Preview a Markdown file before committing",
+      "file": "06-EV-1.6.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10088,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.6', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.6', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.6', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.6', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/06-EV-1.6.spec.ts:26:17"
+    },
+    {
+      "name": "EV-1.7: Convert an open pull request to draft",
+      "file": "07-EV-1.7.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10084,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.7', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.7', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.7', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.7', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/07-EV-1.7.spec.ts:26:17"
+    },
+    {
+      "name": "EV-1.8: Switch the pull request diff layout",
+      "file": "08-EV-1.8.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10087,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.8', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.8', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.8', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.8', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/08-EV-1.8.spec.ts:15:17"
+    },
+    {
+      "name": "EV-1.9: Search labels before applying one",
+      "file": "09-EV-1.9.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10082,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.9', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.9', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.9', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.9', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/09-EV-1.9.spec.ts:26:17"
+    },
+    {
+      "name": "EV-1.10: Swap comparison branches",
+      "file": "10-EV-1.10.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10090,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-1.10', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.10', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-1.10', exact: true }).or(getByRole('button', { name: 'evolution-EV-1.10', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/10-EV-1.10.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.1: Star and unstar a repository",
+      "file": "11-EV-2.1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10087,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.1', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.1', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.1', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.1', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/11-EV-2.1.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.2: Keep stars specific to each account",
+      "file": "12-EV-2.2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10088,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.2', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.2', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.2', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.2', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/12-EV-2.2.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.3: Edit repository topics",
+      "file": "13-EV-2.3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10086,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.3', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.3', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.3', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.3', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/13-EV-2.3.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.4: Restrict topic editing to administrators",
+      "file": "14-EV-2.4.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10083,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.4', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.4', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.4', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.4', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/14-EV-2.4.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.5: Archive a repository",
+      "file": "15-EV-2.5.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10083,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.5', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.5', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.5', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.5', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/15-EV-2.5.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.6: Read an archived repository as a visitor",
+      "file": "16-EV-2.6.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10091,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.6', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.6', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.6', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.6', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/16-EV-2.6.spec.ts:15:17"
+    },
+    {
+      "name": "EV-2.7: Create a repository label",
+      "file": "17-EV-2.7.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10088,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.7', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.7', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.7', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.7', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/17-EV-2.7.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.8: Rename an applied repository label",
+      "file": "18-EV-2.8.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10084,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.8', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.8', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.8', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.8', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/18-EV-2.8.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.9: Create a milestone with a due date",
+      "file": "19-EV-2.9.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10084,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.9', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.9', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.9', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.9', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/19-EV-2.9.spec.ts:26:17"
+    },
+    {
+      "name": "EV-2.10: Close and reopen a milestone",
+      "file": "20-EV-2.10.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10111,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-2.10', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.10', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-2.10', exact: true }).or(getByRole('button', { name: 'evolution-EV-2.10', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/20-EV-2.10.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.1: Lock an issue conversation",
+      "file": "21-EV-3.1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10092,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.1', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.1', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.1', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.1', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/21-EV-3.1.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.2: Deny issue locking to a read user",
+      "file": "22-EV-3.2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10085,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.2', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.2', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.2', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.2', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/22-EV-3.2.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.3: Pin an issue to the repository list",
+      "file": "23-EV-3.3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10091,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.3', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.3', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.3', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.3', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/23-EV-3.3.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.4: Unpin an issue without deleting it",
+      "file": "24-EV-3.4.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10101,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.4', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.4', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.4', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.4', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/24-EV-3.4.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.5: Toggle a thumbs-up reaction",
+      "file": "25-EV-3.5.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10087,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.5', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.5', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.5', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.5', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/25-EV-3.5.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.6: Create and use a saved reply",
+      "file": "26-EV-3.6.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10103,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.6', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.6', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.6', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.6', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/26-EV-3.6.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.7: Edit an authored issue comment",
+      "file": "27-EV-3.7.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10085,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.7', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.7', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.7', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.7', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/27-EV-3.7.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.8: Confirm deletion of an authored comment",
+      "file": "28-EV-3.8.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10107,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.8', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.8', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.8', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.8', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/28-EV-3.8.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.9: Complete an issue task-list item",
+      "file": "29-EV-3.9.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10088,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.9', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.9', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.9', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.9', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/29-EV-3.9.spec.ts:26:17"
+    },
+    {
+      "name": "EV-3.10: Resolve and reopen a review thread",
+      "file": "30-EV-3.10.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10107,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evolution-EV-3.10', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.10', exact: true }))\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evolution-EV-3.10', exact: true }).or(getByRole('button', { name: 'evolution-EV-3.10', exact: true }))\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at activate (/proxy/github/tests/helpers.ts:8:9)\n    at /proxy/github/tests/30-EV-3.10.spec.ts:26:17"
+    }
+  ],
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 354.441,
+  "container_exit_code": 1,
+  "passed": 0,
+  "failed": 30,
+  "total": 30,
+  "wall_seconds": 358.041
+}

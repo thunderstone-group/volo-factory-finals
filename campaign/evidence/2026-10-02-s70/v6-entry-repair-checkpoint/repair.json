@@ -1,0 +1,329 @@
+{
+ "app": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v5-current-entry-check/application",
+ "requirements": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/requirements-after-stage-announcement/hackathon--github/requirements.yaml",
+ "model": "deepseek-v4-flash-vision-exp",
+ "seconds": 107.1,
+ "error": null,
+ "draft_files": [
+  "frontend/public/index.html",
+  "frontend/public/styles.css",
+  "frontend/public/app.js",
+  "frontend/public/seed.js"
+ ],
+ "summary": {
+  "calls": 1,
+  "draft_call_limit": 4,
+  "repair_call_limit": 2,
+  "completed_calls": 1,
+  "failed_calls": 0,
+  "failure_limit": 5,
+  "refused_calls": 0,
+  "known_prompt_tokens": 104913,
+  "prompt_tokens": 104913,
+  "known_completion_tokens": 18295,
+  "completion_tokens": 18295,
+  "unknown_usage_calls": [],
+  "estimated_cost_cny": 0.119638,
+  "estimated_repair_cost_cny": 0.119638,
+  "repair_cny_limit": 1.0,
+  "side_calls": 0,
+  "fallback_model": null,
+  "calls_by_model": {
+   "deepseek-v4-flash-vision-exp": 1
+  },
+  "billing_status": "tokens_reported_cost_not_estimated"
+ },
+ "smoke": {
+  "executed": true,
+  "problems": [
+   "5 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “-invalid-demo” appears only as `// validation messages: not-an-email, short, different, -inv`; “not-an-email” appears only as `// validation messages: not-an-email, short, different, -inv`; “Valid-password-123!-incorrect” appears only as `// Valid-password-123!-incorrect, Valid-password-123!-wrong,`; “unknown@example.test” appears only as `// -invalid-organization, invalid.username@example.test, unk`; “src” appears only as `script src=`",
+   "3 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"commit history\", \"code search\", \"must not be saved\""
+  ],
+  "vocabulary_missing": 3,
+  "scenarios": {
+   "counts": {
+    "pass": 2,
+    "fail": 3
+   },
+   "coverage": {
+    "total": 5,
+    "parsed": 5
+   },
+   "seconds": 17.0,
+   "source_contracts": {},
+   "failing": [
+    {
+     "id": "REQ-5-1-2#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  40 |   await page.goto('/');\n  41 |   const name = \"Improve onboarding\";\n> 42 |   await expect.poll(async () => {\n     |   ^\n  43 |     for (const"
+    },
+    {
+     "id": "REQ-5-1-2#entry-2",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  58 |   await page.goto('/');\n  59 |   const name = \"Improve onboarding\";\n> 60 |   await expect.poll(async () => {\n     |   ^\n  61 |     for (const"
+    },
+    {
+     "id": "REQ-5-1-2#entry-3",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  76 |   await page.goto('/');\n  77 |   const name = \"Improve onboarding\";\n> 78 |   await expect.poll(async () => {\n     |   ^\n  79 |     for (const"
+    }
+   ],
+   "invariants": [],
+   "translation": {}
+  },
+  "repair": {
+   "accepted": true,
+   "reason": "3 more scenario(s) pass",
+   "files": [
+    "frontend/public/app.js",
+    "frontend/public/seed.js"
+   ]
+  },
+  "browser_before": [
+   {
+    "executed": true,
+    "diagnostic_only": true,
+    "errors": [],
+    "page_errors": [],
+    "actions": [
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Overview",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Agree to the terms",
+      "action": ""
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     }
+    ],
+    "screens": [
+     "#/",
+     "#/signin",
+     "#/signup",
+     "#/org/acme-demo",
+     "#/r/acme-demo/acme-docs",
+     "#/r/alice-dev/branch-switch-demo",
+     "#/r/alice-dev/default-branch-demo",
+     "#/r/alice-dev/file-management-demo",
+     "#/r/alice-dev/branch-protection-demo",
+     "#/r/fork-user/acme-docs-fork",
+     "#/forgot",
+     "#/org/acme-demo/repositories"
+    ],
+    "browser": "143.0.7499.4",
+    "playwright": "1.57.0"
+   }
+  ],
+  "rounds": [
+   {
+    "round": 1,
+    "fatal": 0,
+    "failing": [
+     "REQ-5-1-2#entry-1",
+     "REQ-5-1-2#entry-2",
+     "REQ-5-1-2#entry-3"
+    ],
+    "passing_before": 2,
+    "accepted": true,
+    "gained": [
+     "REQ-5-1-2#entry-1",
+     "REQ-5-1-2#entry-2",
+     "REQ-5-1-2#entry-3"
+    ],
+    "reason": "3 more scenario(s) pass",
+    "scenarios": {
+     "counts": {
+      "pass": 5
+     },
+     "coverage": {
+      "total": 5,
+      "parsed": 5
+     },
+     "seconds": 1.5,
+     "source_contracts": {},
+     "failing": [],
+     "invariants": [],
+     "translation": {}
+    },
+    "browser_after": [
+     {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Overview",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Agree to the terms",
+        "action": ""
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       }
+      ],
+      "screens": [
+       "#/",
+       "#/signin",
+       "#/signup",
+       "#/org/acme-demo",
+       "#/r/acme-demo/acme-docs",
+       "#/r/alice-dev/branch-switch-demo",
+       "#/r/alice-dev/default-branch-demo",
+       "#/r/alice-dev/file-management-demo",
+       "#/r/alice-dev/branch-protection-demo",
+       "#/r/fork-user/acme-docs-fork",
+       "#/r/acme-demo/acme-docs/issues/1",
+       "#/r/acme-demo/acme-docs/issues/2"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+     }
+    ],
+    "files": [
+     "frontend/public/app.js",
+     "frontend/public/seed.js"
+    ],
+    "replied": true,
+    "seconds": 83.9,
+    "cost_cny": 0.119638
+   }
+  ],
+  "problems_after": [
+   "clicking `Confirm merge` (data-action `confirm-merge`) on screen `#/r/acme-demo/acme-docs/pulls/8` throws: Cannot read properties of null (reading 'username'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler"
+  ],
+  "scenarios_after": {
+   "counts": {
+    "pass": 5
+   },
+   "coverage": {
+    "total": 5,
+    "parsed": 5
+   },
+   "seconds": 1.5,
+   "source_contracts": {},
+   "failing": [],
+   "invariants": [],
+   "translation": {}
+  }
+ }
+}

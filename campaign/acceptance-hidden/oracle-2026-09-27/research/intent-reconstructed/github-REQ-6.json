@@ -1,0 +1,280 @@
+{
+ "tests": [
+  {
+   "id": "REQ-6-1",
+   "n": 1,
+   "title": "Admin creates branch protection rule on main requiring 1 approval and test success, then updates PR check to success: rule and check persist and merge eligibility enforced",
+   "checks": [
+    "Settings → Branches shows one rule for `main` with summary '1 approval' and 'Require status check test' after reload",
+    "Checks area displays `test: success`, setter, and time and retains after reload",
+    "PR without 1 valid non-author approval, with any Request changes, or with test not success is unmergeable",
+    "Direct write to protected `main` is blocked",
+    "Non-admin does not see a savable rule-editing entry or the request is rejected with rule unchanged"
+   ]
+  },
+  {
+   "id": "REQ-6-1",
+   "n": 2,
+   "title": "Non-admin attempts to create or modify branch protection rule: controls absent or rejected and no protection rule is saved",
+   "checks": [
+    "Add branch protection rule control is absent for non-admin even if Settings/Branches remain accessible",
+    "Any attempted create/modify request is rejected",
+    "No protection rule is present in Settings after reload",
+    "Original branch protection state remains unchanged"
+   ]
+  },
+  {
+   "id": "REQ-6-1",
+   "n": 3,
+   "title": "Admin updates PR check test from pending to success in Checks area: success/setter/time persist for that compare commit; new compare commit resets to pending",
+   "checks": [
+    "Checks area displays `test: success`, setter, and update time after Save",
+    "Refresh of PR detail page retains the success status for the same compare commit",
+    "When compare branch gains a new commit, new compare commit starts with pending",
+    "Old success from previous compare commit cannot be used for merging"
+   ]
+  },
+  {
+   "id": "REQ-6-2-1",
+   "n": 1,
+   "title": "Filter PR list by Open and author alice: only the Open PR appears with metadata, clicking its title opens the detail page",
+   "checks": [
+    "Selecting Open and filtering author to `alice` displays only the Open PR",
+    "Row shows number, title, source/target branches, author, and status",
+    "Result title link has accessible name equal to the PR title and opens a detail page with same title heading",
+    "Switching to Closed hides the Open PR and filtering does not change any PR data"
+   ]
+  },
+  {
+   "id": "REQ-6-2-1",
+   "n": 2,
+   "title": "Reload or reopen the filtered Open/author PR list: the same Open PR remains visible and filter context is kept",
+   "checks": [
+    "After reloading the filtered list, the Open PR is still displayed",
+    "Leaving and reopening the list then selecting Open again shows the same PR",
+    "No PR status, review, or branch data is modified by filtering or reload"
+   ]
+  },
+  {
+   "id": "REQ-6-2-1",
+   "n": 3,
+   "title": "Closed-status filter shows the Closed PR and excludes the Open PR; filtering is read-only",
+   "checks": [
+    "Selecting Closed displays the Closed PR created by `alice` and excludes the Open PR",
+    "List rows still show number, title, author, status, and source/target branches",
+    "PR records and review data remain unchanged after switching filters"
+   ]
+  },
+  {
+   "id": "REQ-6-2-2",
+   "n": 1,
+   "title": "Compare main to feature-search: shows commit summary, changed file src/search.ts, diff summary, and enabled Create pull request",
+   "checks": [
+    "Selecting base `main` and compare `feature-search` and clicking Compare changes shows both branch names",
+    "Page displays at least one comparable commit and changed file path `src/search.ts` verbatim",
+    "Create pull request entry is enabled",
+    "Comparison is read-only and creates no PR, commit, or branch change"
+   ]
+  },
+  {
+   "id": "REQ-6-2-2",
+   "n": 2,
+   "title": "Select same branch for base and compare: shows No changes and disables Create pull request without Compare changes click",
+   "checks": [
+    "Selecting the same branch in both fields immediately displays No changes",
+    "Creation entry remains disabled without requiring Compare changes",
+    "No PR, commit, or branch change is made"
+   ]
+  },
+  {
+   "id": "REQ-6-2-3",
+   "n": 1,
+   "title": "Create Open PR from valid main/feature-search comparison: detail page shows exact title, Open status, branches, author, and persists",
+   "checks": [
+    "Redirects to new PR detail page with unique repository-scoped number and Open status",
+    "Heading accessible name equals entered title; description and author are visible",
+    "Source/target branches are stored as `main` and `feature-search`",
+    "After refresh and in PR list, the PR still exists with same title and status"
+   ]
+  },
+  {
+   "id": "REQ-6-2-3",
+   "n": 2,
+   "title": "Submit PR creation form with a title containing only spaces: shows 'Title is required' and creates no PR record",
+   "checks": [
+    "Submitting title '   ' displays visible message 'Title is required'",
+    "No new issue number or partial PR record is created",
+    "Original comparison page state remains and PR list has no new PR"
+   ]
+  },
+  {
+   "id": "REQ-6-2-4",
+   "n": 1,
+   "title": "Create draft PR from valid comparison: detail shows Draft marker, source/target branches, disabled Merge, and persists",
+   "checks": [
+    "Create draft pull request button opens form with Title and optional Description",
+    "Detail page displays Draft marker and source/target branch names",
+    "Merge pull request entry is present but disabled",
+    "After refresh draft status and content remain; invalid comparison creates no draft"
+   ]
+  },
+  {
+   "id": "REQ-6-2-4",
+   "n": 2,
+   "title": "Mark draft PR 'Draft onboarding update' ready for review: status becomes Open, Draft badge removed, title/branches unchanged, activity recorded",
+   "checks": [
+    "Author sees Ready for review button and confirms with single Confirm button",
+    "Same PR number transitions from Draft to Open and Draft marker disappears",
+    "Ready for review activity is appended to Conversation",
+    "After refresh or reviewer reopen, PR is Open; source `draft-feature` and target `main` unchanged"
+   ]
+  },
+  {
+   "id": "REQ-6-3-1",
+   "n": 1,
+   "title": "Open public PR detail and switch Conversation/Commits/Files changed: all views show same PR number, title, and read-only content",
+   "checks": [
+    "PR title appears as exact heading and description is visible in Conversation",
+    "Commits tab displays commit summary for the PR",
+    "Files changed tab displays changed-files summary",
+    "All three tabs reference the same PR number and do not create comments, reviews, or branch updates"
+   ]
+  },
+  {
+   "id": "REQ-6-3-1",
+   "n": 2,
+   "title": "Refresh any PR detail tab: title, branches, commit list, and navigation links remain unchanged",
+   "checks": [
+    "After refresh, PR title heading remains exact",
+    "Conversation, Commits, and Files changed links remain usable",
+    "Branches and commit data displayed are unchanged",
+    "No new comments, reviews, or merges are created"
+   ]
+  },
+  {
+   "id": "REQ-6-3-1",
+   "n": 3,
+   "title": "Leave and reopen same public PR page directly: same PR and navigation tabs are restored",
+   "checks": [
+    "Directly reopening the PR address restores same title, status, and branch data",
+    "Visitor can again open Conversation, Commits, and Files changed",
+    "No sign-in required for public PR and no mutation occurs"
+   ]
+  },
+  {
+   "id": "REQ-6-3-2",
+   "n": 1,
+   "title": "Visitor opens Files changed on public PR: displays src/search.ts, per-file diff, aggregate additions/deletions, and remains read-only",
+   "checks": [
+    "Files changed link is activated and changed file path `src/search.ts` is displayed verbatim",
+    "Aggregate text matches format '<n> additions, <m> deletions' for one added and one modified file",
+    "Diff blocks show added/deleted lines and no unchanged files",
+    "After refresh or returning to Conversation, files and PR/review status unchanged"
+   ]
+  },
+  {
+   "id": "REQ-6-3-3",
+   "n": 1,
+   "title": "Add single inline review comment on changed line: comment appears in diff and Conversation, anchored to file/line, persists after reload",
+   "checks": [
+    "Clicking + on changed line and choosing Add single comment publishes the comment",
+    "Comment body and reviewer username appear in the diff and Conversation",
+    "Comment is stored with PR, file path, compare commit, and line position",
+    "After reload the comment remains; empty or failed submission adds no partial comment"
+   ]
+  },
+  {
+   "id": "REQ-6-3-3",
+   "n": 2,
+   "title": "Start a review from an inline comment: comment is kept pending, not public, and retained as draft after reload",
+   "checks": [
+    "Selecting Start a review instead of Add single comment keeps comment pending",
+    "Pending review is visible only to the author",
+    "Comment is not published in Conversation before review submission",
+    "Pending draft is retained after reload"
+   ]
+  },
+  {
+   "id": "REQ-6-3-4",
+   "n": 1,
+   "title": "Submit Approve review on Open PR: shows Approved, overall comment, time and persists; merge eligibility can read decision",
+   "checks": [
+    "Review changes form opens; Approve radio selected and Submit review activates",
+    "Conversation and review summary display reviewer, Approved, overall comment, and time",
+    "Decision persists after reload",
+    "A new decision by same reviewer replaces effective decision; failed or unauthorized submission persists nothing"
+   ]
+  },
+  {
+   "id": "REQ-6-3-4",
+   "n": 2,
+   "title": "Submit Request changes review: displays Changes requested with exact summary and persists after reload",
+   "checks": [
+    "Select Request changes and enter summary, then Submit review",
+    "Review summary displays Changes requested and the exact summary text",
+    "Decision remains visible after reload",
+    "Request changes blocks merging until new decision or new compare commit makes it stale"
+   ]
+  },
+  {
+   "id": "REQ-6-4",
+   "n": 1,
+   "title": "Author requests bob-reviewer then removes request: Reviewers area updates immediately, final state persists, non-authors cannot modify",
+   "checks": [
+    "Typing in Search reveals eligible username option with exact accessible name",
+    "Selecting option saves reviewer request immediately, displays username, and persists after reload",
+    "Remove <username> button removes request without confirmation and persists",
+    "Request creates no approval or comment; non-author/non-maintainer cannot modify requests"
+   ]
+  },
+  {
+   "id": "REQ-6-5",
+   "n": 1,
+   "title": "Maintainer merges eligible protected PR with Create a merge commit: PR shows Merged, main branch head updated, merge commit persists",
+   "checks": [
+    "Eligible PR has valid non-author approval, test: success, and no conflicts",
+    "Only merge method 'Create a merge commit'; Merge pull request then Confirm merge",
+    "PR displays Merged with merger, time, and resulting commit identifier",
+    "After refresh PR and main branch show merged state and resulting commit"
+   ]
+  },
+  {
+   "id": "REQ-6-5",
+   "n": 2,
+   "title": "Blocked PR without required approval shows disabled Merge button and 'Review required by branch protection'; PR and branch unchanged",
+   "checks": [
+    "Merge pull request button is disabled before any click",
+    "Visible message 'Review required by branch protection' accompanies the disabled button",
+    "PR remains Open and target branch head and commits are unchanged",
+    "After reload the blocked state persists"
+   ]
+  },
+  {
+   "id": "REQ-6-6",
+   "n": 1,
+   "title": "Author closes then reopens PR without merging: status Closed->Open with timeline events, discussion/diff/branches unchanged, persists",
+   "checks": [
+    "Close pull request immediately sets Closed; Reopen pull request immediately restores Open",
+    "Timeline records close and reopen events in sequence",
+    "No merge or target branch update occurs; discussion and diff remain viewable",
+    "After refresh final Open state is retained and Close pull request is available again"
+   ]
+  },
+  {
+   "id": "REQ-6-6",
+   "n": 2,
+   "title": "Unauthorized viewer who is not author/maintainer has no close/reopen controls and cannot change PR status",
+   "checks": [
+    "Close pull request and Reopen pull request buttons are absent for the viewer",
+    "Direct status-change requests are rejected",
+    "PR status remains unchanged after reload"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 63085,
+  "completion_tokens": 11687
+ },
+ "cost_cny": 0.4618,
+ "finish": "stop"
+}

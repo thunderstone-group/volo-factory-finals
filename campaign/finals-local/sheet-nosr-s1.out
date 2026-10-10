@@ -1,0 +1,1 @@
+{"task": "sheet", "label": "nosr-s1", "package_sha256": "0a0ab9d7919047ed493e6c8b357996444351fb9373c05d5ed82f217ea5309df7", "agent_env": ["ONESHOT_SOURCE_CONTRACTS=0"], "exit": 0, "seconds": 579.0}

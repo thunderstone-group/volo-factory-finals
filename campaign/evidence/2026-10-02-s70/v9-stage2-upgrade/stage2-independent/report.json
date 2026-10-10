@@ -1,0 +1,347 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-3-3#entry-1",
+      "name": "Initial visible entry acme-docs",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-4-2-1#entry-1",
+      "name": "Initial visible entry acme-docs",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-1",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-1#2",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 1.1
+    },
+    {
+      "id": "REQ-3-1#3",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 3",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-1#4",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 4",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-2-1",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-1#2",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-1#3",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 3",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-2",
+      "name": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-2#2",
+      "name": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-3",
+      "name": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-2-3#2",
+      "name": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-3",
+      "name": "REQ-3-3: View a Public Repository Overview - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-4",
+      "name": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-4#2",
+      "name": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-1",
+      "name": "Browse Repository Files and Directories - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Document search flow', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Document search flow', { exact: true }).first()\n\n\n  69 |   await readme.click();\n  70 |\n> 71 |   await expect(page.getByText('Document search flow', { exact: true }).first()).toBeVisible();\n     |                                                                                 ^\n  72 |\n  73 |   await page.reload();\n  74 |   await expect(page.getByText('Document search flow', { exact: true }).first()).toBeVisible();\n    at ~/proje",
+      "source": "test('REQ-4-1: Browse Repository Files and Directories - Scenario 1', async ({ page }) => {\n  await page.goto('/');\n  await openCodePage(page, 'acme-docs');\n\n  const src = page.getByRole('link', { name: 'src', exact: true });\n  await expect(src).toBeVisible();\n  await src.click();\n\n  const readme = page.getByRole('link', { name: 'README.md', exact: true });\n  await expect(readme).toBeVisible();\n  await readme.click();\n\n  await expect(page.getByText('Document search flow', { exact: true }).first()).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('Document search flow', { exact: true }).first()).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e12]:\n      - textbox \"Search\" [ref=e14]\n      - link \"Sign in\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/login\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]:\n        - generic [ref=e20]: Public\n      - paragraph [ref=e21]: Documentation for Acme Demo\n      - navigation \"Repository navigation\" [ref=e22]:\n        - link \"Code\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs\"\n        - link \"Issues\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/pulls\"\n      - generic [ref=e26]:\n        - button \"Branch main\" [ref=e27] [cursor=pointer]\n        - button \"Code\" [ref=e28] [cursor=pointer]\n        - link \"Commits\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commits/main\"\n      - paragraph [ref=e30]: src\n      - paragraph [ref=e31]:\n        - link \"README.md\" [ref=e32] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/blob/main/src/README.md\"\n      - generic [ref=e33]: \"# Acme Docs Document search flow\"\n      - paragraph [ref=e34]:\n        - link \"Commits\" [ref=e35] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commits/main/src/README.md\"\n    - complementary [ref=e36]:\n      - button \"Home\" [ref=e37] [cursor=pointer]\n  - contentinfo [ref=e38]: A simplified GitHub collaboration platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:71",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-4-2-1",
+      "name": "View Repository Commit History - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-4-2-2",
+      "name": "Inspect Commit and Revision Differences - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-4-2-3",
+      "name": "Search Code Within a Repository - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t04-REQ-4.spec.cjs:43 (shared with 3 other test(s)).",
+      "source": "test('REQ-4-2-3: Search Code Within a Repository - Scenario 1', async ({ page }) => {\n  await page.goto('/');\n  await openCodePage(page, 'acme-docs');\n\n  await repositorySearch(page, 'search flow');\n  await openCodeResults(page);\n  await page.getByRole('link', { name: 'README.md', exact: true }).first().click();\n\n  await expect(page.getByText('search flow').first()).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e12]:\n      - textbox \"Search\" [ref=e14]\n      - link \"Sign in\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/login\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]:\n        - generic [ref=e20]: Public\n      - paragraph [ref=e21]: Documentation for Acme Demo\n      - navigation \"Repository navigation\" [ref=e22]:\n        - link \"Code\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs\"\n        - link \"Issues\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/pulls\"\n      - generic [ref=e26]:\n        - button \"Branch main\" [ref=e27] [cursor=pointer]\n        - button \"Code\" [ref=e28] [cursor=pointer]\n        - link \"Commits\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commits/main\"\n      - paragraph [ref=e30]:\n        - text: Latest commit\n        - link \"Document search flow\" [ref=e31] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commit/commit-acme-docs-search\"\n        - text: alice-dev 3 days ago\n      - list [ref=e32]:\n        - listitem [ref=e33]:\n          - link \"src\" [ref=e34] [cursor=pointer]:\n            - /url: \"#/repo/Acme%20Demo/acme-docs/tree/main/src\"\n          - text: Directory\n    - complementary [ref=e35]:\n      - button \"Home\" [ref=e36] [cursor=pointer]\n  - contentinfo [ref=e37]: A simplified GitHub collaboration platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:43",
+      "seconds": 5.1
+    },
+    {
+      "id": "REQ-4-2-3#2",
+      "name": "Search Code Within a Repository - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t04-REQ-4.spec.cjs:43 (shared with 3 other test(s)).",
+      "source": "test('REQ-4-2-3: Search Code Within a Repository - Scenario 2', async ({ page }) => {\n  await page.goto('/');\n  await openCodePage(page, 'acme-docs');\n\n  await repositorySearch(page, 'no-such-token');\n  await openCodeResults(page);\n\n  await expect(noCodeResultsMessage(page)).toBeVisible();\n  await expect(\n    page.getByRole('searchbox', { name: 'Search', exact: true }).last()\n  ).toHaveValue('no-such-token');\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e12]:\n      - textbox \"Search\" [ref=e14]\n      - link \"Sign in\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/login\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]:\n        - generic [ref=e20]: Public\n      - paragraph [ref=e21]: Documentation for Acme Demo\n      - navigation \"Repository navigation\" [ref=e22]:\n        - link \"Code\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs\"\n        - link \"Issues\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/pulls\"\n      - generic [ref=e26]:\n        - button \"Branch main\" [ref=e27] [cursor=pointer]\n        - button \"Code\" [ref=e28] [cursor=pointer]\n        - link \"Commits\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commits/main\"\n      - paragraph [ref=e30]:\n        - text: Latest commit\n        - link \"Document search flow\" [ref=e31] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commit/commit-acme-docs-search\"\n        - text: alice-dev 3 days ago\n      - list [ref=e32]:\n        - listitem [ref=e33]:\n          - link \"src\" [ref=e34] [cursor=pointer]:\n            - /url: \"#/repo/Acme%20Demo/acme-docs/tree/main/src\"\n          - text: Directory\n    - complementary [ref=e35]:\n      - button \"Home\" [ref=e36] [cursor=pointer]\n  - contentinfo [ref=e37]: A simplified GitHub collaboration platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:43",
+      "seconds": 5.1
+    },
+    {
+      "id": "REQ-4-2-3#3",
+      "name": "Search Code Within a Repository - Scenario 3",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t04-REQ-4.spec.cjs:43 (shared with 3 other test(s)).",
+      "source": "test('REQ-4-2-3: Search Code Within a Repository - Scenario 3', async ({ page }) => {\n  await page.goto('/');\n  await openCodePage(page, 'acme-docs');\n\n  await repositorySearch(page, 'search flow');\n  await openCodeResults(page);\n  await page.getByRole('link', { name: 'README.md', exact: true }).first().click();\n\n  await expect(page.getByText('search flow').first()).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('search flow').first()).toBeVisible();\n  await expect(page.getByRole('link', { name: 'README.md', exact: true }).first()).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e12]:\n      - textbox \"Search\" [ref=e14]\n      - link \"Sign in\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/login\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]:\n        - generic [ref=e20]: Public\n      - paragraph [ref=e21]: Documentation for Acme Demo\n      - navigation \"Repository navigation\" [ref=e22]:\n        - link \"Code\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs\"\n        - link \"Issues\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/pulls\"\n      - generic [ref=e26]:\n        - button \"Branch main\" [ref=e27] [cursor=pointer]\n        - button \"Code\" [ref=e28] [cursor=pointer]\n        - link \"Commits\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commits/main\"\n      - paragraph [ref=e30]:\n        - text: Latest commit\n        - link \"Document search flow\" [ref=e31] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commit/commit-acme-docs-search\"\n        - text: alice-dev 3 days ago\n      - list [ref=e32]:\n        - listitem [ref=e33]:\n          - link \"src\" [ref=e34] [cursor=pointer]:\n            - /url: \"#/repo/Acme%20Demo/acme-docs/tree/main/src\"\n          - text: Directory\n    - complementary [ref=e35]:\n      - button \"Home\" [ref=e36] [cursor=pointer]\n  - contentinfo [ref=e37]: A simplified GitHub collaboration platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:43",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-4-2-3#4",
+      "name": "Search Code Within a Repository - Scenario 4",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t04-REQ-4.spec.cjs:43 (shared with 3 other test(s)).",
+      "source": "test('REQ-4-2-3: Search Code Within a Repository - Scenario 4', async ({ page }) => {\n  await page.goto('/');\n  await openCodePage(page, 'acme-docs');\n\n  await repositorySearch(page, 'no-such-token');\n  await openCodeResults(page);\n  await expect(noCodeResultsMessage(page)).toBeVisible();\n\n  await page.goBack();\n  await repositorySearch(page, 'no-such-token');\n  await openCodeResults(page);\n  await expect(noCodeResultsMessage(page)).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e12]:\n      - textbox \"Search\" [ref=e14]\n      - link \"Sign in\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/login\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]:\n        - generic [ref=e20]: Public\n      - paragraph [ref=e21]: Documentation for Acme Demo\n      - navigation \"Repository navigation\" [ref=e22]:\n        - link \"Code\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs\"\n        - link \"Issues\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/pulls\"\n      - generic [ref=e26]:\n        - button \"Branch main\" [ref=e27] [cursor=pointer]\n        - button \"Code\" [ref=e28] [cursor=pointer]\n        - link \"Commits\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commits/main\"\n      - paragraph [ref=e30]:\n        - text: Latest commit\n        - link \"Document search flow\" [ref=e31] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commit/commit-acme-docs-search\"\n        - text: alice-dev 3 days ago\n      - list [ref=e32]:\n        - listitem [ref=e33]:\n          - link \"src\" [ref=e34] [cursor=pointer]:\n            - /url: \"#/repo/Acme%20Demo/acme-docs/tree/main/src\"\n          - text: Directory\n    - complementary [ref=e35]:\n      - button \"Home\" [ref=e36] [cursor=pointer]\n  - contentinfo [ref=e37]: A simplified GitHub collaboration platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:43",
+      "seconds": 5.1
+    },
+    {
+      "id": "REQ-4-3-1",
+      "name": "List and Switch Repository Branches - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-1#2",
+      "name": "List and Switch Repository Branches - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-2",
+      "name": "Create a Branch from an Existing Revision - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-2#2",
+      "name": "Create a Branch from an Existing Revision - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-3",
+      "name": "Change the Repository Default Branch - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-3-3#2",
+      "name": "Change the Repository Default Branch - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-4",
+      "name": "Manage Repository Files Through the Web Interface - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-4#2",
+      "name": "Manage Repository Files Through the Web Interface - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "helper:t04-REQ-4.spec.cjs:43",
+      "name": "4 tests stop at the same helper line (REQ-4-2-3, REQ-4-2-3#2, REQ-4-2-3#3, REQ-4-2-3#4)",
+      "status": "fail",
+      "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true }).last()\n\n\n  41 | async function repositorySearch(page, query) {\n  42 |   const box = page.getByRole('searchbox', { name: 'Search', exact: true }).last();\n> 43 |   await box.fill(query);\n     |             ^\n  44 |   await box.press('Enter');\n  45 | }\n  46 |\n    at repositorySearch (~/projects/arcbench-campaign/evidence/2026-10-02-s70/v9-stage2-upgrade/stage2-independent/suite/t04-REQ-4.spec.cjs:43:13)\n    at ~/projects/arcbench-campaign/evidence/2026-10-02-s70/v9-stage2-upgrade/stage2-independent/suite/t04-REQ-4.spec.cjs:105:9",
+      "steps": [],
+      "source": "test('REQ-4-2-3: Search Code Within a Repository - Scenario 1', async ({ page }) => {\n  await page.goto('/');\n  await openCodePage(page, 'acme-docs');\n\n  await repositorySearch(page, 'search flow');\n  await openCodeResults(page);\n  await page.getByRole('link', { name: 'README.md', exact: true }).first().click();\n\n  await expect(page.getByText('search flow').first()).toBeVisible();\n});",
+      "blocks": [
+        "REQ-4-2-3",
+        "REQ-4-2-3#2",
+        "REQ-4-2-3#3",
+        "REQ-4-2-3#4"
+      ],
+      "file": "t04-REQ-4.spec.cjs",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e12]:\n      - textbox \"Search\" [ref=e14]\n      - link \"Sign in\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/login\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]:\n        - generic [ref=e20]: Public\n      - paragraph [ref=e21]: Documentation for Acme Demo\n      - navigation \"Repository navigation\" [ref=e22]:\n        - link \"Code\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs\"\n        - link \"Issues\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/pulls\"\n      - generic [ref=e26]:\n        - button \"Branch main\" [ref=e27] [cursor=pointer]\n        - button \"Code\" [ref=e28] [cursor=pointer]\n        - link \"Commits\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commits/main\"\n      - paragraph [ref=e30]:\n        - text: Latest commit\n        - link \"Document search flow\" [ref=e31] [cursor=pointer]:\n          - /url: \"#/repo/Acme%20Demo/acme-docs/commit/commit-acme-docs-search\"\n        - text: alice-dev 3 days ago\n      - list [ref=e32]:\n        - listitem [ref=e33]:\n          - link \"src\" [ref=e34] [cursor=pointer]:\n            - /url: \"#/repo/Acme%20Demo/acme-docs/tree/main/src\"\n          - text: Directory\n    - complementary [ref=e35]:\n      - button \"Home\" [ref=e36] [cursor=pointer]\n  - contentinfo [ref=e37]: A simplified GitHub collaboration platform Header · Sidebar · Main content · Footer\n```"
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 100,
+    "parsed": 28
+  },
+  "seconds": 33.9
+}

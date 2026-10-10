@@ -1,0 +1,52 @@
+{
+  "manifest": {
+    "files": [
+      {
+        "file": "t02-REQ-2.spec.cjs",
+        "scenarios": [
+          "REQ-2-1-1",
+          "REQ-2-1-1#2",
+          "REQ-2-1-2",
+          "REQ-2-1-2#2",
+          "REQ-2-1-2#3",
+          "REQ-2-2-1",
+          "REQ-2-2-1#2",
+          "REQ-2-2-2",
+          "REQ-2-2-2#2",
+          "REQ-2-2-3",
+          "REQ-2-2-3#2",
+          "REQ-2-2-4",
+          "REQ-2-2-4#2",
+          "REQ-2-3",
+          "REQ-2-3#2"
+        ],
+        "calls": 1,
+        "finish": "stop",
+        "tests": [
+          "REQ-2-1-1: REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+          "REQ-2-1-1#2: REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+          "REQ-2-1-2: REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+          "REQ-2-1-2#2: REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+          "REQ-2-1-2#3: REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+          "REQ-2-2-1: REQ-2-2-1: Create an Organization Team - Scenario 1",
+          "REQ-2-2-1#2: REQ-2-2-1: Create an Organization Team - Scenario 2",
+          "REQ-2-2-2: REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+          "REQ-2-2-2#2: REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+          "REQ-2-2-3: REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+          "REQ-2-2-3#2: REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+          "REQ-2-2-4: REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+          "REQ-2-2-4#2: REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+          "REQ-2-3: REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+          "REQ-2-3#2: REQ-2-3: Grant Repository Access to People and Teams - Scenario 2"
+        ]
+      }
+    ],
+    "scenarios": 15,
+    "tests": 15,
+    "seconds": 141.8,
+    "prerequisites": ""
+  },
+  "seconds": 141.8,
+  "estimated_cost_cny": 0.22526868,
+  "scope": "one public requirement group; no app or independent judge in the model prompt"
+}

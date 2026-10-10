@@ -1,0 +1,2 @@
+{"app": "generate-contracts-v2-github", "judge": "gh8", "counts": {"pass": 67, "error": 13, "fail": 22}, "seconds": 150.8, "coverage": {"total": 100, "parsed": 89}}
+{"app": "generate-contracts-v2-github", "judge": "gh99", "counts": {"error": 20, "pass": 64, "fail": 18}, "seconds": 173.2, "coverage": {"total": 100, "parsed": 82}}

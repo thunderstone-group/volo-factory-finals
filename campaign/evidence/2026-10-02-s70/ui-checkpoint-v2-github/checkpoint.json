@@ -1,0 +1,31 @@
+{
+  "task": "github",
+  "ui_repair_end": {
+    "rounds": 8,
+    "accepted": 6,
+    "stopped": null,
+    "counts_after": {
+      "pass": 99,
+      "error": 1
+    },
+    "failing": [],
+    "errors": [
+      "REQ-4-1"
+    ],
+    "seconds": 2322.0,
+    "repair_cny": 0.8755
+  },
+  "source_stage": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-github/.oneshot-ommdqvdl/app",
+  "suite": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-tests-fxmnxhec",
+  "source_hashes": {
+    "README.md": "6879b0ce3a4fff03895c75e0c5ebe25c1bf99967209a7ac75c5707b2caa7e08f",
+    "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+    "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+    "frontend/public/styles.css": "5ef1e4e3c49fcf4c11db610355feff70a50e71a1383f7bda40c8f16314d490cd",
+    "frontend/public/seed.js": "428e365cbb2cddd8d1ab93c4e41e53ff47cd362ad47cbd375eb697580efa9d07",
+    "frontend/public/app.js": "e260bcc8168e4abd72eb92d7868ac4f518f70c3da763993c89706acf7ff7db45",
+    "frontend/public/lib/arc.js": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14",
+    "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9",
+    "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+  }
+}

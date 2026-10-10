@@ -1,0 +1,1021 @@
+{
+ "kind": "testgen",
+ "scenarios": [
+  {
+   "id": "REQ-1-1-1",
+   "name": "REQ-1-1-1 -the requested workflow,the requested workflow page entry the requested workflow",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-1-1#2",
+   "name": "REQ-1-1-1 -the requested workflow",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-2-1",
+   "name": "REQ-1-2-1 -the requested workflow,the requested workflow Sheet1 the requested workflow A1 the requested workflow",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-2-2",
+   "name": "REQ-1-2-2 -the requested workflow,the requested workflow",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-2-2#2",
+   "name": "REQ-1-2-2 -the requested workflow,the requested workflow",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-3-1 -the requested workflow UTF-8 CSV,the requested workflow",
+   "name": "",
+   "file": "t02-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 02-REQ-1.spec.cjs:181\n\n   at t02-REQ-1.spec.cjs:203\n\n  201 | });\n  202 |\n> 203 | test('REQ-1-3-2 -the requested workflow', async ({ page }) => {\n      | ^\n  204 |   const stem = `state-${u()}`;\n  205 |   await importCsv(page, stem, 'A,B\\n1,2\\n3,4\\n');\n  206 |\nListing tests"
+  },
+  {
+   "id": "REQ-1-3-1 -the requested workflow CSV the requested workflow,the requested workflow",
+   "name": "",
+   "file": "t02-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 02-REQ-1.spec.cjs:181\n\n   at t02-REQ-1.spec.cjs:203\n\n  201 | });\n  202 |\n> 203 | test('REQ-1-3-2 -the requested workflow', async ({ page }) => {\n      | ^\n  204 |   const stem = `state-${u()}`;\n  205 |   await importCsv(page, stem, 'A,B\\n1,2\\n3,4\\n');\n  206 |\nListing tests"
+  },
+  {
+   "id": "REQ-1-3-1 -the requested workflow CSV,the requested workflow",
+   "name": "",
+   "file": "t02-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 02-REQ-1.spec.cjs:181\n\n   at t02-REQ-1.spec.cjs:203\n\n  201 | });\n  202 |\n> 203 | test('REQ-1-3-2 -the requested workflow', async ({ page }) => {\n      | ^\n  204 |   const stem = `state-${u()}`;\n  205 |   await importCsv(page, stem, 'A,B\\n1,2\\n3,4\\n');\n  206 |\nListing tests"
+  },
+  {
+   "id": "REQ-1-3-1 -the requested workflow CSV,the requested workflow",
+   "name": "",
+   "file": "t02-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 02-REQ-1.spec.cjs:181\n\n   at t02-REQ-1.spec.cjs:203\n\n  201 | });\n  202 |\n> 203 | test('REQ-1-3-2 -the requested workflow', async ({ page }) => {\n      | ^\n  204 |   const stem = `state-${u()}`;\n  205 |   await importCsv(page, stem, 'A,B\\n1,2\\n3,4\\n');\n  206 |\nListing tests"
+  },
+  {
+   "id": "REQ-1-3-2 -the requested workflow,the requested workflow",
+   "name": "",
+   "file": "t02-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 02-REQ-1.spec.cjs:181\n\n   at t02-REQ-1.spec.cjs:203\n\n  201 | });\n  202 |\n> 203 | test('REQ-1-3-2 -the requested workflow', async ({ page }) => {\n      | ^\n  204 |   const stem = `state-${u()}`;\n  205 |   await importCsv(page, stem, 'A,B\\n1,2\\n3,4\\n');\n  206 |\nListing tests"
+  },
+  {
+   "id": "REQ-1-3-2 -the requested workflow",
+   "name": "",
+   "file": "t02-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 02-REQ-1.spec.cjs:181\n\n   at t02-REQ-1.spec.cjs:203\n\n  201 | });\n  202 |\n> 203 | test('REQ-1-3-2 -the requested workflow', async ({ page }) => {\n      | ^\n  204 |   const stem = `state-${u()}`;\n  205 |   await importCsv(page, stem, 'A,B\\n1,2\\n3,4\\n');\n  206 |\nListing tests"
+  },
+  {
+   "id": "REQ-1-3-2 -the requested workflow",
+   "name": "",
+   "file": "t02-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 02-REQ-1.spec.cjs:181\n\n   at t02-REQ-1.spec.cjs:203\n\n  201 | });\n  202 |\n> 203 | test('REQ-1-3-2 -the requested workflow', async ({ page }) => {\n      | ^\n  204 |   const stem = `state-${u()}`;\n  205 |   await importCsv(page, stem, 'A,B\\n1,2\\n3,4\\n');\n  206 |\nListing tests"
+  },
+  {
+   "id": "REQ-1-3-2 -the requested workflow Sheet1 the requested workflow",
+   "name": "",
+   "file": "t02-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 02-REQ-1.spec.cjs:181\n\n   at t02-REQ-1.spec.cjs:203\n\n  201 | });\n  202 |\n> 203 | test('REQ-1-3-2 -the requested workflow', async ({ page }) => {\n      | ^\n  204 |   const stem = `state-${u()}`;\n  205 |   await importCsv(page, stem, 'A,B\\n1,2\\n3,4\\n');\n  206 |\nListing tests"
+  },
+  {
+   "id": "REQ-2-1-1 -the requested workflow Sheet2,the requested workflow",
+   "name": "",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it:  t03-REQ-2.spec.cjs:188\n\n  186 | });\n  187 |\n> 188 | test('REQ-2-1-2 -the requested workflow', async ({ page }) => {\n      | ^\n  189 |   await createUniqueWorkbook(page);\n  190 |   await setCell(page, 'A1', '1200');\n  191 |   await setCell(page, 'B1', '800');\nListing tests"
+  },
+  {
+   "id": "REQ-2-1-1 -the requested workflow SheetN the requested workflow",
+   "name": "",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it:  t03-REQ-2.spec.cjs:188\n\n  186 | });\n  187 |\n> 188 | test('REQ-2-1-2 -the requested workflow', async ({ page }) => {\n      | ^\n  189 |   await createUniqueWorkbook(page);\n  190 |   await setCell(page, 'A1', '1200');\n  191 |   await setCell(page, 'B1', '800');\nListing tests"
+  },
+  {
+   "id": "REQ-2-1-2 -the requested workflow, the requested workflow",
+   "name": "",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it:  t03-REQ-2.spec.cjs:188\n\n  186 | });\n  187 |\n> 188 | test('REQ-2-1-2 -the requested workflow', async ({ page }) => {\n      | ^\n  189 |   await createUniqueWorkbook(page);\n  190 |   await setCell(page, 'A1', '1200');\n  191 |   await setCell(page, 'B1', '800');\nListing tests"
+  },
+  {
+   "id": "REQ-2-1-2 -the requested workflow",
+   "name": "",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it:  t03-REQ-2.spec.cjs:188\n\n  186 | });\n  187 |\n> 188 | test('REQ-2-1-2 -the requested workflow', async ({ page }) => {\n      | ^\n  189 |   await createUniqueWorkbook(page);\n  190 |   await setCell(page, 'A1', '1200');\n  191 |   await setCell(page, 'B1', '800');\nListing tests"
+  },
+  {
+   "id": "REQ-2-1-2 -the requested workflow",
+   "name": "",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it:  t03-REQ-2.spec.cjs:188\n\n  186 | });\n  187 |\n> 188 | test('REQ-2-1-2 -the requested workflow', async ({ page }) => {\n      | ^\n  189 |   await createUniqueWorkbook(page);\n  190 |   await setCell(page, 'A1', '1200');\n  191 |   await setCell(page, 'B1', '800');\nListing tests"
+  },
+  {
+   "id": "REQ-2-1-2 -the requested workflow",
+   "name": "",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it:  t03-REQ-2.spec.cjs:188\n\n  186 | });\n  187 |\n> 188 | test('REQ-2-1-2 -the requested workflow', async ({ page }) => {\n      | ^\n  189 |   await createUniqueWorkbook(page);\n  190 |   await setCell(page, 'A1', '1200');\n  191 |   await setCell(page, 'B1', '800');\nListing tests"
+  },
+  {
+   "id": "REQ-2-1-2 -the requested workflow",
+   "name": "",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it:  t03-REQ-2.spec.cjs:188\n\n  186 | });\n  187 |\n> 188 | test('REQ-2-1-2 -the requested workflow', async ({ page }) => {\n      | ^\n  189 |   await createUniqueWorkbook(page);\n  190 |   await setCell(page, 'A1', '1200');\n  191 |   await setCell(page, 'B1', '800');\nListing tests"
+  },
+  {
+   "id": "REQ-2-1-3",
+   "name": "REQ-2-1-3 -the requested workflow,the requested workflow",
+   "file": "t04-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-3#2",
+   "name": "REQ-2-1-3 -the requested workflow,the requested workflow",
+   "file": "t04-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-3#3",
+   "name": "REQ-2-1-3 -the requested workflow,the requested workflow",
+   "file": "t04-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-4",
+   "name": "REQ-2-1-4 -the requested workflow,the requested workflow",
+   "file": "t04-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-2-1-4#2",
+   "name": "REQ-2-1-4 -the requested workflow,the requested workflow",
+   "file": "t04-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-4#3",
+   "name": "REQ-2-1-4 -the requested workflow,the requested workflow",
+   "file": "t04-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 1.0
+  },
+  {
+   "id": "REQ-2-1-4#4",
+   "name": "REQ-2-1-4 -the requested workflow",
+   "file": "t04-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 1.0
+  },
+  {
+   "id": "REQ-2-2-1",
+   "name": "REQ-2-2-1 -the requested workflow 3 the requested workflow,the requested workflow",
+   "file": "t05-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-2-2-1#2",
+   "name": "REQ-2-2-1 -the requested workflow 3 the requested workflow,the requested workflow",
+   "file": "t05-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"East\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"1\" data-id=\"A1\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selected=\"true\" class=\"cell selected\">…</div>\n      - unexpected value \"Region\"\n\n\n  26 |\n  27 | async function expectCellText(page, coord, text) {\n> 28 |   await expect(page.getByRole('gridcell', { name: coord, exact: true })).toHaveText(text);\n     |                                         ",
+   "source": "test('REQ-2-2-1#2: REQ-2-2-1 -the requested workflow 3 the requested workflow,the requested workflow', async ({ page }) => {\n  const name = `rw${u()}`;\n  await importWorkbook(page, 'Region,Sales\\nEast,1200\\nNorth,800\\n', name);\n\n  await insertRowBelow(page, 2);\n\n  await expectCellText(page, 'A1', 'East');\n  await expectCellText(page, 'B1', '1200');\n  await expectCellText(page, 'A2', 'North');\n  await expectCellText(page, 'B2', '800');\n  await expectCellText(page, 'A3', '');\n  await expectCellText(page, 'B3', '');\n\n  await page.reload();\n  await expect(page.getByRole('grid', { name: 'Worksheet grid', exact: true })).toBeVisible();\n  await expectCellText(page, 'A1', 'East');\n  await expectCellText(page, 'B1', '1200');\n  await expectCellText(page, 'A2', 'North');\n  await expectCellText(page, 'B2', '800');\n  await expectCellText(page, 'A3', '');\n  await expectCellText(page, 'B3', '');\n});",
+   "at": "t05-REQ-2.spec.cjs:28",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-2-2-1#3",
+   "name": "REQ-2-2-1 -the requested workflow",
+   "file": "t05-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-2-2-1#4",
+   "name": "REQ-2-2-1 -the requested workflow",
+   "file": "t05-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-2-2-1#5",
+   "name": "REQ-2-2-1 -the requested workflow",
+   "file": "t05-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-2-2-2",
+   "name": "REQ-2-2-2 -the requested workflow B the requested workflow,the requested workflow",
+   "file": "t06-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-2-2-2#2",
+   "name": "REQ-2-2-2 -the requested workflow B the requested workflow,the requested workflow",
+   "file": "t06-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-2-2-2#3",
+   "name": "REQ-2-2-2 -the requested workflow",
+   "file": "t06-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B1', exact: true })\nExpected: \"4\"\nReceived: \"A1*2\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B1', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"2\" class=\"cell\" data-id=\"B1\" data-cell=\"B1\" role=\"gridcell\" aria-label=\"B1\" aria-selected=\"false\">…</div>\n      - unexpected value \"A1*2\"\n\n\n  118 |   await expect(page.getByRole('gridcell', { name: 'A1', exact: true })).toHaveText('2');\n  119 |   await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('4');\n> 120 |   await expect(page.get",
+   "source": "test('REQ-2-2-2#3: REQ-2-2-2 -the requested workflow', async () => {\n  await importWorkbook('2,3\\n4,5');\n  await setCell('C1', '=A1*2');\n  await setCell('D1', '=B1*2');\n\n  await deleteColumn('B');\n\n  await expect(page.getByRole('gridcell', { name: 'A1', exact: true })).toHaveText('2');\n  await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('4');\n  await expect(page.getByRole('gridcell', { name: 'B1', exact: true })).toHaveText('4');\n  await expect(page.getByRole('gridcell', { name: 'C1', exact: true })).toHaveText('#REF!');\n\n  await page.getByRole('gridcell', { name: 'B1', exact: true }).click();\n  await expect(page.getByLabel('Formula bar', { exact: true })).toHaveValue('=A1*2');\n\n  await page.reload();\n  await expect(page.getByRole('grid', { name: 'Worksheet grid', exact: true })).toBeVisible();\n  await expect(page.getByRole('gridcell', { name: 'B1', exact: true })).toHaveText('4');\n  await expect(page.getByRole('gridcell', { name: 'C1', exact: true })).toHaveText('#REF!');\n  await page.getByRole('gridcell', { name: 'B1', exact: true }).click();\n  await expect(page.getByLabel('Formula bar', { exact: true })).toHaveValue('=A1*2');\n});",
+   "at": "t06-REQ-2.spec.cjs:120",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-2-2-2#4",
+   "name": "REQ-2-2-2 -the requested workflow",
+   "file": "t06-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('gridcell', { name: 'B2', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n\n\n  157 |   await insertColumnLeft('A');\n  158 |\n> 159 |   await expect(page.getByRole('gridcell', { name: 'B2', exact: true })).toBeVisible();\n      |                                                                         ^\n  160 |   await expect(page.getByRole('gridcell', { name: 'B3', exact: true })).toBeHidden();\n  161 |\n  162 |   await page.getByRole('gridcell', { name: 'C2', exact: true }).click();\n ",
+   "source": "test('REQ-2-2-2#4: REQ-2-2-2 -the requested workflow', async () => {\n  await importWorkbook('Region,Sales\\nEast,50\\nNorth,80');\n\n  await selectRange('B2', 'B3');\n  await openDataMenu();\n  await page.getByRole('menuitem', { name: 'Data validation', exact: true }).click();\n  const validationDialog = page.getByRole('dialog', { name: 'Data validation', exact: true });\n  await selectCombo('Rule type', 'Number range');\n  await validationDialog.getByLabel('Minimum', { exact: true }).fill('0');\n  await validationDialog.getByLabel('Maximum', { exact: true }).fill('100');\n  await validationDialog.getByRole('button', { name: 'Save', exact: true }).click();\n  await expect(validationDialog).not.toBeVisible();\n\n  await selectRange('A1', 'B3');\n  await openDataMenu();\n  await page.getByRole('menuitem', { name: 'Create filter', exact: true }).click();\n  await page.getByRole('button', { name: 'Filter Region', exact: true }).click();\n  const filterDialog = page.getByRole('dialog', { name: 'Filter Region', exact: true });\n  await filterDialog.getByRole('button', { name: 'Clear selection', exact: true }).click();\n  await filterDialog.getByRole('checkbox', { name: 'East', exact: true }).check();\n  await filterDialog.getByRole('button', { name: 'Apply', exact: true }).click();\n  await expect(page.getByRole('gridcell', { name: 'B3', exact: true })).toBeHidden();\n\n  await insertColumnLeft('A');\n\n  await expect(page.getByRole('gridcell', { name: 'B2', exact: true })).toBeVisible();\n  await expect(page.getByRole('gridcell', { name: 'B3', exact: true })).toBeHidden();\n\n  await page.getByRole('gridcell', { name: 'C2', exact: true }).click();\n  await page.keyboard.type('200');\n  await page.keyboard.press('Enter');\n  await expect(page.getByText('Please enter a number from 0 to 100', { exact: true })).toBeVisible();\n  await expect(page.getByRole('gridcell', { name: 'C2', exact: true })).toHaveText('50');\n\n  await page.reload();\n  await expect(page.getByRole('grid', { name: 'Worksheet grid', exact: true })).toBeVisible();\n  await expect(page.getByRole('gridcell', { name: 'C2', exact: true })).toHaveText('50');\n  await expect(page.getByRole('gridcell', { name: 'B3', exact: true })).toBeHidden();\n});",
+   "at": "t06-REQ-2.spec.cjs:159",
+   "seconds": 5.6
+  },
+  {
+   "id": "REQ-2-2-2#5",
+   "name": "REQ-2-2-2 -the requested workflow",
+   "file": "t06-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-3-1-1 -the requested workflow,the requested workflow",
+   "name": "",
+   "file": "t07-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-1-1 -Escape the requested workflow,the requested workflow",
+   "name": "",
+   "file": "t07-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-3-1-1 -the requested workflow, the requested workflow, the requested workflow, the requested workflow",
+   "name": "",
+   "file": "t07-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-3-1-1 -the requested workflow",
+   "name": "",
+   "file": "t07-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-3-1-2",
+   "name": "REQ-3-1-2 -the requested workflow B2 the requested workflow,the requested workflow",
+   "file": "t08-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-1-2#2",
+   "name": "REQ-3-1-2 -the requested workflow",
+   "file": "t08-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-1-2#3",
+   "name": "REQ-3-1-2 -the requested workflow",
+   "file": "t08-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-3-1-2#4",
+   "name": "REQ-3-1-2 -the requested workflow A1 the requested workflow",
+   "file": "t08-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-1-2#5",
+   "name": "REQ-3-1-2 -the requested workflow C3 the requested workflow",
+   "file": "t08-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-3-1-3",
+   "name": "REQ-3-1-3 -the requested workflow",
+   "file": "t08-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-3-1-3#2",
+   "name": "REQ-3-1-3 -the requested workflow,the requested workflow",
+   "file": "t08-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-2-1",
+   "name": "REQ-3-2-1 -the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow, the requested workflow",
+   "file": "t09-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-3-2-1#2",
+   "name": "REQ-3-2-1 -the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow",
+   "file": "t09-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-2-1#3",
+   "name": "REQ-3-2-1 -the requested workflow",
+   "file": "t09-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-3-2-1#4",
+   "name": "REQ-3-2-1 -the requested workflow",
+   "file": "t09-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.8
+  },
+  {
+   "id": "REQ-3-2-2",
+   "name": "REQ-3-2-2 -the requested workflow,the requested workflow",
+   "file": "t10-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-3-2-2#2",
+   "name": "REQ-3-2-2 -the requested workflow",
+   "file": "t10-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-2-2#3",
+   "name": "REQ-3-2-2 -the requested workflow",
+   "file": "t10-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-2-2#4",
+   "name": "REQ-3-2-2 -the requested workflow",
+   "file": "t10-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-3-2-2#5",
+   "name": "REQ-3-2-2 -the requested workflow",
+   "file": "t10-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-3-2-2#6",
+   "name": "REQ-3-2-2 -the requested workflow",
+   "file": "t10-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-3-2-2#7",
+   "name": "REQ-3-2-2 -the requested workflow",
+   "file": "t10-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-4-1-1",
+   "name": "REQ-4-1-1 -the requested workflow,the requested workflow",
+   "file": "t11-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-4-1-1#2",
+   "name": "REQ-4-1-1 -the requested workflow",
+   "file": "t11-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-4-1-1#3",
+   "name": "REQ-4-1-1 -the requested workflow, the requested workflow",
+   "file": "t11-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-4-1-1#4",
+   "name": "REQ-4-1-1 -the requested workflow",
+   "file": "t11-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-4-1-1#5",
+   "name": "REQ-4-1-1 -the requested workflow",
+   "file": "t11-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-4-1-2",
+   "name": "REQ-4-1-2 -the requested workflow",
+   "file": "t11-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-4-1-2#2",
+   "name": "REQ-4-1-2 -the requested workflow",
+   "file": "t11-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-4-2-1",
+   "name": "REQ-4-2-1 -the requested workflow,the requested workflow",
+   "file": "t12-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-4-2-1#2",
+   "name": "REQ-4-2-1 -the requested workflow",
+   "file": "t12-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-4-2-1#3",
+   "name": "REQ-4-2-1 -the requested workflow",
+   "file": "t12-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'C1', exact: true })\nExpected: \"5\"\nReceived: \"0\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'C1', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"3\" class=\"cell\" data-id=\"C1\" data-cell=\"C1\" role=\"gridcell\" aria-label=\"C1\" aria-selected=\"false\">…</div>\n      - unexpected value \"0\"\n\n\n  132 |   await expect(gridCell(page, 'A3')).toHaveText('2');\n  133 |   await expect(gridCell(page, 'B3')).toHaveText('3');\n> 134 |   await expect(gridCell(page, 'C1')).toHaveText('5');\n      |                                      ",
+   "source": "test('REQ-4-2-1#3: REQ-4-2-1 -the requested workflow', async ({ page }) => {\n  await createWorkbook(page);\n  await setCell(page, 'A1', '2', '2');\n  await setCell(page, 'B1', '3', '3');\n  await setCell(page, 'C1', '=A1+B1', '5');\n  await setCell(page, 'D1', '=C1*2', '10');\n\n  const start = gridCell(page, 'A1');\n  const end = gridCell(page, 'B1');\n  const startBox = await start.boundingBox();\n  const endBox = await end.boundingBox();\n  await page.mouse.move(startBox.x + startBox.width / 2, startBox.y + startBox.height / 2);\n  await page.mouse.down();\n  await page.mouse.move(endBox.x + endBox.width / 2, endBox.y + endBox.height / 2, { steps: 5 });\n  await page.mouse.up();\n  await expect(start).toHaveAttribute('aria-selected', 'true');\n  await expect(end).toHaveAttribute('aria-selected', 'true');\n\n  await page.keyboard.press('Control+X');\n  await selectCell(page, 'A3');\n  await page.keyboard.press('Control+V');\n\n  await expect(gridCell(page, 'A1')).not.toHaveText('2');\n  await expect(gridCell(page, 'B1')).not.toHaveText('3');\n  await expect(gridCell(page, 'A3')).toHaveText('2');\n  await expect(gridCell(page, 'B3')).toHaveText('3');\n  await expect(gridCell(page, 'C1')).toHaveText('5');\n  await expect(gridCell(page, 'D1')).toHaveText('10');\n  await expectFormulaBar(page, 'C1', '=A3+B3');\n  await expectFormulaBar(page, 'D1', '=C1*2');\n\n  await page.getByRole('rowheader', { name: '3', exact: true }).click({ button: 'right' });\n  await page.getByRole('menuitem', { name: 'Insert 1 row above', exact: true }).click();\n\n  await expect(gridCell(page, 'A3')).not.toHaveText('2');\n  await expect(gridCell(page, 'A4')).toHaveText('2');\n  await expect(gridCell(page, 'B4')).toHaveText('3');\n  await expect(gridCell(page, 'C1')).toHaveText('5');\n  await expect(gridCell(page, 'D1')).toHaveText('10');\n  await expectFormulaBar(page, 'C1', '=A4+B4');\n\n  await reloadToGrid(page);\n  await expect(gridCell(page, 'A4')).toHaveText('2');\n  await expect(gridCell(page, 'B4')).toHaveText('3');\n  await expect(gridCell(page, 'C1')).toHaveText('5');\n  await expect(gridCell(page, 'D1')).toHaveText('10');\n  await expectFormulaBar(page, 'C1', '=A4+B4');\n  await expectFormulaBar(page, 'D1', '=C1*2');\n});",
+   "at": "t12-REQ-4.spec.cjs:134",
+   "seconds": 5.4
+  },
+  {
+   "id": "REQ-4-2-2",
+   "name": "REQ-4-2-2 -the requested workflow,the requested workflow",
+   "file": "t12-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-4-2-2#2",
+   "name": "REQ-4-2-2 -the requested workflow,the requested workflow",
+   "file": "t12-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-4-2-2#3",
+   "name": "REQ-4-2-2 -the requested workflow",
+   "file": "t12-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-2-2#4",
+   "name": "REQ-4-2-2 -the requested workflow",
+   "file": "t12-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-2-2#5",
+   "name": "REQ-4-2-2 -the requested workflow",
+   "file": "t12-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-5-1-1",
+   "name": "REQ-5-1-1 -the requested workflow Sales the requested workflow,the requested workflow",
+   "file": "t13-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-5-1-1#2",
+   "name": "REQ-5-1-1 -the requested workflow ISO the requested workflow",
+   "file": "t13-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-5-1-1#3",
+   "name": "REQ-5-1-1 -the requested workflow",
+   "file": "t13-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-5-1-1#4",
+   "name": "REQ-5-1-1 -the requested workflow",
+   "file": "t13-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"South\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"2\" data-c=\"1\" data-id=\"A2\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected=\"true\" class=\"cell selected\">…</div>\n      - unexpected value \"\"\n\n\n  114 |   await sortRange(page, 'Region', 'Descending');\n  115 |\n> 116 |   await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('South');\n      |                                                ",
+   "source": "test('REQ-5-1-1#4: REQ-5-1-1 -the requested workflow', async ({ page }) => {\n  const tsv = 'Region\\tSales\\tStatus\\nEast\\t1200\\tOpen\\nNorth\\t800\\tClosed\\nSouth\\t700\\tOpen';\n  await createWorkbookFromClipboard(page, tsv, 'Region');\n  await selectRange(page, 'A1', 'C6');\n  await openSortRange(page);\n  await sortRange(page, 'Region', 'Descending');\n\n  await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('South');\n  await expect(page.getByRole('gridcell', { name: 'A3', exact: true })).toHaveText('North');\n  await expect(page.getByRole('gridcell', { name: 'A4', exact: true })).toHaveText('East');\n\n  await page.reload();\n  await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('South');\n});",
+   "at": "t13-REQ-5.spec.cjs:116",
+   "seconds": 5.5
+  },
+  {
+   "id": "REQ-5-1-1#5",
+   "name": "REQ-5-1-1 -the requested workflow",
+   "file": "t13-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Outside\"\nReceived: \"utside\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"4\" class=\"cell\" data-id=\"D1\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\"false\">…</div>\n      - unexpected value \"utside\"\n\n\n  137 |   await expect(page.getByRole('gridcell', { name: 'A3', exact: true })).toHaveText('Carol');\n  138 |   await expect(page.getByRole('gridcell', { name: 'A4', exact: true })).toHaveText('Alice');\n> 139 |   awa",
+   "source": "test('REQ-5-1-1#5: REQ-5-1-1 -the requested workflow', async ({ page }) => {\n  const tsv = 'Name\\tScore\\tDouble\\nAlice\\t10\\t=B2*2\\nBob\\t30\\t=B3*2\\nCarol\\t20\\t=B4*2';\n  await createWorkbookFromClipboard(page, tsv, 'Name');\n\n  await page.getByRole('gridcell', { name: 'D1', exact: true }).click();\n  await page.keyboard.type('Outside');\n  await page.keyboard.press('Enter');\n\n  await selectRange(page, 'A1', 'C4');\n  await openSortRange(page);\n  await sortRange(page, 'Score', 'Descending');\n\n  await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('Bob');\n  await expect(page.getByRole('gridcell', { name: 'A3', exact: true })).toHaveText('Carol');\n  await expect(page.getByRole('gridcell', { name: 'A4', exact: true })).toHaveText('Alice');\n  await expect(page.getByRole('gridcell', { name: 'D1', exact: true })).toHaveText('Outside');\n\n  await page.getByRole('gridcell', { name: 'C2', exact: true }).click();\n  await expect(page.getByLabel('Formula bar', { exact: true })).toHaveValue('=B2*2');\n  await expect(page.getByRole('gridcell', { name: 'C2', exact: true })).toHaveText('60');\n\n  await page.reload();\n  await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('Bob');\n  await page.getByRole('gridcell', { name: 'C2', exact: true }).click();\n  await expect(page.getByLabel('Formula bar', { exact: true })).toHaveValue('=B2*2');\n  await expect(page.getByRole('gridcell', { name: 'C2', exact: true })).toHaveText('60');\n});",
+   "at": "t13-REQ-5.spec.cjs:139",
+   "seconds": 5.5
+  },
+  {
+   "id": "REQ-5-1-1#6",
+   "name": "REQ-5-1-1 -the requested workflow",
+   "file": "t13-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'C2', exact: true })\nExpected: \"Open\"\nReceived: \"Open▾\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'C2', exact: true })\n    9 × locator resolved to <div data-r=\"2\" data-c=\"3\" data-id=\"C2\" data-cell=\"C2\" role=\"gridcell\" aria-label=\"C2\" aria-selected=\"true\" class=\"cell selected\">…</div>\n      - unexpected value \"Open▾\"\n\n\n  168 |   await page.keyboard.press('Enter');\n  169 |   await expect(page.getByText('Please select one of the following values: Open, Closed', { exact: true })).toBeVisible();\n> 170 |   await expect(page.getByRol",
+   "source": "test('REQ-5-1-1#6: REQ-5-1-1 -the requested workflow', async ({ page }) => {\n  const tsv = 'Region\\tSales\\tStatus\\nEast\\t1200\\tOpen\\nNorth\\t800\\tClosed\\nSouth\\t700\\tOpen';\n  await createWorkbookFromClipboard(page, tsv, 'Region');\n  await setDropdownValidation(page, 'Open, Closed');\n  await createFilter(page);\n\n  await selectRange(page, 'A1', 'C6');\n  await openSortRange(page);\n  await sortRange(page, 'Sales', 'Ascending');\n\n  await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('South');\n  await expect(page.getByRole('gridcell', { name: 'A4', exact: true })).toHaveText('East');\n  await expect(page.getByRole('button', { name: 'Filter Status', exact: true })).toBeVisible();\n\n  await page.getByRole('gridcell', { name: 'C2', exact: true }).click();\n  await page.keyboard.type('Pending');\n  await page.keyboard.press('Enter');\n  await expect(page.getByText('Please select one of the following values: Open, Closed', { exact: true })).toBeVisible();\n  await expect(page.getByRole('gridcell', { name: 'C2', exact: true })).toHaveText('Open');\n\n  await page.reload();\n  await expect(page.getByRole('gridcell', { name: 'A2', exact: true })).toHaveText('South');\n  await expect(page.getByRole('button', { name: 'Filter Status', exact: true })).toBeVisible();\n});\n\n// Added by the suite runner: a helper that uses `page` without taking it as a parameter sees the running test's page.\nrequire('@playwright/test').test.beforeEach(async ({ page }) => { globalThis.page = page; });",
+   "at": "t13-REQ-5.spec.cjs:170",
+   "seconds": 5.8
+  },
+  {
+   "id": "REQ-5-1-2",
+   "name": "REQ-5-1-2 -the requested workflow Region the requested workflow Sales the requested workflow,the requested workflow",
+   "file": "t14-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 1.5
+  },
+  {
+   "id": "REQ-5-1-2#2",
+   "name": "REQ-5-1-2 -the requested workflow, the requested workflow,the requested workflow",
+   "file": "t14-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t14-REQ-5.spec.cjs:46 (shared with 2 other test(s)).",
+   "source": "test('REQ-5-1-2#2: REQ-5-1-2 -the requested workflow, the requested workflow,the requested workflow', async ({ page }) => {\n  await openSeedWorkbook(page);\n  await createFilter(page);\n\n  await applyConditionFilter(page, 'Status', 'Text contains', 'Open');\n  await expect(cell(page, 'B2')).toBeVisible();\n  await expect(cell(page, 'B3')).toBeHidden();\n  await expect(cell(page, 'B4')).toBeVisible();\n\n  await applyConditionFilter(page, 'Region', 'Is not empty');\n  await expect(cell(page, 'B2')).toBeVisible();\n  await expect(cell(page, 'B3')).toBeHidden();\n  await expect(cell(page, 'B4')).toBeVisible();\n\n  await applyConditionFilter(page, 'Sales', 'Is empty');\n  await expect(cell(page, 'B2')).toBeHidden();\n  await expect(cell(page, 'B3')).toBeHidden();\n  await expect(cell(page, 'B4')).toBeHidden();\n\n  await clearFilter(page);\n  await expect(cell(page, 'B2')).toHaveText('1200');\n  await expect(cell(page, 'B3')).toHaveText('800');\n  await expect(cell(page, 'B4')).toHaveText('700');\n\n  await page.reload();\n  await expect(cell(page, 'A1')).toBeVisible();\n  await expect(cell(page, 'B2')).toHaveText('1200');\n  await expect(cell(page, 'B3')).toHaveText('800');\n  await expect(cell(page, 'B4')).toHaveText('700');\n});",
+   "at": "t14-REQ-5.spec.cjs:46",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-5-1-2#3",
+   "name": "REQ-5-1-2 -CSV the requested workflow",
+   "file": "t14-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t14-REQ-5.spec.cjs:46 (shared with 2 other test(s)).",
+   "source": "test('REQ-5-1-2#3: REQ-5-1-2 -CSV the requested workflow', async ({ page }) => {\n  await openSeedWorkbook(page);\n  await createFilter(page);\n  await applyValueFilter(page, 'Region', ['East']);\n  await expect(cell(page, 'B2')).toBeVisible();\n  await expect(cell(page, 'B3')).toBeHidden();\n\n  const downloadPromise = page.waitForEvent('download');\n  await page.getByRole('button', { name: 'Export CSV', exact: true }).click();\n  const download = await downloadPromise;\n  expect(download.suggestedFilename()).toMatch(/\\.csv$/);\n  const filePath = await download.path();\n  const csv = fs.readFileSync(filePath, 'utf8');\n  expect(csv).toContain('North');\n  expect(csv).toContain('South');\n\n  await expect(cell(page, 'B2')).toBeVisible();\n  await expect(cell(page, 'B3')).toBeHidden();\n\n  await page.reload();\n  await expect(cell(page, 'A1')).toBeVisible();\n  await expect(cell(page, 'B2')).toBeVisible();\n  await expect(cell(page, 'B3')).toBeHidden();\n});",
+   "at": "t14-REQ-5.spec.cjs:46",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-5-1-2#4",
+   "name": "REQ-5-1-2 -the requested workflow",
+   "file": "t14-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-5-1-2#5",
+   "name": "REQ-5-1-2 -the requested workflow",
+   "file": "t14-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t14-REQ-5.spec.cjs:46 (shared with 2 other test(s)).",
+   "source": "test('REQ-5-1-2#5: REQ-5-1-2 -the requested workflow', async ({ page }) => {\n  await openSeedWorkbook(page);\n  await createFilter(page, 'A1', 'C4');\n  await applyValueFilter(page, 'Region', ['East']);\n  await expect(cell(page, 'B2')).toBeVisible();\n  await expect(cell(page, 'B3')).toBeHidden();\n\n  await openDataMenu(page);\n  await clickMenuItem(page, 'Create pivot table');\n  const dialog = page.getByRole('dialog', { name: 'Create pivot table', exact: true });\n  await expect(dialog.getByText('Source range: A1:C4', { exact: true })).toBeVisible();\n  await dialog.getByRole('radio', { name: 'New worksheet', exact: true }).check();\n  await dialog.getByRole('button', { name: 'Create', exact: true }).click();\n\n  const pivotTab = page.getByRole('tab', { name: 'Pivot1', exact: true });\n  await expect(pivotTab).toHaveAttribute('aria-selected', 'true');\n\n  const editor = page.getByRole('region', { name: 'Pivot table editor', exact: true });\n  await expect(editor).toBeVisible();\n  await selectComboOption(page, editor, 'Rows', 'Region');\n  await selectComboOption(page, editor, 'Values', 'Sales');\n  await selectComboOption(page, editor, 'Summarize by', 'SUM');\n  await editor.getByRole('button', { name: 'Apply', exact: true }).click();\n\n  await expect(cell(page, 'A2')).toHaveText('East');\n  await expect(cell(page, 'A3')).toHaveText('North');\n  await expect(cell(page, 'A4')).toHaveText('South');\n\n  await page.reload();\n  await expect(page.getByRole('tab', { name: 'Pivot1', exact: true })).toHaveAttribute('aria-selected', 'true');\n  await expect(cell(page, 'A3')).toHaveText('North');\n});\n\n// Added by the suite runner: a helper that uses `page` without taking it as a parameter sees the running test's page.\nrequire('@playwright/test').test.beforeEach(async ({ page }) => { globalThis.page = page; });",
+   "at": "t14-REQ-5.spec.cjs:46",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-5-2-1",
+   "name": "REQ-5-2-1 -the requested workflow A1:A2 the requested workflow,the requested workflow",
+   "file": "t15-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t15-REQ-5.spec.cjs:74 (shared with 1 other test(s)).",
+   "source": "test('REQ-5-2-1: REQ-5-2-1 -the requested workflow A1:A2 the requested workflow,the requested workflow', async ({ page }) => {\n  await createSalesWorkbook(page);\n\n  await setDropdownRule(page, 'A1', 'A2', ' Region , East , North , South ');\n\n  await expect(cell(page, 'A1').getByRole('button', { name: 'Open dropdown for A1', exact: true })).toBeVisible();\n  await cell(page, 'A2').getByRole('button', { name: 'Open dropdown for A2', exact: true }).click();\n\n  await expect(page.getByRole('option', { name: 'Region', exact: true })).toBeVisible();\n  await expect(page.getByRole('option', { name: 'East', exact: true })).toBeVisible();\n  await expect(page.getByRole('option', { name: 'North', exact: true })).toBeVisible();\n  await expect(page.getByRole('option', { name: 'South', exact: true })).toBeVisible();\n\n  await page.getByRole('option', { name: 'North', exact: true }).click();\n  await expect(cell(page, 'A2')).toHaveText('North');\n\n  await page.getByLabel('Formula bar', { exact: true }).fill('West');\n  await page.keyboard.press('Enter');\n\n  await expect(page.getByText(/Please select one of the following values: Region, ?East, ?North, ?South/)).toBeVisible();\n  await expect(cell(page, 'A2')).toHaveText('North');\n  await expect(page.getByLabel('Formula bar', { exact: true })).toHaveValue('North');\n\n  await page.reload();\n  await expect(cell(page, 'A2')).toHaveText('North');\n  await expect(cell(page, 'A2').getByRole('button', { name: 'Open dropdown for A2', exact: true })).toBeVisible();\n});",
+   "at": "t15-REQ-5.spec.cjs:74",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-5-2-1#2",
+   "name": "REQ-5-2-1 -the requested workflow",
+   "file": "t15-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t15-REQ-5.spec.cjs:84 (shared with 3 other test(s)).",
+   "source": "test('REQ-5-2-1#2: REQ-5-2-1 -the requested workflow', async ({ page }) => {\n  await createSalesWorkbook(page);\n\n  await enterCell(page, 'D1', 10);\n  await enterCell(page, 'D2', 20);\n  await enterCell(page, 'D3', 30);\n  await enterCell(page, 'D4', 40);\n\n  await setNumberRule(page, 'D1', 'D4', 0, 100);\n\n  await cell(page, 'D2').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('101');\n  await page.keyboard.press('Enter');\n\n  await expect(page.getByText('Please enter a number from 0 to 100', { exact: true })).toBeVisible();\n  await expect(cell(page, 'D2')).toHaveText('20');\n\n  await cell(page, 'D2').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('100');\n  await page.keyboard.press('Enter');\n  await expect(cell(page, 'D2')).toHaveText('100');\n\n  await page.reload();\n  await expect(cell(page, 'D2')).toHaveText('100');\n\n  await cell(page, 'D2').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('101');\n  await page.keyboard.press('Enter');\n  await expect(page.getByText('Please enter a number from 0 to 100', { exact: true })).toBeVisible();\n});",
+   "at": "t15-REQ-5.spec.cjs:84",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-5-2-1#3",
+   "name": "REQ-5-2-1 -the requested workflow",
+   "file": "t15-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t15-REQ-5.spec.cjs:84 (shared with 3 other test(s)).",
+   "source": "test('REQ-5-2-1#3: REQ-5-2-1 -the requested workflow', async ({ page }) => {\n  await createSalesWorkbook(page);\n\n  await enterCell(page, 'E1', 12);\n  await enterCell(page, 'E2', 13);\n\n  await setNumberRule(page, 'E1', 'E2', 10, 20);\n\n  await page.evaluate((t) => navigator.clipboard.writeText(t), '15\\n25');\n  await cell(page, 'E1').click({ position: { x: 2, y: 2 } });\n  await page.keyboard.press('Control+V');\n\n  await expect(page.getByText('Please enter a number between 10 and 20', { exact: true })).toBeVisible();\n  await expect(cell(page, 'E1')).toHaveText('12');\n  await expect(cell(page, 'E2')).toHaveText('13');\n\n  await page.evaluate((t) => navigator.clipboard.writeText(t), '15\\n16');\n  await cell(page, 'E1').click({ position: { x: 2, y: 2 } });\n  await page.keyboard.press('Control+V');\n\n  await expect(cell(page, 'E1')).toHaveText('15');\n  await expect(cell(page, 'E2')).toHaveText('16');\n\n  await page.reload();\n  await expect(cell(page, 'E1')).toHaveText('15');\n  await expect(cell(page, 'E2')).toHaveText('16');\n\n  await cell(page, 'E1').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('25');\n  await page.keyboard.press('Enter');\n  await expect(page.getByText('Please enter a number between 10 and 20', { exact: true })).toBeVisible();\n  await expect(cell(page, 'E1')).toHaveText('15');\n});",
+   "at": "t15-REQ-5.spec.cjs:84",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-5-2-1#4",
+   "name": "REQ-5-2-1 -the requested workflow",
+   "file": "t15-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t15-REQ-5.spec.cjs:74 (shared with 1 other test(s)).",
+   "source": "test('REQ-5-2-1#4: REQ-5-2-1 -the requested workflow', async ({ page }) => {\n  await createSalesWorkbook(page);\n\n  await setDropdownRule(page, 'A1', 'A2', 'Region,East,North,South');\n\n  await selectRange(page, 'A1', 'A2');\n  await openDataValidation(page);\n  const dlg = page.getByRole('dialog', { name: 'Data validation', exact: true });\n\n  await expect(dlg.getByLabel('Allowed values', { exact: true })).toHaveValue('Region,East,North,South');\n  await expect(dlg.getByRole('button', { name: 'Delete rule', exact: true })).toBeVisible();\n\n  await dlg.getByRole('button', { name: 'Delete rule', exact: true }).click();\n  await expect(dlg).toBeHidden();\n\n  await expect(page.getByRole('button', { name: 'Open dropdown for A1', exact: true })).toHaveCount(0);\n  await expect(cell(page, 'A1')).toHaveText('Region');\n  await expect(cell(page, 'A2')).toHaveText('East');\n\n  await page.reload();\n  await expect(page.getByRole('button', { name: 'Open dropdown for A1', exact: true })).toHaveCount(0);\n  await expect(cell(page, 'A2')).toHaveText('East');\n});",
+   "at": "t15-REQ-5.spec.cjs:74",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-5-2-1#5",
+   "name": "REQ-5-2-1 -the requested workflow",
+   "file": "t15-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t15-REQ-5.spec.cjs:84 (shared with 3 other test(s)).",
+   "source": "test('REQ-5-2-1#5: REQ-5-2-1 -the requested workflow', async ({ page }) => {\n  await createSalesWorkbook(page);\n\n  await enterCell(page, 'D1', 10);\n  await enterCell(page, 'D2', 20);\n\n  await setNumberRule(page, 'D1', 'D2', 0, 100);\n\n  await selectRange(page, 'D1', 'D2');\n  await openDataValidation(page);\n  const dlg = page.getByRole('dialog', { name: 'Data validation', exact: true });\n\n  await expect(dlg.getByLabel('Minimum', { exact: true })).toHaveValue('0');\n  await expect(dlg.getByLabel('Maximum', { exact: true })).toHaveValue('100');\n\n  await dlg.getByLabel('Minimum', { exact: true }).fill('10');\n  await dlg.getByLabel('Maximum', { exact: true }).fill('20');\n  await dlg.getByRole('button', { name: 'Save', exact: true }).click();\n  await expect(dlg).toBeHidden();\n\n  await cell(page, 'D1').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('50');\n  await page.keyboard.press('Enter');\n  await expect(page.getByText('Please enter a number between 10 and 20', { exact: true })).toBeVisible();\n  await expect(cell(page, 'D1')).toHaveText('10');\n\n  await cell(page, 'D1').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('15');\n  await page.keyboard.press('Enter');\n  await expect(cell(page, 'D1')).toHaveText('15');\n\n  await page.reload();\n  await expect(cell(page, 'D1')).toHaveText('15');\n\n  await cell(page, 'D1').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('25');\n  await page.keyboard.press('Enter');\n  await expect(page.getByText('Please enter a number between 10 and 20', { exact: true })).toBeVisible();\n});",
+   "at": "t15-REQ-5.spec.cjs:84",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-5-2-1#6",
+   "name": "REQ-5-2-1 -the requested workflow",
+   "file": "t15-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Blocked by helper:t15-REQ-5.spec.cjs:84 (shared with 3 other test(s)).",
+   "source": "test('REQ-5-2-1#6: REQ-5-2-1 -the requested workflow', async ({ page }) => {\n  await createSalesWorkbook(page);\n\n  await enterCell(page, 'D1', 50);\n  await setNumberRule(page, 'D1', 'D1', 0, 100);\n\n  await cell(page, 'D1').dblclick({ position: { x: 2, y: 2 } });\n  const edit = page.getByRole('textbox', { name: 'Edit D1', exact: true });\n  await expect(edit).toBeVisible();\n  await edit.fill('101');\n  await page.keyboard.press('Enter');\n\n  await expect(page.getByText('Please enter a number from 0 to 100', { exact: true })).toBeVisible();\n  await expect(cell(page, 'D1')).toHaveText('50');\n\n  await page.reload();\n  await expect(cell(page, 'D1')).toHaveText('50');\n\n  await cell(page, 'D1').dblclick({ position: { x: 2, y: 2 } });\n  await page.getByRole('textbox', { name: 'Edit D1', exact: true }).fill('101');\n  await page.keyboard.press('Enter');\n  await expect(page.getByText('Please enter a number from 0 to 100', { exact: true })).toBeVisible();\n});\n\n// Added by the suite runner: a helper that uses `page` without taking it as a parameter sees the running test's page.\nrequire('@playwright/test').test.beforeEach(async ({ page }) => { globalThis.page = page; });",
+   "at": "t15-REQ-5.spec.cjs:84",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-5-3-1 -the requested workflow Pivot1 the requested workflow Region the requested workflow Sales,the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "REQ-5-3-1 -the requested workflow,the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "REQ-5-3-1 -the requested workflow COUNT the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "REQ-5-3-1 -AVERAGE the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "REQ-5-3-1 -the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "REQ-5-3-1 -the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "REQ-5-3-1 -the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "REQ-5-3-1 -the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "REQ-5-3-1 -the requested workflow COUNT the requested workflow",
+   "name": "",
+   "file": "t16-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test file does not parse: Playwright cannot load it: 9\n> 255 | test('REQ-5-3-1 -the requested workflow COUNT the requested workflow', async ({ page }) => {\n      | ^\n  256 |   await createWorkbookWithData(page);\n  257 |   await createPivot(page, { rows: 'Region', values: 'Status', summarize: 'COUNT' });\n  258 |\nListing tests"
+  },
+  {
+   "id": "helper:t14-REQ-5.spec.cjs:46",
+   "name": "3 tests stop at the same helper line (REQ-5-1-2#2, REQ-5-1-2#3, REQ-5-1-2#5)",
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeHidden() failed\n\nLocator:  getByRole('button', { name: 'Filter Region', exact: true })\nExpected: hidden\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeHidden\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Filter Region', exact: true })\n    9 × locator resolved to <button data-col=\"1\" type=\"button\" class=\"filter-btn\" data-action=\"open-filter\" aria-label=\"Filter Region\">▾</button>\n      - unexpected value \"visible\"\n\n\n  44 |   await openDataMenu(page);\n  45 |   await clickMenuItem(page, 'Clear filter');\n> 46 |   await expect(filterRegionButton).toBeHidden();\n     |                                    ^\n  47 | }\n  48 |\n  49 | async func",
+   "steps": [],
+   "source": "test('REQ-5-1-2#2: REQ-5-1-2 -the requested workflow, the requested workflow,the requested workflow', async ({ page }) => {\n  await openSeedWorkbook(page);\n  await createFilter(page);\n\n  await applyConditionFilter(page, 'Status', 'Text contains', 'Open');\n  await expect(cell(page, 'B2')).toBeVisible();\n  await expect(cell(page, 'B3')).toBeHidden();\n  await expect(cell(page, 'B4')).toBeVisible();\n\n  await applyConditionFilter(page, 'Region', 'Is not empty');\n  await expect(cell(page, 'B2')).toBeVisible();\n  await expect(cell(page, 'B3')).toBeHidden();\n  await expect(cell(page, 'B4')).toBeVisible();\n\n  await applyConditionFilter(page, 'Sales', 'Is empty');\n  await expect(cell(page, 'B2')).toBeHidden();\n  await expect(cell(page, 'B3')).toBeHidden();\n  await expect(cell(page, 'B4')).toBeHidden();\n\n  await clearFilter(page);\n  await expect(cell(page, 'B2')).toHaveText('1200');\n  await expect(cell(page, 'B3')).toHaveText('800');\n  await expect(cell(page, 'B4')).toHaveText('700');\n\n  await page.reload();\n  await expect(cell(page, 'A1')).toBeVisible();\n  await expect(cell(page, 'B2')).toHaveText('1200');\n  await expect(cell(page, 'B3')).toHaveText('800');\n  await expect(cell(page, 'B4')).toHaveText('700');\n});",
+   "blocks": [
+    "REQ-5-1-2#2",
+    "REQ-5-1-2#3",
+    "REQ-5-1-2#5"
+   ],
+   "file": "t14-REQ-5.spec.cjs"
+  },
+  {
+   "id": "helper:t15-REQ-5.spec.cjs:74",
+   "name": "2 tests stop at the same helper line (REQ-5-2-1, REQ-5-2-1#4)",
+   "status": "fail",
+   "observation": "Error: locator.selectOption: Error: Element is not a <select> element\nCall log:\n  - waiting for getByRole('dialog', { name: 'Data validation', exact: true }).getByLabel('Rule type', { exact: true })\n    - locator resolved to <button type=\"button\" role=\"combobox\" id=\"cb-ruletype-1\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-ruletype-1-list\" aria-labelledby=\"cb-ruletype-1-label\" data-options=\"[{\"value\":\"Dropdown\",\"label\":\"Dropdown\"},{\"value\":\"Number range\",\"label\":\"Number range\"}]\">Dropdown</button>\n  - attempting select option action\n    - waiting for element to be visible and enabled\n\n\n  72 |   await openDataValidation(page);\n  73 |   const dlg",
+   "steps": [],
+   "source": "test('REQ-5-2-1: REQ-5-2-1 -the requested workflow A1:A2 the requested workflow,the requested workflow', async ({ page }) => {\n  await createSalesWorkbook(page);\n\n  await setDropdownRule(page, 'A1', 'A2', ' Region , East , North , South ');\n\n  await expect(cell(page, 'A1').getByRole('button', { name: 'Open dropdown for A1', exact: true })).toBeVisible();\n  await cell(page, 'A2').getByRole('button', { name: 'Open dropdown for A2', exact: true }).click();\n\n  await expect(page.getByRole('option', { name: 'Region', exact: true })).toBeVisible();\n  await expect(page.getByRole('option', { name: 'East', exact: true })).toBeVisible();\n  await expect(page.getByRole('option', { name: 'North', exact: true })).toBeVisible();\n  await expect(page.getByRole('option', { name: 'South', exact: true })).toBeVisible();\n\n  await page.getByRole('option', { name: 'North', exact: true }).click();\n  await expect(cell(page, 'A2')).toHaveText('North');\n\n  await page.getByLabel('Formula bar', { exact: true }).fill('West');\n  await page.keyboard.press('Enter');\n\n  await expect(page.getByText(/Please select one of the following values: Region, ?East, ?North, ?South/)).toBeVisible();\n  await expect(cell(page, 'A2')).toHaveText('North');\n  await expect(page.getByLabel('Formula bar', { exact: true })).toHaveValue('North');\n\n  await page.reload();\n  await expect(cell(page, 'A2')).toHaveText('North');\n  await expect(cell(page, 'A2').getByRole('button', { name: 'Open dropdown for A2', exact: true })).toBeVisible();\n});",
+   "blocks": [
+    "REQ-5-2-1",
+    "REQ-5-2-1#4"
+   ],
+   "file": "t15-REQ-5.spec.cjs"
+  },
+  {
+   "id": "helper:t15-REQ-5.spec.cjs:84",
+   "name": "4 tests stop at the same helper line (REQ-5-2-1#2, REQ-5-2-1#3, REQ-5-2-1#5, REQ-5-2-1#6)",
+   "status": "fail",
+   "observation": "Error: locator.selectOption: Error: Element is not a <select> element\nCall log:\n  - waiting for getByRole('dialog', { name: 'Data validation', exact: true }).getByLabel('Rule type', { exact: true })\n    - locator resolved to <button type=\"button\" role=\"combobox\" id=\"cb-ruletype-1\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-ruletype-1-list\" aria-labelledby=\"cb-ruletype-1-label\" data-options=\"[{\"value\":\"Dropdown\",\"label\":\"Dropdown\"},{\"value\":\"Number range\",\"label\":\"Number range\"}]\">Dropdown</button>\n  - attempting select option action\n    - waiting for element to be visible and enabled\n\n\n  82 |   await openDataValidation(page);\n  83 |   const dlg",
+   "steps": [],
+   "source": "test('REQ-5-2-1#2: REQ-5-2-1 -the requested workflow', async ({ page }) => {\n  await createSalesWorkbook(page);\n\n  await enterCell(page, 'D1', 10);\n  await enterCell(page, 'D2', 20);\n  await enterCell(page, 'D3', 30);\n  await enterCell(page, 'D4', 40);\n\n  await setNumberRule(page, 'D1', 'D4', 0, 100);\n\n  await cell(page, 'D2').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('101');\n  await page.keyboard.press('Enter');\n\n  await expect(page.getByText('Please enter a number from 0 to 100', { exact: true })).toBeVisible();\n  await expect(cell(page, 'D2')).toHaveText('20');\n\n  await cell(page, 'D2').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('100');\n  await page.keyboard.press('Enter');\n  await expect(cell(page, 'D2')).toHaveText('100');\n\n  await page.reload();\n  await expect(cell(page, 'D2')).toHaveText('100');\n\n  await cell(page, 'D2').click({ position: { x: 2, y: 2 } });\n  await page.getByLabel('Formula bar', { exact: true }).fill('101');\n  await page.keyboard.press('Enter');\n  await expect(page.getByText('Please enter a number from 0 to 100', { exact: true })).toBeVisible();\n});",
+   "blocks": [
+    "REQ-5-2-1#2",
+    "REQ-5-2-1#3",
+    "REQ-5-2-1#5",
+    "REQ-5-2-1#6"
+   ],
+   "file": "t15-REQ-5.spec.cjs"
+  }
+ ],
+ "invariants": [],
+ "coverage": {
+  "total": 100,
+  "parsed": 70
+ },
+ "seconds": 96.9
+}

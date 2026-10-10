@@ -1,0 +1,217 @@
+[
+  {
+    "id": "REQ-2-2-2#contract-1",
+    "requirement": "REQ-2-2-2",
+    "explanation": "Deleting a column must shift only subsequent columns left and must preserve data outside the deleted column. With cells A1='x', B1='y', A2='z', deleteLine('col',1,1) should delete B1 and leave A1='x', A2='z'. The actual implementation re-packs all surviving cells row-major, so it sets B1='z' and removes A2, corrupting the row structure.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "deleteLine",
+        "kind": "function",
+        "alias": "deleteLine"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "currentWb",
+        "kind": "function",
+        "alias": "currentWb"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "currentSheet",
+        "kind": "function",
+        "alias": "currentSheet"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "getWb",
+        "kind": "function",
+        "alias": "getWb"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "pushUndo",
+        "kind": "function",
+        "alias": "pushUndo"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "clearStatus",
+        "kind": "function",
+        "alias": "clearStatus"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "refRC",
+        "kind": "function",
+        "alias": "refRC"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "coordName",
+        "kind": "function",
+        "alias": "coordName"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "shiftFormula",
+        "kind": "function",
+        "alias": "shiftFormula"
+      }
+    ],
+    "subject": "deleteLine",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;globalThis.ARC={state:{workbooks:[],ui:{}},route:function(){return {name:'workbook',params:['wb1']};},save:function(){},render:function(){},uid:function(){return 'u';}};globalThis.document={getElementById:function(){return null;}};globalThis.clearTimeout=function(){};ARC.state.workbooks.push({id:'wb1',activeSheet:'sh1',sheets:[{id:'sh1',name:'Sheet1',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'x',B1:'y',A2:'z'}}]});",
+    "check": "deleteLine('col',1,1);var s=ARC.state.workbooks[0].sheets[0];assert.strictEqual(s.cells.A1,'x');assert.strictEqual(s.cells.A2,'z');assert.ok(!('B1' in s.cells));"
+  },
+  {
+    "id": "REQ-2-2-1#contract-2",
+    "requirement": "REQ-2-2-1",
+    "explanation": "A row/column change overlapping a pivot source range must leave the pivot unchanged until refresh, then refresh must recompute from the adjusted range. Inserting row 1 above a pivot source A1:B3 (Region/Sales, East/10, West/20) should move that source range to A2:B4. The implementation leaves pivot.range at A1:B3. After shiftStructure('row',0,1,true), computePivot reads the new blank row as the header and returns 'Pivot field is no longer available. Select a new field.' instead of a refreshed pivot.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "shiftStructure",
+        "kind": "function",
+        "alias": "shiftStructure"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "computePivot",
+        "kind": "function",
+        "alias": "computePivot"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "makeValues",
+        "kind": "function",
+        "alias": "makeValues"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "evaluateFormula",
+        "kind": "function",
+        "alias": "evaluateFormula"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "tokenizeFormula",
+        "kind": "function",
+        "alias": "tokenizeFormula"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "errObj",
+        "kind": "function",
+        "alias": "errObj"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "coordName",
+        "kind": "function",
+        "alias": "coordName"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "shiftFormula",
+        "kind": "function",
+        "alias": "shiftFormula"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "pushUndo",
+        "kind": "function",
+        "alias": "pushUndo"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "clearStatus",
+        "kind": "function",
+        "alias": "clearStatus"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "currentWb",
+        "kind": "function",
+        "alias": "currentWb"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "currentSheet",
+        "kind": "function",
+        "alias": "currentSheet"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "getWb",
+        "kind": "function",
+        "alias": "getWb"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "refRC",
+        "kind": "function",
+        "alias": "refRC"
+      }
+    ],
+    "subject": "shiftStructure",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;globalThis.ARC={state:{workbooks:[],ui:{}},route:function(){return {name:'workbook',params:['wb1']};},save:function(){},render:function(){},uid:function(){return 'u';}};globalThis.document={getElementById:function(){return null;}};globalThis.clearTimeout=function(){};ARC.state.workbooks.push({id:'wb1',activeSheet:'src',sheets:[{id:'src',name:'Data',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'Sales',A2:'East',B2:'10',A3:'West',B3:'20'}},{id:'pvt',name:'Pivot1',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'SUM of Sales',A2:'East',B2:'10',A3:'West',B3:'20'},pivot:{sourceSheet:'src',range:{r1:0,c1:0,r2:2,c2:1},rows:'Region',columns:'',values:'Sales',summarize:'SUM'}}]});",
+    "check": "shiftStructure('row',0,1,true);var w=ARC.state.workbooks[0];var p=w.sheets[1].pivot;var res=computePivot(w,p);assert.strictEqual(res.error,undefined);assert.strictEqual(res.cells.A1,'Region');"
+  },
+  {
+    "id": "REQ-4-1-2#contract-3",
+    "requirement": "REQ-4-1-2",
+    "explanation": "Copying a formula whose relative reference moves outside the worksheet must display =#REF!. In a 20-row sheet, adjustFormula('=A20',1,0) moves the row reference beyond row 20. The implementation returns '=A21' instead of '=#REF!' because it bounds-checks only columns and negative rows, not r >= ROW_COUNT.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "adjustFormula",
+        "kind": "function",
+        "alias": "adjustFormula"
+      }
+    ],
+    "subject": "adjustFormula",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;",
+    "check": "assert.strictEqual(adjustFormula('=A20',1,0),'=#REF!');"
+  },
+  {
+    "id": "REQ-4-2-2#contract-4",
+    "requirement": "REQ-4-2-2",
+    "explanation": "An invalid reference must display #REF!. U1 is outside the A-T worksheet columns, but evaluating '=U1' against a no-cell lookup returns 'null' instead of '#REF!'; single-cell references are looked up without checking reference bounds and empty cells produce null.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "evaluateFormula",
+        "kind": "function",
+        "alias": "evaluateFormula"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "tokenizeFormula",
+        "kind": "function",
+        "alias": "tokenizeFormula"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "errObj",
+        "kind": "function",
+        "alias": "errObj"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "coordName",
+        "kind": "function",
+        "alias": "coordName"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "makeValues",
+        "kind": "function",
+        "alias": "makeValues"
+      }
+    ],
+    "subject": "makeValues",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;",
+    "check": "assert.equal(makeValues({cells:{A1:'=T1',T1:'7'}})('A1').text,'7');assert.equal(makeValues({cells:{A1:'=U1'}})('A1').text,'#REF!');",
+    "fixture_correction": "Exercise the actual cell-value entrypoint; evaluateFormula accepts the body without the leading equals sign."
+  }
+]

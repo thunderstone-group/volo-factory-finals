@@ -1,0 +1,14 @@
+{
+  "status": "completed",
+  "finish_reason": "length",
+  "usage": {
+    "prompt_tokens": 81411,
+    "completion_tokens": 16384
+  },
+  "content_chars": 0,
+  "file_markers": 0,
+  "seconds": 260.6,
+  "estimated_cost_cny": 0.06460144,
+  "model": "glm-5.3-flash",
+  "reasoning_effort": "low"
+}

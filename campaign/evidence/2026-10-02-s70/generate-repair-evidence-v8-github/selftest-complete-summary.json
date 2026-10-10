@@ -1,0 +1,25 @@
+{
+  "stages": [
+    {
+      "stage": 1,
+      "id": "fc4dccd6-ecee-47a1-9061-7301a532a8cb",
+      "passed": 25,
+      "total": 30
+    },
+    {
+      "stage": 2,
+      "id": "527180b8-f706-49bf-b010-464608556a2b",
+      "passed": 26,
+      "total": 29
+    },
+    {
+      "stage": 3,
+      "id": "db4cf5d4-085f-4a75-9b0e-e73eb788b781",
+      "passed": 29,
+      "total": 41
+    }
+  ],
+  "passed": 80,
+  "total": 100,
+  "is_formal": false
+}

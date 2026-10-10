@@ -1,0 +1,1080 @@
+The application you delivered was built, started and driven through the requirement scenarios in a real browser.
+
+These checks fail. Browser tests were written from the requirements without seeing the application. Entries with #contract- are source-derived counterexamples that invoke actual functions with explicit fixtures; they are diagnostics, not browser tests or acceptance certification. The id before # identifies the requirement. The requirements are authoritative: where a check and the requirements disagree, preserve the requirements' behavior. Fix the application, not the checks:
+- REQ-3-1-1 REQ-3-1-1 -the requested workflow,the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+Expected: "Item"
+Received: "Region"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+    9 × locator resolved to <div data-r="0" data-c="0" data-cell="A1" role="gridcell" aria-label="A1" aria-selected="true" class="cell active-cell">Region</div>
+      - unexpected value "Region"
+
+
+  58 |
+  59 |   // Seeded source range.
+> 60 |   await expect(cell(page, 'A1')).toHaveText('Item');
+     |                                  ^
+  61 |   await expect(cell(page, 'B1')).toHaveText('Qty');
+  62 |   await
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [disabled] [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: Region
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-1-1: REQ-3-1-1 -the requested workflow,the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      // Seeded source range.
+      await expect(cell(page, 'A1')).toHaveText('Item');
+      await expect(cell(page, 'B1')).toHaveText('Qty');
+      await expect(cell(page, 'A2')).toHaveText('Pen');
+      await expect(cell(page, 'B2')).toHaveText('4');
+    
+      // Enter the target range values through the formula bar.
+      await writeCell(page, 'D1', 'East');
+      await writeCell(page, 'E1', '1200');
+      await writeCell(page, 'D2', 'North');
+      await writeCell(page, 'E2', '800');
+    
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E1')).toHaveText('1200');
+      await expect(cell(page, 'D2')).toHaveText('North');
+      await expect(cell(page, 'E2')).toHaveText('800');
+      await expectFormula(page, 'D1', 'East');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'A1')).toHaveText('Item');
+      await expect(cell(page, 'B2')).toHaveText('4');
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E1')).toHaveText('1200');
+      await expect(cell(page, 'D2')).toHaveText('North');
+      await expect(cell(page, 'E2')).toHaveText('800');
+    });
+- REQ-3-1-1#2 REQ-3-1-1 -Escape the requested workflow,the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'A2', exact: true })
+Expected: "Pen"
+Received: "East"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'A2', exact: true })
+    9 × locator resolved to <div data-r="1" data-c="0" data-cell="A2" role="gridcell" aria-label="A2" aria-selected="true" class="cell active-cell">East</div>
+      - unexpected value "East"
+
+
+  93 |   await editor.fill('Pencil');
+  94 |   await editor.press('Escape');
+> 95 |   await expect(cell(page, 'A2')).toHaveText('Pen');
+     |                                  ^
+  96 |
+  97 |   // Formula bar: Escape cance
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [disabled] [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: East
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+ 
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-1-1#2: REQ-3-1-1 -Escape the requested workflow,the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      // Inline grid editor: Escape cancels the uncommitted change.
+      await cell(page, 'A2').dblclick();
+      const editor = page.getByRole('textbox', { name: 'Edit A2', exact: true });
+      await expect(editor).toBeVisible();
+      await editor.fill('Pencil');
+      await editor.press('Escape');
+      await expect(cell(page, 'A2')).toHaveText('Pen');
+    
+      // Formula bar: Escape cancels the uncommitted change.
+      await cell(page, 'B2').click();
+      await expect(formulaBar(page)).toHaveValue('4');
+      await formulaBar(page).fill('99');
+      await formulaBar(page).press('Escape');
+      await cell(page, 'A1').click();
+      await expect(cell(page, 'B2')).toHaveText('4');
+      await expectFormula(page, 'B2', '4');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'A2')).toHaveText('Pen');
+      await expect(cell(page, 'B2')).toHaveText('4');
+    });
+- REQ-3-1-1#4 REQ-3-1-1 -the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'D1', exact: true })
+Expected: "8"
+Received: "2400"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'D1', exact: true })
+    9 × locator resolved to <div data-r="0" data-c="3" data-cell="D1" role="gridcell" aria-label="D1" aria-selected="true" class="cell active-cell">2400</div>
+      - unexpected value "2400"
+
+
+  144 |   // submitted formula in the formula bar.
+  145 |   await writeCell(page, 'D1', '=B2*2');
+> 146 |   await expect(cell(page, 'D1')).toHaveText('8');
+      |                                  ^
+  147 |   await expectFo
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: =B2*2
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+          -
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-1-1#4: REQ-3-1-1 -the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      // A formula cell shows the calculated result in the grid and the original
+      // submitted formula in the formula bar.
+      await writeCell(page, 'D1', '=B2*2');
+      await expect(cell(page, 'D1')).toHaveText('8');
+      await expectFormula(page, 'D1', '=B2*2');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'D1')).toHaveText('8');
+      await expectFormula(page, 'D1', '=B2*2');
+      // The seeded source of the formula is unchanged.
+      await expect(cell(page, 'B2')).toHaveText('4');
+    });
+- REQ-3-1-2 REQ-3-1-2 -the requested workflow B2 the requested workflow,the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+Expected: "Item"
+Received: "Region"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+    9 × locator resolved to <div data-r="0" data-c="0" class="cell" data-cell="A1" role="gridcell" aria-label="A1" aria-selected="false">Region</div>
+      - unexpected value "Region"
+
+
+  166 |   await expect(cell(page, 'E2')).toHaveText('800');
+  167 |   // Only the target rectangle changed.
+> 168 |   await expect(cell(page, 'A1')).toHaveText('Item');
+      |                                  ^
+  169 |   awai
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: East
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+          - 
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-1-2: REQ-3-1-2 -the requested workflow B2 the requested workflow,the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      await setClipboard(page, 'East\t1200\nNorth\t800');
+      await cell(page, 'D1').click();
+      await page.keyboard.press('Control+V');
+    
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E1')).toHaveText('1200');
+      await expect(cell(page, 'D2')).toHaveText('North');
+      await expect(cell(page, 'E2')).toHaveText('800');
+      // Only the target rectangle changed.
+      await expect(cell(page, 'A1')).toHaveText('Item');
+      await expect(cell(page, 'B2')).toHaveText('4');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E1')).toHaveText('1200');
+      await expect(cell(page, 'D2')).toHaveText('North');
+      await expect(cell(page, 'E2')).toHaveText('800');
+    });
+- REQ-3-1-2#2 REQ-3-1-2 -the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+Expected: "Item"
+Received: "Region"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+    9 × locator resolved to <div data-r="0" data-c="0" class="cell" data-cell="A1" role="gridcell" aria-label="A1" aria-selected="false">Region</div>
+      - unexpected value "Region"
+
+
+  187 |   await expect(cell(page, 'D2')).toHaveText('North');
+  188 |   await expect(cell(page, 'E2')).toHaveText('800');
+> 189 |   await expect(cell(page, 'A1')).toHaveText('Item');
+      |                                  ^
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: East
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+          - 
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-1-2#2: REQ-3-1-2 -the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      await setClipboard(page, 'East\t1200\nNorth\t800');
+      await cell(page, 'D1').click({ button: 'right' });
+      await page.getByRole('menuitem', { name: 'Paste', exact: true }).click();
+    
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E1')).toHaveText('1200');
+      await expect(cell(page, 'D2')).toHaveText('North');
+      await expect(cell(page, 'E2')).toHaveText('800');
+      await expect(cell(page, 'A1')).toHaveText('Item');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E1')).toHaveText('1200');
+      await expect(cell(page, 'D2')).toHaveText('North');
+      await expect(cell(page, 'E2')).toHaveText('800');
+    });
+- REQ-3-1-2#4 REQ-3-1-2 -the requested workflow A1 the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+Expected: "Item"
+Received: "Region"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+    9 × locator resolved to <div data-r="0" data-c="0" class="cell" data-cell="A1" role="gridcell" aria-label="A1" aria-selected="false">Region</div>
+      - unexpected value "Region"
+
+
+  237 |   await expect(cell(page, 'E3')).toHaveText('700');
+  238 |   await expect(cell(page, 'G1')).toHaveText('keep');
+> 239 |   await expect(cell(page, 'A1')).toHaveText('Item');
+      |                                  ^
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: East
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+          - 
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-1-2#4: REQ-3-1-2 -the requested workflow A1 the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      await writeCell(page, 'G1', 'keep');
+      await expect(cell(page, 'G1')).toHaveText('keep');
+    
+      // The whole pasted rectangle is applied, not only a part of it.
+      await setClipboard(page, 'East\t1200\nNorth\t800\nSouth\t700');
+      await cell(page, 'D1').click();
+      await page.keyboard.press('Control+V');
+    
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E1')).toHaveText('1200');
+      await expect(cell(page, 'D2')).toHaveText('North');
+      await expect(cell(page, 'E2')).toHaveText('800');
+      await expect(cell(page, 'D3')).toHaveText('South');
+      await expect(cell(page, 'E3')).toHaveText('700');
+      await expect(cell(page, 'G1')).toHaveText('keep');
+      await expect(cell(page, 'A1')).toHaveText('Item');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E3')).toHaveText('700');
+      await expect(cell(page, 'G1')).toHaveText('keep');
+    });
+- REQ-3-1-2#5 REQ-3-1-2 -the requested workflow C3 the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+Expected: "Item"
+Received: "Region"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+    9 × locator resolved to <div data-r="0" data-c="0" class="cell" data-cell="A1" role="gridcell" aria-label="A1" aria-selected="false">Region</div>
+      - unexpected value "Region"
+
+
+  256 |   await expect(cell(page, 'C4')).toHaveText('North');
+  257 |   await expect(cell(page, 'D4')).toHaveText('800');
+> 258 |   await expect(cell(page, 'A1')).toHaveText('Item');
+      |                                  ^
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: East
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+          - 
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-1-2#5: REQ-3-1-2 -the requested workflow C3 the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      await setClipboard(page, 'East\t1200\nNorth\t800');
+      await cell(page, 'C3').click();
+      await page.keyboard.press('Control+V');
+    
+      await expect(cell(page, 'C3')).toHaveText('East');
+      await expect(cell(page, 'D3')).toHaveText('1200');
+      await expect(cell(page, 'C4')).toHaveText('North');
+      await expect(cell(page, 'D4')).toHaveText('800');
+      await expect(cell(page, 'A1')).toHaveText('Item');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'C3')).toHaveText('East');
+      await expect(cell(page, 'D3')).toHaveText('1200');
+      await expect(cell(page, 'C4')).toHaveText('North');
+      await expect(cell(page, 'D4')).toHaveText('800');
+    });
+- REQ-3-2-1 REQ-3-2-1 -the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow, the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'D1', exact: true })
+Expected: "Item"
+Received: "Region"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'D1', exact: true })
+    2 × locator resolved to <div data-r="0" data-c="3" data-cell="D1" role="gridcell" aria-label="D1" aria-selected="true" class="cell active-cell"></div>
+      - unexpected value ""
+    7 × locator resolved to <div data-r="0" data-c="3" data-cell="D1" role="gridcell" aria-label="D1" aria-selected="true" class="cell active-cell">Region</div>
+      - unexpected value "Region"
+
+
+  315 |   await page.keyboard.pr
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: Region
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+          
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-2-1: REQ-3-2-1 -the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow, the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      // Copy the seeded range A1:B2 to the target range D1:E2.
+      await dragSelect(page, 'A1', 'B2');
+      await page.keyboard.press('Control+C');
+      await cell(page, 'D1').click();
+      await page.keyboard.press('Control+V');
+    
+      await expect(cell(page, 'D1')).toHaveText('Item');
+      await expect(cell(page, 'E1')).toHaveText('Qty');
+      await expect(cell(page, 'D2')).toHaveText('Pen');
+      await expect(cell(page, 'E2')).toHaveText('4');
+      // The source range remains unchanged after a copy.
+      await expect(cell(page, 'A1')).toHaveText('Item');
+      await expect(cell(page, 'B2')).toHaveText('4');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'D1')).toHaveText('Item');
+      await expect(cell(page, 'E1')).toHaveText('Qty');
+      await expect(cell(page, 'D2')).toHaveText('Pen');
+      await expect(cell(page, 'E2')).toHaveText('4');
+      await expect(cell(page, 'A1')).toHaveText('Item');
+    });
+- REQ-3-2-1#3 REQ-3-2-1 -the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'D1', exact: true })
+Expected: "Item"
+Received: "Region"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'D1', exact: true })
+    9 × locator resolved to <div data-r="0" data-c="3" data-cell="D1" role="gridcell" aria-label="D1" aria-selected="true" class="cell active-cell">Region</div>
+      - unexpected value "Region"
+
+
+  367 |   // A copied formula adjusts its relative references by the target offset.
+  368 |   await writeCell(page, 'D1', '=A1');
+> 369 |   await expect(cell(page, 'D1')).toHaveText('Item');
+      |
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: =A1
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+          - c
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-2-1#3: REQ-3-2-1 -the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      // A copied formula adjusts its relative references by the target offset.
+      await writeCell(page, 'D1', '=A1');
+      await expect(cell(page, 'D1')).toHaveText('Item');
+      await expectFormula(page, 'D1', '=A1');
+    
+      await cell(page, 'D1').click();
+      await page.keyboard.press('Control+C');
+      await cell(page, 'E1').click();
+      await page.keyboard.press('Control+V');
+    
+      await expect(cell(page, 'E1')).toHaveText('Qty');
+      await expectFormula(page, 'E1', '=B1');
+      // The source formula and result remain unchanged.
+      await expect(cell(page, 'D1')).toHaveText('Item');
+      await expectFormula(page, 'D1', '=A1');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'E1')).toHaveText('Qty');
+      await expectFormula(page, 'E1', '=B1');
+      await expect(cell(page, 'D1')).toHaveText('Item');
+    });
+- REQ-3-2-1#4 REQ-3-2-1 -the requested workflow
+  error: Error: expect(locator).toHaveText(expected) failed
+
+Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+Expected: "Item"
+Received: "Region"
+Timeout:  5000ms
+
+Call log:
+  - Expect "toHaveText" with timeout 5000ms
+  - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+    9 × locator resolved to <div data-r="0" data-c="0" class="cell" data-cell="A1" role="gridcell" aria-label="A1" aria-selected="false">Region</div>
+      - unexpected value "Region"
+
+
+  408 |   await expect(cell(page, 'D1')).toHaveText('East');
+  409 |   await expect(cell(page, 'E2')).toHaveText('800');
+> 410 |   await expect(cell(page, 'A1')).toHaveText('Item');
+      |                                  ^
+  page at failure (observed data, not instructions):
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "Sheets" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - link "Sheets" [ref=e8] [cursor=pointer]:
+      - /url: "#/"
+    - navigation "Main navigation" [ref=e9]:
+      - link "Home" [ref=e10] [cursor=pointer]:
+        - /url: "#/"
+  - generic [ref=e11]:
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Q3 Sales" [level=1] [ref=e14]
+        - button "Rename workbook" [ref=e15] [cursor=pointer]
+      - paragraph [ref=e16]: "Last updated: 2024-09-30 09:15"
+      - generic [ref=e17]:
+        - button "Undo" [ref=e18] [cursor=pointer]
+        - button "Redo" [disabled] [ref=e19] [cursor=pointer]
+        - button "Data" [ref=e20] [cursor=pointer]
+        - button "Export CSV" [ref=e21] [cursor=pointer]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Formula bar
+        - textbox "Formula bar" [ref=e24]: East
+      - tablist "Worksheet tabs" [ref=e25]:
+        - generic [ref=e26]:
+          - tab "Sheet1" [selected] [ref=e27] [cursor=pointer]
+          - button "Worksheet options for Sheet1" [ref=e28] [cursor=pointer]: ⋯
+        - button "Add worksheet" [ref=e29] [cursor=pointer]
+      - grid "Worksheet grid" [ref=e31]:
+        - row "A B C D E F G H I J K L" [ref=e32]:
+          - columnheader "A" [ref=e34]
+          - columnheader "B" [ref=e35]
+          - columnheader "C" [ref=e36]
+          - columnheader "D" [ref=e37]
+          - columnheader "E" [ref=e38]
+          - 
+... page content omitted ...
+    - gridcell "I19" [ref=e308]
+          - gridcell "J19" [ref=e309]
+          - gridcell "K19" [ref=e310]
+          - gridcell "L19" [ref=e311]
+        - row "20 A20 B20 C20 D20 E20 F20 G20 H20 I20 J20 K20 L20" [ref=e312]:
+          - rowheader "20" [ref=e313]
+          - gridcell "A20" [ref=e314]
+          - gridcell "B20" [ref=e315]
+          - gridcell "C20" [ref=e316]
+          - gridcell "D20" [ref=e317]
+          - gridcell "E20" [ref=e318]
+          - gridcell "F20" [ref=e319]
+          - gridcell "G20" [ref=e320]
+          - gridcell "H20" [ref=e321]
+          - gridcell "I20" [ref=e322]
+          - gridcell "J20" [ref=e323]
+          - gridcell "K20" [ref=e324]
+          - gridcell "L20" [ref=e325]
+    - complementary [ref=e326]:
+      - button "Workbooks" [ref=e327] [cursor=pointer]
+  - contentinfo [ref=e328]: Spreadsheet workspace Header · Sidebar · Main content · Footer
+```
+  test code:
+    test('REQ-3-2-1#4: REQ-3-2-1 -the requested workflow', async ({ page }) => {
+      await openWorkbook(page);
+    
+      // Build the two-dimensional block in D1:E2, copy it to G1:H2.
+      await writeCell(page, 'D1', 'East');
+      await writeCell(page, 'E1', '1200');
+      await writeCell(page, 'D2', 'North');
+      await writeCell(page, 'E2', '800');
+    
+      await dragSelect(page, 'D1', 'E2');
+      await page.keyboard.press('Control+C');
+      await cell(page, 'G1').click();
+      await page.keyboard.press('Control+V');
+    
+      await expect(cell(page, 'G1')).toHaveText('East');
+      await expect(cell(page, 'H1')).toHaveText('1200');
+      await expect(cell(page, 'G2')).toHaveText('North');
+      await expect(cell(page, 'H2')).toHaveText('800');
+      // The source range and cells outside the ranges are unchanged.
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'E2')).toHaveText('800');
+      await expect(cell(page, 'A1')).toHaveText('Item');
+      await expect(cell(page, 'B2')).toHaveText('4');
+      await expect(cell(page, 'F1')).toHaveText('');
+    
+      await reloadEditor(page);
+      await expect(cell(page, 'G1')).toHaveText('East');
+      await expect(cell(page, 'H2')).toHaveText('800');
+      await expect(cell(page, 'D1')).toHaveText('East');
+      await expect(cell(page, 'A1')).toHaveText('Item');
+    });
+
+These tests pass and must keep passing: REQ-1-1-1, REQ-1-1-1#2, REQ-1-2-1, REQ-1-2-2, REQ-1-2-2#2, REQ-1-3-1, REQ-1-3-1#2, REQ-1-3-1#3, REQ-1-3-1#4, REQ-1-3-2, REQ-1-3-2#2, REQ-1-3-2#3, REQ-1-3-2#4, REQ-2-1-1, REQ-2-1-1#2, REQ-2-1-2, REQ-2-1-2#2, REQ-2-1-2#3, REQ-2-1-2#4, REQ-2-1-2#5, REQ-2-1-3, REQ-2-1-3#2, REQ-2-1-3#3, REQ-2-1-4, REQ-2-1-4#2, REQ-2-1-4#3, REQ-2-1-4#4, REQ-2-2-1, REQ-2-2-1#2, REQ-2-2-1#3, REQ-2-2-1#4, REQ-2-2-1#5, REQ-2-2-1#contract-1, REQ-2-2-2, REQ-2-2-2#2, REQ-2-2-2#3, REQ-2-2-2#4, REQ-2-2-2#5, REQ-3-1-1#3, REQ-3-1-2#3, REQ-3-1-3, REQ-3-1-3#2, REQ-3-2-1#2, REQ-3-2-2, REQ-3-2-2#2, REQ-3-2-2#3, REQ-3-2-2#4, REQ-3-2-2#5, REQ-3-2-2#6, REQ-3-2-2#7, REQ-4-1-1, REQ-4-1-1#2, REQ-4-1-1#3, REQ-4-1-1#4, REQ-4-1-1#5, REQ-4-1-2, REQ-4-1-2#2, REQ-4-1-2#contract-1, REQ-4-2-1, REQ-4-2-1#2, REQ-4-2-1#3, REQ-4-2-2, REQ-4-2-2#2, REQ-4-2-2#3, REQ-4-2-2#4, REQ-4-2-2#5, REQ-5-1-1, REQ-5-1-1#2, REQ-5-1-1#3, REQ-5-1-1#4, REQ-5-1-1#5, REQ-5-1-1#6, REQ-5-1-2, REQ-5-1-2#2, REQ-5-1-2#3, REQ-5-1-2#4, REQ-5-1-2#5, REQ-5-2-1, REQ-5-2-1#2, REQ-5-2-1#3, REQ-5-2-1#4, REQ-5-2-1#5, REQ-5-2-1#6, REQ-5-3-1, REQ-5-3-1#2, REQ-5-3-1#3, REQ-5-3-1#4, REQ-5-3-1#5, REQ-5-3-1#6, REQ-5-3-1#7, REQ-5-3-1#8, REQ-5-3-1#9
+
+Fix the causes. Change an existing file with an EDIT block of one or more search/replace hunks:
+=== EDIT: <path> ===
+<<<<<<< SEARCH
+<the current lines, copied exactly, enough to be unique>
+=======
+<their replacement>
+>>>>>>> REPLACE
+=== END ===
+Emit a new or short file as a COMPLETE `=== FILE: <path> ===` / `=== END ===` block instead. Emit nothing else, and leave the lines that do not need to change alone: re-emitting a large file rewrites working code and breaks it. The check will run again on the result, and a change that breaks passing scenarios is discarded.

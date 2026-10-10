@@ -1,0 +1,23 @@
+{
+  "calls": 2,
+  "draft_call_limit": 4,
+  "repair_call_limit": 2,
+  "completed_calls": 2,
+  "failed_calls": 0,
+  "failure_limit": 1,
+  "refused_calls": 0,
+  "known_prompt_tokens": 72802,
+  "prompt_tokens": 72802,
+  "known_completion_tokens": 148387,
+  "completion_tokens": 148387,
+  "unknown_usage_calls": [],
+  "estimated_cost_cny": 0.623199,
+  "estimated_repair_cost_cny": 0.623199,
+  "repair_cny_limit": 2.0,
+  "side_calls": 0,
+  "fallback_model": null,
+  "calls_by_model": {
+    "deepseek-v4-flash-vision-exp": 2
+  },
+  "billing_status": "tokens_reported_cost_not_estimated"
+}

@@ -1,0 +1,10 @@
+{
+  "counts": {
+    "pass": 91,
+    "fail": 8,
+    "error": 2
+  },
+  "seconds": 87.0,
+  "unavailable": null,
+  "model_calls": 0
+}

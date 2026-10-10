@@ -1,0 +1,541 @@
+{
+  "usage": {
+    "billing_status": "unknown",
+    "calls": 10,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 10
+    },
+    "completed_calls": 8,
+    "completion_tokens": null,
+    "draft_call_limit": 4,
+    "estimated_cost_cny": 2.859893,
+    "estimated_repair_cost_cny": 1.603817,
+    "failed_calls": 2,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 374936,
+    "known_prompt_tokens": 904586,
+    "prompt_tokens": null,
+    "refused_calls": 0,
+    "repair_call_limit": 24,
+    "repair_cny_limit": 10.0,
+    "side_calls": 6,
+    "unknown_usage_calls": [
+      1,
+      3
+    ]
+  },
+  "smoke": {
+    "executed": true,
+    "problems": [
+      "5 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “-invalid-demo” appears only as `// validation messages: not-an-email, short, different, -inv`; “not-an-email” appears only as `// validation messages: not-an-email, short, different, -inv`; “Valid-password-123!-incorrect” appears only as `// Valid-password-123!-incorrect, Valid-password-123!-wrong,`; “unknown@example.test” appears only as `// -invalid-organization, invalid.username@example.test, unk`; “src” appears only as `script src=`",
+      "3 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"commit history\", \"code search\", \"must not be saved\""
+    ],
+    "vocabulary_missing": 3,
+    "scenarios": {
+      "counts": {
+        "pass": 100,
+        "fail": 4
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      },
+      "seconds": 22.4,
+      "source_contracts": {
+        "fail": 4
+      },
+      "failing": [
+        {
+          "id": "REQ-2-2#contract-1",
+          "observation": "removing the last Owner of an organization must be rejected and keep all relationships unchanged"
+        },
+        {
+          "id": "REQ-4-4#contract-1",
+          "observation": "a Read-only account must not submit file changes, create commits, or advance the branch head"
+        },
+        {
+          "id": "REQ-5-2-1#contract-1",
+          "observation": "a Read-only account must not be able to create issues"
+        },
+        {
+          "id": "REQ-6-6#contract-1",
+          "observation": "Merged is terminal: the close transition must not change the PR status"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "repair": {
+      "accepted": true,
+      "reason": "4 more scenario(s) pass",
+      "files": [
+        "frontend/public/seed.js",
+        "frontend/public/app.js"
+      ]
+    },
+    "browser_before": [
+      {
+        "executed": true,
+        "diagnostic_only": true,
+        "errors": [],
+        "page_errors": [],
+        "actions": [
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Overview",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Agree to the terms",
+            "action": ""
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          }
+        ],
+        "screens": [
+          "#/",
+          "#/signin",
+          "#/signup",
+          "#/org/acme-demo",
+          "#/r/acme-demo/acme-docs",
+          "#/r/alice-dev/branch-switch-demo",
+          "#/r/alice-dev/default-branch-demo",
+          "#/r/alice-dev/file-management-demo",
+          "#/r/alice-dev/branch-protection-demo",
+          "#/r/fork-user/acme-docs-fork",
+          "#/forgot",
+          "#/org/acme-demo/repositories"
+        ],
+        "browser": "143.0.7499.4",
+        "playwright": "1.57.0"
+      }
+    ],
+    "tests": {
+      "seconds": 494.1,
+      "calls": 6,
+      "cost_cny": 0.581114,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 14
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 16
+        },
+        {
+          "file": "t06-REQ-6.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 25
+        }
+      ],
+      "source_contracts": 4,
+      "used": true
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-2#contract-1",
+          "REQ-4-4#contract-1",
+          "REQ-5-2-1#contract-1",
+          "REQ-6-6#contract-1"
+        ],
+        "passing_before": 100,
+        "accepted": true,
+        "gained": [
+          "REQ-2-2#contract-1",
+          "REQ-4-4#contract-1",
+          "REQ-5-2-1#contract-1",
+          "REQ-6-6#contract-1"
+        ],
+        "reason": "4 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 104
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 100
+          },
+          "seconds": 23.0,
+          "source_contracts": {
+            "pass": 4
+          },
+          "failing": [],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Overview",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/org/acme-demo",
+              "#/r/acme-demo/acme-docs",
+              "#/r/alice-dev/branch-switch-demo",
+              "#/r/alice-dev/default-branch-demo",
+              "#/r/alice-dev/file-management-demo",
+              "#/r/alice-dev/branch-protection-demo",
+              "#/r/fork-user/acme-docs-fork",
+              "#/forgot",
+              "#/org/acme-demo/repositories"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/seed.js",
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 135.0,
+        "cost_cny": 0.149668
+      }
+    ],
+    "problems_after": [],
+    "scenarios_after": {
+      "counts": {
+        "pass": 104
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      },
+      "seconds": 23.0,
+      "source_contracts": {
+        "pass": 4
+      },
+      "failing": [],
+      "invariants": [],
+      "translation": {}
+    },
+    "before_source_review": {
+      "stopped": null,
+      "scenarios_after": {
+        "counts": {
+          "pass": 100
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        },
+        "seconds": 22.5,
+        "source_contracts": {},
+        "failing": [],
+        "invariants": [],
+        "translation": {}
+      },
+      "tests": {
+        "seconds": 494.1,
+        "calls": 6,
+        "cost_cny": 0.581114,
+        "scenarios": 100,
+        "tests": 100,
+        "audit_checks": 0,
+        "audit_errors": 0,
+        "files": [
+          {
+            "file": "t01-REQ-1.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t02-REQ-2.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t03-REQ-3.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 14
+          },
+          {
+            "file": "t04-REQ-4.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t05-REQ-5.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 16
+          },
+          {
+            "file": "t06-REQ-6.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 25
+          }
+        ],
+        "used": true
+      },
+      "rounds": 4
+    },
+    "source_review": {
+      "proposed": 4,
+      "probes": 4,
+      "results": [
+        {
+          "id": "REQ-2-2#contract-1",
+          "status": "fail",
+          "calls": {
+            "confirmRemoveMember": 2,
+            "list": 6,
+            "S": 6
+          },
+          "assertions": 3,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "removing the last Owner of an organization must be rejected and keep all relationships unchanged",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: removing the last Owner of an organization must be rejected and keep all relationships unchanged\n    at Object.apply (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/contract_runner.cjs:11:62)\n    at evalmachine.<anonymous>:10:1\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-4-4#contract-1",
+          "status": "fail",
+          "calls": {
+            "createFile": 1,
+            "repoById": 1,
+            "list": 7,
+            "S": 7,
+            "UI": 1,
+            "entriesAt": 1,
+            "filesAt": 1,
+            "branchHead": 1,
+            "branchList": 1,
+            "uid": 2,
+            "cur": 1,
+            "repoBase": 1,
+            "ownerName": 1,
+            "username": 1,
+            "userById": 1
+          },
+          "assertions": 1,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "a Read-only account must not submit file changes, create commits, or advance the branch head",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: a Read-only account must not submit file changes, create commits, or advance the branch head\n    at Object.apply (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/contract_runner.cjs:11:62)\n    at evalmachine.<anonymous>:10:1\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-5-2-1#contract-1",
+          "status": "fail",
+          "calls": {
+            "createIssue": 1,
+            "repoById": 1,
+            "list": 4,
+            "S": 4,
+            "UI": 1,
+            "uid": 2,
+            "cur": 2,
+            "repoBase": 1,
+            "ownerName": 1,
+            "orgById": 1
+          },
+          "assertions": 1,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "a Read-only account must not be able to create issues",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: a Read-only account must not be able to create issues\n    at Object.apply (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/contract_runner.cjs:11:62)\n    at evalmachine.<anonymous>:6:1\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-6-6#contract-1",
+          "status": "fail",
+          "calls": {
+            "confirmMerge": 1,
+            "closePr": 1,
+            "findPR": 2,
+            "list": 8,
+            "S": 8,
+            "repoById": 1,
+            "mergeReasons": 1,
+            "protectionFor": 1,
+            "branchHead": 2,
+            "branchList": 2,
+            "cur": 2,
+            "hexCommitId": 1,
+            "uid": 2
+          },
+          "assertions": 2,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Merged is terminal: the close transition must not change the PR status",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: Merged is terminal: the close transition must not change the PR status\n    at Object.apply (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/contract_runner.cjs:11:62)\n    at evalmachine.<anonymous>:8:1\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        }
+      ],
+      "skipped": null,
+      "seconds": 511.9,
+      "calls": 3,
+      "cost_cny": 0.50887
+    }
+  }
+}

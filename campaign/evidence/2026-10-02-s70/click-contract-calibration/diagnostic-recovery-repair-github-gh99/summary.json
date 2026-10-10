@@ -1,0 +1,10 @@
+{
+  "application": "diagnostic-recovery-repair-github",
+  "judge": "gh99",
+  "counts": {
+    "error": 15,
+    "pass": 72,
+    "fail": 14
+  },
+  "seconds": 164.0
+}

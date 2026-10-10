@@ -1,0 +1,214 @@
+```js
+// @ts-check
+const { test, expect } = require('@playwright/test');
+
+test.use({ browserName: 'chromium' });
+
+/**
+ * REQ-5-1-1 — sorting a selected data range by a specified column.
+ *
+ * The workbook is built through the public "Import CSV" flow so that the
+ * sorted range contains tied sort keys ("a", "b") paired with distinguishable
+ * records, plus one record that lives outside the selection.
+ */
+
+const CSV_CONTENT = [
+  'Key,Record',
+  'b,Alpha',
+  'a,Bravo',
+  'b,Charlie',
+  'a,Delta',
+  'b,Echo',
+  'zzz,Untouched',
+].join('\n');
+
+// The sort key column uses the header text as the option name.
+const SORT_COLUMN = 'Key';
+
+// All key values that can appear in the key column.
+const KEY_VALUES = ['a', 'b', 'zzz'];
+
+const INITIAL_ROWS = [
+  ['b', 'Alpha'],
+  ['a', 'Bravo'],
+  ['b', 'Charlie'],
+  ['a', 'Delta'],
+  ['b', 'Echo'],
+  ['zzz', 'Untouched'],
+];
+
+// Tied keys keep their original relative order in ascending order.
+const ASCENDING_ROWS = [
+  ['a', 'Bravo'],
+  ['a', 'Delta'],
+  ['b', 'Alpha'],
+  ['b', 'Charlie'],
+  ['b', 'Echo'],
+  ['zzz', 'Untouched'],
+];
+
+// Tied keys keep their original relative order in descending order too,
+// and the row outside the selection never moves.
+const DESCENDING_ROWS = [
+  ['b', 'Alpha'],
+  ['b', 'Charlie'],
+  ['b', 'Echo'],
+  ['a', 'Bravo'],
+  ['a', 'Delta'],
+  ['zzz', 'Untouched'],
+];
+
+function gridCell(page, text) {
+  return page.getByRole('gridcell', { name: text, exact: true }).first();
+}
+
+async function openWorkbookFromCsv(page, csv) {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Import CSV' }).click();
+
+  const importDialog = page.getByRole('dialog', { name: 'Import CSV' });
+  await expect(importDialog).toBeVisible();
+  await importDialog.getByLabel('CSV file').setInputFiles({
+    name: 'stable-sort.csv',
+    mimeType: 'text/csv',
+    buffer: Buffer.from(csv, 'utf8'),
+  });
+  await importDialog.getByRole('button', { name: 'Confirm import' }).click();
+
+  await expect(page.getByRole('grid')).toBeVisible();
+}
+
+async function cellBox(page, text) {
+  const box = await gridCell(page, text).boundingBox();
+  expect(box, `grid cell "${text}" is rendered`).not.toBeNull();
+  return box;
+}
+
+async function selectRange(page, fromText, toText) {
+  const from = gridCell(page, fromText);
+  const to = gridCell(page, toText);
+  await from.scrollIntoViewIfNeeded();
+  await to.scrollIntoViewIfNeeded();
+
+  const start = await from.boundingBox();
+  const end = await to.boundingBox();
+  if (!start || !end) {
+    throw new Error(`Cannot measure grid cells "${fromText}" -> "${toText}"`);
+  }
+
+  await page.mouse.move(start.x + start.width / 2, start.y + start.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(end.x + end.width / 2, end.y + end.height / 2, { steps: 10 });
+  await page.mouse.up();
+}
+
+async function chooseOption(page, scope, comboName, optionName) {
+  const combo = scope.getByRole('combobox', { name: comboName, exact: true });
+  await expect(combo).toBeVisible();
+
+  const tag = await combo.evaluate((el) => el.tagName.toLowerCase());
+  if (tag === 'select') {
+    await combo.selectOption({ label: optionName });
+  } else {
+    await combo.click();
+    await page.getByRole('option', { name: optionName, exact: true }).click();
+  }
+}
+
+async function sortRange(page, { column, order }) {
+  // "Sort range" lives in the "Data" menu.
+  const dataMenu = page.getByRole('menuitem', { name: 'Data', exact: true });
+  if (await dataMenu.count()) {
+    await dataMenu.first().click();
+  } else {
+    await page.getByRole('button', { name: 'Data', exact: true }).click();
+  }
+  await page.getByRole('menuitem', { name: 'Sort range', exact: true }).click();
+
+  const dialog = page.getByRole('dialog', { name: 'Sort range' });
+  await expect(dialog).toBeVisible();
+
+  await dialog.getByRole('checkbox', { name: 'Data has header row' }).check();
+  await chooseOption(page, dialog, 'Sort by', column);
+  await chooseOption(page, dialog, 'Order', order);
+  await dialog.getByRole('button', { name: 'Sort', exact: true }).click();
+
+  await expect(dialog).toBeHidden();
+}
+
+/**
+ * Verifies the full record order: the vertical order of the distinguishable
+ * records, plus the fact that each record still sits on the same line as its
+ * (possibly tied) sort key.
+ */
+async function assertRows(page, expected) {
+  const records = expected.map(([, record]) => record);
+
+  const positioned = [];
+  for (const record of records) {
+    const box = await cellBox(page, record);
+    positioned.push({ record, y: box.y });
+  }
+
+  const actualOrder = positioned
+    .slice()
+    .sort((a, b) => a.y - b.y)
+    .map((entry) => entry.record);
+  expect(actualOrder).toEqual(records);
+
+  for (const [key, record] of expected) {
+    const recordBox = await cellBox(page, record);
+
+    let matchedKey = null;
+    for (const candidate of KEY_VALUES) {
+      const cells = page.getByRole('gridcell', { name: candidate, exact: true });
+      const count = await cells.count();
+      for (let i = 0; i < count; i += 1) {
+        const box = await cells.nth(i).boundingBox();
+        if (
+          box &&
+          Math.abs(box.y - recordBox.y) < box.height / 2 &&
+          box.x < recordBox.x
+        ) {
+          matchedKey = candidate;
+          break;
+        }
+      }
+      if (matchedKey) break;
+    }
+
+    expect(matchedKey, `sort key on the same row as "${record}"`).toBe(key);
+  }
+}
+
+test('REQ-5-1-1 stable sort by a specified column in both directions', async ({ page }) => {
+  test.setTimeout(15_000);
+
+  await openWorkbookFromCsv(page, CSV_CONTENT);
+
+  const grid = page.getByRole('grid');
+  await expect(grid).toHaveAttribute('aria-multiselectable', 'true');
+
+  // The imported range keeps its original order (ties: b, a, b, a, b).
+  await assertRows(page, INITIAL_ROWS);
+
+  // Select the data range A1:B6 (header row included, trailing row excluded).
+  await selectRange(page, 'Key', 'Echo');
+  await expect(gridCell(page, 'Key')).toHaveAttribute('aria-selected', 'true');
+  await expect(gridCell(page, 'Echo')).toHaveAttribute('aria-selected', 'true');
+  await expect(gridCell(page, 'zzz')).toHaveAttribute('aria-selected', 'false');
+
+  // --- Ascending -----------------------------------------------------------
+  await sortRange(page, { column: SORT_COLUMN, order: 'Ascending' });
+  await assertRows(page, ASCENDING_ROWS);
+
+  // --- Descending ----------------------------------------------------------
+  // Selecting the same rectangle again: header "Key" down to the record now
+  // sitting in the last row of the range, "Echo".
+  await selectRange(page, 'Key', 'Echo');
+  await expect(gridCell(page, 'zzz')).toHaveAttribute('aria-selected', 'false');
+
+  await sortRange(page, { column: SORT_COLUMN, order: 'Descending' });
+  await assertRows(page, DESCENDING_ROWS);
+});
+```

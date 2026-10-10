@@ -1,0 +1,174 @@
+{
+ "tests": [
+  {
+   "id": "REQ-1-1-1",
+   "n": 1,
+   "title": "Register a new account with unique valid credentials redirects to sign-in and the new credentials sign in after reload",
+   "checks": [
+    "Visitor opens Sign in then Create an account and sees Username, Email, Password, Confirm password, Agree to the terms, Create account",
+    "Enters pw-user-<unique suffix>, an @example.test email, Valid-password-123!, matching confirmation, checks terms, clicks Create account",
+    "Redirects to sign-in without displaying password; account email is verified and usable for sign-in and recovery",
+    "Signing in with the new email enters workspace and the account menu shows the username after reload"
+   ]
+  },
+  {
+   "id": "REQ-1-1-1",
+   "n": 2,
+   "title": "Submit multiple invalid registration fields shows all field errors together and preserves attempted username/email without creating an account",
+   "checks": [
+    "Enter a username beginning with hyphen, email not-an-email, password short, confirmation different, and leave terms unchecked",
+    "Field messages appear together: Username format is invalid, Email format is invalid, Password requirements are not satisfied, Agree to terms is required",
+    "Username and email inputs retain the attempted values and the submit button remains actionable",
+    "Reopening the registration page shows no account was created for the attempted values"
+   ]
+  },
+  {
+   "id": "REQ-1-1-1",
+   "n": 3,
+   "title": "Register with a duplicate username and a different unused email shows Username already exists, retains both attempted values, and creates no account",
+   "checks": [
+    "Enter the seeded username alice-dev with a different unused email and otherwise valid inputs",
+    "Displays Username already exists beside the username field and retains the attempted username and email",
+    "No account is created for the new email; signing in with the new email fails",
+    "The existing alice-dev account remains unchanged and can still sign in"
+   ]
+  },
+  {
+   "id": "REQ-1-1-2",
+   "n": 1,
+   "title": "Sign in with a username enters the workspace, shows the username in the account menu, and the session persists after refresh and direct protected-page access",
+   "checks": [
+    "Enter alice-dev in Username or email and Valid-password-123! in Password, click Sign in",
+    "Redirects to the user's workspace and the account menu displays alice-dev",
+    "Refreshing the workspace or directly reopening a protected organization/repository page keeps the signed-in user",
+    "Failed sign-in remains on the sign-in page and does not display the account menu"
+   ]
+  },
+  {
+   "id": "REQ-1-1-2",
+   "n": 2,
+   "title": "Sign in with the verified email enters the same workspace and keeps the signed-in session after reopening protected pages",
+   "checks": [
+    "Enter alice.dev@example.test in Username or email and Valid-password-123! in Password, click Sign in",
+    "Workspace opens and the account menu displays alice-dev",
+    "Authorized organizations, repositories, and work items are accessible",
+    "Refreshing or reopening a protected page still shows the signed-in user"
+   ]
+  },
+  {
+   "id": "REQ-1-1-2",
+   "n": 3,
+   "title": "Unknown username and incorrect password both return exactly Invalid credentials, create no session, and leave protected pages unauthenticated",
+   "checks": [
+    "Submit an unknown username or an incorrect password with alice-dev",
+    "Exactly the generic message Invalid credentials is displayed, without revealing which credential was wrong",
+    "The sign-in page remains displayed and no account menu appears",
+    "Refreshing or opening a protected page still requires authentication"
+   ]
+  },
+  {
+   "id": "REQ-1-1-2",
+   "n": 4,
+   "title": "Unavailable account returns Invalid credentials, preserves no session, and the protected page remains inaccessible after refresh",
+   "checks": [
+    "Submit credentials for a seeded unavailable account with its correct password",
+    "Displays exactly Invalid credentials and does not create a session",
+    "No account menu appears and the user is not redirected to a workspace",
+    "Opening a previously accessible protected page after refresh still requires authentication"
+   ]
+  },
+  {
+   "id": "REQ-1-1-3",
+   "n": 1,
+   "title": "Recover a registered account with code 123456 updates the password while the unknown email follows the same step without modifying any account",
+   "checks": [
+    "Open Forgot password, submit the registered email alice.dev@example.test, and directly see the fixed code 123456 plus Password reset fields",
+    "Enter 123456, Replacement-password-456!, matching confirmation, and Reset password; displays Password updated",
+    "Sign-in with the old password fails and sign-in with the new password succeeds",
+    "The unknown email also opens the same next step with code 123456 but does not change any account; no email or link is produced"
+   ]
+  },
+  {
+   "id": "REQ-1-1-3",
+   "n": 2,
+   "title": "Incorrect verification code 000000 displays Verification code is invalid and leaves the old password usable",
+   "checks": [
+    "Submit a registered email and enter code 000000 with a compliant new password and matching confirmation",
+    "Displays Verification code is invalid beside the code field and does not display Password updated",
+    "The account password is unchanged; old password still signs in and the candidate new password does not",
+    "State remains unchanged after reload and no email or link is generated"
+   ]
+  },
+  {
+   "id": "REQ-1-1-3",
+   "n": 3,
+   "title": "Noncompliant new password or mismatched confirmation explains the reason beside the field and does not modify credentials",
+   "checks": [
+    "Submit a registered email with correct code 123456 but a noncompliant new password or a mismatched confirmation",
+    "Field error appears for password/confirmation and no password is updated",
+    "Old password continues to work and the candidate new password does not",
+    "Refreshing the reset page keeps the same flow without sending email or creating a second account"
+   ]
+  },
+  {
+   "id": "REQ-1-2",
+   "n": 1,
+   "title": "Confirming sign-out invalidates the current browser session and protected pages require re-authentication after refresh, back, or direct open",
+   "checks": [
+    "Signed-in user opens Account menu and clicks Sign out, then Confirm sign out in the Sign out dialog",
+    "Returns to unauthenticated state, displays the Sign in entry, and no longer shows the user's account menu",
+    "Refreshing, browser back, or directly reopening the recorded protected page requires authentication and cannot restore the session"
+   ]
+  },
+  {
+   "id": "REQ-1-2",
+   "n": 2,
+   "title": "Cancel or close the sign-out dialog keeps the current session valid and the original protected page accessible",
+   "checks": [
+    "Signed-in user opens Account menu, clicks Sign out, and selects Cancel or closes the dialog",
+    "No session invalidation occurs; account menu still shows the current user",
+    "The original protected page remains accessible and persists after refresh",
+    "Confirming later is still possible, but only confirmation invalidates the session"
+   ]
+  },
+  {
+   "id": "REQ-1-3",
+   "n": 1,
+   "title": "Update password with correct current password and matching confirmation shows Password updated and makes only the new password valid",
+   "checks": [
+    "Signed-in alice-dev opens Settings > Password and authentication",
+    "Enter current Valid-password-123!, New-password-456!, matching confirmation, click Update password",
+    "Displays Password updated; after sign-out the new password signs in and the old password fails",
+    "Refreshing/reopening the security page does not revert the password change"
+   ]
+  },
+  {
+   "id": "REQ-1-3",
+   "n": 2,
+   "title": "Incorrect current password with mismatched confirmation shows the current-password/confirmation error and leaves old credentials usable",
+   "checks": [
+    "Enter an incorrect current password, a compliant new password, and confirmation does-not-match, then click Update password",
+    "Displays Current password is incorrect and/or Password confirmation does not match beside the corresponding field",
+    "No password record is modified; old Valid-password-123! still signs in and the candidate new password does not",
+    "State remains unchanged after reload"
+   ]
+  },
+  {
+   "id": "REQ-1-3",
+   "n": 3,
+   "title": "Missing current password displays Current password is required and does not change the account password",
+   "checks": [
+    "Leave Current password empty, enter Required-password-789! and matching confirmation, click Update password",
+    "Displays Current password is required beside the current-password field",
+    "The stored password remains unchanged; old password still works and Required-password-789! cannot sign in",
+    "Only the current account's password record is affected and no other accounts are changed"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 62922,
+  "completion_tokens": 7291
+ },
+ "cost_cny": 0.2544,
+ "finish": "stop"
+}

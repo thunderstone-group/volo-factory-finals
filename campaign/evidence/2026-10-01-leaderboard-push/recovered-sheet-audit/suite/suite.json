@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "file": "t04-REQ-4.spec.cjs",
+      "tests": [
+        "REQ-4-2-1#audit-1: dependent formulas recalculate after a row insertion",
+        "REQ-4-2-1#audit-2: formulas in another worksheet stay unchanged when source values change",
+        "REQ-4-1-2#audit-1: copying a formula downward adjusts relative row references",
+        "REQ-4-1-1#audit-1: aggregates ignore empty and non-numeric cells",
+        "REQ-4-2-2#audit-1: an indirect circular reference shows #REF! and can be fixed"
+      ]
+    },
+    {
+      "file": "t05-REQ-5.spec.cjs",
+      "tests": [
+        "REQ-5-1-1#audit-1: a filter still hides its nonmatching row after the same range is sorted",
+        "REQ-5-1-2#audit-1: the \"Is empty\" condition hides every row whose field has a value",
+        "REQ-5-1-2#audit-2: pivot summarization still includes rows hidden by a filter",
+        "REQ-5-2-1#audit-1: saving a modified numeric rule makes the new limits effective immediately",
+        "REQ-5-3-1#audit-1: COUNT shows 0 for a row/column combination with no record",
+        "REQ-5-3-1#audit-2: COUNT over a text value field counts records without failing"
+      ]
+    }
+  ],
+  "scenarios": 0,
+  "tests": 11,
+  "audit_checks": 11
+}

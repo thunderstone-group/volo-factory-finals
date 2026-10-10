@@ -1,0 +1,14 @@
+{
+  "app": "generate-controls-v3-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 65,
+    "error": 13,
+    "fail": 24
+  },
+  "seconds": 169.8,
+  "coverage": {
+    "total": 100,
+    "parsed": 89
+  }
+}

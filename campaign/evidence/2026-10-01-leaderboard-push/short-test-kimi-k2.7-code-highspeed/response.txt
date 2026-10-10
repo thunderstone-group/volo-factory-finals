@@ -1,0 +1,121 @@
+```typescript
+import { test, expect } from '@playwright/test';
+import * as path from 'path';
+import * as os from 'os';
+import * as fs from 'fs';
+
+test('REQ-5-1-1: stable sort order in both directions with tied keys', { timeout: 15000 }, async ({ page }) => {
+  const unique = Date.now().toString();
+  const fileName = `sort-stable-${unique}.csv`;
+  const tmpFile = path.join(os.tmpdir(), fileName);
+
+  const csvContent = [
+    'Score,Name,Extra',
+    '80,Alice,A1',
+    '80,Bob,B2',
+    '80,Carol,C3',
+    '75,Dave,D4',
+    '85,Eve,E5',
+    '99,Outside,OUT'
+  ].join('\n');
+
+  try {
+    fs.writeFileSync(tmpFile, csvContent, 'utf8');
+
+    await page.goto('/');
+
+    await page.getByRole('button', { name: 'Import CSV' }).click();
+    const importDialog = page.getByRole('dialog', { name: 'Import CSV' });
+    await expect(importDialog).toBeVisible();
+    await importDialog.getByLabel('CSV file').setInputFiles(tmpFile);
+    await importDialog.getByRole('button', { name: 'Confirm import' }).click();
+
+    const gridLocator = page.locator('[role="grid"]');
+    await expect(gridLocator).toBeVisible();
+
+    const readGrid = async () => {
+      return page.evaluate(() => {
+        const grid = document.querySelector('[role="grid"]');
+        if (!grid) return [] as string[][];
+        return Array.from(grid.querySelectorAll('[role="row"]'))
+          .map(row =>
+            Array.from(row.querySelectorAll('[role="gridcell"], [role="columnheader"]')).map(cell =>
+              (cell.textContent || '').trim()
+            )
+          )
+          .filter(row => row.length > 0);
+      });
+    };
+
+    let grid = await readGrid();
+    expect(grid[0]).toEqual(['Score', 'Name', 'Extra']);
+    expect(grid[1]).toEqual(['80', 'Alice', 'A1']);
+    expect(grid[2]).toEqual(['80', 'Bob', 'B2']);
+    expect(grid[3]).toEqual(['80', 'Carol', 'C3']);
+    expect(grid[4]).toEqual(['75', 'Dave', 'D4']);
+    expect(grid[5]).toEqual(['85', 'Eve', 'E5']);
+    expect(grid[6]).toEqual(['99', 'Outside', 'OUT']);
+
+    const scoreHeader = gridLocator.getByRole('gridcell', { name: 'Score' });
+    const e5Cell = gridLocator.getByRole('gridcell', { name: 'E5' });
+    await scoreHeader.dragTo(e5Cell);
+
+    await expect(scoreHeader).toHaveAttribute('aria-selected', 'true');
+    await expect(e5Cell).toHaveAttribute('aria-selected', 'true');
+    await expect(gridLocator.getByRole('gridcell', { name: '99' })).toHaveAttribute('aria-selected', 'false');
+    await expect(gridLocator.getByRole('gridcell', { name: 'OUT' })).toHaveAttribute('aria-selected', 'false');
+
+    await page.getByRole('menuitem', { name: 'Data' }).click();
+    await page.getByRole('menuitem', { name: 'Sort range' }).click();
+
+    const sortDialog = page.getByRole('dialog', { name: 'Sort range' });
+    await expect(sortDialog).toBeVisible();
+    await sortDialog.getByRole('combobox', { name: 'Sort by' }).selectOption({ label: 'Score' });
+    await sortDialog.getByRole('combobox', { name: 'Order' }).selectOption({ label: 'Ascending' });
+    await sortDialog.getByRole('checkbox', { name: 'Data has header row' }).check();
+    await sortDialog.getByRole('button', { name: 'Sort' }).click();
+    await expect(sortDialog).not.toBeVisible();
+
+    grid = await readGrid();
+    expect(grid[0]).toEqual(['Score', 'Name', 'Extra']);
+    expect(grid[1]).toEqual(['75', 'Dave', 'D4']);
+    expect(grid[2]).toEqual(['80', 'Alice', 'A1']);
+    expect(grid[3]).toEqual(['80', 'Bob', 'B2']);
+    expect(grid[4]).toEqual(['80', 'Carol', 'C3']);
+    expect(grid[5]).toEqual(['85', 'Eve', 'E5']);
+    expect(grid[6]).toEqual(['99', 'Outside', 'OUT']);
+
+    await gridLocator.getByRole('gridcell', { name: 'Score' }).dragTo(gridLocator.getByRole('gridcell', { name: 'E5' }));
+    await page.getByRole('menuitem', { name: 'Data' }).click();
+    await page.getByRole('menuitem', { name: 'Sort range' }).click();
+
+    await expect(sortDialog).toBeVisible();
+    await sortDialog.getByRole('combobox', { name: 'Sort by' }).selectOption({ label: 'Score' });
+    await sortDialog.getByRole('combobox', { name: 'Order' }).selectOption({ label: 'Descending' });
+    await sortDialog.getByRole('checkbox', { name: 'Data has header row' }).check();
+    await sortDialog.getByRole('button', { name: 'Sort' }).click();
+    await expect(sortDialog).not.toBeVisible();
+
+    grid = await readGrid();
+    expect(grid[0]).toEqual(['Score', 'Name', 'Extra']);
+    expect(grid[1]).toEqual(['85', 'Eve', 'E5']);
+    expect(grid[2]).toEqual(['80', 'Alice', 'A1']);
+    expect(grid[3]).toEqual(['80', 'Bob', 'B2']);
+    expect(grid[4]).toEqual(['80', 'Carol', 'C3']);
+    expect(grid[5]).toEqual(['75', 'Dave', 'D4']);
+    expect(grid[6]).toEqual(['99', 'Outside', 'OUT']);
+
+    await page.reload();
+    grid = await readGrid();
+    expect(grid[0]).toEqual(['Score', 'Name', 'Extra']);
+    expect(grid[1]).toEqual(['85', 'Eve', 'E5']);
+    expect(grid[2]).toEqual(['80', 'Alice', 'A1']);
+    expect(grid[3]).toEqual(['80', 'Bob', 'B2']);
+    expect(grid[4]).toEqual(['80', 'Carol', 'C3']);
+    expect(grid[5]).toEqual(['75', 'Dave', 'D4']);
+    expect(grid[6]).toEqual(['99', 'Outside', 'OUT']);
+  } finally {
+    try { fs.unlinkSync(tmpFile); } catch {}
+  }
+});
+```

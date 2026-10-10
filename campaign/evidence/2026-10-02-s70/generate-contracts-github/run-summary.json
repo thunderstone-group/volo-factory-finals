@@ -1,0 +1,665 @@
+{
+  "usage": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 7,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 7
+    },
+    "completed_calls": 7,
+    "completion_tokens": 312052,
+    "draft_call_limit": 4,
+    "estimated_cost_cny": 2.283998,
+    "estimated_repair_cost_cny": 1.136432,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 312052,
+    "known_prompt_tokens": 830292,
+    "prompt_tokens": 830292,
+    "refused_calls": 0,
+    "repair_call_limit": 24,
+    "repair_cny_limit": 10.0,
+    "side_calls": 6,
+    "unknown_usage_calls": []
+  },
+  "smoke": {
+    "executed": true,
+    "problems": [
+      "16 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “organization name/repository name” appears only as `// organization name/repository name, -invalid-organization,`; “-invalid-organization” appears only as `// organization name/repository name, -invalid-organization,`; “mobile-guild” appears only as `// organization name/repository name, -invalid-organization,`; “organization name/team name” appears only as `// organization name/team name, mobile-team, Remove`; “Remove <username>” appears only as `// organization name/team name, mobile-team, Remove <usernam`; “Member menu <username>” appears only as `, Member menu <username>,`; “owner/repository name” appears only as `// organization-account-role, unknown-reviewer, owner/reposi`; “clone page entry” appears only as `// clone page entry, Repository created by Playwright, Forke`; “Repository created by Playwright” appears only as `// clone page entry, Repository created by Playwright, Forke`; “Forked from <source repository name>” appears only as `// clone page entry, Repository created by Playwright, Forke`; “Branch <current branch name>” appears only as `// commit history, diff, code search, no-such-token, current`; “Create branch: <name>” appears only as `// Create branch: <name>, Create branch: feature/api-v2, pw-`; “Branch <new default branch name>” appears only as `// Branch <new default branch name>, Add`; “pw-file-<unique suffix>.md” appears only as `// pw-file-<unique suffix>.md, activity timeline, subject-ta`; “Add <file name>” appears only as `, Add <file name>, must not be saved, docs/guide.md,`; “must not be saved” appears only as `, must not be saved, docs/guide.md,`"
+    ],
+    "vocabulary_missing": 0,
+    "scenarios": {
+      "counts": {
+        "pass": 93,
+        "error": 7,
+        "fail": 4
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 93
+      },
+      "seconds": 38.5,
+      "source_contracts": {
+        "fail": 4
+      },
+      "failing": [
+        {
+          "id": "REQ-5-2-2",
+          "observation": "The test used the name 'Edited description written by the acceptance test.', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+        },
+        {
+          "id": "REQ-5-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-1#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-5-3-1#contract-1",
+          "observation": "Read-only viewer is rendered the Assignees control"
+        },
+        {
+          "id": "REQ-6-4#contract-1",
+          "observation": "Read-only user is offered as a reviewer"
+        },
+        {
+          "id": "REQ-2-3#contract-1",
+          "observation": "Maintain-role collaborator is offered the grant picker"
+        },
+        {
+          "id": "REQ-6-5#contract-1",
+          "observation": "Blocked pull request was merged without the required approval and test success"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "repair": {
+      "accepted": true,
+      "reason": "3 more scenario(s) pass",
+      "files": [
+        "frontend/public/seed.js",
+        "frontend/public/app.js"
+      ]
+    },
+    "browser_before": [
+      {
+        "executed": true,
+        "diagnostic_only": true,
+        "errors": [],
+        "page_errors": [],
+        "actions": [
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Dashboard",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Explore",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Agree to the terms",
+            "action": ""
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Labels",
+            "action": "open-label-filter"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          }
+        ],
+        "screens": [
+          "#/",
+          "#/login",
+          "#/forgot",
+          "#/repo/r-acme-docs",
+          "#/org/o-acme",
+          "#/repositories",
+          "#/organizations",
+          "#/signup",
+          "#/repo/r-acme-docs/issues",
+          "#/repo/r-acme-docs/pulls",
+          "#/repo/r-acme-docs/settings",
+          "#/repo/r-acme-docs/commits"
+        ],
+        "browser": "143.0.7499.4",
+        "playwright": "1.57.0"
+      }
+    ],
+    "tests": {
+      "seconds": 739.5,
+      "calls": 6,
+      "cost_cny": 0.819398,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 14
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 16
+        },
+        {
+          "file": "t06-REQ-6.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 25
+        }
+      ],
+      "source_contracts": 4,
+      "used": true
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "fatal": 0,
+        "failing": [
+          "REQ-5-3-1#contract-1",
+          "REQ-6-4#contract-1",
+          "REQ-2-3#contract-1",
+          "REQ-6-5#contract-1"
+        ],
+        "passing_before": 93,
+        "accepted": true,
+        "gained": [
+          "REQ-5-3-1#contract-1",
+          "REQ-6-4#contract-1",
+          "REQ-6-5#contract-1"
+        ],
+        "reason": "3 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 96,
+            "error": 8
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 93
+          },
+          "seconds": 38.5,
+          "source_contracts": {
+            "pass": 3,
+            "error": 1
+          },
+          "failing": [
+            {
+              "id": "REQ-5-2-2",
+              "observation": "The test used the name 'Edited description written by the acceptance test.', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            },
+            {
+              "id": "REQ-5-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-1#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-2-3#contract-1",
+              "observation": "The expression evaluated to a falsy value:\n\n  Reflect.apply(value, target, args)\n"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Dashboard",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Explore",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Labels",
+                "action": "open-label-filter"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/login",
+              "#/forgot",
+              "#/repo/r-acme-docs",
+              "#/org/o-acme",
+              "#/repositories",
+              "#/organizations",
+              "#/signup",
+              "#/repo/r-acme-docs/issues",
+              "#/repo/r-acme-docs/pulls",
+              "#/repo/r-acme-docs/settings",
+              "#/repo/r-acme-docs/commits"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/seed.js",
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 171.9,
+        "cost_cny": 0.165464
+      }
+    ],
+    "problems_after": [],
+    "scenarios_after": {
+      "counts": {
+        "pass": 96,
+        "error": 8
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 93
+      },
+      "seconds": 38.5,
+      "source_contracts": {
+        "pass": 3,
+        "error": 1
+      },
+      "failing": [
+        {
+          "id": "REQ-5-2-2",
+          "observation": "The test used the name 'Edited description written by the acceptance test.', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+        },
+        {
+          "id": "REQ-5-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-1#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-2-3#contract-1",
+          "observation": "The expression evaluated to a falsy value:\n\n  Reflect.apply(value, target, args)\n"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "before_source_review": {
+      "stopped": null,
+      "scenarios_after": {
+        "counts": {
+          "pass": 93,
+          "error": 7
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 93
+        },
+        "seconds": 38.2,
+        "source_contracts": {},
+        "failing": [
+          {
+            "id": "REQ-5-2-2",
+            "observation": "The test used the name 'Edited description written by the acceptance test.', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+          },
+          {
+            "id": "REQ-5-4#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-1#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-3-3",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-3-3#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-3-4",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-3-4#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "tests": {
+        "seconds": 739.5,
+        "calls": 6,
+        "cost_cny": 0.819398,
+        "scenarios": 100,
+        "tests": 100,
+        "audit_checks": 0,
+        "audit_errors": 0,
+        "files": [
+          {
+            "file": "t01-REQ-1.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t02-REQ-2.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t03-REQ-3.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 14
+          },
+          {
+            "file": "t04-REQ-4.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t05-REQ-5.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 16
+          },
+          {
+            "file": "t06-REQ-6.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 25
+          }
+        ],
+        "used": true
+      },
+      "rounds": 3
+    },
+    "source_review": {
+      "proposed": 4,
+      "probes": 4,
+      "results": [
+        {
+          "id": "REQ-5-3-1#contract-1",
+          "status": "fail",
+          "calls": {
+            "issueDetail": 2,
+            "issueOf": 2,
+            "canWriteRole": 2,
+            "canTriageRole": 2,
+            "ui": 4,
+            "S": 18,
+            "esc": 34,
+            "uname": 10,
+            "userById": 10,
+            "byId": 10,
+            "users": 10
+          },
+          "assertions": 2,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Read-only viewer is rendered the Assignees control",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: Read-only viewer is rendered the Assignees control\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:220\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-6-4#contract-1",
+          "status": "fail",
+          "calls": {
+            "reviewerOptions": 1,
+            "ui": 1,
+            "S": 3,
+            "users": 1,
+            "esc": 3
+          },
+          "assertions": 2,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Read-only user is offered as a reviewer",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: Read-only user is offered as a reviewer\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:291\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-2-3#contract-1",
+          "status": "fail",
+          "calls": {
+            "manageAccess": 2,
+            "ui": 2,
+            "S": 10,
+            "uname": 6,
+            "userById": 6,
+            "byId": 6,
+            "users": 6,
+            "esc": 36
+          },
+          "assertions": 2,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Maintain-role collaborator is offered the grant picker",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: Maintain-role collaborator is offered the grant picker\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:226\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-6-5#contract-1",
+          "status": "fail",
+          "calls": {
+            "confirmMerge": 1,
+            "repoById": 1,
+            "byId": 1,
+            "repos": 1,
+            "S": 3,
+            "pullOf": 1,
+            "ui": 1
+          },
+          "assertions": 1,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Blocked pull request was merged without the required approval and test success",
+          "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Blocked pull request was merged without the required approval and test success\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:225\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        }
+      ],
+      "skipped": null,
+      "seconds": 396.1,
+      "calls": 3,
+      "cost_cny": 0.380529
+    }
+  }
+}

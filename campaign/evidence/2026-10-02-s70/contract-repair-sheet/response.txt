@@ -1,0 +1,325 @@
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+  function shiftFormula(formula, axis, index, delta) {
+    var bad = false;
+    var out = String(formula).replace(REF_RE, function (m, cAbs, col, rAbs, row) {
+      var c = COL_LIST.indexOf(col.toUpperCase());
+      var r = parseInt(row, 10) - 1;
+      if (c < 0) return m;
+      if (axis === 'row') {
+        if (delta > 0) { if (r >= index) r += delta; }
+        else { if (r === index) { bad = true; return '#REF!'; } if (r > index) r += delta; }
+      } else {
+        if (delta > 0) { if (c >= index) c += delta; }
+        else { if (c === index) { bad = true; return '#REF!'; } if (c > index) c += delta; }
+      }
+      if (r < 0 || c < 0) { bad = true; return '#REF!'; }
+      return cAbs + COL_LIST[c] + rAbs + (r + 1);
+    });
+    if (bad || out.indexOf('#REF!') >= 0) return '=#REF!';
+    return out;
+  }
+=======
+  function shiftFormula(formula, axis, index, delta) {
+    var bad = false;
+    var out = String(formula).replace(REF_RE, function (m, cAbs, col, rAbs, row) {
+      var c = COL_LIST.indexOf(col.toUpperCase());
+      var r = parseInt(row, 10) - 1;
+      if (c < 0) return m;
+      var outR = r, outC = c, changed = false;
+      if (axis === 'row') {
+        if (!rAbs) {
+          if (delta > 0) {
+            if (r >= index) { outR = r + delta; changed = true; }
+          } else {
+            if (r === index) { bad = true; return '#REF!'; }
+            if (r > index) { outR = r + delta; changed = true; }
+          }
+        } else if (delta < 0 && r === index) {
+          bad = true; return '#REF!';
+        }
+      } else {
+        if (!cAbs) {
+          if (delta > 0) {
+            if (c >= index) { outC = c + delta; changed = true; }
+          } else {
+            if (c === index) { bad = true; return '#REF!'; }
+            if (c > index) { outC = c + delta; changed = true; }
+          }
+        } else if (delta < 0 && c === index) {
+          bad = true; return '#REF!';
+        }
+      }
+      if (outR < 0 || outR >= ROW_COUNT || outC < 0 || outC >= MAX_COL) {
+        if (changed) { bad = true; return '#REF!'; }
+        return m;
+      }
+      return cAbs + COL_LIST[outC] + rAbs + (outR + 1);
+    });
+    if (bad || out.indexOf('#REF!') >= 0) return '=#REF!';
+    return out;
+  }
+=======
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+  function adjustFormula(formula, dr, dc) {
+    var bad = false;
+    var out = String(formula).replace(REF_RE, function (m, cAbs, col, rAbs, row) {
+      var c = COL_LIST.indexOf(col.toUpperCase());
+      var r = parseInt(row, 10) - 1;
+      if (c < 0) return m;
+      if (!cAbs) c += dc;
+      if (!rAbs) r += dr;
+      if (c < 0 || r < 0 || c >= MAX_COL) { bad = true; return '#REF!'; }
+      return cAbs + COL_LIST[c] + rAbs + (r + 1);
+    });
+    if (bad || out.indexOf('#REF!') >= 0) return '=#REF!';
+    return out;
+  }
+=======
+  function adjustFormula(formula, dr, dc) {
+    var bad = false;
+    var out = String(formula).replace(REF_RE, function (m, cAbs, col, rAbs, row) {
+      var c = COL_LIST.indexOf(col.toUpperCase());
+      var r = parseInt(row, 10) - 1;
+      if (c < 0) return m;
+      var nc = cAbs ? c : c + dc;
+      var nr = rAbs ? r : r + dr;
+      if ((!cAbs && (nc < 0 || nc >= MAX_COL)) || (!rAbs && (nr < 0 || nr >= ROW_COUNT))) {
+        bad = true; return '#REF!';
+      }
+      if (nc < 0 || nc >= MAX_COL || nr < 0 || nr >= ROW_COUNT) return m;
+      return cAbs + COL_LIST[nc] + rAbs + (nr + 1);
+    });
+    if (bad || out.indexOf('#REF!') >= 0) return '=#REF!';
+    return out;
+  }
+=======
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+    function parseRefName(rf) {
+      var m = /^\$?([A-Za-z]{1,3})\$?([0-9]+)$/.exec(rf);
+      if (!m) return null;
+      var c = COL_LIST.indexOf(m[1].toUpperCase());
+      var r = parseInt(m[2], 10) - 1;
+      if (c < 0 || r < 0) return null;
+      return { r: r, c: c };
+    }
+=======
+    function parseRefName(rf) {
+      var m = /^\$?([A-Za-z]{1,3})\$?([0-9]+)$/.exec(rf);
+      if (!m) return null;
+      var c = COL_LIST.indexOf(m[1].toUpperCase());
+      var r = parseInt(m[2], 10) - 1;
+      if (c < 0 || r < 0 || r >= ROW_COUNT || c >= MAX_COL) return null;
+      return { r: r, c: c };
+    }
+=======
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+      if (t.t === 'ref') {
+        eat();
+        var nx = peek();
+        if (nx && nx.t === ':') {
+          eat();
+          var t2 = peek();
+          if (!t2 || t2.t !== 'ref') throw errObj('#ERROR!');
+          eat();
+          return rangeValues(t.v, t2.v);
+        }
+        return cellValue(t.v);
+      }
+=======
+      if (t.t === 'ref') {
+        eat();
+        var nx = peek();
+        if (nx && nx.t === ':') {
+          eat();
+          var t2 = peek();
+          if (!t2 || t2.t !== 'ref') throw errObj('#ERROR!');
+          eat();
+          return rangeValues(t.v, t2.v);
+        }
+        if (!parseRefName(t.v)) throw errObj('#REF!');
+        return cellValue(t.v);
+      }
+=======
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+    var R = pivot.range;
+    var vals = makeValues(src);
+=======
+    var R = pivot.range;
+    if (!R || R.r2 < R.r1 || R.c2 < R.c1) {
+      return { error: 'Pivot field is no longer available. Select a new field.' };
+    }
+    var vals = makeValues(src);
+=======
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+  /* ----------------------------------------------------------- structure shift */
+
+  function shiftStructure(axis, index, count, insert) {
+=======
+  /* ----------------------------------------------------------- structure shift */
+
+  function adjustPivotRanges(w, sheetId, axis, index, count, insert) {
+    if (!w || !w.sheets) return;
+    for (var i = 0; i < w.sheets.length; i++) {
+      var s = w.sheets[i];
+      if (!s.pivot || s.pivot.sourceSheet !== sheetId || !s.pivot.range) continue;
+      var p = s.pivot.range;
+      if (axis === 'row') {
+        if (insert) {
+          if (p.r1 >= index) p.r1 += count;
+          if (p.r2 >= index) p.r2 += count;
+        } else {
+          var nr1 = p.r1 >= index + count ? p.r1 - count : (p.r1 >= index ? index : p.r1);
+          var nr2 = p.r2 >= index + count ? p.r2 - count : (p.r2 >= index ? index - 1 : p.r2);
+          p.r1 = nr1;
+          p.r2 = nr2;
+        }
+      } else {
+        if (insert) {
+          if (p.c1 >= index) p.c1 += count;
+          if (p.c2 >= index) p.c2 += count;
+        } else {
+          var nc1 = p.c1 >= index + count ? p.c1 - count : (p.c1 >= index ? index : p.c1);
+          var nc2 = p.c2 >= index + count ? p.c2 - count : (p.c2 >= index ? index - 1 : p.c2);
+          p.c1 = nc1;
+          p.c2 = nc2;
+        }
+      }
+    }
+  }
+
+  function shiftStructure(axis, index, count, insert) {
+=======
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+    var delta = insert ? count : -count;
+    pushUndo();
+    var out = {};
+=======
+    var delta = insert ? count : -count;
+    pushUndo();
+    adjustPivotRanges(w, sheet.id, axis, index, count, insert);
+    var out = {};
+=======
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+  function deleteLine(axis, index, count) {
+    var w = currentWb(), sheet = currentSheet();
+    if (!w || !sheet) return;
+    pushUndo();
+    var cells = sheet.cells || {};
+    var width = 1, height = 1, key;
+    for (key in cells) {
+      if (!Object.prototype.hasOwnProperty.call(cells, key)) continue;
+      var rc = refRC(key);
+      if (!rc) continue;
+      if (rc.c + 1 > width) width = rc.c + 1;
+      if (rc.r + 1 > height) height = rc.r + 1;
+    }
+    var flat = [];
+    for (var r = 0; r < height; r++) {
+      for (var c = 0; c < width; c++) {
+        var kk = coordName(r, c);
+        if (cells[kk] === undefined || cells[kk] === null || cells[kk] === '') continue;
+        flat.push({ r: r, c: c, v: cells[kk] });
+      }
+    }
+    var survivors = [];
+    for (var i = 0; i < flat.length; i++) {
+      var pos = (axis === 'row') ? flat[i].r : flat[i].c;
+      if (pos >= index && pos < index + count) continue;
+      survivors.push(flat[i]);
+    }
+    var out = {};
+    for (var n = 0; n < survivors.length; n++) {
+      out[coordName(Math.floor(n / width), n % width)] = survivors[n].v;
+    }
+    for (var m in out) {
+      if (!Object.prototype.hasOwnProperty.call(out, m)) continue;
+      if (typeof out[m] === 'string' && out[m].charAt(0) === '=') {
+        out[m] = shiftFormula(out[m], axis, index, -count);
+      }
+    }
+    sheet.cells = out;
+    var list = sheet.validations || (sheet.validations = []);
+    var kept = [];
+    for (var j = 0; j < list.length; j++) {
+      var ru = list[j];
+      if (axis === 'row') {
+        if ((ru.r1 >= index && ru.r1 < index + count) || (ru.r2 >= index && ru.r2 < index + count)) continue;
+        if (ru.r1 >= index + count) { ru.r1 -= count; ru.r2 -= count; }
+      } else {
+        if ((ru.c1 >= index && ru.c1 < index + count) || (ru.c2 >= index && ru.c2 < index + count)) continue;
+        if (ru.c1 >= index + count) { ru.c1 -= count; ru.c2 -= count; }
+      }
+      kept.push(ru);
+    }
+    sheet.validations = kept;
+    ARC.save();
+    ARC.render();
+  }
+=======
+  function deleteLine(axis, index, count) {
+    var w = currentWb(), sheet = currentSheet();
+    if (!w || !sheet) return;
+    pushUndo();
+    var cells = sheet.cells || {};
+    var out = {};
+    for (var key in cells) {
+      if (!Object.prototype.hasOwnProperty.call(cells, key)) continue;
+      var rc = refRC(key);
+      if (!rc) continue;
+      if (axis === 'row') {
+        if (rc.r >= index && rc.r < index + count) continue;
+        out[coordName(rc.r >= index + count ? rc.r - count : rc.r, rc.c)] = cells[key];
+      } else {
+        if (rc.c >= index && rc.c < index + count) continue;
+        out[coordName(rc.r, rc.c >= index + count ? rc.c - count : rc.c)] = cells[key];
+      }
+    }
+    for (var m in out) {
+      if (!Object.prototype.hasOwnProperty.call(out, m)) continue;
+      if (typeof out[m] === 'string' && out[m].charAt(0) === '=') {
+        out[m] = shiftFormula(out[m], axis, index, -count);
+      }
+    }
+    sheet.cells = out;
+    var list = sheet.validations || (sheet.validations = []);
+    var kept = [];
+    for (var j = 0; j < list.length; j++) {
+      var ru = list[j];
+      if (axis === 'row') {
+        if ((ru.r1 >= index && ru.r1 < index + count) || (ru.r2 >= index && ru.r2 < index + count)) continue;
+        if (ru.r1 >= index + count) { ru.r1 -= count; ru.r2 -= count; }
+      } else {
+        if ((ru.c1 >= index && ru.c1 < index + count) || (ru.c2 >= index && ru.c2 < index + count)) continue;
+        if (ru.c1 >= index + count) { ru.c1 -= count; ru.c2 -= count; }
+      }
+      kept.push(ru);
+    }
+    sheet.validations = kept;
+    adjustPivotRanges(w, sheet.id, axis, index, count, false);
+    ARC.save();
+    ARC.render();
+  }
+=======
+=== END ===

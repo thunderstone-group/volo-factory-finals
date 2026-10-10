@@ -1,0 +1,11 @@
+{
+  "finish": "stop",
+  "usage": {
+    "prompt_tokens": 30531,
+    "completion_tokens": 40395
+  },
+  "content_chars": 7306,
+  "task": "sheet",
+  "seconds": 399.4,
+  "estimated_cost_cny": 0.455148
+}

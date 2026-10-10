@@ -1,0 +1,48 @@
+{
+  "at": "2026-10-02T02:06:33.200978+08:00",
+  "classification": "Generated-test requirement overconstraint, verified against public requirements and actual failure-page snapshot.",
+  "scope": "This specific Account menu text assertion only; does not classify other GitHub failures.",
+  "requirement_ids": [
+    "REQ-1-1-1",
+    "REQ-1-1-2",
+    "REQ-1-2"
+  ],
+  "required": "The resulting signed-in username remains visible after reload; one button is named Account menu.",
+  "extra_test_constraint": "The Account menu button itself must contain the username.",
+  "actual": "Username is visible in an adjacent banner element; the separate button is named Account menu.",
+  "first_failed_result": {
+    "spec": {
+      "title": "REQ-1-1-1: REQ-1-1-1: Register a New GitHub Account - Scenario 1",
+      "line": 57
+    },
+    "result": {
+      "status": "failed",
+      "duration": 5278,
+      "errors": [
+        {
+          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Account menu', exact: true })\nExpected substring: \u001b[32m\"pw-user-mupud25uqur7\"\u001b[39m\nReceived string:    \u001b[31m\"Account menu\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Account menu', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <button type=\"button\" data-action=\"account-menu\">Account menu</button>\u001b[22m\n\u001b[2m      - unexpected value \"Account menu\"\u001b[22m\n",
+          "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Account menu', exact: true })\nExpected substring: \u001b[32m\"pw-user-mupud25uqur7\"\u001b[39m\nReceived string:    \u001b[31m\"Account menu\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Account menu', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <button type=\"button\" data-action=\"account-menu\">Account menu</button>\u001b[22m\n\u001b[2m      - unexpected value \"Account menu\"\u001b[22m\n\n    at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-tests-iqi4uzzz/t01-REQ-1.spec.cjs:102:35",
+          "location": {
+            "file": "/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-tests-iqi4uzzz/t01-REQ-1.spec.cjs",
+            "column": 35,
+            "line": 102
+          },
+          "snippet": "  100 |   // The new account can sign in immediately and the signed-in username survives a reload.\n  101 |   await submitSignIn(page, email, password);\n> 102 |   await expect(accountMenu(page)).toContainText(username);\n      |                                   ^\n  103 |   await page.reload();\n  104 |   await expect(accountMenu(page)).toContainText(username);\n  105 | });"
+        }
+      ],
+      "attachments": [
+        {
+          "name": "error-context",
+          "path": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/testgen-run-aduzr90b/results/t01-REQ-1-REQ-1-1-1-REQ-1--815a9-GitHub-Account---Scenario-1/error-context.md",
+          "contentType": "text/markdown"
+        }
+      ]
+    }
+  },
+  "snapshots": [
+    "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Explore\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - search [ref=e12]:\n        - searchbox \"Search\" [ref=e13]\n        - button \"Search\" [ref=e14] [cursor=pointer]\n      - generic [ref=e15]: pw-user-mupud25uqur7\n      - button \"Account menu\" [ref=e16] [cursor=pointer]\n  - generic [ref=e17]:\n    - main [ref=e18]:\n      - heading \"Home\" [level=1] [ref=e19]\n      - paragraph [ref=e20]: Browse the public repositories and organizations below.\n      - heading \"Repositories\" [level=2] [ref=e21]\n      - article [ref=e22]:\n        - heading \"acme-docs\" [level=3] [ref=e23]:\n          - link \"acme-docs\" [ref=e24] [cursor=pointer]:\n            - /url: \"#/repo/Acme%20Demo/acme-docs\"\n        - paragraph [ref=e25]: Acme Demo/acme-docs · Public\n        - paragraph [ref=e26]: Documentation and guides for the Acme platform.\n        - paragraph [ref=e27]: Updated 996 days ago\n      - heading \"Organizations\" [level=2] [ref=e28]\n      - article [ref=e29]:\n        - heading \"Acme Demo\" [level=3] [ref=e30]:\n          - link \"Acme Demo\" [ref=e31] [cursor=pointer]:\n            - /url: \"#/org/Acme%20Demo\"\n        - paragraph [ref=e32]: Acme Demo\n    - complementary [ref=e33]:\n      - button \"Home\" [ref=e34] [cursor=pointer]\n      - button \"New repository\" [ref=e35] [cursor=pointer]\n  - contentinfo [ref=e36]: Footer Header · Sidebar · Main content · Footer\n```"
+  ],
+  "source_excerpt": "html += '<span class=\"who\">' + esc(user.name) + '</span>' +\n          '<button type=\"button\" data-action=\"account-menu\">Account menu</button>';\n      } else {\n        html += '<a href=\"#/login\">Sign in</a> <a href=\"#/signup\">Sign up</a> <a href=\"#/forgot\">Forgot password</a>';\n      }\n      return html;\n    }\n  };\n\n  /* ----------------------------",
+  "source_sha256": "13bf45af56f6a08deb0e90ee73acda27a77cb56a2a26d941f5387878c9be1036",
+  "operator_action": "Evidence only. Do not modify this active run or its tests; compare the final app under fixed independent judges."
+}

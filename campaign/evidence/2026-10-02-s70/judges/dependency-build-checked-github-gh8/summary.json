@@ -1,0 +1,14 @@
+{
+  "app": "dependency-build-checked-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 69,
+    "error": 11,
+    "fail": 22
+  },
+  "seconds": 128.6,
+  "coverage": {
+    "total": 100,
+    "parsed": 91
+  }
+}

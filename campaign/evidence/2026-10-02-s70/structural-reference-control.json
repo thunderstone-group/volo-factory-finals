@@ -1,0 +1,568 @@
+{
+  "probe": {
+    "id": "REQ-2-2-1#contract-9",
+    "requirement": "REQ-2-2-1",
+    "evidence": "recomputed using the adjusted range",
+    "explanation": "Structural insertion must preserve the referenced cell identity even when a formula uses an absolute reference; the copy-offset rule has a different operation scope.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "shiftStructure",
+        "kind": "function",
+        "alias": "shiftStructure"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "computePivot",
+        "kind": "function",
+        "alias": "computePivot"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "makeValues",
+        "kind": "function",
+        "alias": "makeValues"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "evaluateFormula",
+        "kind": "function",
+        "alias": "evaluateFormula"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "tokenizeFormula",
+        "kind": "function",
+        "alias": "tokenizeFormula"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "errObj",
+        "kind": "function",
+        "alias": "errObj"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "coordName",
+        "kind": "function",
+        "alias": "coordName"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "shiftFormula",
+        "kind": "function",
+        "alias": "shiftFormula"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "pushUndo",
+        "kind": "function",
+        "alias": "pushUndo"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "clearStatus",
+        "kind": "function",
+        "alias": "clearStatus"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "currentWb",
+        "kind": "function",
+        "alias": "currentWb"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "currentSheet",
+        "kind": "function",
+        "alias": "currentSheet"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "getWb",
+        "kind": "function",
+        "alias": "getWb"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "refRC",
+        "kind": "function",
+        "alias": "refRC"
+      }
+    ],
+    "initializers": [],
+    "subject": "shiftStructure",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=globalThis.COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;globalThis.ARC={state:{workbooks:[],ui:{}},route:function(){return {name:'workbook',params:['wb1']};},save:function(){},render:function(){},uid:function(){return 'u';}};globalThis.document={getElementById:function(){return null;}};ARC.state.workbooks.push({id:'wb1',activeSheet:'src',sheets:[{id:'src',name:'Data',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'Sales',A2:'East',B2:'10',A3:'West',B3:'20'}},{id:'pvt',name:'Pivot1',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'SUM of Sales',A2:'East',B2:'10',A3:'West',B3:'20'},pivot:{sourceSheet:'src',range:{r1:0,c1:0,r2:2,c2:1},rows:'Region',columns:'',values:'Sales',summarize:'SUM'}}]});;globalThis.target=currentSheet();target.cells={A1:\"7\",C3:\"=$A$1\"};",
+    "precondition": "assert.equal(makeValues(target)(\"C3\").text,\"7\");",
+    "check": "shiftStructure(\"row\",0,1,true);assert.equal(target.cells.C4,\"=$A$2\");assert.equal(makeValues(target)(\"C4\").text,\"7\");"
+  },
+  "results": {
+    "before": {
+      "results": [
+        {
+          "id": "REQ-2-2-1#contract-9",
+          "status": "pass",
+          "calls": {
+            "shiftStructure": 1,
+            "computePivot": 0,
+            "makeValues": 1,
+            "evaluateFormula": 1,
+            "tokenizeFormula": 1,
+            "errObj": 0,
+            "coordName": 2,
+            "shiftFormula": 1,
+            "pushUndo": 1,
+            "clearStatus": 1,
+            "currentWb": 3,
+            "currentSheet": 1,
+            "getWb": 3,
+            "refRC": 2
+          },
+          "assertions": 2
+        }
+      ],
+      "bindings": [
+        {
+          "id": "REQ-2-2-1#contract-9",
+          "requirement": "REQ-2-2-1",
+          "evidence": "recomputed using the adjusted range",
+          "explanation": "Structural insertion must preserve the referenced cell identity even when a formula uses an absolute reference; the copy-offset rule has a different operation scope.",
+          "functions": [
+            {
+              "file": "frontend/public/app.js",
+              "name": "shiftStructure",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function shiftStructure(axis, index, count, insert) {\n    var w = currentWb(), sheet = currentSheet();\n    if (!w || !sheet) return;\n    var delta = insert ? count : -count;\n    pushUndo();\n    var out = {};\n    var keys = Object.keys(sheet.cells || {});\n    for (var i = 0; i < keys.length; i++) {\n      var rc = refRC(keys[i]);\n      if (!rc) continue;\n      var r = rc.r, c = rc.c;\n      if (axis === 'row') {\n        if (insert) { if (r >= index) r += count; }\n        else { if (r >= index && r < index + count) continue; if (r >= index + count) r -= count; }\n      } else {\n        if (insert) { if (c >= index) c += count; }\n        else { if (c >= index && c < index + count) continue; if (c >= index + count) c -= count; }\n      }\n      if (r < 0 || c < 0 || r >= ROW_COUNT || c >= MAX_COL) continue;\n      out[coordName(r, c)] = sheet.cells[keys[i]];\n    }\n    for (var k in out) {\n      if (!Object.prototype.hasOwnProperty.call(out, k)) continue;\n      var v = out[k];\n      if (typeof v === 'string' && v.charAt(0) === '=' && axis === 'row') {\n        out[k] = shiftFormula(v, 'row', index, delta);\n      } else if (typeof v === 'string' && v.charAt(0) === '=' && axis === 'col') {\n        out[k] = shiftFormula(v, 'col', index, delta);\n      }\n    }\n    sheet.cells = out;\n    var list = sheet.validations || (sheet.validations = []);\n    var kept = [];\n    for (var j = 0; j < list.length; j++) {\n      var ru = list[j];\n      if (axis === 'row') {\n        if (insert) {\n          if (ru.r1 >= index) { ru.r1 += count; ru.r2 += count; }\n        } else {\n          if ((ru.r1 >= index && ru.r1 < index + count) || (ru.r2 >= index && ru.r2 < index + count)) continue;\n          if (ru.r1 >= index + count) { ru.r1 -= count; ru.r2 -= count; }\n        }\n      } else {\n        if (insert) {\n          if (ru.c1 >= index) { ru.c1 += count; ru.c2 += count; }\n        } else {\n          if ((ru.c1 >= index && ru.c1 < index + count) || (ru.c2 >= index && ru.c2 < index + count)) continue;\n          if (ru.c1 >= index + count) { ru.c1 -= count; ru.c2 -= count; }\n        }\n      }\n      kept.push(ru);\n    }\n    sheet.validations = kept;\n    ARC.save();\n    ARC.render();\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 1556,
+              "alias": "shiftStructure",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "computePivot",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function computePivot(w, pivot) {\n    var src = null;\n    for (var i = 0; i < w.sheets.length; i++) if (w.sheets[i].id === pivot.sourceSheet) src = w.sheets[i];\n    if (!src) return { error: 'Pivot field is no longer available. Select a new field.' };\n    var R = pivot.range;\n    var vals = makeValues(src);\n    var headers = [];\n    for (var c = R.c1; c <= R.c2; c++) headers.push(vals(coordName(R.r1, c)).text);\n    var ri = headers.indexOf(pivot.rows);\n    var vi = headers.indexOf(pivot.values);\n    var ci = pivot.columns ? headers.indexOf(pivot.columns) : -1;\n    if (ri < 0 || vi < 0 || (pivot.columns && ci < 0)) {\n      return { error: 'Pivot field is no longer available. Select a new field.' };\n    }\n    var method = pivot.summarize || 'SUM';\n    var recs = [];\n    for (var r = R.r1 + 1; r <= R.r2; r++) {\n      recs.push({\n        row: vals(coordName(r, R.c1 + ri)).text,\n        col: pivot.columns ? vals(coordName(r, R.c1 + ci)).text : '',\n        val: vals(coordName(r, R.c1 + vi)).text\n      });\n    }\n    if (method !== 'COUNT') {\n      var anyNum = false;\n      for (var k = 0; k < recs.length; k++) {\n        var tv = recs[k].val;\n        if (tv !== '' && tv != null && !isNaN(Number(tv))) { anyNum = true; break; }\n      }\n      if (!anyNum) return { error: 'Value field requires numeric values' };\n    }\n    var rowKeys = [], colKeys = [];\n    for (var a = 0; a < recs.length; a++) {\n      if (rowKeys.indexOf(recs[a].row) < 0) rowKeys.push(recs[a].row);\n      if (pivot.columns && colKeys.indexOf(recs[a].col) < 0) colKeys.push(recs[a].col);\n    }\n    function aggregate(rowKey, colKey) {\n      var sum = 0, nums = 0, count = 0;\n      for (var i2 = 0; i2 < recs.length; i2++) {\n        var rec = recs[i2];\n        if (rowKey !== null && rec.row !== rowKey) continue;\n        if (colKey !== null && rec.col !== colKey) continue;\n        var n = Number(rec.val);\n        var ok = rec.val !== '' && rec.val != null && !isNaN(n);\n        if (ok) { sum += n; nums++; }\n        if (rec.val !== '' && rec.val != null) count++;\n      }\n      if (method === 'COUNT') return String(count);\n      if (method === 'AVERAGE') return nums ? String(sum / nums) : '0';\n      return String(sum);\n    }\n    var out = {};\n    if (!pivot.columns) {\n      out.A1 = pivot.rows;\n      out.B1 = method + ' of ' + pivot.values;\n      for (var x = 0; x < rowKeys.length; x++) {\n        out[coordName(x + 1, 0)] = rowKeys[x];\n        out[coordName(x + 1, 1)] = aggregate(rowKeys[x], null);\n      }\n      out[coordName(rowKeys.length + 1, 0)] = 'Grand Total';\n      out[coordName(rowKeys.length + 1, 1)] = aggregate(null, null);\n    } else {\n      out.A1 = pivot.rows;\n      for (var y = 0; y < colKeys.length; y++) out[coordName(0, y + 1)] = colKeys[y];\n      out[coordName(0, colKeys.length + 1)] = 'Grand Total';\n      for (var x2 = 0; x2 < rowKeys.length; x2++) {\n        out[coordName(x2 + 1, 0)] = rowKeys[x2];\n        for (var y2 = 0; y2 < colKeys.length; y2++) {\n          out[coordName(x2 + 1, y2 + 1)] = aggregate(rowKeys[x2], colKeys[y2]);\n        }\n        out[coordName(x2 + 1, colKeys.length + 1)] = aggregate(rowKeys[x2], null);\n      }\n      var lr = rowKeys.length + 1;\n      out[coordName(lr, 0)] = 'Grand Total';\n      for (var y3 = 0; y3 < colKeys.length; y3++) out[coordName(lr, y3 + 1)] = aggregate(null, colKeys[y3]);\n      out[coordName(lr, colKeys.length + 1)] = aggregate(null, null);\n    }\n    return { cells: out };\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 649,
+              "alias": "computePivot",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "makeValues",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function makeValues(sheet) {\n    var cache = {}, stack = {};\n    function get(key) {\n      if (Object.prototype.hasOwnProperty.call(cache, key)) return cache[key];\n      if (stack[key]) return { text: '#REF!', num: null, error: true };\n      var raw = sheet.cells ? sheet.cells[key] : undefined;\n      if (raw === undefined || raw === null || raw === '') return { text: '', num: null, empty: true };\n      if (typeof raw === 'string' && raw.charAt(0) === '=') {\n        stack[key] = true;\n        var text;\n        try { text = evaluateFormula(raw.slice(1), get); }\n        catch (e) { text = (e && e.error) ? e.error : '#ERROR!'; }\n        delete stack[key];\n        var isErr = text.charAt(0) === '#';\n        var num = (!isErr && text !== '' && !isNaN(Number(text))) ? Number(text) : null;\n        var res = { text: text, num: num, error: isErr, formula: raw };\n        cache[key] = res;\n        return res;\n      }\n      var t = String(raw);\n      var n2 = (t.trim() !== '' && !isNaN(Number(t))) ? Number(t) : null;\n      return { text: t, num: n2 };\n    }\n    return get;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 286,
+              "alias": "makeValues",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "evaluateFormula",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function evaluateFormula(src, get) {\n    var toks = tokenizeFormula(src);\n    var p = 0;\n    function peek() { return toks[p]; }\n    function eat() { return toks[p++]; }\n    function toNum(v) {\n      if (typeof v === 'number') return v;\n      if (v === null || v === undefined) return 0;\n      if (typeof v === 'string') {\n        if (v.charAt(0) === '#') throw errObj(v);\n        var n = Number(v);\n        if (v.trim() !== '' && !isNaN(n)) return n;\n        throw errObj('#ERROR!');\n      }\n      if (Object.prototype.toString.call(v) === '[object Array]') {\n        if (v.length === 1) return toNum(v[0]);\n        throw errObj('#ERROR!');\n      }\n      throw errObj('#ERROR!');\n    }\n    function parseRefName(rf) {\n      var m = /^\\$?([A-Za-z]{1,3})\\$?([0-9]+)$/.exec(rf);\n      if (!m) return null;\n      var c = COL_LIST.indexOf(m[1].toUpperCase());\n      var r = parseInt(m[2], 10) - 1;\n      if (c < 0 || r < 0) return null;\n      return { r: r, c: c };\n    }\n    function cellValue(rf) {\n      var w = get(rf);\n      if (!w || w.empty) return null;\n      if (w.error) throw errObj(w.text);\n      return w.num !== null && w.num !== undefined ? w.num : w.text;\n    }\n    function rangeValues(a, b) {\n      var A = parseRefName(a), B = parseRefName(b);\n      if (!A || !B) throw errObj('#REF!');\n      var out = [];\n      for (var r = Math.min(A.r, B.r); r <= Math.max(A.r, B.r); r++) {\n        for (var c = Math.min(A.c, B.c); c <= Math.max(A.c, B.c); c++) {\n          out.push(cellValue(coordName(r, c)));\n        }\n      }\n      return out;\n    }\n    function applyFn(name, args) {\n      var flat = [];\n      for (var i = 0; i < args.length; i++) {\n        var a = args[i];\n        if (Object.prototype.toString.call(a) === '[object Array]') {\n          for (var j = 0; j < a.length; j++) flat.push(a[j]);\n        } else flat.push(a);\n      }\n      var nums = [];\n      for (var k = 0; k < flat.length; k++) {\n        var v = flat[k];\n        if (typeof v === 'number') { nums.push(v); continue; }\n        if (typeof v === 'string' && v.trim() !== '' && !isNaN(Number(v)) && v.charAt(0) !== '#') nums.push(Number(v));\n      }\n      var total = 0;\n      for (var s = 0; s < nums.length; s++) total += nums[s];\n      if (name === 'SUM') return total;\n      if (name === 'COUNT') return nums.length;\n      if (name === 'AVERAGE') { if (!nums.length) throw errObj('#DIV/0!'); return total / nums.length; }\n      if (name === 'MIN') return nums.length ? Math.min.apply(null, nums) : 0;\n      if (name === 'MAX') return nums.length ? Math.max.apply(null, nums) : 0;\n      throw errObj('#NAME?');\n    }\n    function parseExpr() {\n      var v = parseTerm();\n      for (;;) {\n        var t = peek();\n        if (t && t.t === '+') { eat(); v = toNum(v) + toNum(parseTerm()); }\n        else if (t && t.t === '-') { eat(); v = toNum(v) - toNum(parseTerm()); }\n        else return v;\n      }\n    }\n    function parseTerm() {\n      var v = parseUnary();\n      for (;;) {\n        var t = peek();\n        if (t && t.t === '*') { eat(); v = toNum(v) * toNum(parseUnary()); }\n        else if (t && t.t === '/') {\n          eat();\n          var d = toNum(parseUnary());\n          if (d === 0) throw errObj('#DIV/0!');\n          v = toNum(v) / d;\n        } else return v;\n      }\n    }\n    function parseUnary() {\n      var t = peek();\n      if (t && t.t === '-') { eat(); return -toNum(parseUnary()); }\n      if (t && t.t === '+') { eat(); return parseUnary(); }\n      return parsePrimary();\n    }\n    function parsePrimary() {\n      var t = peek();\n      if (!t) throw errObj('#ERROR!');\n      if (t.t === 'num') { eat(); return t.v; }\n      if (t.t === 'str') { eat(); return t.v; }\n      if (t.t === 'err') { eat(); throw errObj(t.v); }\n      if (t.t === '(') {\n        eat();\n        var v = parseExpr();\n        var c = peek();\n        if (!c || c.t !== ')') throw errObj('#ERROR!');\n        eat();\n        return v;\n      }\n      if (t.t === 'ref') {\n        eat();\n        var nx = peek();\n        if (nx && nx.t === ':') {\n          eat();\n          var t2 = peek();\n          if (!t2 || t2.t !== 'ref') throw errObj('#ERROR!');\n          eat();\n          return rangeValues(t.v, t2.v);\n        }\n        return cellValue(t.v);\n      }\n      if (t.t === 'name') {\n        eat();\n        var lp = peek();\n        if (!lp || lp.t !== '(') throw errObj('#NAME?');\n        eat();\n        var args = [];\n        if (peek() && peek().t === ')') { eat(); }\n        else {\n          for (;;) {\n            args.push(parseExpr());\n            var sep = peek();\n            if (!sep) throw errObj('#ERROR!');\n            if (sep.t === ',') { eat(); continue; }\n            if (sep.t === ')') { eat(); break; }\n            throw errObj('#ERROR!');\n          }\n        }\n        return applyFn(t.v, args);\n      }\n      throw errObj('#ERROR!');\n    }\n    var out = parseExpr();\n    if (p < toks.length) throw errObj('#ERROR!');\n    if (typeof out === 'number') {\n      if (!isFinite(out)) throw errObj('#DIV/0!');\n      return String(Math.round(out * 1e10) / 1e10);\n    }\n    return String(out);\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 132,
+              "alias": "evaluateFormula",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "tokenizeFormula",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function tokenizeFormula(src) {\n    var t = [], i = 0;\n    while (i < src.length) {\n      var ch = src.charAt(i);\n      if (ch === ' ' || ch === '\\t' || ch === '\\n' || ch === '\\r') { i++; continue; }\n      if (ch === '\"') {\n        var j = i + 1, s = '';\n        while (j < src.length && src.charAt(j) !== '\"') { s += src.charAt(j); j++; }\n        if (j >= src.length) throw errObj('#ERROR!');\n        t.push({ t: 'str', v: s }); i = j + 1; continue;\n      }\n      if (/[0-9]/.test(ch) || (ch === '.' && /[0-9]/.test(src.charAt(i + 1)))) {\n        var k = i;\n        while (k < src.length && /[0-9.]/.test(src.charAt(k))) k++;\n        var n = Number(src.slice(i, k));\n        if (isNaN(n)) throw errObj('#ERROR!');\n        t.push({ t: 'num', v: n }); i = k; continue;\n      }\n      if (/[A-Za-z_$]/.test(ch)) {\n        var m = i;\n        while (m < src.length && /[A-Za-z0-9_$]/.test(src.charAt(m))) m++;\n        var w = src.slice(i, m); i = m;\n        if (/^\\$?[A-Za-z]{1,3}\\$?[0-9]+$/.test(w)) t.push({ t: 'ref', v: w.toUpperCase().replace(/\\$/g, '') });\n        else if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(w)) t.push({ t: 'name', v: w.toUpperCase() });\n        else throw errObj('#ERROR!');\n        continue;\n      }\n      if (ch === '#') {\n        var h = i + 1;\n        while (h < src.length && /[A-Za-z0-9_/!]/.test(src.charAt(h))) h++;\n        var lit = src.slice(i, h).toUpperCase();\n        if (lit.charAt(lit.length - 1) !== '!') throw errObj('#ERROR!');\n        t.push({ t: 'err', v: lit }); i = h; continue;\n      }\n      if ('+-*/()^:,='.indexOf(ch) >= 0) { t.push({ t: ch, v: ch }); i++; continue; }\n      throw errObj('#ERROR!');\n    }\n    return t;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 92,
+              "alias": "tokenizeFormula",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "errObj",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function errObj(code) { var e = new Error(code); e.error = code; return e; }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 90,
+              "alias": "errObj",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "coordName",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function coordName(r, c) { return COL_LIST[c] + (r + 1); }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 24,
+              "alias": "coordName",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "shiftFormula",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function shiftFormula(formula, axis, index, delta) {\n    var bad = false;\n    var out = String(formula).replace(REF_RE, function (m, cAbs, col, rAbs, row) {\n      var c = COL_LIST.indexOf(col.toUpperCase());\n      var r = parseInt(row, 10) - 1;\n      if (c < 0) return m;\n      if (axis === 'row') {\n        if (delta > 0) { if (r >= index) r += delta; }\n        else { if (r === index) { bad = true; return '#REF!'; } if (r > index) r += delta; }\n      } else {\n        if (delta > 0) { if (c >= index) c += delta; }\n        else { if (c === index) { bad = true; return '#REF!'; } if (c > index) c += delta; }\n      }\n      if (r < 0 || c < 0) { bad = true; return '#REF!'; }\n      return cAbs + COL_LIST[c] + rAbs + (r + 1);\n    });\n    if (bad || out.indexOf('#REF!') >= 0) return '=#REF!';\n    return out;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 316,
+              "alias": "shiftFormula",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "pushUndo",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function pushUndo() {\n    var w = currentWb();\n    if (!w) return;\n    clearStatus();\n    var ui = ARC.state.ui || (ARC.state.ui = {});\n    var undo = ui.undo || (ui.undo = {});\n    var redo = ui.redo || (ui.redo = {});\n    if (!undo[w.id]) undo[w.id] = [];\n    undo[w.id].push(JSON.parse(JSON.stringify(w)));\n    if (undo[w.id].length > 40) undo[w.id].shift();\n    redo[w.id] = [];\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 396,
+              "alias": "pushUndo",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "clearStatus",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function clearStatus() {\n    var root = document.getElementById('status-root');\n    if (root) { root.hidden = true; root.innerHTML = ''; }\n    clearTimeout(ARC._statusTimer);\n    ARC._undo = null;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 67,
+              "alias": "clearStatus",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "currentWb",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function currentWb() {\n    var rt = ARC.route();\n    if (rt.name !== 'workbook') return null;\n    return getWb(rt.params[0]);\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 49,
+              "alias": "currentWb",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "currentSheet",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function currentSheet() {\n    var w = currentWb();\n    if (!w || !w.sheets || !w.sheets.length) return null;\n    for (var i = 0; i < w.sheets.length; i++) if (w.sheets[i].id === w.activeSheet) return w.sheets[i];\n    return w.sheets[0];\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 54,
+              "alias": "currentSheet",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "getWb",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function getWb(id) {\n    var list = ARC.state.workbooks || [];\n    for (var i = 0; i < list.length; i++) if (String(list[i].id) === String(id)) return list[i];\n    return null;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 44,
+              "alias": "getWb",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "refRC",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function refRC(s) {\n    var m = /^\\$?([A-Za-z]{1,3})\\$?([0-9]+)$/.exec(String(s));\n    if (!m) return null;\n    var c = COL_LIST.indexOf(m[1].toUpperCase());\n    var r = parseInt(m[2], 10) - 1;\n    if (c < 0 || r < 0) return null;\n    return { r: r, c: c };\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 25,
+              "alias": "refRC",
+              "source_sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+            }
+          ],
+          "initializers": [],
+          "subject": "shiftStructure",
+          "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=globalThis.COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;globalThis.ARC={state:{workbooks:[],ui:{}},route:function(){return {name:'workbook',params:['wb1']};},save:function(){},render:function(){},uid:function(){return 'u';}};globalThis.document={getElementById:function(){return null;}};ARC.state.workbooks.push({id:'wb1',activeSheet:'src',sheets:[{id:'src',name:'Data',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'Sales',A2:'East',B2:'10',A3:'West',B3:'20'}},{id:'pvt',name:'Pivot1',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'SUM of Sales',A2:'East',B2:'10',A3:'West',B3:'20'},pivot:{sourceSheet:'src',range:{r1:0,c1:0,r2:2,c2:1},rows:'Region',columns:'',values:'Sales',summarize:'SUM'}}]});;globalThis.target=currentSheet();target.cells={A1:\"7\",C3:\"=$A$1\"};",
+          "precondition": "assert.equal(makeValues(target)(\"C3\").text,\"7\");",
+          "check": "shiftStructure(\"row\",0,1,true);assert.equal(target.cells.C4,\"=$A$2\");assert.equal(makeValues(target)(\"C4\").text,\"7\");",
+          "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n"
+        }
+      ]
+    },
+    "after": {
+      "results": [
+        {
+          "id": "REQ-2-2-1#contract-9",
+          "status": "fail",
+          "calls": {
+            "shiftStructure": 1,
+            "computePivot": 0,
+            "makeValues": 0,
+            "evaluateFormula": 0,
+            "tokenizeFormula": 0,
+            "errObj": 0,
+            "coordName": 2,
+            "shiftFormula": 1,
+            "pushUndo": 1,
+            "clearStatus": 1,
+            "currentWb": 3,
+            "currentSheet": 1,
+            "getWb": 3,
+            "refRC": 2,
+            "adjustPivotRanges": 1
+          },
+          "assertions": 1,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n\n'=$A$1' !== '=$A$2'\n",
+          "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'=$A$1' !== '=$A$2'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/s70-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:39\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/s70-20261002/oneshot/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        }
+      ],
+      "bindings": [
+        {
+          "id": "REQ-2-2-1#contract-9",
+          "requirement": "REQ-2-2-1",
+          "evidence": "recomputed using the adjusted range",
+          "explanation": "Structural insertion must preserve the referenced cell identity even when a formula uses an absolute reference; the copy-offset rule has a different operation scope.",
+          "functions": [
+            {
+              "file": "frontend/public/app.js",
+              "name": "shiftStructure",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function shiftStructure(axis, index, count, insert) {\n    var w = currentWb(), sheet = currentSheet();\n    if (!w || !sheet) return;\n    var delta = insert ? count : -count;\n    pushUndo();\n    adjustPivotRanges(w, sheet.id, axis, index, count, insert);\n    var out = {};\n    var keys = Object.keys(sheet.cells || {});\n    for (var i = 0; i < keys.length; i++) {\n      var rc = refRC(keys[i]);\n      if (!rc) continue;\n      var r = rc.r, c = rc.c;\n      if (axis === 'row') {\n        if (insert) { if (r >= index) r += count; }\n        else { if (r >= index && r < index + count) continue; if (r >= index + count) r -= count; }\n      } else {\n        if (insert) { if (c >= index) c += count; }\n        else { if (c >= index && c < index + count) continue; if (c >= index + count) c -= count; }\n      }\n      if (r < 0 || c < 0 || r >= ROW_COUNT || c >= MAX_COL) continue;\n      out[coordName(r, c)] = sheet.cells[keys[i]];\n    }\n    for (var k in out) {\n      if (!Object.prototype.hasOwnProperty.call(out, k)) continue;\n      var v = out[k];\n      if (typeof v === 'string' && v.charAt(0) === '=' && axis === 'row') {\n        out[k] = shiftFormula(v, 'row', index, delta);\n      } else if (typeof v === 'string' && v.charAt(0) === '=' && axis === 'col') {\n        out[k] = shiftFormula(v, 'col', index, delta);\n      }\n    }\n    sheet.cells = out;\n    var list = sheet.validations || (sheet.validations = []);\n    var kept = [];\n    for (var j = 0; j < list.length; j++) {\n      var ru = list[j];\n      if (axis === 'row') {\n        if (insert) {\n          if (ru.r1 >= index) { ru.r1 += count; ru.r2 += count; }\n        } else {\n          if ((ru.r1 >= index && ru.r1 < index + count) || (ru.r2 >= index && ru.r2 < index + count)) continue;\n          if (ru.r1 >= index + count) { ru.r1 -= count; ru.r2 -= count; }\n        }\n      } else {\n        if (insert) {\n          if (ru.c1 >= index) { ru.c1 += count; ru.c2 += count; }\n        } else {\n          if ((ru.c1 >= index && ru.c1 < index + count) || (ru.c2 >= index && ru.c2 < index + count)) continue;\n          if (ru.c1 >= index + count) { ru.c1 -= count; ru.c2 -= count; }\n        }\n      }\n      kept.push(ru);\n    }\n    sheet.validations = kept;\n    ARC.save();\n    ARC.render();\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 1613,
+              "alias": "shiftStructure",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "computePivot",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function computePivot(w, pivot) {\n    var src = null;\n    for (var i = 0; i < w.sheets.length; i++) if (w.sheets[i].id === pivot.sourceSheet) src = w.sheets[i];\n    if (!src) return { error: 'Pivot field is no longer available. Select a new field.' };\n    var R = pivot.range;\n    if (!R || R.r2 < R.r1 || R.c2 < R.c1) {\n      return { error: 'Pivot field is no longer available. Select a new field.' };\n    }\n    var vals = makeValues(src);\n    var headers = [];\n    for (var c = R.c1; c <= R.c2; c++) headers.push(vals(coordName(R.r1, c)).text);\n    var ri = headers.indexOf(pivot.rows);\n    var vi = headers.indexOf(pivot.values);\n    var ci = pivot.columns ? headers.indexOf(pivot.columns) : -1;\n    if (ri < 0 || vi < 0 || (pivot.columns && ci < 0)) {\n      return { error: 'Pivot field is no longer available. Select a new field.' };\n    }\n    var method = pivot.summarize || 'SUM';\n    var recs = [];\n    for (var r = R.r1 + 1; r <= R.r2; r++) {\n      recs.push({\n        row: vals(coordName(r, R.c1 + ri)).text,\n        col: pivot.columns ? vals(coordName(r, R.c1 + ci)).text : '',\n        val: vals(coordName(r, R.c1 + vi)).text\n      });\n    }\n    if (method !== 'COUNT') {\n      var anyNum = false;\n      for (var k = 0; k < recs.length; k++) {\n        var tv = recs[k].val;\n        if (tv !== '' && tv != null && !isNaN(Number(tv))) { anyNum = true; break; }\n      }\n      if (!anyNum) return { error: 'Value field requires numeric values' };\n    }\n    var rowKeys = [], colKeys = [];\n    for (var a = 0; a < recs.length; a++) {\n      if (rowKeys.indexOf(recs[a].row) < 0) rowKeys.push(recs[a].row);\n      if (pivot.columns && colKeys.indexOf(recs[a].col) < 0) colKeys.push(recs[a].col);\n    }\n    function aggregate(rowKey, colKey) {\n      var sum = 0, nums = 0, count = 0;\n      for (var i2 = 0; i2 < recs.length; i2++) {\n        var rec = recs[i2];\n        if (rowKey !== null && rec.row !== rowKey) continue;\n        if (colKey !== null && rec.col !== colKey) continue;\n        var n = Number(rec.val);\n        var ok = rec.val !== '' && rec.val != null && !isNaN(n);\n        if (ok) { sum += n; nums++; }\n        if (rec.val !== '' && rec.val != null) count++;\n      }\n      if (method === 'COUNT') return String(count);\n      if (method === 'AVERAGE') return nums ? String(sum / nums) : '0';\n      return String(sum);\n    }\n    var out = {};\n    if (!pivot.columns) {\n      out.A1 = pivot.rows;\n      out.B1 = method + ' of ' + pivot.values;\n      for (var x = 0; x < rowKeys.length; x++) {\n        out[coordName(x + 1, 0)] = rowKeys[x];\n        out[coordName(x + 1, 1)] = aggregate(rowKeys[x], null);\n      }\n      out[coordName(rowKeys.length + 1, 0)] = 'Grand Total';\n      out[coordName(rowKeys.length + 1, 1)] = aggregate(null, null);\n    } else {\n      out.A1 = pivot.rows;\n      for (var y = 0; y < colKeys.length; y++) out[coordName(0, y + 1)] = colKeys[y];\n      out[coordName(0, colKeys.length + 1)] = 'Grand Total';\n      for (var x2 = 0; x2 < rowKeys.length; x2++) {\n        out[coordName(x2 + 1, 0)] = rowKeys[x2];\n        for (var y2 = 0; y2 < colKeys.length; y2++) {\n          out[coordName(x2 + 1, y2 + 1)] = aggregate(rowKeys[x2], colKeys[y2]);\n        }\n        out[coordName(x2 + 1, colKeys.length + 1)] = aggregate(rowKeys[x2], null);\n      }\n      var lr = rowKeys.length + 1;\n      out[coordName(lr, 0)] = 'Grand Total';\n      for (var y3 = 0; y3 < colKeys.length; y3++) out[coordName(lr, y3 + 1)] = aggregate(null, colKeys[y3]);\n      out[coordName(lr, colKeys.length + 1)] = aggregate(null, null);\n    }\n    return { cells: out };\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 673,
+              "alias": "computePivot",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "makeValues",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function makeValues(sheet) {\n    var cache = {}, stack = {};\n    function get(key) {\n      if (Object.prototype.hasOwnProperty.call(cache, key)) return cache[key];\n      if (stack[key]) return { text: '#REF!', num: null, error: true };\n      var raw = sheet.cells ? sheet.cells[key] : undefined;\n      if (raw === undefined || raw === null || raw === '') return { text: '', num: null, empty: true };\n      if (typeof raw === 'string' && raw.charAt(0) === '=') {\n        stack[key] = true;\n        var text;\n        try { text = evaluateFormula(raw.slice(1), get); }\n        catch (e) { text = (e && e.error) ? e.error : '#ERROR!'; }\n        delete stack[key];\n        var isErr = text.charAt(0) === '#';\n        var num = (!isErr && text !== '' && !isNaN(Number(text))) ? Number(text) : null;\n        var res = { text: text, num: num, error: isErr, formula: raw };\n        cache[key] = res;\n        return res;\n      }\n      var t = String(raw);\n      var n2 = (t.trim() !== '' && !isNaN(Number(t))) ? Number(t) : null;\n      return { text: t, num: n2 };\n    }\n    return get;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 287,
+              "alias": "makeValues",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "evaluateFormula",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function evaluateFormula(src, get) {\n    var toks = tokenizeFormula(src);\n    var p = 0;\n    function peek() { return toks[p]; }\n    function eat() { return toks[p++]; }\n    function toNum(v) {\n      if (typeof v === 'number') return v;\n      if (v === null || v === undefined) return 0;\n      if (typeof v === 'string') {\n        if (v.charAt(0) === '#') throw errObj(v);\n        var n = Number(v);\n        if (v.trim() !== '' && !isNaN(n)) return n;\n        throw errObj('#ERROR!');\n      }\n      if (Object.prototype.toString.call(v) === '[object Array]') {\n        if (v.length === 1) return toNum(v[0]);\n        throw errObj('#ERROR!');\n      }\n      throw errObj('#ERROR!');\n    }\n    function parseRefName(rf) {\n      var m = /^\\$?([A-Za-z]{1,3})\\$?([0-9]+)$/.exec(rf);\n      if (!m) return null;\n      var c = COL_LIST.indexOf(m[1].toUpperCase());\n      var r = parseInt(m[2], 10) - 1;\n      if (c < 0 || r < 0 || r >= ROW_COUNT || c >= MAX_COL) return null;\n      return { r: r, c: c };\n    }\n    function cellValue(rf) {\n      var w = get(rf);\n      if (!w || w.empty) return null;\n      if (w.error) throw errObj(w.text);\n      return w.num !== null && w.num !== undefined ? w.num : w.text;\n    }\n    function rangeValues(a, b) {\n      var A = parseRefName(a), B = parseRefName(b);\n      if (!A || !B) throw errObj('#REF!');\n      var out = [];\n      for (var r = Math.min(A.r, B.r); r <= Math.max(A.r, B.r); r++) {\n        for (var c = Math.min(A.c, B.c); c <= Math.max(A.c, B.c); c++) {\n          out.push(cellValue(coordName(r, c)));\n        }\n      }\n      return out;\n    }\n    function applyFn(name, args) {\n      var flat = [];\n      for (var i = 0; i < args.length; i++) {\n        var a = args[i];\n        if (Object.prototype.toString.call(a) === '[object Array]') {\n          for (var j = 0; j < a.length; j++) flat.push(a[j]);\n        } else flat.push(a);\n      }\n      var nums = [];\n      for (var k = 0; k < flat.length; k++) {\n        var v = flat[k];\n        if (typeof v === 'number') { nums.push(v); continue; }\n        if (typeof v === 'string' && v.trim() !== '' && !isNaN(Number(v)) && v.charAt(0) !== '#') nums.push(Number(v));\n      }\n      var total = 0;\n      for (var s = 0; s < nums.length; s++) total += nums[s];\n      if (name === 'SUM') return total;\n      if (name === 'COUNT') return nums.length;\n      if (name === 'AVERAGE') { if (!nums.length) throw errObj('#DIV/0!'); return total / nums.length; }\n      if (name === 'MIN') return nums.length ? Math.min.apply(null, nums) : 0;\n      if (name === 'MAX') return nums.length ? Math.max.apply(null, nums) : 0;\n      throw errObj('#NAME?');\n    }\n    function parseExpr() {\n      var v = parseTerm();\n      for (;;) {\n        var t = peek();\n        if (t && t.t === '+') { eat(); v = toNum(v) + toNum(parseTerm()); }\n        else if (t && t.t === '-') { eat(); v = toNum(v) - toNum(parseTerm()); }\n        else return v;\n      }\n    }\n    function parseTerm() {\n      var v = parseUnary();\n      for (;;) {\n        var t = peek();\n        if (t && t.t === '*') { eat(); v = toNum(v) * toNum(parseUnary()); }\n        else if (t && t.t === '/') {\n          eat();\n          var d = toNum(parseUnary());\n          if (d === 0) throw errObj('#DIV/0!');\n          v = toNum(v) / d;\n        } else return v;\n      }\n    }\n    function parseUnary() {\n      var t = peek();\n      if (t && t.t === '-') { eat(); return -toNum(parseUnary()); }\n      if (t && t.t === '+') { eat(); return parseUnary(); }\n      return parsePrimary();\n    }\n    function parsePrimary() {\n      var t = peek();\n      if (!t) throw errObj('#ERROR!');\n      if (t.t === 'num') { eat(); return t.v; }\n      if (t.t === 'str') { eat(); return t.v; }\n      if (t.t === 'err') { eat(); throw errObj(t.v); }\n      if (t.t === '(') {\n        eat();\n        var v = parseExpr();\n        var c = peek();\n        if (!c || c.t !== ')') throw errObj('#ERROR!');\n        eat();\n        return v;\n      }\n      if (t.t === 'ref') {\n        eat();\n        var nx = peek();\n        if (nx && nx.t === ':') {\n          eat();\n          var t2 = peek();\n          if (!t2 || t2.t !== 'ref') throw errObj('#ERROR!');\n          eat();\n          return rangeValues(t.v, t2.v);\n        }\n        if (!parseRefName(t.v)) throw errObj('#REF!');\n        return cellValue(t.v);\n      }\n      if (t.t === 'name') {\n        eat();\n        var lp = peek();\n        if (!lp || lp.t !== '(') throw errObj('#NAME?');\n        eat();\n        var args = [];\n        if (peek() && peek().t === ')') { eat(); }\n        else {\n          for (;;) {\n            args.push(parseExpr());\n            var sep = peek();\n            if (!sep) throw errObj('#ERROR!');\n            if (sep.t === ',') { eat(); continue; }\n            if (sep.t === ')') { eat(); break; }\n            throw errObj('#ERROR!');\n          }\n        }\n        return applyFn(t.v, args);\n      }\n      throw errObj('#ERROR!');\n    }\n    var out = parseExpr();\n    if (p < toks.length) throw errObj('#ERROR!');\n    if (typeof out === 'number') {\n      if (!isFinite(out)) throw errObj('#DIV/0!');\n      return String(Math.round(out * 1e10) / 1e10);\n    }\n    return String(out);\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 132,
+              "alias": "evaluateFormula",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "tokenizeFormula",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function tokenizeFormula(src) {\n    var t = [], i = 0;\n    while (i < src.length) {\n      var ch = src.charAt(i);\n      if (ch === ' ' || ch === '\\t' || ch === '\\n' || ch === '\\r') { i++; continue; }\n      if (ch === '\"') {\n        var j = i + 1, s = '';\n        while (j < src.length && src.charAt(j) !== '\"') { s += src.charAt(j); j++; }\n        if (j >= src.length) throw errObj('#ERROR!');\n        t.push({ t: 'str', v: s }); i = j + 1; continue;\n      }\n      if (/[0-9]/.test(ch) || (ch === '.' && /[0-9]/.test(src.charAt(i + 1)))) {\n        var k = i;\n        while (k < src.length && /[0-9.]/.test(src.charAt(k))) k++;\n        var n = Number(src.slice(i, k));\n        if (isNaN(n)) throw errObj('#ERROR!');\n        t.push({ t: 'num', v: n }); i = k; continue;\n      }\n      if (/[A-Za-z_$]/.test(ch)) {\n        var m = i;\n        while (m < src.length && /[A-Za-z0-9_$]/.test(src.charAt(m))) m++;\n        var w = src.slice(i, m); i = m;\n        if (/^\\$?[A-Za-z]{1,3}\\$?[0-9]+$/.test(w)) t.push({ t: 'ref', v: w.toUpperCase().replace(/\\$/g, '') });\n        else if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(w)) t.push({ t: 'name', v: w.toUpperCase() });\n        else throw errObj('#ERROR!');\n        continue;\n      }\n      if (ch === '#') {\n        var h = i + 1;\n        while (h < src.length && /[A-Za-z0-9_/!]/.test(src.charAt(h))) h++;\n        var lit = src.slice(i, h).toUpperCase();\n        if (lit.charAt(lit.length - 1) !== '!') throw errObj('#ERROR!');\n        t.push({ t: 'err', v: lit }); i = h; continue;\n      }\n      if ('+-*/()^:,='.indexOf(ch) >= 0) { t.push({ t: ch, v: ch }); i++; continue; }\n      throw errObj('#ERROR!');\n    }\n    return t;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 92,
+              "alias": "tokenizeFormula",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "errObj",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function errObj(code) { var e = new Error(code); e.error = code; return e; }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 90,
+              "alias": "errObj",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "coordName",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function coordName(r, c) { return COL_LIST[c] + (r + 1); }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 24,
+              "alias": "coordName",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "shiftFormula",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function shiftFormula(formula, axis, index, delta) {\n    var bad = false;\n    var out = String(formula).replace(REF_RE, function (m, cAbs, col, rAbs, row) {\n      var c = COL_LIST.indexOf(col.toUpperCase());\n      var r = parseInt(row, 10) - 1;\n      if (c < 0) return m;\n      var outR = r, outC = c, changed = false;\n      if (axis === 'row') {\n        if (!rAbs) {\n          if (delta > 0) {\n            if (r >= index) { outR = r + delta; changed = true; }\n          } else {\n            if (r === index) { bad = true; return '#REF!'; }\n            if (r > index) { outR = r + delta; changed = true; }\n          }\n        } else if (delta < 0 && r === index) {\n          bad = true; return '#REF!';\n        }\n      } else {\n        if (!cAbs) {\n          if (delta > 0) {\n            if (c >= index) { outC = c + delta; changed = true; }\n          } else {\n            if (c === index) { bad = true; return '#REF!'; }\n            if (c > index) { outC = c + delta; changed = true; }\n          }\n        } else if (delta < 0 && c === index) {\n          bad = true; return '#REF!';\n        }\n      }\n      if (outR < 0 || outR >= ROW_COUNT || outC < 0 || outC >= MAX_COL) {\n        if (changed) { bad = true; return '#REF!'; }\n        return m;\n      }\n      return cAbs + COL_LIST[outC] + rAbs + (outR + 1);\n    });\n    if (bad || out.indexOf('#REF!') >= 0) return '=#REF!';\n    return out;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 317,
+              "alias": "shiftFormula",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "pushUndo",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function pushUndo() {\n    var w = currentWb();\n    if (!w) return;\n    clearStatus();\n    var ui = ARC.state.ui || (ARC.state.ui = {});\n    var undo = ui.undo || (ui.undo = {});\n    var redo = ui.redo || (ui.redo = {});\n    if (!undo[w.id]) undo[w.id] = [];\n    undo[w.id].push(JSON.parse(JSON.stringify(w)));\n    if (undo[w.id].length > 40) undo[w.id].shift();\n    redo[w.id] = [];\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 420,
+              "alias": "pushUndo",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "clearStatus",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function clearStatus() {\n    var root = document.getElementById('status-root');\n    if (root) { root.hidden = true; root.innerHTML = ''; }\n    clearTimeout(ARC._statusTimer);\n    ARC._undo = null;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 67,
+              "alias": "clearStatus",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "currentWb",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function currentWb() {\n    var rt = ARC.route();\n    if (rt.name !== 'workbook') return null;\n    return getWb(rt.params[0]);\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 49,
+              "alias": "currentWb",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "currentSheet",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function currentSheet() {\n    var w = currentWb();\n    if (!w || !w.sheets || !w.sheets.length) return null;\n    for (var i = 0; i < w.sheets.length; i++) if (w.sheets[i].id === w.activeSheet) return w.sheets[i];\n    return w.sheets[0];\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 54,
+              "alias": "currentSheet",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "getWb",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function getWb(id) {\n    var list = ARC.state.workbooks || [];\n    for (var i = 0; i < list.length; i++) if (String(list[i].id) === String(id)) return list[i];\n    return null;\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 44,
+              "alias": "getWb",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "refRC",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function refRC(s) {\n    var m = /^\\$?([A-Za-z]{1,3})\\$?([0-9]+)$/.exec(String(s));\n    if (!m) return null;\n    var c = COL_LIST.indexOf(m[1].toUpperCase());\n    var r = parseInt(m[2], 10) - 1;\n    if (c < 0 || r < 0) return null;\n    return { r: r, c: c };\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 25,
+              "alias": "refRC",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            },
+            {
+              "file": "frontend/public/app.js",
+              "name": "adjustPivotRanges",
+              "kind": "function",
+              "scope": "function@198",
+              "code": "function adjustPivotRanges(w, sheetId, axis, index, count, insert) {\n    if (!w || !w.sheets) return;\n    for (var i = 0; i < w.sheets.length; i++) {\n      var s = w.sheets[i];\n      if (!s.pivot || s.pivot.sourceSheet !== sheetId || !s.pivot.range) continue;\n      var p = s.pivot.range;\n      if (axis === 'row') {\n        if (insert) {\n          if (p.r1 >= index) p.r1 += count;\n          if (p.r2 >= index) p.r2 += count;\n        } else {\n          var nr1 = p.r1 >= index + count ? p.r1 - count : (p.r1 >= index ? index : p.r1);\n          var nr2 = p.r2 >= index + count ? p.r2 - count : (p.r2 >= index ? index - 1 : p.r2);\n          p.r1 = nr1;\n          p.r2 = nr2;\n        }\n      } else {\n        if (insert) {\n          if (p.c1 >= index) p.c1 += count;\n          if (p.c2 >= index) p.c2 += count;\n        } else {\n          var nc1 = p.c1 >= index + count ? p.c1 - count : (p.c1 >= index ? index : p.c1);\n          var nc2 = p.c2 >= index + count ? p.c2 - count : (p.c2 >= index ? index - 1 : p.c2);\n          p.c1 = nc1;\n          p.c2 = nc2;\n        }\n      }\n    }\n  }",
+              "callable": true,
+              "mutable": false,
+              "node_type": "FunctionDeclaration",
+              "line": 1583,
+              "alias": "adjustPivotRanges",
+              "source_sha256": "2ad2036e6eb9085dca454f554a8dcca65cc49b20d458a98ec22e236824ab5dd0"
+            }
+          ],
+          "initializers": [],
+          "subject": "shiftStructure",
+          "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=globalThis.COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;globalThis.ARC={state:{workbooks:[],ui:{}},route:function(){return {name:'workbook',params:['wb1']};},save:function(){},render:function(){},uid:function(){return 'u';}};globalThis.document={getElementById:function(){return null;}};ARC.state.workbooks.push({id:'wb1',activeSheet:'src',sheets:[{id:'src',name:'Data',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'Sales',A2:'East',B2:'10',A3:'West',B3:'20'}},{id:'pvt',name:'Pivot1',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'SUM of Sales',A2:'East',B2:'10',A3:'West',B3:'20'},pivot:{sourceSheet:'src',range:{r1:0,c1:0,r2:2,c2:1},rows:'Region',columns:'',values:'Sales',summarize:'SUM'}}]});;globalThis.target=currentSheet();target.cells={A1:\"7\",C3:\"=$A$1\"};",
+          "precondition": "assert.equal(makeValues(target)(\"C3\").text,\"7\");",
+          "check": "shiftStructure(\"row\",0,1,true);assert.equal(target.cells.C4,\"=$A$2\");assert.equal(makeValues(target)(\"C4\").text,\"7\");",
+          "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n",
+          "linked_dependencies": [
+            "adjustPivotRanges"
+          ]
+        }
+      ]
+    }
+  }
+}

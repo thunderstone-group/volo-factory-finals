@@ -1,0 +1,25 @@
+{
+ "files": [
+  {
+   "file": "t00-light.spec.cjs",
+   "scenarios": [
+    "EV-1.1",
+    "EV-1.2",
+    "EV-3.1",
+    "EV-3.2"
+   ],
+   "calls": 0,
+   "tests": [
+    "EV-1.1: Remove active catalog filters",
+    "EV-1.2: Submit a customer service contact message",
+    "EV-3.1: Expand checkout order summary details",
+    "EV-3.2: Add order comment before payment"
+   ],
+   "compiler": "light"
+  }
+ ],
+ "scenarios": 4,
+ "tests": 4,
+ "seconds": 0,
+ "prerequisites": ""
+}

@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-02T04:17:59.788275+08:00",
+  "objective": "Same complete official submission overall S >= 70, with generalization preserved.",
+  "user_authorization": "Explicit goal S70 and continue optimizing while user sleeps; existing account credits authorized.",
+  "starting_practice_balance_cny": 439.583993,
+  "starting_official_balance_cny": 227.577645,
+  "first_practice_tranche_cny": 60,
+  "first_official_tranche_cny": 40,
+  "current_best_score": 59.751714998087095,
+  "latest_complete_pair": {
+    "github": 27,
+    "sheet": 73,
+    "cost_cny": 7.045668
+  },
+  "mechanism": "Recover skipped GIVEN states through requirement-grounded UI creation and authorization flows; preserve original runnable tests."
+}

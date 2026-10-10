@@ -1,0 +1,14 @@
+{
+  "app": "strong-draft-initial-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 12,
+    "error": 58,
+    "fail": 39
+  },
+  "seconds": 432.2,
+  "coverage": {
+    "total": 100,
+    "parsed": 51
+  }
+}

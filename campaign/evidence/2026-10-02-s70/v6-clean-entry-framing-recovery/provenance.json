@@ -1,0 +1,10 @@
+{
+  "new_model_calls": 0,
+  "source_reply": "v6-clean-entry-repair-checkpoint/trace.jsonl",
+  "recovery": "Only redundant EDIT separator immediately before closing marker normalized by generic parser",
+  "changed_application_files": [
+    "frontend/public/app.js"
+  ],
+  "seed_unchanged": true,
+  "no_unused_example_dataset_added": true
+}

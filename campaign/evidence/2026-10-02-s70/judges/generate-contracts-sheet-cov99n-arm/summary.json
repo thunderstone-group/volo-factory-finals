@@ -1,0 +1,13 @@
+{
+  "app": "generate-contracts-sheet",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 90,
+    "fail": 10
+  },
+  "seconds": 91.2,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

@@ -1,0 +1,2 @@
+{"suite": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/judges/native-field-reader-official-sheet-cov99n-arm/suite", "counts": {"pass": 87, "fail": 13}, "seconds": 114.4, "model_api_calls": 0}
+{"suite": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/judges/native-field-reader-official-sheet-g99/suite", "counts": {"pass": 82, "fail": 16, "error": 3}, "seconds": 124.3, "model_api_calls": 0}

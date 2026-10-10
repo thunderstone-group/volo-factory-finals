@@ -1,0 +1,13 @@
+{
+  "app": "contract-repair-sheet",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 96,
+    "fail": 4
+  },
+  "seconds": 62.7,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

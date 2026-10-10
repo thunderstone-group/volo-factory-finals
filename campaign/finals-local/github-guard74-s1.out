@@ -1,0 +1,1 @@
+{"task": "github", "label": "guard74-s1", "package_sha256": "74b637ac17ff20dff1e8249d82d161d8ad3cd9296dcb26611cd82199edcc7fe8", "agent_env": ["ONESHOT_REGRESSION_GUARD=1"], "exit": 0, "seconds": 1137.8}

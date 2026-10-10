@@ -1,0 +1,7 @@
+{
+  "task": "sheet",
+  "model": "deepseek-v4-flash-vision-exp",
+  "package_sha256": "c2a2b32a5ed1ff709859cfe3989143cc44bc1343d8937d8ed20e110eb6f518b0",
+  "exit": 0,
+  "seconds": 3406.5
+}

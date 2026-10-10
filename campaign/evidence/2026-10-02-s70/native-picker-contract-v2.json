@@ -1,0 +1,14 @@
+{
+  "browser": "143.0.7499.4",
+  "purpose": "Native customizable select interaction contract, outside candidate code",
+  "css_supported": true,
+  "closed_options": 0,
+  "open_options": 2,
+  "click_option": true,
+  "select_option": true,
+  "escape_closes": true,
+  "form": {
+    "rows": "b",
+    "cols": "b"
+  }
+}

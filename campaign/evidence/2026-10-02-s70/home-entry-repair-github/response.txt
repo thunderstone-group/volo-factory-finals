@@ -1,0 +1,65 @@
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+  /* ---------- home / search ---------- */
+  function homeScreen() {
+    var user = current();
+    var visibleOrgs = orgs().filter(function (o) { return o.public || !!orgMember(user, o.id); });
+    var visibleRepos = repos().filter(function (r) { return canRead(user, r); });
+    var html = '<h1>Home</h1>';
+    if (user) html += '<p class="actions"><a href="#/new">New repository</a></p>';
+    html += '<h2>Repositories</h2><div id="home-repos">' + (visibleRepos.map(function (r) {
+      return '<article class="repo-card"><a href="' + repoBase(r) + '">' + esc(r.name) + '</a> ' +
+        '<span class="owner-path">' + esc(repoLabel(r)) + '</span> ' +
+        '<span class="vis">' + (r.visibility === 'public' ? 'Public' : 'Private') + '</span></article>';
+    }).join('') || '<p>No repositories</p>') + '</div>';
+    html += '<h2>Organizations</h2><div id="home-orgs">' + (visibleOrgs.map(function (o) {
+      return '<article class="org-card"><a href="#/org/' + esc(o.id) + '">' + esc(o.display) + '</a></article>';
+    }).join('') || '<p>No organizations</p>') + '</div>';
+    return html;
+  }
+=======
+  /* ---------- home / search ---------- */
+  function homeScreen() {
+    var user = current();
+    var visibleOrgs = orgs().filter(function (o) { return o.public || !!orgMember(user, o.id); });
+    var visibleRepos = repos().filter(function (r) { return canRead(user, r); });
+    // The overview lists only what the current session may read: readable repositories, and the work
+    // items that live in them. Titles and statuses come from the records themselves (never from literals),
+    // and every entry links to the canonical record URL used by the detail screens.
+    var readable = {};
+    visibleRepos.forEach(function (r) { readable[r.id] = 1; });
+    var visibleIssues = issuesAll().filter(function (i) { return readable[i.repo]; });
+    var visiblePrs = prsAll().filter(function (p) { return readable[p.repo]; });
+    var html = '<h1>Home</h1>';
+    if (user) html += '<p class="actions"><a href="#/new">New repository</a></p>';
+    html += '<h2>Repositories</h2><div id="home-repos">' + (visibleRepos.map(function (r) {
+      var base = repoBase(r);
+      return '<article class="repo-card"><a href="' + base + '">' + esc(r.name) + '</a> ' +
+        '<span class="owner-path">' + esc(repoLabel(r)) + '</span> ' +
+        '<span class="vis">' + (r.visibility === 'public' ? 'Public' : 'Private') + '</span>' +
+        '<nav class="repo-caps" aria-label="' + esc(r.name) + '">' +
+        '<a href="' + base + '">Code</a>' +
+        '<a href="' + base + '/issues">Issues</a>' +
+        '<a href="' + base + '/pulls">Pull requests</a>' +
+        '<a href="' + base + '/commits">Commits</a>' +
+        '</nav></article>';
+    }).join('') || '<p>No repositories</p>') + '</div>';
+    html += '<h2>Issues</h2><div id="home-issues">' + (visibleIssues.map(function (i) {
+      var r = repoById(i.repo);
+      return '<article class="issue-row"><a href="' + repoBase(r) + '/issue/' + esc(String(i.num)) + '">' + esc(i.title) + '</a> ' +
+        '<span class="status">' + issueStatus(i.status) + '</span> ' +
+        '<span class="repo-context">' + esc(repoLabel(r)) + '</span></article>';
+    }).join('') || '<p>No issues</p>') + '</div>';
+    html += '<h2>Pull requests</h2><div id="home-pulls">' + (visiblePrs.map(function (p) {
+      var r = repoById(p.repo);
+      return '<article class="pr-row"><a href="' + repoBase(r) + '/pull/' + esc(String(p.num)) + '">' + esc(p.title) + '</a> ' +
+        '<span class="status">' + prStatus(p.status) + '</span> ' +
+        '<span class="repo-context">' + esc(repoLabel(r)) + '</span></article>';
+    }).join('') || '<p>No pull requests</p>') + '</div>';
+    html += '<h2>Organizations</h2><div id="home-orgs">' + (visibleOrgs.map(function (o) {
+      return '<article class="org-card"><a href="#/org/' + esc(o.id) + '">' + esc(o.display) + '</a></article>';
+    }).join('') || '<p>No organizations</p>') + '</div>';
+    return html;
+  }
+>>>>>>> REPLACE
+=== END ===

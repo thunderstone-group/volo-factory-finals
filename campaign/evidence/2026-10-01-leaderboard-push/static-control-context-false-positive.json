@@ -1,0 +1,57 @@
+{
+  "observed_at": "2026-10-02T02:16:36.639283+08:00",
+  "classification": "Static name guard false positive from a control keyword inside a non-control phrase.",
+  "source": "oneshot/main.py:1708 quoted_control_phrases, 80-character lookback / 40-character lookahead",
+  "trigger": "entry in application entry point matches CONTROL_CONTEXT before data-range and header literals",
+  "observed_rejection": {
+    "round": 3,
+    "accepted": false,
+    "failing": [
+      "REQ-3-2-2#audit-1"
+    ],
+    "passing_before": 116,
+    "gained": [
+      "REQ-3-2-2#audit-1"
+    ],
+    "lost": null,
+    "reason": "a static gate that was clean now flags: 2 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “A1:C6” appears only as `// The seeded data region is A1:C6: the headers Region/Sales`; “Region/Sales/Status” appears only as `// The seeded data reg",
+    "scenarios": {
+      "counts": {
+        "pass": 117
+      },
+      "coverage": {
+        "total": 117,
+        "parsed": 117
+      },
+      "seconds": 39.8,
+      "failing": [],
+      "invariants": [],
+      "translation": {}
+    },
+    "seconds": 227.2,
+    "cost_cny": 0.164943
+  },
+  "generic_probes": [
+    {
+      "text": "After returning to the application entry point, the saved range `D2:F9` and headers `Cost/Revenue` remain persisted.",
+      "expected": [],
+      "actual": [
+        "D2:F9",
+        "Cost/Revenue"
+      ]
+    },
+    {
+      "text": "The page contains one button named `Save` and one link named `Cancel`.",
+      "expected": [
+        "Save",
+        "Cancel"
+      ],
+      "actual": [
+        "Save",
+        "Cancel"
+      ]
+    }
+  ],
+  "effect": "Round 3 gained the final audit check but was rejected by the static guard. Round 4 passed both the 117 checks and the guard. The delivered seed.js contains dataRegion and headerRow literal fields matching the flagged phrases.",
+  "operator_action": "Evidence only; frozen candidate remains unchanged."
+}

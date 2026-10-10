@@ -1,0 +1,19 @@
+{
+  "suite": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/judges/native-field-reader-official-sheet-cov99n-arm/suite",
+  "suite_hashes": {
+    "t03-REQ-3.spec.cjs": "e453ea5ea06af6d1465fab4ebce5685e1fbf01be2b35ce42ca5f771510c52b6a",
+    "t02-REQ-2.spec.cjs": "201e76f5135bbcebacbd954d814a1fe0e827ce3de60ea889d7189dabe28ac432",
+    "t05-REQ-5.spec.cjs": "2a616d222ce2ad70987a9dd0ca13cd8a02828b8b2ae96b7065246f1fcb5848c2",
+    "t04-REQ-4.spec.cjs": "38c9d696e2511d334b5f983023812a54f242db6d24a3047eb54baa5c2ef53431",
+    "suite.json": "eab4cda1511f6d511324ac7d5fcfb8b322a4facdc33b1a01a04446d18383e431",
+    "pw.config.cjs": "8c93deb87f6b000860c887c806b0a6faa4142edcb5aaeb2ffaaec80182337ae7",
+    "t01-REQ-1.spec.cjs": "860c8fc4d253798bb99077ee2f4049ec1002aa21677ce0fd0a8ae37c8f8a91a5"
+  },
+  "candidate": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-sheet/application",
+  "counts": {
+    "pass": 87,
+    "fail": 13
+  },
+  "seconds": 114.4,
+  "model_api_calls": 0
+}

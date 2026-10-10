@@ -1,0 +1,107 @@
+{
+  "task": "sheet",
+  "app": "sheet-81-cbe0e2b43105",
+  "mode": "audit-v2",
+  "seconds": 70.6,
+  "counts": {
+    "pass": 49,
+    "fail": 8
+  },
+  "added_counts": {
+    "pass": 8,
+    "fail": 1
+  },
+  "added_findings": [
+    {
+      "id": "REQ-3-1-1#audit-1",
+      "name": "Formula entered in grid commits by clicking another cell",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-1-1#audit-2",
+      "name": "Rejected commit keeps original value and dependent results",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"50\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div role=\"gridcell\" aria-label=\"A1\" data-coord=\"A1\" aria-selected=\"true\" class=\"cell selected\" data-action=\"select-cell\">…</div>\n      - unexpected value \"\"\n\n\n  613 |   await editor.press('Enter');\n  614 |   await expect(page.getByText('Please enter a number between 0 and ",
+      "source": "test('REQ-3-1-1#audit-2: Rejected commit keeps original value and dependent results', async ({ page }) => {\n  await createBlankWorkbook(page);\n  await setCellViaFormulaBar(page, 'A1', '50');\n  await setCellViaFormulaBar(page, 'B1', '=A1*2');\n  await setNumberValidation(page, 'A1', 'A1', 0, 100);\n  await cell(page, 'A1').dblclick();\n  const editor = page.getByRole('textbox', { name: 'Edit A1', exact: true });\n  await expect(editor).toBeVisible();\n  await editor.fill('101');\n  await editor.press('Enter');\n  await expect(page.getByText('Please enter a number between 0 and 100', { exact: true })).toBeVisible();\n  await expect(cell(page, 'A1')).toHaveText('50');\n  await expect(cell(page, 'B1')).toHaveText('100');\n  await cell(page, 'A1').click();\n  await expect(formulaBar(page)).toHaveValue('50');\n  await page.reload();\n  await expect(cell(page, 'A1')).toHaveText('50');\n  await expect(cell(page, 'B1')).toHaveText('100');\n});",
+      "at": "t03-REQ-3.spec.cjs:615",
+      "seconds": 5.3
+    },
+    {
+      "id": "REQ-3-1-3#audit-1",
+      "name": "Single-cell range copy does not expand to adjacent data",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-3-2-1#audit-1",
+      "name": "Cut into rejecting validation leaves source and target unchanged",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-3-2-2#audit-1",
+      "name": "Undo and redo restore dependent formula results",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-1-1#audit-1",
+      "name": "equal sort keys preserve original relative order",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-5-2-1#audit-2",
+      "name": "dropdown allowed values are trimmed",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-5-2-1#audit-4",
+      "name": "delete rule leaves existing cell values unchanged",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-3-1#audit-1",
+      "name": "AVERAGE on nonnumeric value field keeps old result and source",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    }
+  ]
+}

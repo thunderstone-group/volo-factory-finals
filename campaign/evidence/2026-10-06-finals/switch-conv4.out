@@ -1,0 +1,8 @@
+10-08 12:27 e11a loops ended
+10-08 12:27 uploaded 195e2749e7dd
+==> ~/projects/arcbench-campaign/evidence/2026-10-06-finals/reruns-195e2749e7dd-github.log <==
+10-08 12:27 start ed45d5cf6a04
+
+==> ~/projects/arcbench-campaign/evidence/2026-10-06-finals/reruns-195e2749e7dd-sheet.log <==
+10-08 12:27 start 52ade188be08
+./switch_to_conv4.sh: line 16: 25334 Terminated: 15          nohup ./cost_watchdog.sh $SUB > /dev/null 2>&1

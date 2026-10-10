@@ -1,0 +1,14 @@
+{
+  "app": "draft-contracts-sheet",
+  "judge": "cov99n-arm",
+  "counts": {
+    "fail": 9,
+    "error": 96,
+    "pass": 1
+  },
+  "seconds": 553.3,
+  "coverage": {
+    "total": 100,
+    "parsed": 10
+  }
+}

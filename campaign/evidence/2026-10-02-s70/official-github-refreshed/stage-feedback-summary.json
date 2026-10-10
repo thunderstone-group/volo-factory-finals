@@ -1,0 +1,27 @@
+{
+  "immutable_app_sha256": "e4d684922f6d0494e67f6f826f7612be9f24fe85df53ed451c38dfe0620bb178",
+  "official_full_github_passed": 46,
+  "stages": [
+    {
+      "stage": 1,
+      "id": "f043daea-9f43-4c6b-898c-067695e4a6a0",
+      "passed": 23,
+      "total": 30
+    },
+    {
+      "stage": 2,
+      "id": "2ecc5d8f-3d7f-4e68-b00b-0f637cf288f0",
+      "passed": 21,
+      "total": 29
+    },
+    {
+      "stage": 3,
+      "id": "f56f565d-7b68-40fd-ba5e-8074f84ae6b1",
+      "passed": 1,
+      "total": 41
+    }
+  ],
+  "total_stage_passed": 45,
+  "known_public_scenario_difference": "REQ-2-1-2 Scenario2: stage Acme Demo versus full acme-demo",
+  "scope": "same complete application; organizer quick tests, not official staged-route scores"
+}

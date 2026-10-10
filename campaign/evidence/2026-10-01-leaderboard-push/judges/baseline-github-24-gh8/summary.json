@@ -1,0 +1,14 @@
+{
+  "app": "baseline-github-24",
+  "judge": "gh8",
+  "counts": {
+    "pass": 69,
+    "error": 15,
+    "fail": 19
+  },
+  "seconds": 164.4,
+  "coverage": {
+    "total": 100,
+    "parsed": 88
+  }
+}

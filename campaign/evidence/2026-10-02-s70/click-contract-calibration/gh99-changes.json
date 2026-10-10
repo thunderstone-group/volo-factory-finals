@@ -1,0 +1,10 @@
+{
+  "basis": "Public REQ-6-1 explicitly specifies a clickable option named success. No expected value, fixture, assertion or other action changed. Original judges are retained.",
+  "edits": [
+    {
+      "file": "t06-REQ-6.spec.cjs",
+      "count": 2,
+      "diff": "--- \n+++ \n@@ -82,7 +82,8 @@\n   await openPR(page, OPEN_PR);\n   await page.getByRole('link', { name: 'Checks', exact: true }).click();\n   await expect(page.getByText('test: pending', { exact: true })).toBeVisible();\n-  await page.getByLabel('test status', { exact: true }).selectOption({ label: 'success' });\n+  await page.getByLabel('test status', { exact: true }).click();\n+  await page.getByRole('option', { name: 'success', exact: true }).click();\n   await page.getByRole('button', { name: 'Save', exact: true }).click();\n   await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n   await page.reload();\n@@ -105,7 +106,8 @@\n   await openPR(page, SECOND_PR);\n   await page.getByRole('link', { name: 'Checks', exact: true }).click();\n   await expect(page.getByText('test: pending', { exact: true })).toBeVisible();\n-  await page.getByLabel('test status', { exact: true }).selectOption({ label: 'success' });\n+  await page.getByLabel('test status', { exact: true }).click();\n+  await page.getByRole('option', { name: 'success', exact: true }).click();\n   await page.getByRole('button', { name: 'Save', exact: true }).click();\n   await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n   await page.reload();\n"
+    }
+  ]
+}

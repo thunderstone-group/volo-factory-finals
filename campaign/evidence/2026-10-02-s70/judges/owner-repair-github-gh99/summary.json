@@ -1,0 +1,14 @@
+{
+  "app": "owner-repair-github",
+  "judge": "gh99",
+  "counts": {
+    "error": 20,
+    "pass": 64,
+    "fail": 18
+  },
+  "seconds": 172.7,
+  "coverage": {
+    "total": 100,
+    "parsed": 82
+  }
+}

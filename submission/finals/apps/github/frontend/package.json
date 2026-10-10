@@ -1,0 +1,6 @@
+{
+  "name": "app-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "build": "node -e \"require('fs').cpSync('public','dist',{recursive:true})\"" }
+}

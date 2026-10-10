@@ -1,0 +1,6 @@
+{
+  "status": "aborted_non_score",
+  "reason": "Reference source changed to fix dialog Escape after the 29/30 proxy diagnostic; restart regression on the final reference hash.",
+  "app_sha256": "2b0f8549ec878bb22b3b510bf4e2df266bbdcaeb0d2326253273cd66caebb6a6",
+  "at": "2026-10-06T12:24:06.777515+00:00"
+}

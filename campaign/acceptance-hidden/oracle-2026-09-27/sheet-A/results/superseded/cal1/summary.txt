@@ -1,0 +1,15 @@
+sheet-1-4c3520246339 passed 1/48
+sheet-43-b491936e86f2 passed 42/48
+sheet-53-e6cf53b272c1 passed 39/48
+sheet-56-a4401f31bf34 passed 36/48
+sheet-59-7936cf7a0ab0 /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 31: 52775 Killed: 9               ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 25/48
+sheet-69-ad9a34c9b1f6 passed 39/48
+sheet-78-3ba6769a64c2 passed 45/48
+sheet-78-ed1ef8fb5d78 passed 48/48
+sheet-79-2c8e9b1f5e5f passed 40/48
+sheet-79-4c98ff3ad8b3 passed 48/48
+sheet-80-538e10fe0724 passed 46/48
+sheet-80-f49ba294f647 passed 48/48
+sheet-81-f6861552bce1 passed 47/48
+sheet-82-fa94581a6fa7 passed 48/48

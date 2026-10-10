@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "file": "t00-light.spec.cjs",
+   "scenarios": [
+    "EV-1.1",
+    "EV-1.2",
+    "EV-2.1",
+    "EV-2.2",
+    "EV-3.1"
+   ],
+   "calls": 0,
+   "tests": [
+    "EV-1.1: Filter search results by note type",
+    "EV-1.2: Keep checked checklist items in place when the setting is disabled",
+    "EV-2.1: Create and check a checklist note",
+    "EV-2.2: Set a Tomorrow reminder on a note",
+    "EV-3.1: Add a collaborator to a note"
+   ],
+   "compiler": "light"
+  }
+ ],
+ "scenarios": 5,
+ "tests": 5,
+ "seconds": 0,
+ "prerequisites": ""
+}

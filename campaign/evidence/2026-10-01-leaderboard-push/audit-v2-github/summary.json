@@ -1,0 +1,88 @@
+{
+  "task": "github",
+  "model_calls": 0,
+  "response_source": "audit-github/trace-*.json",
+  "checks": 9,
+  "files": [
+    {
+      "file": "t02-REQ-2.spec.cjs",
+      "audit": {
+        "claims": [
+          {
+            "id": "REQ-2-1-2#audit-1",
+            "requirement": "REQ-2-1-2",
+            "quote": "Submitting an existing identifier must show “Organization name already exists” even when the display name is also missing; it must not navigate to a heading for the existing organization. The malformed identifier “-invalid-organization” and a whitespace-only display name are rejected with the applicable field error.",
+            "gap": "Existing tests create a unique organization and verify success, but never submit the duplicate identifier with missing display name or the malformed identifier/whitespace display name, so those field errors and non-creation remain unestablished."
+          },
+          {
+            "id": "REQ-2-2-3#audit-1",
+            "requirement": "REQ-2-2-3",
+            "quote": "an existing member displays “Account is already a member”, and the unknown username `unknown-reviewer` displays “Account not found”",
+            "gap": "Existing add-member tests only cover the happy path and never exercise the duplicate or unknown-account failure messages or the unchanged single row."
+          },
+          {
+            "id": "REQ-2-2-3#audit-2",
+            "requirement": "REQ-2-2-3",
+            "quote": "A separately signed-in new member sees the organization identifier as complete visible text in Your organizations, while an ungranted private repository shows “Access denied”.",
+            "gap": "Add-member success tests verify membership and Your organizations but never open an ungranted private repository, so the rule that ordinary membership grants no private access is not established."
+          },
+          {
+            "id": "REQ-2-3#audit-1",
+            "requirement": "REQ-2-3",
+            "quote": "A private repository is accessible only to an organization Owner, a member with a direct repository role, or a direct member of a team that has a repository role; an ordinary organization Member has no default private-repository access.",
+            "gap": "Access-grant tests only verify the authorization list row; they never sign in a team member and open the private repository, so the resulting actual read access is unestablished."
+          }
+        ],
+        "calls": 1,
+        "rejected": [
+          {
+            "id": "REQ-2-2-2#audit-1",
+            "reason": "quote is not a verbatim requirement description excerpt"
+          },
+          {
+            "id": "REQ-2-2-4#audit-1",
+            "reason": "quote is not a verbatim requirement description excerpt"
+          }
+        ]
+      }
+    },
+    {
+      "file": "t06-REQ-6.spec.cjs",
+      "audit": {
+        "claims": [
+          {
+            "id": "REQ-6-1#audit-1",
+            "requirement": "REQ-6-1",
+            "quote": "The system blocks direct writes to a protected branch and applies the rule during subsequent PR merging.",
+            "gap": "The existing protection test creates a rule and sets a check but never attempts a direct write to the protected branch, so the rule's blocking effect is not established."
+          },
+          {
+            "id": "REQ-6-2-2#audit-1",
+            "requirement": "REQ-6-2-2",
+            "quote": "Only signed-in users with Write, Maintain, Admin, or organization Owner status may compare branches on the repository pull-request page; Read and Triage may view existing PRs but cannot enter the creation-comparison flow.",
+            "gap": "All comparison tests sign in as an Admin; a Read/Triage user is never shown to lack the creation-comparison entry."
+          },
+          {
+            "id": "REQ-6-2-3#audit-1",
+            "requirement": "REQ-6-2-3",
+            "quote": "if there is no difference, the branches are the same, a Draft or Open PR with the same source/target pair already exists, the title is empty or overlong, the user lacks permission, or submission fails, no record is created.",
+            "gap": "Existing creation tests never submit a second PR for the same source/target pair, so the duplicate-pair rejection and the 'no record is created' guarantee are not established."
+          },
+          {
+            "id": "REQ-6-3-3#audit-1",
+            "requirement": "REQ-6-3-3",
+            "quote": "Start a review displays the body and Pending review to its author immediately, retains the pending draft after reload, and does not make it public before review submission.",
+            "gap": "Existing inline-comment tests verify the pending comment in Files changed but never verify that it is absent from Conversation before review submission."
+          },
+          {
+            "id": "REQ-6-3-4#audit-1",
+            "requirement": "REQ-6-3-4",
+            "quote": "A user who is not the PR author and has Write, Maintain, or Admin may submit Comment, Approve, or Request changes on an Open PR; the author and Draft PRs cannot submit reviews.",
+            "gap": "Existing review tests only submit as a reviewer; no test checks that the author of a freshly created PR cannot use the review submission entry."
+          }
+        ],
+        "calls": 1
+      }
+    }
+  ]
+}

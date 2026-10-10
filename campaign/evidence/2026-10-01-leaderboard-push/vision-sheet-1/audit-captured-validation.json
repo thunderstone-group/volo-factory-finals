@@ -1,0 +1,35 @@
+[
+  {
+    "file": "t01-REQ-1.spec.cjs",
+    "call": "tests-8",
+    "accepted": 6,
+    "rejected": []
+  },
+  {
+    "file": "t02-REQ-2.spec.cjs",
+    "call": "tests-9",
+    "accepted": 6,
+    "rejected": []
+  },
+  {
+    "file": "t03-REQ-3.spec.cjs",
+    "call": "tests-10",
+    "accepted": 5,
+    "rejected": [
+      {
+        "id": "REQ-3-1-3#audit-2",
+        "reason": "quote is not a verbatim requirement description excerpt"
+      }
+    ]
+  },
+  {
+    "file": "t04-REQ-4.spec.cjs",
+    "call": "tests-11",
+    "error": "every audit check needs an observable assertion"
+  },
+  {
+    "file": "t05-REQ-5.spec.cjs",
+    "call": "tests-12",
+    "error": "every grounded audit check needs an observable assertion"
+  }
+]

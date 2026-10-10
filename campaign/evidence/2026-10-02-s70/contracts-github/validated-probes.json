@@ -1,0 +1,130 @@
+[
+  {
+    "id": "REQ-6-1#contract-1",
+    "requirement": "REQ-6-1",
+    "explanation": "When the compare branch of an open PR receives a new commit, the PR's current compare commit must be updated and all existing review decisions on the old commit must become stale. save-new-file moves the branch head to a new commit but leaves pr-1.compareCommit at c-5, so the existing Approve remains effective instead of being invalidated.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "save-new-file",
+        "kind": "method",
+        "alias": "saveNewFile"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "reviewsFor",
+        "kind": "function",
+        "alias": "reviewsFor"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "eligibility",
+        "kind": "function",
+        "alias": "eligibility"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "ruleFor",
+        "kind": "function",
+        "alias": "ruleFor"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "checkFor",
+        "kind": "function",
+        "alias": "checkFor"
+      }
+    ],
+    "subject": "eligibility",
+    "setup": "globalThis.ARC={state:JSON.parse(JSON.stringify(SEED)),currentUser(){return this.state.users.find(x=>x.id===this.state.session)},save(){},render(){},navigate(){},openDialog(){},closeDialog(){},notify(){},openPopover(){},closePopover(){},route(){return {name:'repo',params:['acme-demo','acme-docs']}},esc(v){return String(v==null?'':v)},combobox(){return ''},uid(p){return p+'_'+(++globalThis.__n)}};globalThis.__n=0;globalThis.list=k=>Array.isArray(ARC.state[k])?ARC.state[k]:[];globalThis.me=()=>ARC.currentUser();globalThis.ui=()=>ARC.state.ui||(ARC.state.ui={});globalThis.repoById=id=>ARC.state.repos.find(r=>r.id===id);globalThis.branchList=r=>ARC.state.branches.filter(b=>b.repoId===r.id);globalThis.fileOn=()=>null;globalThis.entriesOf=()=>[];globalThis.codeHref=()=>'#/x';;ARC.state.session=\"u-alice\";ARC.state.rules=[{repoId:'repo-acme-docs',branch:'main',requireApproval:true,requireCheck:false}];globalThis.canMaintain=()=>true;",
+    "check": "const repo=ARC.state.repos.find(r=>r.id==='repo-acme-docs');const pr=ARC.state.pulls.find(p=>p.id==='pr-1');const before=ARC.state.branches.find(b=>b.name==='onboarding-update').commitId;const history=ARC.state.reviews.length;saveNewFile({id:repo.id,data:{branch:'onboarding-update'},form:{path:'new.md',content:'new',message:'Add new.md'}});assert.notEqual(ARC.state.branches.find(b=>b.name==='onboarding-update').commitId,before);assert.equal(ARC.state.reviews.length,history);assert.equal(eligibility(repo,pr,ARC.state.users.find(u=>u.id==='u-alice')).ok,false,'approval on old commit must not permit merge');",
+    "fixture_correction": "Load actual startup records, verify the initial eligible state, then assert the real merge-eligibility decision and retained history. Do not demand an internal representation.",
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "precondition": "assert.equal(eligibility(ARC.state.repos.find(r=>r.id==='repo-acme-docs'),ARC.state.pulls.find(p=>p.id==='pr-1'),ARC.state.users.find(u=>u.id==='u-alice')).ok,true,'initial protected PR is eligible');"
+  },
+  {
+    "id": "REQ-6-3-4#contract-1",
+    "requirement": "REQ-6-3-4",
+    "explanation": "A reviewer's new decision must replace that reviewer's effective decision on the current compare commit while preserving the old record as history. After bob-reviewer already has an Approve on pr-1/c-5, submitting a Comment pushes a second current-commit review; both the Approve and Comment remain in the effective reviews list, so an old Approve can still satisfy approval requirements.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "submit-review",
+        "kind": "method",
+        "alias": "submitReview"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "reviewsFor",
+        "kind": "function",
+        "alias": "reviewsFor"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "eligibility",
+        "kind": "function",
+        "alias": "eligibility"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "ruleFor",
+        "kind": "function",
+        "alias": "ruleFor"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "checkFor",
+        "kind": "function",
+        "alias": "checkFor"
+      }
+    ],
+    "subject": "eligibility",
+    "setup": "globalThis.ARC={state:JSON.parse(JSON.stringify(SEED)),currentUser(){return this.state.users.find(x=>x.id===this.state.session)},save(){},render(){},openDialog(){},closeDialog(){},navigate(){},notify(){},esc(v){return String(v==null?'':v)},combobox(){return ''},uid(p){return p+'_'+(++globalThis.__n)}};globalThis.__n=0;globalThis.list=k=>Array.isArray(ARC.state[k])?ARC.state[k]:[];globalThis.me=()=>ARC.currentUser();globalThis.ui=()=>ARC.state.ui||(ARC.state.ui={});;ARC.state.orgs=[{id:'org-acme',identifier:'acme-demo'}];ARC.state.memberships=[{orgId:'org-acme',userId:'u-bob',role:'Member'}];ARC.state.grants=[{repoId:'repo-acme-docs',subjectType:'user',subjectId:'u-bob',role:'Write'}];;ARC.state.session=\"u-bob\";ARC.state.rules=[{repoId:'repo-acme-docs',branch:'main',requireApproval:true,requireCheck:false}];globalThis.canMaintain=()=>true;",
+    "check": "const repo=ARC.state.repos.find(r=>r.id==='repo-acme-docs');const pr=ARC.state.pulls.find(p=>p.id==='pr-1');const history=ARC.state.reviews.length;submitReview({id:pr.id,form:{decision:'Comment',summary:''}});assert.equal(ARC.state.reviews.length,history+1,'history is preserved');assert.equal(eligibility(repo,pr,ARC.state.users.find(u=>u.id==='u-alice')).ok,false,'new Comment replaces that reviewer approval');",
+    "fixture_correction": "Load actual startup records, verify the initial eligible state, then assert the real merge-eligibility decision and retained history. Do not demand an internal representation.",
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "precondition": "assert.equal(eligibility(ARC.state.repos.find(r=>r.id==='repo-acme-docs'),ARC.state.pulls.find(p=>p.id==='pr-1'),ARC.state.users.find(u=>u.id==='u-alice')).ok,true,'initial protected PR is eligible');"
+  },
+  {
+    "id": "REQ-3-2-1#contract-1",
+    "requirement": "REQ-3-2-1",
+    "explanation": "Repository identity and duplicate validation are scoped to the selected owner namespace. create-repo rejects any repository whose bare name already exists anywhere in the system, so creating a personal repository named acme-docs is blocked by an existing acme-demo/acme-docs organization repository even though the personal namespace has no conflict.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "create-repo",
+        "kind": "method",
+        "alias": "createRepo"
+      }
+    ],
+    "subject": "createRepo",
+    "setup": "globalThis.ARC={state:JSON.parse(JSON.stringify(SEED)),currentUser(){return this.state.users.find(x=>x.id===this.state.session)},save(){},render(){},navigate(){},openDialog(){},closeDialog(){},notify(){},esc(v){return String(v==null?'':v)},combobox(){return ''},uid(p){return p+'_'+(++globalThis.__n)}};globalThis.__n=0;globalThis.list=k=>Array.isArray(ARC.state[k])?ARC.state[k]:[];globalThis.me=()=>ARC.currentUser();globalThis.ui=()=>ARC.state.ui||(ARC.state.ui={});;ARC.state.session=\"u-alice\";",
+    "check": "createRepo({form:{owner:'alice-dev',name:'acme-docs',description:'',visibility:'Public',readme:false}});assert.ok(!ARC.state.ui.repoError);assert.ok(ARC.state.repos.some(r=>r.ownerSlug==='alice-dev'&&r.name==='acme-docs'));",
+    "initializers": [
+      "frontend/public/seed.js"
+    ]
+  },
+  {
+    "id": "REQ-5-2-2#contract-1",
+    "requirement": "REQ-5-2-2",
+    "explanation": "An issue title is limited to 1-256 non-empty characters, and overlong input must retain the original title. save-title only rejects an empty title, so submitting a 257-character title to the seeded issue overwrites 'Original issue title' instead of preserving it.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "save-title",
+        "kind": "method",
+        "alias": "saveTitle"
+      }
+    ],
+    "subject": "saveTitle",
+    "setup": "globalThis.ARC={state:JSON.parse(JSON.stringify(SEED)),currentUser(){return this.state.users.find(x=>x.id===this.state.session)},save(){},render(){},navigate(){},openDialog(){},closeDialog(){},notify(){},esc(v){return String(v==null?'':v)},combobox(){return ''},uid(p){return p+'_'+(++globalThis.__n)}};globalThis.__n=0;globalThis.list=k=>Array.isArray(ARC.state[k])?ARC.state[k]:[];globalThis.me=()=>ARC.currentUser();globalThis.ui=()=>ARC.state.ui||(ARC.state.ui={});globalThis.now=()=>'just now';;ARC.state.session=\"u-dave\";",
+    "check": "const issue=ARC.state.issues.find(i=>i.id==='issue-3');const before=issue.title;const activities=ARC.state.activities.length;saveTitle({id:issue.id,form:{title:'x'.repeat(257)}});assert.equal(issue.title,before);assert.equal(ARC.state.activities.length,activities);",
+    "initializers": [
+      "frontend/public/seed.js"
+    ]
+  }
+]

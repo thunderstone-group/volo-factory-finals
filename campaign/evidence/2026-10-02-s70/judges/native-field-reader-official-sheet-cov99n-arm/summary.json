@@ -1,0 +1,13 @@
+{
+  "app": "native-field-reader-official-sheet",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 93,
+    "fail": 7
+  },
+  "seconds": 75.7,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

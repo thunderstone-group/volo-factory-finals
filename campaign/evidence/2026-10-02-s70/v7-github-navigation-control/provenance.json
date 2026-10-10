@@ -1,0 +1,18 @@
+{
+  "source_run": "c5e4493bad81",
+  "scope": "Public-requirement application diagnostic; not an agent submission",
+  "changed_files": [
+    "frontend/public/app.js"
+  ],
+  "changes": [
+    "Expose account settings at the signed-in home entry",
+    "Avoid a duplicate settings entry when the account menu opens",
+    "Preserve exact role option words and remove redundant label attributes",
+    "Distinguish the search exit from the primary Code navigation",
+    "Primary Code navigation clears a previous search",
+    "Return to the destination file listing after clearing search"
+  ],
+  "sha256": "385be36346db30280ccf230d2f4f949701b9ce5d1a25ff2a8285f723970d38d6",
+  "reverted": "Exact option text change reintroduced duplicate selected text; kept the baseline access control pending a separate fix.",
+  "package_sha256": "2d036621220cefadeac70a08699b17c0fb6ca8399585c9e7a31f04239d5c4681"
+}

@@ -1,0 +1,703 @@
+{
+  "version": 2,
+  "tasks": {
+    "github": {
+      "official_report_sha256": "0d4dd60dc3c0737150407c3b79def51ff5f86ca9417c6b880aa7f9bacd109097",
+      "proxy_report": "results/calibration-official-github-v2.json",
+      "proxy_manifest_sha256": "83356a686697d29c9d12649bc37e6d0b25ef9eea13eebf121ed2740cea290133",
+      "app_sha256": "c23b4a7174a920bc05cf882f6fc93161435cbf51504b5633d94a9813ce6ab5ee",
+      "official_passed": 3,
+      "proxy_passed": 3,
+      "agreement": 30,
+      "total": 30,
+      "wall_seconds": 324.675,
+      "rows": [
+        {
+          "key": "REQ-1-1-1#1",
+          "official_name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 1",
+          "proxy_name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/01-REQ-1-1-1-scenario-1.spec.ts:10:16",
+          "official_frames": [
+            "github-real-F01"
+          ]
+        },
+        {
+          "key": "REQ-1-1-1#2",
+          "official_name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 2",
+          "proxy_name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/02-REQ-1-1-1-scenario-2.spec.ts:10:16",
+          "official_frames": [
+            "github-real-F01"
+          ]
+        },
+        {
+          "key": "REQ-1-1-1#3",
+          "official_name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 3",
+          "proxy_name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/03-REQ-1-1-1-scenario-3.spec.ts:10:16",
+          "official_frames": [
+            "github-real-F01"
+          ]
+        },
+        {
+          "key": "REQ-1-1-2#1",
+          "official_name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1",
+          "proxy_name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/04-REQ-1-1-2-scenario-1.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F02"
+          ]
+        },
+        {
+          "key": "REQ-1-1-2#2",
+          "official_name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 2",
+          "proxy_name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/05-REQ-1-1-2-scenario-2.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F02"
+          ]
+        },
+        {
+          "key": "REQ-1-1-2#3",
+          "official_name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 3",
+          "proxy_name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/06-REQ-1-1-2-scenario-3.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F02"
+          ]
+        },
+        {
+          "key": "REQ-1-4#1",
+          "official_name": "REQ-1-4: Manage Active Browser Sessions - Scenario 1",
+          "proxy_name": "REQ-1-4: Manage Active Browser Sessions - Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/07-REQ-1-4-scenario-1.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-1-4#2",
+          "official_name": "REQ-1-4: Manage Active Browser Sessions - Scenario 2",
+          "proxy_name": "REQ-1-4: Manage Active Browser Sessions - Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/08-REQ-1-4-scenario-2.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-1-4#3",
+          "official_name": "REQ-1-4: Manage Active Browser Sessions - Scenario 3",
+          "proxy_name": "REQ-1-4: Manage Active Browser Sessions - Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/09-REQ-1-4-scenario-3.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-2-1-2#1",
+          "official_name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 1",
+          "proxy_name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/10-REQ-2-1-2-scenario-1.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-2-1-2#2",
+          "official_name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 2",
+          "proxy_name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/11-REQ-2-1-2-scenario-2.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-2-1-2#3",
+          "official_name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 3",
+          "proxy_name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/12-REQ-2-1-2-scenario-3.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-2-4#1",
+          "official_name": "REQ-2-4: View Organization Audit Log - Scenario 1",
+          "proxy_name": "REQ-2-4: View Organization Audit Log - Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/13-REQ-2-4-scenario-1.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-2-4#2",
+          "official_name": "REQ-2-4: View Organization Audit Log - Scenario 2",
+          "proxy_name": "REQ-2-4: View Organization Audit Log - Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/14-REQ-2-4-scenario-2.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-2-4#3",
+          "official_name": "REQ-2-4: View Organization Audit Log - Scenario 3",
+          "proxy_name": "REQ-2-4: View Organization Audit Log - Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/15-REQ-2-4-scenario-3.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-3-1#1",
+          "official_name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 1",
+          "proxy_name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 1",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-3-1#2",
+          "official_name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 2",
+          "proxy_name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 2",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-3-1#3",
+          "official_name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 3",
+          "proxy_name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 3",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-3-5#1",
+          "official_name": "REQ-3-5: Archive and Restore a Repository - Scenario 1",
+          "proxy_name": "REQ-3-5: Archive and Restore a Repository - Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    13 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/19-REQ-3-5-scenario-1.spec.ts:13:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-3-5#2",
+          "official_name": "REQ-3-5: Archive and Restore a Repository - Scenario 2",
+          "proxy_name": "REQ-3-5: Archive and Restore a Repository - Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/20-REQ-3-5-scenario-2.spec.ts:13:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-3-5#3",
+          "official_name": "REQ-3-5: Archive and Restore a Repository - Scenario 3",
+          "proxy_name": "REQ-3-5: Archive and Restore a Repository - Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/21-REQ-3-5-scenario-3.spec.ts:13:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-4-3-1#1",
+          "official_name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 1",
+          "proxy_name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at openEvolutionRepository (/proxy/github-real/tests/evolution-navigation.ts:8:16)\n    at /proxy/github-real/tests/22-REQ-4-3-1-scenario-1.spec.ts:12:3",
+          "official_frames": [
+            "github-real-F04"
+          ]
+        },
+        {
+          "key": "REQ-4-3-1#2",
+          "official_name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 2",
+          "proxy_name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at openEvolutionRepository (/proxy/github-real/tests/evolution-navigation.ts:8:16)\n    at /proxy/github-real/tests/23-REQ-4-3-1-scenario-2.spec.ts:12:3",
+          "official_frames": [
+            "github-real-F04"
+          ]
+        },
+        {
+          "key": "REQ-4-3-1#3",
+          "official_name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 3",
+          "proxy_name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at openEvolutionRepository (/proxy/github-real/tests/evolution-navigation.ts:8:16)\n    at /proxy/github-real/tests/24-REQ-4-3-1-scenario-3.spec.ts:12:3",
+          "official_frames": [
+            "github-real-F04"
+          ]
+        },
+        {
+          "key": "REQ-4-5#1",
+          "official_name": "REQ-4-5: Create and View Repository Releases - Scenario 1",
+          "proxy_name": "REQ-4-5: Create and View Repository Releases - Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/25-REQ-4-5-scenario-1.spec.ts:13:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-4-5#2",
+          "official_name": "REQ-4-5: Create and View Repository Releases - Scenario 2",
+          "proxy_name": "REQ-4-5: Create and View Repository Releases - Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at openEvolutionRepository (/proxy/github-real/tests/evolution-navigation.ts:8:16)\n    at /proxy/github-real/tests/26-REQ-4-5-scenario-2.spec.ts:12:3",
+          "official_frames": [
+            "github-real-F04"
+          ]
+        },
+        {
+          "key": "REQ-4-5#3",
+          "official_name": "REQ-4-5: Create and View Repository Releases - Scenario 3",
+          "proxy_name": "REQ-4-5: Create and View Repository Releases - Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/27-REQ-4-5-scenario-3.spec.ts:13:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-5-5#1",
+          "official_name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 1",
+          "proxy_name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 1",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/28-REQ-5-5-scenario-1.spec.ts:13:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-5-5#2",
+          "official_name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 2",
+          "proxy_name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 2",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/29-REQ-5-5-scenario-2.spec.ts:12:16",
+          "official_frames": [
+            "github-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-5-5#3",
+          "official_name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 3",
+          "proxy_name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 3",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at openPublicIssue (/proxy/github-real/tests/interactions.ts:37:16)\n    at /proxy/github-real/tests/30-REQ-5-5-scenario-3.spec.ts:11:3",
+          "official_frames": [
+            "github-real-F04"
+          ]
+        }
+      ]
+    },
+    "sheet": {
+      "official_report_sha256": "32b5e5e2d964a9bde1d02d1f27c0493baf7915fb6c53625de4d031ead7921f87",
+      "proxy_report": "results/calibration-official-sheet-v2.json",
+      "proxy_manifest_sha256": "8d7d36e69c26eec483ca2a9340c3c206aae18ddd37a1a41d75263ea380c052ff",
+      "app_sha256": "3b712617134fea45ab129ef965f3084892147c5768f2ee38cbaa844aec87cb2e",
+      "official_passed": 21,
+      "proxy_passed": 21,
+      "agreement": 30,
+      "total": 30,
+      "wall_seconds": 153.685,
+      "rows": [
+        {
+          "key": "REQ-1-2-2#1",
+          "official_name": "REQ-1-2-2: Rename a Workbook evolution - Scenario 1",
+          "proxy_name": "REQ-1-2-2 - trim and persist an available workbook name",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-1-2-2#2",
+          "official_name": "REQ-1-2-2: Rename a Workbook evolution - Scenario 2",
+          "proxy_name": "REQ-1-2-2 - reject a case-insensitive duplicate workbook name",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-1-2-2#3",
+          "official_name": "REQ-1-2-2: Rename a Workbook evolution - Scenario 3",
+          "proxy_name": "REQ-1-2-2 - reject a workbook name longer than 80 characters",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-2-1-3#1",
+          "official_name": "REQ-2-1-3: Rename a Worksheet evolution - Scenario 1",
+          "proxy_name": "REQ-2-1-3 - trim and persist an available worksheet name",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-2-1-3#2",
+          "official_name": "REQ-2-1-3: Rename a Worksheet evolution - Scenario 2",
+          "proxy_name": "REQ-2-1-3 - reject a worksheet name differing only by case",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-2-1-3#3",
+          "official_name": "REQ-2-1-3: Rename a Worksheet evolution - Scenario 3",
+          "proxy_name": "REQ-2-1-3 - reject a worksheet name longer than 50 characters",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-3-1-1#1",
+          "official_name": "REQ-3-1-1: Clear cells evolution - Scenario 1",
+          "proxy_name": "REQ-3-1-1 - clear a text cell with Delete",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-3-1-1#2",
+          "official_name": "REQ-3-1-1: Clear cells evolution - Scenario 2",
+          "proxy_name": "REQ-3-1-1 - clear a formula and recalculate its dependent result",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-3-1-1#3",
+          "official_name": "REQ-3-1-1: Clear cells evolution - Scenario 3",
+          "proxy_name": "REQ-3-1-1 - clear every cell in a selected rectangular range",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-5-1-2#1",
+          "official_name": "REQ-5-1-2: Filter views evolution - Scenario 1",
+          "proxy_name": "REQ-5-1-2 - save a two-condition filter view",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Create filter', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Create filter', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/10-REQ-5-1-2-scenario-1.spec.ts:13:15",
+          "official_frames": [
+            "sheet-real-F01"
+          ]
+        },
+        {
+          "key": "REQ-5-1-2#2",
+          "official_name": "REQ-5-1-2: Filter views evolution - Scenario 2",
+          "proxy_name": "REQ-5-1-2 - apply a persisted saved filter view",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-5-1-2#3",
+          "official_name": "REQ-5-1-2: Filter views evolution - Scenario 3",
+          "proxy_name": "REQ-5-1-2 - reject and delete a saved filter view",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('dialog').filter({ has: getByLabel('Filter view name', { exact: true }) }).getByRole('button', { name: 'Close', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('dialog').filter({ has: getByLabel('Filter view name', { exact: true }) }).getByRole('button', { name: 'Close', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/12-REQ-5-1-2-scenario-3.spec.ts:19:15",
+          "official_frames": [
+            "sheet-real-F02"
+          ]
+        },
+        {
+          "key": "REQ-5-2-1#1",
+          "official_name": "REQ-5-2-1: Custom validation message evolution - Scenario 1",
+          "proxy_name": "REQ-5-2-1 - show a custom numeric error from the formula bar",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Capacity must be from 25 to 75\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  13 |   await fill(page, 'Formula bar', \"88\"); await field(page, 'Formula bar').press('Enter');\n  14 |   // THEN: The exact message \"Capacity must be from 25 to 75\" is visible, J6 remains `37`, and the same result occurs after refresh when entering `88` through \"Formula bar\".\n> 15 |   await expect(page.getByRole('alert')).toContainText('Capacity must be from 25 to 75');\n     |                                         ^\n  16 |   await visible(named(page, 'gridcell', \"J6\")); await expect(named(page, 'gridcell', \"J6\")).toHaveText(\"37\");\n  17 |   await page.reload();\n  18 |   await visible(named(page, \"gridcell\", \"J6\")); await named(page, \"gridcell\", \"J6\").click();\n    at /proxy/sheet-real/tests/13-REQ-5-2-1-scenario-1.spec.ts:15:41",
+          "official_frames": [
+            "sheet-real-F03"
+          ]
+        },
+        {
+          "key": "REQ-5-2-1#2",
+          "official_name": "REQ-5-2-1: Custom validation message evolution - Scenario 2",
+          "proxy_name": "REQ-5-2-1 - show a custom dropdown error from the grid",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Choose a queue state\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  12 |   await visible(named(page, 'gridcell', 'K8')); await named(page, 'gridcell', 'K8').dblclick(); await page.locator(':focus').fill('Paused'); await page.locator(':focus').press('Enter');\n  13 |   // THEN: The exact message \"Choose a queue state\" is visible; K8 remains `Ready`, and after refresh the same invalid grid entry is rejected with the same message.\n> 14 |   await expect(page.getByRole('alert')).toContainText('Choose a queue state');\n     |                                         ^\n  15 |   await visible(named(page, 'gridcell', \"K8\")); await expect(named(page, 'gridcell', \"K8\")).toContainText(\"Ready\");\n  16 |   await page.reload();\n  17 |   await visible(named(page, 'gridcell', 'K8')); await named(page, 'gridcell', 'K8').dblclick(); await page.locator(':focus').fill('Paused'); await page.locator(':focus').press('Enter');\n    at /proxy/sheet-real/tests/14-REQ-5-2-1-scenario-2.spec.ts:14:41",
+          "official_frames": [
+            "sheet-real-F04"
+          ]
+        },
+        {
+          "key": "REQ-5-2-1#3",
+          "official_name": "REQ-5-2-1: Custom validation message evolution - Scenario 3",
+          "proxy_name": "REQ-5-2-1 - persist an updated custom error message",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Allocate between 25 and 75\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  16 |   await fill(page, 'Formula bar', \"24\"); await field(page, 'Formula bar').press('Enter');\n  17 |   // THEN: The exact message \"Allocate between 25 and 75\" is visible, L4 remains `42`, and reopening \"Data validation\" after refresh shows the same \"Error message\" value.\n> 18 |   await expect(page.getByRole('alert')).toContainText('Allocate between 25 and 75');\n     |                                         ^\n  19 |   await visible(named(page, 'gridcell', \"L4\")); await expect(named(page, 'gridcell', \"L4\")).toHaveText(\"42\");\n  20 |   await page.reload();\n  21 |   await visible(named(page, \"gridcell\", \"L4\")); await named(page, \"gridcell\", \"L4\").click();\n    at /proxy/sheet-real/tests/15-REQ-5-2-1-scenario-3.spec.ts:18:41",
+          "official_frames": [
+            "sheet-real-F05"
+          ]
+        },
+        {
+          "key": "REQ-6-1-1#1",
+          "official_name": "REQ-6-1-1: Freeze panes - Scenario 1",
+          "proxy_name": "REQ-6-1-1 - freeze the first row",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-6-1-1#2",
+          "official_name": "REQ-6-1-1: Freeze panes - Scenario 2",
+          "proxy_name": "REQ-6-1-1 - freeze the first column",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-6-1-1#3",
+          "official_name": "REQ-6-1-1: Freeze panes - Scenario 3",
+          "proxy_name": "REQ-6-1-1 - freeze both row and column panes",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-6-2-1#1",
+          "official_name": "REQ-6-2-1: Find and replace - Scenario 1",
+          "proxy_name": "REQ-6-2-1 - find the next matching cell",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-6-2-1#2",
+          "official_name": "REQ-6-2-1: Find and replace - Scenario 2",
+          "proxy_name": "REQ-6-2-1 - replace all matching text in the active worksheet",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-6-2-1#3",
+          "official_name": "REQ-6-2-1: Find and replace - Scenario 3",
+          "proxy_name": "REQ-6-2-1 - replace only exact-case matches",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-7-1-1#1",
+          "official_name": "REQ-7-1-1: Named ranges - Scenario 1",
+          "proxy_name": "REQ-7-1-1 - create a named range and use it in a formula",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('dialog', { name: 'Named ranges', exact: true }).getByRole('button', { name: 'Close', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('dialog', { name: 'Named ranges', exact: true }).getByRole('button', { name: 'Close', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/22-REQ-7-1-1-scenario-1.spec.ts:18:15",
+          "official_frames": [
+            "sheet-real-F06"
+          ]
+        },
+        {
+          "key": "REQ-7-1-1#2",
+          "official_name": "REQ-7-1-1: Named ranges - Scenario 2",
+          "proxy_name": "REQ-7-1-1 - reject an invalid named range name",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-7-1-1#3",
+          "official_name": "REQ-7-1-1: Named ranges - Scenario 3",
+          "proxy_name": "REQ-7-1-1 - update an existing named range",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-7-2-1#1",
+          "official_name": "REQ-7-2-1: Conditional formatting - Scenario 1",
+          "proxy_name": "REQ-7-2-1 - apply a numeric threshold format",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-7-2-1#2",
+          "official_name": "REQ-7-2-1: Conditional formatting - Scenario 2",
+          "proxy_name": "REQ-7-2-1 - apply a text-match format",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-7-2-1#3",
+          "official_name": "REQ-7-2-1: Conditional formatting - Scenario 3",
+          "proxy_name": "REQ-7-2-1 - edit and delete a conditional formatting rule",
+          "official": "pass",
+          "proxy": "pass",
+          "agree": true,
+          "proxy_error": null,
+          "official_frames": []
+        },
+        {
+          "key": "REQ-8-1-1#1",
+          "official_name": "REQ-8-1-1: Cell notes - Scenario 1",
+          "proxy_name": "REQ-8-1-1 - create and persist a cell note",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D8', exact: true }).getByRole('button', { name: 'Open note for D8', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('gridcell', { name: 'D8', exact: true }).getByRole('button', { name: 'Open note for D8', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/28-REQ-8-1-1-scenario-1.spec.ts:17:15",
+          "official_frames": [
+            "sheet-real-F07"
+          ]
+        },
+        {
+          "key": "REQ-8-1-1#2",
+          "official_name": "REQ-8-1-1: Cell notes - Scenario 2",
+          "proxy_name": "REQ-8-1-1 - edit an existing cell note",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'F6', exact: true }).getByRole('button', { name: 'Open note for F6', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('gridcell', { name: 'F6', exact: true }).getByRole('button', { name: 'Open note for F6', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/29-REQ-8-1-1-scenario-2.spec.ts:12:15",
+          "official_frames": [
+            "sheet-real-F08"
+          ]
+        },
+        {
+          "key": "REQ-8-1-1#3",
+          "official_name": "REQ-8-1-1: Cell notes - Scenario 3",
+          "proxy_name": "REQ-8-1-1 - delete an existing cell note",
+          "official": "fail",
+          "proxy": "fail",
+          "agree": true,
+          "proxy_error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'J3', exact: true }).getByRole('button', { name: 'Open note for J3', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('gridcell', { name: 'J3', exact: true }).getByRole('button', { name: 'Open note for J3', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/30-REQ-8-1-1-scenario-3.spec.ts:12:15",
+          "official_frames": [
+            "sheet-real-F09"
+          ]
+        }
+      ]
+    }
+  }
+}

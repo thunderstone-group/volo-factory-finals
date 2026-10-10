@@ -1,0 +1,269 @@
+{
+  "task": "sheet",
+  "app_dir": "~/projects/arcbench-campaign/finals-proxy/reference/sheet-app",
+  "app_sha256": "5fdcf3f4071e1227af3d178f6726f15a757d927364c12af743010fe6f2ddacdd",
+  "frozen_manifest_sha256": "9640f5d914b54429d152b4ee79d3187fd1315795e76d8975531a9614cccf527b",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "EV-1.1: Calculate IF with a comparison",
+      "file": "01-EV-1.1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3262,
+      "error": null
+    },
+    {
+      "name": "EV-1.2: Count matching values with COUNTIF",
+      "file": "02-EV-1.2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2646,
+      "error": null
+    },
+    {
+      "name": "EV-1.3: Sum matching rows with SUMIF",
+      "file": "03-EV-1.3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2582,
+      "error": null
+    },
+    {
+      "name": "EV-1.4: Recover from formula errors with IFERROR",
+      "file": "04-EV-1.4.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2727,
+      "error": null
+    },
+    {
+      "name": "EV-1.5: Recalculate cross-worksheet references",
+      "file": "05-EV-1.5.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2797,
+      "error": null
+    },
+    {
+      "name": "EV-1.6: Sort by a secondary column",
+      "file": "06-EV-1.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3035,
+      "error": null
+    },
+    {
+      "name": "EV-1.7: Allow invalid input with a validation warning",
+      "file": "07-EV-1.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3052,
+      "error": null
+    },
+    {
+      "name": "EV-1.8: Paste only calculated values",
+      "file": "08-EV-1.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3052,
+      "error": null
+    },
+    {
+      "name": "EV-1.9: Undo and redo a worksheet rename",
+      "file": "09-EV-1.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2496,
+      "error": null
+    },
+    {
+      "name": "EV-1.10: Concatenate cell text in a formula",
+      "file": "10-EV-1.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2614,
+      "error": null
+    },
+    {
+      "name": "EV-2.1: Create a named range for formulas",
+      "file": "11-EV-2.1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2570,
+      "error": null
+    },
+    {
+      "name": "EV-2.2: Rename a named range and its references",
+      "file": "12-EV-2.2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2471,
+      "error": null
+    },
+    {
+      "name": "EV-2.3: Delete a named range without deleting data",
+      "file": "13-EV-2.3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2564,
+      "error": null
+    },
+    {
+      "name": "EV-2.4: Find case-sensitive text",
+      "file": "14-EV-2.4.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2146,
+      "error": null
+    },
+    {
+      "name": "EV-2.5: Replace all text on the active worksheet",
+      "file": "15-EV-2.5.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2650,
+      "error": null
+    },
+    {
+      "name": "EV-2.6: Replace text inside formulas",
+      "file": "16-EV-2.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2692,
+      "error": null
+    },
+    {
+      "name": "EV-2.7: Duplicate a worksheet independently",
+      "file": "17-EV-2.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3200,
+      "error": null
+    },
+    {
+      "name": "EV-2.8: Hide a worksheet without losing its data",
+      "file": "18-EV-2.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2062,
+      "error": null
+    },
+    {
+      "name": "EV-2.9: Show a hidden worksheet",
+      "file": "19-EV-2.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2141,
+      "error": null
+    },
+    {
+      "name": "EV-2.10: Move a worksheet left",
+      "file": "20-EV-2.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2020,
+      "error": null
+    },
+    {
+      "name": "EV-3.1: Attach a note to a cell",
+      "file": "21-EV-3.1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10252,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('dialog', { name: 'Cell note', exact: true }).getByLabel('Note', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('dialog', { name: 'Cell note', exact: true }).getByLabel('Note', { exact: true })\n    11 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet/tests/helpers.ts:5:73)\n    at /proxy/sheet/tests/21-EV-3.1.spec.ts:27:16"
+    },
+    {
+      "name": "EV-3.2: Edit then remove a cell note",
+      "file": "22-EV-3.2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10341,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('dialog', { name: 'Cell note', exact: true }).getByLabel('Note', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('dialog', { name: 'Cell note', exact: true }).getByLabel('Note', { exact: true })\n    11 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet/tests/helpers.ts:5:73)\n    at fill (/proxy/sheet/tests/helpers.ts:11:113)\n    at /proxy/sheet/tests/22-EV-3.2.spec.ts:17:13"
+    },
+    {
+      "name": "EV-3.3: Trim whitespace only in the selection",
+      "file": "23-EV-3.3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3533,
+      "error": null
+    },
+    {
+      "name": "EV-3.4: Split a selected column by a delimiter",
+      "file": "24-EV-3.4.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10241,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'C2', exact: true })\nExpected: \"three\"\nReceived: \"\"\n\nCall log:\n  - Expect \"toHaveText\" with timeout 10000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'C2', exact: true })\n    11 × locator resolved to <div data-r=\"1\" data-c=\"2\" tabindex=\"0\" class=\"gcell\" data-ref=\"C2\" role=\"gridcell\" aria-label=\"C2\" data-gridcell=\"\" aria-selected=\"false\">…</div>\n       - unexpected value \"\"\n\n\n  31 |   await visible(named(named(page, \"grid\", \"Worksheet grid\"), \"gridcell\", \"B2\")); await expect(named(named(page, \"grid\", \"Worksheet grid\"), \"gridcell\", \"B2\")).toHaveText(\"\");\n  32 |   // THEN: The gridcell named \"C2\" in the grid named \"Worksheet grid\" has exact text \"three\".\n> 33 |   await visible(named(named(page, \"grid\", \"Worksheet grid\"), \"gridcell\", \"C2\")); await expect(named(named(page, \"grid\", \"Worksheet grid\"), \"gridcell\", \"C2\")).toHaveText(\"three\");\n     |                                                                                                                                                               ^\n  34 |   // THEN: The gridcell named \"D1\" in the grid named \"Worksheet grid\" has exact text \"Outside\".\n  35 |   await visible(named(named(page, \"grid\", \"Worksheet grid\"), \"gridcell\", \"D1\")); await expect(named(named(page, \"grid\", \"Worksheet grid\"), \"gridcell\", \"D1\")).toHaveText(\"Outside\");\n  36 |   // WHEN: The user reloads the current page.\n    at /proxy/sheet/tests/24-EV-3.4.spec.ts:33:159"
+    },
+    {
+      "name": "EV-3.5: Remove duplicate records from a range",
+      "file": "25-EV-3.5.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10265,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('1 duplicate removed', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByText('1 duplicate removed', { exact: true })\n    11 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet/tests/helpers.ts:5:73)\n    at text (/proxy/sheet/tests/helpers.ts:26:65)\n    at /proxy/sheet/tests/25-EV-3.5.spec.ts:25:13"
+    },
+    {
+      "name": "EV-3.6: Freeze the top worksheet row",
+      "file": "26-EV-3.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2908,
+      "error": null
+    },
+    {
+      "name": "EV-3.7: Hide a column without deleting its values",
+      "file": "27-EV-3.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2236,
+      "error": null
+    },
+    {
+      "name": "EV-3.8: Show a hidden column",
+      "file": "28-EV-3.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2116,
+      "error": null
+    },
+    {
+      "name": "EV-3.9: Toggle display of formula expressions",
+      "file": "29-EV-3.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2450,
+      "error": null
+    },
+    {
+      "name": "EV-3.10: Make an independent workbook copy",
+      "file": "30-EV-3.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2997,
+      "error": null
+    }
+  ],
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 118.723,
+  "container_exit_code": 1,
+  "passed": 26,
+  "failed": 4,
+  "total": 30,
+  "wall_seconds": 121.878
+}

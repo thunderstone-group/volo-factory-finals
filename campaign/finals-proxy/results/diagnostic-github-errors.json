@@ -1,0 +1,53 @@
+{
+  "task": "github",
+  "app_dir": "~/projects/arcbench-campaign/finals-proxy/reference/github-app",
+  "app_sha256": "eef0fe78fbf698dcec42139b9a387e0732555996d1e00a2f5baf41de3f4a8267",
+  "frozen_manifest_sha256": "569f6719e9eed44a28365ef64c036c75d0405df2010cdb1e34f8f0093a92e83b",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": "EV-3\\.(4|7|9):",
+  "tests": [
+    {
+      "name": "EV-3.4: Unpin an issue without deleting it",
+      "file": "24-EV-3.4.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10082,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator:  getByRole('region', { name: 'Pinned issues', exact: true }).getByRole('list', { name: 'Pinned issue titles', exact: true })\nExpected: visible\nReceived: hidden\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('region', { name: 'Pinned issues', exact: true }).getByRole('list', { name: 'Pinned issue titles', exact: true })\n    11 × locator resolved to <ul aria-label=\"Pinned issue titles\"></ul>\n       - unexpected value \"hidden\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                                                               ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:111)\n    at order (/proxy/github/tests/helpers.ts:27:126)\n    at /proxy/github/tests/24-EV-3.4.spec.ts:44:3"
+    },
+    {
+      "name": "EV-3.7: Edit an authored issue comment",
+      "file": "27-EV-3.7.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10083,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('dialog', { name: 'Edit comment', exact: true }).getByLabel('Comment body', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('dialog', { name: 'Edit comment', exact: true }).getByLabel('Comment body', { exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at fill (/proxy/github/tests/helpers.ts:11:113)\n    at /proxy/github/tests/27-EV-3.7.spec.ts:38:13"
+    },
+    {
+      "name": "EV-3.9: Complete an issue task-list item",
+      "file": "29-EV-3.9.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10086,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('heading', { name: 'Checklist EV-3.9', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Checklist EV-3.9', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:73)\n    at /proxy/github/tests/29-EV-3.9.spec.ts:34:16"
+    }
+  ],
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 35.64,
+  "container_exit_code": 1,
+  "passed": 0,
+  "failed": 3,
+  "total": 3,
+  "wall_seconds": 39.02
+}

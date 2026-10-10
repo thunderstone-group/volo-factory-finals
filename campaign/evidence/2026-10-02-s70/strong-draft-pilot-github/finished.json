@@ -1,0 +1,11 @@
+{
+  "exit": 143,
+  "status": "cancelled",
+  "reason": "Full GitHub public scenarios changed in 46 of 47 atomic requirements; switch to official selftest feedback. Initial stronger draft had no independent-check advantage; no further repair spend justified.",
+  "timestamp": 1790922556.436723,
+  "terminated_pids": [
+    32958
+  ],
+  "artifacts_retained": true,
+  "partial_run_not_quality_result": true
+}

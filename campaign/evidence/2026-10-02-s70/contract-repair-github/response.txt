@@ -1,0 +1,87 @@
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+function reviewsFor(pr) { return list('reviews').filter((r) => r.prId === pr.id && r.commit === pr.compareCommit); }
+=======
+function reviewsFor(pr) {
+  const reviews = list('reviews').filter((r) => r.prId === pr.id && r.commit === pr.compareCommit);
+  const effective = [];
+  for (const r of reviews) {
+    const i = effective.findIndex((x) => x.reviewerId === r.reviewerId);
+    if (i === -1) effective.push(r);
+    else effective[i] = r;
+  }
+  return effective;
+}
+>>>>>>> REPLACE
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+      u.fileDraft = { path: path, content: String(f.content || ''), message: String(f.message || '') };
+      if (!path || path.startsWith('/') || path.split('/').indexOf('..') !== -1) { u.fileError = 'Invalid file path'; ARC.render(); return; }
+=======
+      u.fileDraft = { path: path, content: String(f.content || ''), message: String(f.message || '') };
+      if (!canWrite(repo, me())) { u.fileError = 'Access denied'; ARC.render(); return; }
+      if (ruleFor(repo, branch)) { u.fileError = 'Branch is protected'; ARC.render(); return; }
+      if (!path || path.startsWith('/') || path.split('/').indexOf('..') !== -1) { u.fileError = 'Invalid file path'; ARC.render(); return; }
+>>>>>>> REPLACE
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+      if (b) b.commitId = cid;
+      u.fileError = '';
+      u.fileDraft = null;
+=======
+      if (b) b.commitId = cid;
+      for (const p of list('pulls')) {
+        if (p.repoId === repo.id && p.compare === branch && p.status !== 'Merged') p.compareCommit = cid;
+      }
+      u.fileError = '';
+      u.fileDraft = null;
+>>>>>>> REPLACE
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+      // A repository name identifies the repository in search results and lists, so a name already used
+      // anywhere in the system is a conflict and an existing namespace does not free it.
+      if (list('repos').some((r) => r.name === name)) { u.repoError = 'Name already exists on this account'; ARC.render(); return; }
+      const repo = {
+        id: uid('repo'), owner: ownerLabel, ownerType: org ? 'org' : 'user', orgId: org ? org.id : null,
+        ownerSlug: org ? org.identifier : ownerLabel, name: name,
+=======
+      const ownerSlug = org ? org.identifier : ownerLabel;
+      if (list('repos').some((r) => r.ownerSlug === ownerSlug && r.name === name)) { u.repoError = 'Name already exists on this account'; ARC.render(); return; }
+      const repo = {
+        id: uid('repo'), owner: ownerLabel, ownerType: org ? 'org' : 'user', orgId: org ? org.id : null,
+        ownerSlug: ownerSlug, name: name,
+>>>>>>> REPLACE
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+      if (list('repos').some((r) => r.name === name)) { u.forkError = 'Name already exists on this account'; ARC.render(); return; }
+      const repo = {
+        id: uid('repo'), owner: ownerLabel, ownerType: org ? 'org' : 'user', orgId: org ? org.id : null,
+        ownerSlug: org ? org.identifier : ownerLabel, name: name,
+=======
+      const ownerSlug = org ? org.identifier : ownerLabel;
+      if (list('repos').some((r) => r.ownerSlug === ownerSlug && r.name === name)) { u.forkError = 'Name already exists on this account'; ARC.render(); return; }
+      const repo = {
+        id: uid('repo'), owner: ownerLabel, ownerType: org ? 'org' : 'user', orgId: org ? org.id : null,
+        ownerSlug: ownerSlug, name: name,
+>>>>>>> REPLACE
+=== END ===
+
+=== EDIT: frontend/public/app.js ===
+<<<<<<< SEARCH
+      const title = String(f.title || '').trim();
+      if (!title) { u.editError = 'Title is required'; ARC.render(); return; }
+      issue.title = title;
+=======
+      const title = String(f.title || '').trim();
+      if (!title || title.length > 256) { u.editError = 'Title is required'; ARC.render(); return; }
+      issue.title = title;
+>>>>>>> REPLACE
+=== END ===

@@ -1,0 +1,8 @@
+{
+  "baseline_sha256": "fd7c2bb50d4f2aef1d30f95d65e1b7ca3981f91f70983f89a43e1674e11260e4",
+  "modified_sha256": "3a5f7dbff7be658f7a6b00892cac1e83c28a632e274c555f95245bc9c353d259",
+  "only_changed_field": "reasoning_effort",
+  "value": "low",
+  "max_tokens": 131072,
+  "temperature": 0.0
+}

@@ -1,0 +1,10 @@
+{
+  "observed_official_score": 80,
+  "written_suite_counts": {
+    "pass": 76,
+    "fail": 10,
+    "error": 17
+  },
+  "seconds": 156.7,
+  "scope": "New independent public-requirement tests run unchanged against a held-out prior official application; no prompts or feedback changed."
+}

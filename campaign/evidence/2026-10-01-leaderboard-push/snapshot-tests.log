@@ -1,0 +1,10 @@
+test_own_errors_and_skips_never_count_against_the_application (tests_oneshot.test_testgen.ParseCase) ... ok
+test_page_snapshot_is_bounded_and_cannot_read_an_external_attachment (tests_oneshot.test_testgen.ParseCase) ... ok
+test_verdicts (tests_oneshot.test_testgen.ParseCase) ... ok
+test_a_run_stopped_at_its_time_limit_keeps_the_tests_it_finished (tests_oneshot.test_testgen.RunCase) ... ok
+test_runs_a_suite_against_a_live_application (tests_oneshot.test_testgen.RunCase) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 35.180s
+
+OK

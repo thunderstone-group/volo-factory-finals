@@ -1,0 +1,15 @@
+{
+  "source": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-sheet/.oneshot-u5p15lqa/app",
+  "phase": "first draft before UI repair",
+  "files": {
+    "README.md": "6879b0ce3a4fff03895c75e0c5ebe25c1bf99967209a7ac75c5707b2caa7e08f",
+    "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+    "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+    "frontend/public/styles.css": "a4060d4bdd25879757cc1b6ab15d440f910d5b24e17f7e8b77e8bc258476ec6d",
+    "frontend/public/seed.js": "78d703d9938683dd4cc19e6ea552a5143ce87f919a6e43f4c6f618b73c4b42c3",
+    "frontend/public/app.js": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7",
+    "frontend/public/lib/arc.js": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14",
+    "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9",
+    "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+  }
+}

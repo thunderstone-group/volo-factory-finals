@@ -1,0 +1,24 @@
+== platform (package 1d31282d, patch drafts default on)
+12306 1f936cbc3332 PASSED 6 0 400 []
+bookstack 6ecd61b379a5 PASSED 6 0 486 []
+ctrip 4d3b5107a30a PASSED 5 4 1277 ['EV-3.1: Open hotel details', 'EV-3.2: Select an available room plan', 'EV-4.1: Block an incomplete hotel order', 'EV-4.2: Create a hotel order']
+keep f5e10216943e PASSED 5 1 844 ['EV-1.1: Filter search results by note type']
+prestashop 8af714a18e5d PASSED 5 0 753 []
+stackoverflow 35071c156b52 PASSED 6 0 907 []
+== local github s1 exit 1 seconds 2109.6
+ proxy 0 / 30 ['EV-1.1: Filter issues with combined qualifiers', 'EV-1.2: Sort the filtered issue list', 'EV-1.3: Filter draft pull requests by author', 'EV-1.4: Close an issue as not planned', 'EV-1.5: Preview a Markdown issue comment', 'EV-1.6: Preview a Markdown file before committing', 'EV-1.7: Convert an open pull request to draft', 'EV-1.8: Switch the pull request diff layout', 'EV-1.9: Search labels before applying one', 'EV-1.10: Swap comparison branches', 'EV-2.1: Star and unstar a repository', 'EV-2.2: Keep stars specific to each account', 'EV-2.3: Edit repository topics', 'EV-2.4: Restrict topic editing to administrators', 'EV-2.5: Archive a repository', 'EV-2.6: Read an archived repository as a visitor', 'EV-2.7: Create a repository label', 'EV-2.8: Rename an applied repository label', 'EV-2.9: Create a milestone with a due date', 'EV-2.10: Close and reopen a milestone', 'EV-3.1: Lock an issue conversation', 'EV-3.2: Deny issue locking to a read user', 'EV-3.3: Pin an issue to the repository list', 'EV-3.4: Unpin an issue without deleting it', 'EV-3.5: Toggle a thumbs-up reaction', 'EV-3.6: Create and use a saved reply', 'EV-3.7: Edit an authored issue comment', 'EV-3.8: Confirm deletion of an authored comment', 'EV-3.9: Complete an issue task-list item', 'EV-3.10: Resolve and reopen a review thread']
+ regression {'v6-fixed-independent': {'pass': 107, 'fail': 4}}
+"estimated_cost_cny": 1.413192
+== local sheet s1 exit 0 seconds 845.2
+ proxy 30 / 30 []
+ regression {'g99': {'pass': 66, 'fail': 9, 'error': 26}, 'cov99n-arm': {'pass': 96, 'fail': 4}}
+"estimated_cost_cny": 0.954007
+== local github s2 exit 1 seconds 2400.5
+ proxy 0 / 30 ['EV-1.1: Filter issues with combined qualifiers', 'EV-1.2: Sort the filtered issue list', 'EV-1.3: Filter draft pull requests by author', 'EV-1.4: Close an issue as not planned', 'EV-1.5: Preview a Markdown issue comment', 'EV-1.6: Preview a Markdown file before committing', 'EV-1.7: Convert an open pull request to draft', 'EV-1.8: Switch the pull request diff layout', 'EV-1.9: Search labels before applying one', 'EV-1.10: Swap comparison branches', 'EV-2.1: Star and unstar a repository', 'EV-2.2: Keep stars specific to each account', 'EV-2.3: Edit repository topics', 'EV-2.4: Restrict topic editing to administrators', 'EV-2.5: Archive a repository', 'EV-2.6: Read an archived repository as a visitor', 'EV-2.7: Create a repository label', 'EV-2.8: Rename an applied repository label', 'EV-2.9: Create a milestone with a due date', 'EV-2.10: Close and reopen a milestone', 'EV-3.1: Lock an issue conversation', 'EV-3.2: Deny issue locking to a read user', 'EV-3.3: Pin an issue to the repository list', 'EV-3.4: Unpin an issue without deleting it', 'EV-3.5: Toggle a thumbs-up reaction', 'EV-3.6: Create and use a saved reply', 'EV-3.7: Edit an authored issue comment', 'EV-3.8: Confirm deletion of an authored comment', 'EV-3.9: Complete an issue task-list item', 'EV-3.10: Resolve and reopen a review thread']
+ regression {'v6-fixed-independent': {'pass': 107, 'fail': 4}}
+"estimated_cost_cny": 1.773572
+== local sheet s2 exit 0 seconds 1109.9
+ proxy 30 / 30 []
+ regression {'g99': {'pass': 66, 'fail': 9, 'error': 26}, 'cov99n-arm': {'pass': 96, 'fail': 4}}
+"estimated_cost_cny": 1.080726
+DONE

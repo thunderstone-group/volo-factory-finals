@@ -1,0 +1,18 @@
+{
+  "case": "github-official46",
+  "counts": {
+    "pass": 99,
+    "fail": 12
+  },
+  "entry_checks": {
+    "pass": 3,
+    "fail": 8
+  },
+  "ordinary_checks": {
+    "pass": 96,
+    "fail": 4
+  },
+  "seconds": 100.6,
+  "unavailable": null,
+  "model_api_calls": 0
+}

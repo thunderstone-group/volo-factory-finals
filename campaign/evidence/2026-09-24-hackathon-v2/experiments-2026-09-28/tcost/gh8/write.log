@@ -1,0 +1,7 @@
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 2 failed; bounded retry in 30 s
+[oneshot] deepseek-v4-flash failed 3 times; this call is retried on kimi-k2.7-code-highspeed
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 1 failed; bounded retry in 5 s
+[oneshot] call 1 failed; bounded retry in 5 s
+{"scenarios": 100, "tests": 100, "seconds": 2453.0, "cost_cny": 8.5127}

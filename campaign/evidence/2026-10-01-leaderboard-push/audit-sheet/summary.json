@@ -1,0 +1,24 @@
+{
+  "task": "sheet",
+  "seconds": 536.3,
+  "estimated_cost_cny": 0.5717306,
+  "audit_checks": 0,
+  "files": [
+    {
+      "file": "t03-REQ-3.spec.cjs",
+      "audit": {
+        "claims": [],
+        "calls": 1,
+        "error": "ValueError: audit quote is not a verbatim requirement description excerpt"
+      }
+    },
+    {
+      "file": "t05-REQ-5.spec.cjs",
+      "audit": {
+        "claims": [],
+        "calls": 1,
+        "error": "ValueError: audit quote is not a verbatim requirement description excerpt"
+      }
+    }
+  ]
+}

@@ -1,0 +1,309 @@
+{
+  "task": "github-real",
+  "app_dir": "~/projects/arcbench-campaign/finals-proxy/calibration/apps/v3/local-github-real-c452126573-s1",
+  "app_sha256": "111f122c4b5db363c67705a6903a9af1a01398d9d83efe1c7ccfdbc92246b2b5",
+  "frozen_manifest_sha256": "0b287f7e134217c1e4a639bb1806de9a1b635dfc1f052e3346b3cbba2e1df0ba",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 1",
+      "file": "01-REQ-1-1-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2472,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 2",
+      "file": "02-REQ-1-1-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1776,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 3",
+      "file": "03-REQ-1-1-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1741,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1",
+      "file": "04-REQ-1-1-2-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1557,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 2",
+      "file": "05-REQ-1-1-2-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1531,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 3",
+      "file": "06-REQ-1-1-2-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1540,
+      "error": null
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 1",
+      "file": "07-REQ-1-4-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10030,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('row').or(getByRole('listitem')).filter({ hasText: /current (?:browser )?session/i })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('row').or(getByRole('listitem')).filter({ hasText: /current (?:browser )?session/i })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/07-REQ-1-4-scenario-1.spec.ts:20:16"
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 2",
+      "file": "08-REQ-1-4-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "failed",
+      "duration_ms": 3871,
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/revoked|inactive/i)\nExpected: visible\nError: strict mode violation: getByText(/revoked|inactive/i) resolved to 2 elements:\n    1) <p role=\"status\" class=\"msg ok\">Session revoked</p> aka getByRole('status')\n    2) <span class=\"marker\">Session revoked</span> aka locator('span').filter({ hasText: 'Session revoked' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByText(/revoked|inactive/i)\n\n\n  23 |   await page.getByRole('button', {name:/revoke session/i}).first().click();\n  24 |   // THEN: The page displays “Session revoked” or an inactive marker for the revoked row, the current session remains active, and the sessions page shows the updated state after reload.\n> 25 |   await expect(page.getByText(/revoked|inactive/i)).toBeVisible();\n     |                                                     ^\n  26 |   await page.reload();\n  27 |   await expect(page.getByRole('heading', {name:'Active sessions',exact:true})).toBeVisible();\n  28 |   await expect(page.getByText(/revoked|inactive/i)).toBeVisible();\n    at /proxy/github-real/tests/08-REQ-1-4-scenario-2.spec.ts:25:53"
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 3",
+      "file": "09-REQ-1-4-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10068,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n  24 |   await other.reload();\n  25 |   // THEN: The revoked browser is redirected to the sign-in page and cannot access the protected workspace, while the other browser still displays `evo-session-owner-s3`.\n> 26 |   await expect(other.getByRole('main').getByRole('link', {name:'Sign in',exact:true})).toBeVisible();\n     |                                                                                        ^\n  27 |   await expect(page.getByText('evo-session-owner-s3', {exact:true}).first()).toBeVisible(); await otherContext.close();\n  28 | });\n  29 |\n    at /proxy/github-real/tests/09-REQ-1-4-scenario-3.spec.ts:26:88"
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 1",
+      "file": "10-REQ-2-1-2-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10113,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menu').getByRole('link', { name: 'Your organizations', exact: true })\n\n\n  14 |   await fill(page, 'Username or email', \"evo-org-owner\"); await fill(page, 'Password', \"Evo-Password-987!\");\n  15 |   await button(page, 'Sign in');\n> 16 |   await button(page, 'Account menu'); await page.getByRole('menu').getByRole('link', {name:'Your organizations',exact:true}).click(); await clickEvolutionTarget(page, 'New organization');\n     |                                                                                                                              ^\n  17 |   await fill(page, 'Organization name', \"Evo-Lab-01\"); await fill(page, 'Display name', \"Evo Lab One\"); await button(page, 'Create organization');\n  18 |   // THEN: The system opens an organization overview whose heading visibly contains `evo-lab-01`.\n  19 |   await visible(page.getByRole('heading').filter({hasText:'evo-lab-01'}));\n    at /proxy/github-real/tests/10-REQ-2-1-2-scenario-1.spec.ts:16:126"
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 2",
+      "file": "11-REQ-2-1-2-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10110,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menu').getByRole('link', { name: 'Your organizations', exact: true })\n\n\n  14 |   await fill(page, 'Username or email', \"evo-org-owner\"); await fill(page, 'Password', \"Evo-Password-987!\");\n  15 |   await button(page, 'Sign in');\n> 16 |   await button(page, 'Account menu'); await page.getByRole('menu').getByRole('link', {name:'Your organizations',exact:true}).click(); await clickEvolutionTarget(page, 'New organization');\n     |                                                                                                                              ^\n  17 |   await fill(page, 'Organization name', \"EVO-LAB-02\"); await fill(page, 'Display name', \"Evo Lab Duplicate\"); await button(page, 'Create organization');\n  18 |   // THEN: The page displays the exact message “Organization name already exists” and does not display an organization heading for the attempted existing organization creation.\n  19 |   await text(page, 'Organization name already exists'); await expect(page.getByRole('heading').filter({hasText:/evo-lab-02/i})).toHaveCount(0); await visible(field(page, 'Organization name'));\n    at /proxy/github-real/tests/11-REQ-2-1-2-scenario-2.spec.ts:16:126"
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 3",
+      "file": "12-REQ-2-1-2-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10101,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menu').getByRole('link', { name: 'Your organizations', exact: true })\n\n\n  14 |   await fill(page, 'Username or email', \"evo-org-owner\"); await fill(page, 'Password', \"Evo-Password-987!\");\n  15 |   await button(page, 'Sign in');\n> 16 |   await button(page, 'Account menu'); await page.getByRole('menu').getByRole('link', {name:'Your organizations',exact:true}).click(); await clickEvolutionTarget(page, 'New organization');\n     |                                                                                                                              ^\n  17 |   await fill(page, 'Organization name', \"-invalid-organization\"); await fill(page, 'Display name', \"   \"); await button(page, 'Create organization');\n  18 |   // THEN: The page displays both exact messages “Organization name format is invalid” and “Display name is required”, and no organization is created.\n  19 |   await text(page, 'Organization name format is invalid'); await text(page, 'Display name is required'); await visible(field(page, 'Organization name'));\n    at /proxy/github-real/tests/12-REQ-2-1-2-scenario-3.spec.ts:16:126"
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 1",
+      "file": "13-REQ-2-4-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2166,
+      "error": null
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 2",
+      "file": "14-REQ-2-4-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1829,
+      "error": null
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 3",
+      "file": "15-REQ-2-4-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1688,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 1",
+      "file": "16-REQ-3-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1427,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 2",
+      "file": "17-REQ-3-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1336,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 3",
+      "file": "18-REQ-3-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1336,
+      "error": null
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 1",
+      "file": "19-REQ-3-5-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1852,
+      "error": null
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 2",
+      "file": "20-REQ-3-5-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1706,
+      "error": null
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 3",
+      "file": "21-REQ-3-5-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10030,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByText(/active/i).first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByText(/active/i).first()\n\n\n  18 |   const dialog = named(page, 'dialog', 'Restore repository'); await visible(dialog); await button(dialog, 'Confirm restore');\n  19 |   await expect(page.getByText('Archived', {exact:true})).toHaveCount(0);\n> 20 |   await expect(page.getByText(/active/i).first()).toBeVisible();\n     |                                                   ^\n  21 |   await openEvolutionRepository(page, \"evo-archive-repository-s3\");\n  22 |   await page.reload();\n  23 |   // THEN: The Archived marker is gone, the repository is Active, and its existing content remains visible.\n    at /proxy/github-real/tests/21-REQ-3-5-scenario-3.spec.ts:20:51"
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 1",
+      "file": "22-REQ-4-3-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1978,
+      "error": null
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 2",
+      "file": "23-REQ-4-3-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1509,
+      "error": null
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 3",
+      "file": "24-REQ-4-3-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1494,
+      "error": null
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 1",
+      "file": "25-REQ-4-5-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10027,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByText(/target branch:\\s*evo-main-s1/i)\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByText(/target branch:\\s*evo-main-s1/i)\n\n\n  21 |   await expect(page.getByText('Evolution Preview', {exact:true})).toBeVisible();\n  22 |   await expect(page.getByText('Evolution release description', {exact:true})).toBeVisible();\n> 23 |   await expect(page.getByText(/target branch:\\s*evo-main-s1/i)).toBeVisible();\n     |                                                                 ^\n  24 |   await page.reload();\n  25 |   await expect(page.getByRole('heading', {name:'evo-v0-1-s1',exact:true})).toBeVisible();\n  26 |   await expect(page.getByText('Evolution Preview', {exact:true})).toBeVisible();\n    at /proxy/github-real/tests/25-REQ-4-5-scenario-1.spec.ts:23:65"
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 2",
+      "file": "26-REQ-4-5-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10089,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByText('Evolution release', { exact: true })\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByText('Evolution release', { exact: true })\n\n\n  15 |   await expect(page.getByRole('heading', {name:'evo-v0-1-s2',exact:true})).toBeVisible();\n  16 |   await expect(page.getByText('Existing Evolution Release', {exact:true})).toBeVisible();\n> 17 |   await expect(page.getByText('Evolution release', {exact:true})).toBeVisible();\n     |                                                                   ^\n  18 |   await expect(page.getByText(/target branch:\\s*evo-main-s2/i)).toBeVisible();\n  19 |   await unavailable(named(page, 'button', 'Publish release'));\n  20 | });\n    at /proxy/github-real/tests/26-REQ-4-5-scenario-2.spec.ts:17:67"
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 3",
+      "file": "27-REQ-4-5-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10088,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('evo-v0-1-s3', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByText('evo-v0-1-s3', { exact: true })\n    11 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n  17 |   await clickEvolutionTarget(page, 'Releases'); await clickEvolutionTarget(page, 'New release'); await fill(page, 'Tag name', 'evo-v0-1-s3'); await fill(page, 'Release title', 'A second release'); await fill(page, 'Description', 'This duplicate must not be published.'); await button(page, 'Publish release');\n  18 |   // THEN: The form displays “Tag already exists” and no duplicate release is created.\n> 19 |   await text(page, 'Tag already exists'); await expect(page.getByText('evo-v0-1-s3', {exact:true})).toHaveCount(1); await visible(field(page, 'Tag name')); await expect(field(page, 'Tag name')).toHaveValue('evo-v0-1-s3');\n     |                                                                                                     ^\n  20 | });\n  21 |\n    at /proxy/github-real/tests/27-REQ-4-5-scenario-3.spec.ts:19:101"
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 1",
+      "file": "28-REQ-5-5-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10084,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator: getByText('1 reaction', { exact: true })\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByText('1 reaction', { exact: true })\n\n\n  17 |   await clickEvolutionTarget(page, 'Issues'); await clickEvolutionTarget(page, 'Evo reaction issue s1');\n  18 |   await button(page, 'Add reaction'); const reactionMenu = page.getByRole('menu'); await visible(reactionMenu); await visible(named(reactionMenu, 'menuitem', '+1')); await named(reactionMenu, 'menuitem', '+1').click(); await visible(named(page, 'button', 'Remove +1 reaction'));\n> 19 |   await expect(page.getByText('1 reaction', {exact:true})).toBeVisible();\n     |                                                            ^\n  20 |   await expect(page.getByText('Evo reaction issue s1', {exact:true}).first()).toBeVisible();\n  21 |   await page.reload();\n  22 |   // THEN: The issue displays the “+1” reaction with the updated count and keeps the user reaction highlighted after reload.\n    at /proxy/github-real/tests/28-REQ-5-5-scenario-1.spec.ts:19:60"
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 2",
+      "file": "29-REQ-5-5-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 4735,
+      "error": null
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 3",
+      "file": "30-REQ-5-5-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 4021,
+      "error": null
+    }
+  ],
+  "requirements_file": "github-real/requirements/requirements.yaml",
+  "requirements_sha256": "f1f73b4190831cef37669f9e919edde50cd0bc7ad02b888e6dab617094921754",
+  "test_task": "github-real",
+  "test_source_manifest_sha256": "0b287f7e134217c1e4a639bb1806de9a1b635dfc1f052e3346b3cbba2e1df0ba",
+  "test_files_sha256": {
+    "tests/01-REQ-1-1-1-scenario-1.spec.ts": "6c4ea11ed9f5ff71598218dddc212cfe560d26f4d7091124e98a484accb889b6",
+    "tests/02-REQ-1-1-1-scenario-2.spec.ts": "b24fea6e800da2fc3b5b72b117be16a4d3f714632f142922bbcdb098733ac41e",
+    "tests/03-REQ-1-1-1-scenario-3.spec.ts": "cf4465ac6d20a7eb3517a9104a7597b6b8a50395f4457552256ce4c96ceac8f6",
+    "tests/04-REQ-1-1-2-scenario-1.spec.ts": "aa5da7969f2cf7af0d21b055abc708e398995744f66a9956c5e9091dd591466a",
+    "tests/05-REQ-1-1-2-scenario-2.spec.ts": "e3a101fa8359d4729039d3f0cd18ceb3ae81c47b229c3e32ab4511c553a4ba32",
+    "tests/06-REQ-1-1-2-scenario-3.spec.ts": "0047fc4c2c788119087bbdd4fab386b02abc66db42dd5a1500069fa5fdd69c6a",
+    "tests/07-REQ-1-4-scenario-1.spec.ts": "f33a0a264f04e0f60f838e2bb0c6471a99eca6a36e060390df98d310d44a0e65",
+    "tests/08-REQ-1-4-scenario-2.spec.ts": "224f9c25247a7e88b943de56b7be828d03c5eabf4af5bb7f30ec11cee9d33fc6",
+    "tests/09-REQ-1-4-scenario-3.spec.ts": "81772a51b8b907304d626bb1ce037ceb9f96438b67c100dd6e372764031ae9d6",
+    "tests/10-REQ-2-1-2-scenario-1.spec.ts": "6ae2ea2116b4e05164ff15e164ab22cf3d91542fb3c6cd677ca753a7ed6a6c92",
+    "tests/11-REQ-2-1-2-scenario-2.spec.ts": "02cf3aee09e8d9339b0a7a8c606a65140b4740d4bad63dda4ef348507b269f42",
+    "tests/12-REQ-2-1-2-scenario-3.spec.ts": "f5e704c6854173c77a2fcfe7fd86a89cc085b832ccf6c9d3c49310d2172de216",
+    "tests/13-REQ-2-4-scenario-1.spec.ts": "6e52b9c6f3322516b7bf51dce7879a2016d5c03379f2ef6c8f00c14a6718eb81",
+    "tests/14-REQ-2-4-scenario-2.spec.ts": "5474bd9861a05b3760bb879f412a4f7e6934818466295a58b2f76b92952b57b9",
+    "tests/15-REQ-2-4-scenario-3.spec.ts": "c40bca6c7c0829fa167f0b4bc610dcac38463f29a39eaa88a3644e52b2215064",
+    "tests/16-REQ-3-1-scenario-1.spec.ts": "88c92d2bd1997a7449a4cccc455a430f185c6a6bc479e395db6db63c14d154e3",
+    "tests/17-REQ-3-1-scenario-2.spec.ts": "adb6ff467aaad5176ae4c62d2e0a4123ddfc7c77b666bb62341bf195fb3769e1",
+    "tests/18-REQ-3-1-scenario-3.spec.ts": "1cc66437249307910194d854be38cad149c74127e91727ff7aef4919054b5aa6",
+    "tests/19-REQ-3-5-scenario-1.spec.ts": "6d488ea67852fbf04faed8ce2dbd2d040bf84e5cc0a6ef44dc7875a74738280d",
+    "tests/20-REQ-3-5-scenario-2.spec.ts": "ddd0d78da37aad5ef5a6aab0cd39c11d4a16341f414f6642d83b30435e0c68d2",
+    "tests/21-REQ-3-5-scenario-3.spec.ts": "ce579f8a2e6ad4580758881ab749276abab9945d20c5eb76a29301c24d42e5ea",
+    "tests/22-REQ-4-3-1-scenario-1.spec.ts": "aa8b4642554d8eea6954c7ea2b80c78eff9f5276f96b99e6a88914deee65038b",
+    "tests/23-REQ-4-3-1-scenario-2.spec.ts": "bcfeec399d619b96909c0b423b1ed6ceb1a6bad384a126ce291d1da61f3530dc",
+    "tests/24-REQ-4-3-1-scenario-3.spec.ts": "46b44eff1984eca4881fe5e564f1749af703a670084e8e74b619c2ca31c9d7f4",
+    "tests/25-REQ-4-5-scenario-1.spec.ts": "d9d52c62500e8b35e0b0a3f1fdc1e9f3b3390ba5ccd0d0b7efd2f3f3827eb8e4",
+    "tests/26-REQ-4-5-scenario-2.spec.ts": "a27ee5f06e930a6869a4c4fea76fcaeb2a39b0145f045c356febc3824e4d8999",
+    "tests/27-REQ-4-5-scenario-3.spec.ts": "b3a29d7190434f748d4acc3040a847c1d7e72497adb47c75d6d584a206b27f6a",
+    "tests/28-REQ-5-5-scenario-1.spec.ts": "4286674339e415a923156eb9ecc8c4608644ca687cc6326537ee4793d31e7491",
+    "tests/29-REQ-5-5-scenario-2.spec.ts": "c156f606f593d8afb262f76dafe49f13de90a8c10aec73c1ae39d68b08bec363",
+    "tests/30-REQ-5-5-scenario-3.spec.ts": "bd266a0e8992485a46d3e3e6b3242a834d7cf1b8512979ec3dcf4574ea5fa071",
+    "tests/evolution-navigation.ts": "1a59c9ff1f03277ca2dedd4f5f3434154a75b0fbc37c1e5b117f460663967f6e",
+    "tests/helpers.ts": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+    "tests/interactions.ts": "f2d79d4c1b95cacad6288e271ed1752c12556477a9661d1e0f4e0395f673b15a"
+  },
+  "test_suite_sha256": "296a9dd7e8056d894373de6effb1f87f2e03bd2fd8edb7222d979b8ffe0372af",
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 164.261,
+  "container_exit_code": 1,
+  "passed": 19,
+  "failed": 11,
+  "total": 30,
+  "wall_seconds": 168.04
+}

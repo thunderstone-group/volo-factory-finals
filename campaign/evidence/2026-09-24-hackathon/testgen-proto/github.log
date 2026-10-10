@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/testgen_proto.py", line 157, in <module>
+    main()
+  File "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/testgen_proto.py", line 144, in main
+    results = list(pool.map(one, sorted(groups)))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "~/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "~/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "~/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/claude-501/-Users-e0-7-projects/cb5d46b2-3d9d-4aaa-84d7-d1724ef3bfcc/scratchpad/testgen/testgen_proto.py", line 136, in one
+    system = TESTS.split("Your task now:")[0].format(api=api)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: ' test, expect '

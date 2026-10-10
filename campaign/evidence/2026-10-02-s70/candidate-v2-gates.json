@@ -1,0 +1,53 @@
+{
+  "at": "2026-10-02T06:40:40.627393+08:00",
+  "candidate_sha256": "7f3a549d2db87722fa6b35b6cf88b4720ba3831a4e664843aac65e0ab5ff89be",
+  "formal_gate": {
+    "complete_fresh_generation": true,
+    "source_review_must_run": true,
+    "all_source_probes_unjudged_blocks": true,
+    "independent_github": {
+      "baseline": [
+        69,
+        66
+      ],
+      "minimum_each": [
+        66,
+        63
+      ],
+      "minimum_sum": 135
+    },
+    "independent_sheet": {
+      "baseline": [
+        89,
+        93
+      ],
+      "minimum_each": [
+        86,
+        90
+      ],
+      "minimum_sum": 182
+    }
+  },
+  "interpretation": "Local criteria are directional regression gates, not predictors or substitutes for official score. Both official tasks must belong to the same exact submission.",
+  "checks": {
+    "v1_full_suites": {
+      "oneshot": {
+        "run": 259,
+        "passed": 256,
+        "skipped": 3
+      },
+      "legacy": {
+        "run": 226,
+        "passed": 214,
+        "skipped": 12
+      },
+      "gitleaks_source_findings": 0,
+      "gitleaks_package_findings": 0,
+      "configured_credentials_in_zip": 0
+    },
+    "v2_targeted_source_tests_passed": 12,
+    "v2_real_namespace_execution": "pass",
+    "v2_eight_existing_probes_replayed": true
+  },
+  "change": "Generic actual namespace binding, including helper methods, constants, receiver and mutable state. Same quality gates; the v1 run remains untouched."
+}

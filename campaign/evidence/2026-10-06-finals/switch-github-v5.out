@@ -1,0 +1,3 @@
+10-08 17:07 github loop started for 108621e1ed8d
+./switch_github_to_v5.sh: line 14: 73751 Terminated: 15          nohup ./rerun_loop.sh $NEW github 40 > /dev/null 2>&1
+./switch_github_to_v5.sh: line 15: 73752 Terminated: 15          nohup ./cost_watchdog.sh $NEW > /dev/null 2>&1

@@ -1,0 +1,90 @@
+{
+  "run_id": "6f78f5bdce60",
+  "source_stage": "agent finished, official tests still running",
+  "files": [
+    {
+      "path": "backend/package-lock.json",
+      "sha256": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b"
+    },
+    {
+      "path": "backend/package.json",
+      "sha256": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+    },
+    {
+      "path": "backend/server.js",
+      "sha256": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "sha256": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92"
+    },
+    {
+      "path": "frontend/package.json",
+      "sha256": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978"
+    },
+    {
+      "path": "frontend/public/app.js",
+      "sha256": "974fae71783a41f8436931714f84135e382b91dc00a3956d371919ed7bbe9dac"
+    },
+    {
+      "path": "frontend/public/index.html",
+      "sha256": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d"
+    },
+    {
+      "path": "frontend/public/lib/arc.js",
+      "sha256": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14"
+    },
+    {
+      "path": "frontend/public/seed.js",
+      "sha256": "fbdf91cd3213f3ba278dcdff67ca74de07c63f4575a26ef8772cf505b7b33ecc"
+    },
+    {
+      "path": "frontend/public/styles.css",
+      "sha256": "60bc6971bb2f029909d7f94bac41a6b25114c54b586b88740e7193bd1d95f443"
+    },
+    {
+      "path": "requirements/prerequisites.md",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "requirements/reference/basic-formulas.png",
+      "sha256": "9137821d43ffac424c96f63f60b903ac923c13d60de795a6f8562644574288fe"
+    },
+    {
+      "path": "requirements/reference/copy-paste-range.png",
+      "sha256": "502824f2e9341a4d1cbde88ea63b7a389fa3b79e89bb22bf12282badb202a23c"
+    },
+    {
+      "path": "requirements/reference/create-workbook.png",
+      "sha256": "19804daca950e5ea3bcfbef9d9d0d87da7e15b3a5bbf73ecefb1fcbaa5197a9e"
+    },
+    {
+      "path": "requirements/reference/manage-columns.png",
+      "sha256": "1856cabada8f3987350564a9c6d033389796ab6cf7143d8505c0dc96efa0e1a8"
+    },
+    {
+      "path": "requirements/reference/manage-rows.png",
+      "sha256": "d1b7ddd90073312e7d4167a5f6c26fbe83d0a49361fba1bd0ace1d4b23f00f40"
+    },
+    {
+      "path": "requirements/reference/sort-range.png",
+      "sha256": "6296218c375b04ec94b8c820468152ce3abb0f68e13186d0f1b37a655468e146"
+    },
+    {
+      "path": "requirements/reference/workbook-home.png",
+      "sha256": "b1cceb9fb430ab35b059f86f07abdeb6065305e004e7f43b9fd6966673e9a577"
+    },
+    {
+      "path": "requirements/reference/worksheet-lifecycle.png",
+      "sha256": "bcff393226d23557eb4d63ac3afb52fb320ef2aace7cdd9c52599ccc4d2dd5ae"
+    },
+    {
+      "path": "requirements/reference/worksheet-overview.png",
+      "sha256": "413a5baa064ee00d825694937c11ccfeeba4388a1ef7468c063e82287b3965e3"
+    },
+    {
+      "path": "requirements/requirements.yaml",
+      "sha256": "9cddf67be50748106289ed158648629a6c50c30a490d0eda5bd570c557440b96"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "source": "native-select-official-sheet/application",
+  "single_reader_migration": {
+    "before": "region.querySelector('input[name=\"' + n + '\"]')",
+    "after": "region.querySelector('[name=\"' + n + '\"]')"
+  },
+  "scope": "Controlled caller migration to standard named form controls; no business/data changes and no hidden mirror inputs"
+}

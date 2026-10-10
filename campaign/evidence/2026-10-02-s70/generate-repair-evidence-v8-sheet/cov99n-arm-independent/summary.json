@@ -1,0 +1,11 @@
+{
+  "task": "sheet",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 95,
+    "fail": 5
+  },
+  "seconds": 64.2,
+  "unavailable": null,
+  "model_calls": 0
+}

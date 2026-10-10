@@ -1,0 +1,22 @@
+[
+  {
+    "application": "generate-diagnostics-v4b-github",
+    "judge": "gh99",
+    "counts": {
+      "error": 29,
+      "pass": 54,
+      "fail": 21
+    },
+    "seconds": 246.1
+  },
+  {
+    "application": "generate-diagnostics-v4b-github",
+    "judge": "gh8",
+    "counts": {
+      "pass": 64,
+      "error": 16,
+      "fail": 23
+    },
+    "seconds": 180.5
+  }
+]

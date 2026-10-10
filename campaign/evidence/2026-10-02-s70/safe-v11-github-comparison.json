@@ -1,0 +1,12 @@
+{
+  "before_pass": 107,
+  "after_pass": 107,
+  "gained": [
+    "REQ-3-2-1"
+  ],
+  "lost": [
+    "REQ-4-2-2"
+  ],
+  "same_statuses": false,
+  "formal": false
+}

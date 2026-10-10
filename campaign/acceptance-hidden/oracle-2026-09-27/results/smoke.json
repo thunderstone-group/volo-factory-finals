@@ -1,0 +1,21 @@
+{
+ "tests": [
+  {
+   "title": "SMOKE: home loads",
+   "file": "000-smoke.spec.cjs",
+   "line": 2,
+   "status": "pass",
+   "seconds": 0.09,
+   "error": "",
+   "start": "2026-09-27T11:49:13.128Z"
+  }
+ ],
+ "stats": {
+  "startTime": "2026-09-27T11:49:12.886Z",
+  "duration": 665.317,
+  "expected": 1,
+  "skipped": 0,
+  "unexpected": 0,
+  "flaky": 0
+ }
+}

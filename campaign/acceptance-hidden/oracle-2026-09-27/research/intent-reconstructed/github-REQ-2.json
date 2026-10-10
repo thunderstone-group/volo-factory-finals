@@ -1,0 +1,181 @@
+{
+ "tests": [
+  {
+   "id": "REQ-2-1-1",
+   "n": 1,
+   "title": "Visitor filters organization repositories for public repo and opens it; private repo remains hidden and direct access denied",
+   "checks": [
+    "Repositories tab shows only public repository name, description, visibility, and update time for public repo `acme-docs`",
+    "Private repository name is never displayed in the list or when entered exactly in filter",
+    "Clicking public repository result opens heading `Acme Demo/acme-docs`",
+    "After refresh or Back, filtered results still hide unauthorized private repository",
+    "Directly opening the private repository URL without authorization requires sign-in or shows access denied"
+   ]
+  },
+  {
+   "id": "REQ-2-1-1",
+   "n": 2,
+   "title": "Signed-in user browses organization repositories and sees only repositories with read permission; visibility persists after reload",
+   "checks": [
+    "After signing in as `alice-dev`, Repositories tab lists only repositories the current user is authorized to view",
+    "Exact private repository name search does not expose its link to the signed-in user without permission",
+    "Visible repository rows display name, description, visibility, and update time with no write operations",
+    "Refreshing or reopening the organization page preserves the visible repository set and hides unauthorized repositories"
+   ]
+  },
+  {
+   "id": "REQ-2-1-2",
+   "n": 1,
+   "title": "Signed-in user creates unique organization `mobile-guild`; becomes Owner and member, and organization persists",
+   "checks": [
+    "Entering organization identifier `mobile-guild` and display name `Mobile Guild` then clicking `Create organization` redirects to new organization overview",
+    "New overview heading contains organization identifier `mobile-guild`",
+    "Current user is shown as Owner and organization member",
+    "Organization appears in `Your organizations` list in the account menu",
+    "After refreshing overview and reopening organization list, the organization still exists"
+   ]
+  },
+  {
+   "id": "REQ-2-1-2",
+   "n": 2,
+   "title": "Duplicate organization identifier is rejected with `Organization name already exists` even when display name is missing",
+   "checks": [
+    "Submitting an existing organization identifier displays `Organization name already exists` beside the field",
+    "The error appears even when display name is left missing",
+    "Page remains on creation form and does not navigate to the existing organization heading",
+    "No new organization object is created and the existing organization is unchanged"
+   ]
+  },
+  {
+   "id": "REQ-2-1-2",
+   "n": 3,
+   "title": "Malformed organization name `-invalid-organization` and whitespace-only display name are rejected with field errors",
+   "checks": [
+    "Entering `-invalid-organization` displays `Organization name format is invalid`",
+    "Entering a whitespace-only display name displays `Display name is required`",
+    "Non-sensitive input is retained in the form",
+    "No organization is created and no organization list entry appears after reload"
+   ]
+  },
+  {
+   "id": "REQ-2-2-1",
+   "n": 1,
+   "title": "Organization Owner creates team `mobile-team` with optional parent; team page and tree persist after reload",
+   "checks": [
+    "Owner clicks `New team`, enters team name `mobile-team` and optional description/parent, then `Create team`",
+    "Redirects to team page with heading `Acme Demo/mobile-team`",
+    "Team tree shows owning organization and selected parent team",
+    "Team appears on the organization Teams list",
+    "After refreshing team page and Teams list, team and parent-child relationship remain consistent"
+   ]
+  },
+  {
+   "id": "REQ-2-2-1",
+   "n": 2,
+   "title": "Non-owner cannot access `New team` or create a team; no team record is created",
+   "checks": [
+    "Signed-in non-owner opening Teams tab does not see an actionable `New team` link or activation is rejected",
+    "Attempted team creation is rejected and displays no team name error",
+    "After reload, no new team exists in the organization team list"
+   ]
+  },
+  {
+   "id": "REQ-2-2-2",
+   "n": 1,
+   "title": "Maintainer adds and removes organization member `bob-reviewer` and saves parent team; relationships persist after reload",
+   "checks": [
+    "Using `Add member` on Members page adds `bob-reviewer`; complete username appears exactly once in member list",
+    "After `Remove bob-reviewer` is activated, username disappears immediately and after reload",
+    "Selecting a non-cyclic candidate parent team in Settings and saving updates the team tree",
+    "After refreshing member page and organization team tree, only saved parent and membership relationships display",
+    "Non-organization members cannot be added"
+   ]
+  },
+  {
+   "id": "REQ-2-2-2",
+   "n": 2,
+   "title": "Cyclic team hierarchy selection is rejected; original parent remains and persists after reload",
+   "checks": [
+    "Selecting a descendant team as new parent and saving displays `Cyclic team hierarchy is not allowed`",
+    "The team's original parent remains selected",
+    "After reload, original hierarchy continues to display and no cycle is saved"
+   ]
+  },
+  {
+   "id": "REQ-2-2-3",
+   "n": 1,
+   "title": "Owner adds a registered non-member as Member; target sees organization but no private repo access; membership persists",
+   "checks": [
+    "Owner enters target username/verified email, selects `Member`, and clicks `Add member`",
+    "People page immediately displays full target username with Member role and no Pending state",
+    "Target account on next sign-in sees organization in `Your organizations` and organization overview",
+    "Target account does not gain access to an ungranted private repository and sees `Access denied`",
+    "After Owner refresh and target refresh, both read same membership relationship; duplicate membership is not created"
+   ]
+  },
+  {
+   "id": "REQ-2-2-3",
+   "n": 2,
+   "title": "Adding unknown account `unknown-reviewer` displays `Account not found` and no membership is created",
+   "checks": [
+    "Submitting unknown username `unknown-reviewer` displays `Account not found` beside the corresponding field",
+    "The Add member form remains open so username can be corrected and resubmitted",
+    "No membership row is added to People page",
+    "After reload, People list unchanged and unknown account has no organization relationship"
+   ]
+  },
+  {
+   "id": "REQ-2-2-4",
+   "n": 1,
+   "title": "Owner removes a member; org membership and org-scoped access revoked while personal account and repositories remain",
+   "checks": [
+    "Owner clicks `Member menu <username>` → `Remove from organization` → `Remove`",
+    "Member username is absent from People page immediately and after reload",
+    "Account loses access to private organization resources obtained solely through organization membership",
+    "Removed account can still sign in and access its personal account and personal repository",
+    "Teams themselves and team grants are not deleted; last Owner cannot be removed"
+   ]
+  },
+  {
+   "id": "REQ-2-2-4",
+   "n": 2,
+   "title": "Non-owner has no remove controls or removal is rejected; member remains in organization after reload",
+   "checks": [
+    "Non-owner viewing People page sees no `Member menu` button or `Remove from organization` menuitem for any member",
+    "Attempted removal operation is unavailable or rejected by server",
+    "After reload, the member still belongs to the organization",
+    "No membership, team membership, or direct grant relationships are deleted"
+   ]
+  },
+  {
+   "id": "REQ-2-3",
+   "n": 1,
+   "title": "Repo Admin grants Write access to an organization team; single grant persists and authorized team member gains private repo access",
+   "checks": [
+    "In Manage access, administrator selects team option from search picker, chooses `Write`, and confirms Add/Save",
+    "Authorization list displays exactly one row for the team with Write role",
+    "Saving the same role again for the same subject does not create a second authorization record",
+    "A member of the granted team can open the private repository and perform Write operations",
+    "Unauthorized accounts cannot see the private repository; grant persists after refresh"
+   ]
+  },
+  {
+   "id": "REQ-2-3",
+   "n": 2,
+   "title": "Changing an existing team grant from Write to Read replaces the original role; one team row remains after reload",
+   "checks": [
+    "Existing grant row shows team name and Write role with a native Role select and Save button",
+    "Changing role to `Read` and saving replaces Write with Read",
+    "Only one authorization record for the team remains after save",
+    "After refreshing Manage access page, the updated Read grant is still displayed",
+    "Old Write permission is no longer effective for the team"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 62967,
+  "completion_tokens": 8637
+ },
+ "cost_cny": 0.4371,
+ "finish": "stop"
+}

@@ -1,0 +1,14 @@
+{
+  "changed": [],
+  "before": {
+    "pass": 91,
+    "error": 9
+  },
+  "after": {
+    "pass": 91,
+    "error": 9
+  },
+  "seconds": 69.6,
+  "estimated_cost_cny": 0.04544968,
+  "scope": "Same frozen app, public requirements and actual invalid-API feedback only; no independent judges in prompt."
+}

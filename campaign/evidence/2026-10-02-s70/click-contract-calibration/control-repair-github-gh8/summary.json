@@ -1,0 +1,10 @@
+{
+  "application": "control-repair-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 67,
+    "error": 13,
+    "fail": 22
+  },
+  "seconds": 153.5
+}

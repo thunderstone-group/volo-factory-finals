@@ -1,0 +1,46 @@
+{
+  "run_id": "47d482ac1890",
+  "requirement": "REQ-6-3-4",
+  "requirement_quote": "a new decision by the same reviewer replaces that reviewer's effective decision for the current commit while preserving the old record",
+  "source_sha256": "421df4ddba2ebe01ae85670a47b00b7ee10ad3271949303d9fa0964f6de73f35",
+  "source_functions": [
+    "function reviewsFor(pr) { return list('reviews').filter((r) => r.prId === pr.id && r.commit === pr.compareCommit); }",
+    "function eligibility(repo, pr, user) {\n  if (pr.status === 'Draft') return { ok: false, reason: '' };\n  if (pr.status !== 'Open') return { ok: false, reason: '' };\n  const rule = ruleFor(repo, pr.base);\n  const revs = reviewsFor(pr);\n  if (revs.some((r) => r.decision === 'Request changes')) return { ok: false, reason: 'Changes requested' };\n  if (rule) {\n    const approvals = revs.filter((r) => r.decision === 'Approve' && r.reviewerId !== pr.authorId);\n    if (rule.requireApproval && approvals.length < 1) return { ok: false, reason: 'Review required by branch protection' };\n    if (rule.requireCheck) {\n      const chk = checkFor(pr);\n      if (!chk || chk.status !== 'success') return { ok: false, reason: 'Review required by branch protection' };\n    }\n  }\n  if (!canMaintain(repo, user)) return { ok: false, reason: 'You do not have permission to merge this pull request.' };\n  return { ok: true, reason: '' };\n}"
+  ],
+  "probe_kind": "Exact application business functions evaluated with isolated data; not a browser or hidden-test replay.",
+  "cases": [
+    {
+      "name": "only current approval",
+      "expected_ok": true,
+      "actual": {
+        "ok": true,
+        "reason": ""
+      }
+    },
+    {
+      "name": "request changes replaced by approval",
+      "expected_ok": true,
+      "actual": {
+        "ok": false,
+        "reason": "Changes requested"
+      }
+    },
+    {
+      "name": "request changes replaced by comment on unprotected target",
+      "expected_ok": true,
+      "actual": {
+        "ok": false,
+        "reason": "Changes requested"
+      }
+    },
+    {
+      "name": "old commit request changes is stale",
+      "expected_ok": true,
+      "actual": {
+        "ok": true,
+        "reason": ""
+      }
+    }
+  ],
+  "scope": "This proves the latest-review decision defect in the delivered app; it does not identify any hidden test result."
+}

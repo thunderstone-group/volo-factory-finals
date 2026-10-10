@@ -1,0 +1,39 @@
+{
+  "task": "github",
+  "exit": 0,
+  "seconds": 1026.8,
+  "error": null,
+  "usage": {
+    "calls": 5,
+    "draft_call_limit": 4,
+    "repair_call_limit": 2,
+    "completed_calls": 0,
+    "failed_calls": 5,
+    "failure_limit": 5,
+    "refused_calls": 0,
+    "known_prompt_tokens": null,
+    "prompt_tokens": null,
+    "known_completion_tokens": null,
+    "completion_tokens": null,
+    "unknown_usage_calls": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "estimated_cost_cny": 1.549873,
+    "estimated_repair_cost_cny": 1.549873,
+    "repair_cny_limit": 1.5,
+    "side_calls": 0,
+    "fallback_model": null,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 5
+    },
+    "billing_status": "unknown"
+  },
+  "counts": {
+    "pass": 85,
+    "fail": 26
+  }
+}

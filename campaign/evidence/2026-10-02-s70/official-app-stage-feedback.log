@@ -1,0 +1,5 @@
+{"stage": 1, "id": "f043daea-9f43-4c6b-898c-067695e4a6a0", "passed": 23, "total": 30}
+[arcbench] self-test upload allocated: 2ecc5d8f-3d7f-4e68-b00b-0f637cf288f0
+[arcbench] self-test 2ecc5d8f-3d7f-4e68-b00b-0f637cf288f0: queued
+{"error": "URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)>", "http_status": null, "method": "GET", "path": "/api/submissions/2ecc5d8f-3d7f-4e68-b00b-0f637cf288f0", "outcome_uncertain": false, "transport_failure": true, "error_kind": "tls", "request_id": "ffe305582be34261a9564dcbdd0f8af7", "origin": "https://arcbench-selftest-web.vercel.app", "timeout_seconds": 60, "exception_type": "URLError", "cause_type": "SSLEOFError", "errno": 8, "elapsed_ms": 15920.7, "exit_code": 1}
+Stage 2 has no quality result; inspect before another upload.

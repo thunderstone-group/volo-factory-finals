@@ -1,0 +1,15 @@
+--- original-own-suite
++++ own-suite-with-cleanup
+@@ -637,6 +637,12 @@
+   await page.reload();
+   await expect(page.getByText('Changes requested', { exact: true }).first()).toBeVisible();
+   await expect(page.getByText(summary, { exact: true }).first()).toBeVisible();
++  // Diagnostic fixture cleanup, after every original assertion has run.
++  await page.getByRole('link', { name: 'Files changed', exact: true }).click();
++  await page.getByRole('button', { name: 'Review changes', exact: true }).click();
++  await page.getByRole('radio', { name: 'Comment', exact: true }).check();
++  await page.getByRole('button', { name: 'Submit review', exact: true }).click();
++
+ });
+ 
+ // ===========================================================================

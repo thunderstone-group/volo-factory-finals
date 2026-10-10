@@ -1,0 +1,14 @@
+{
+  "app": "strong-draft-initial-github",
+  "judge": "gh99",
+  "counts": {
+    "error": 82,
+    "pass": 8,
+    "fail": 19
+  },
+  "seconds": 379.1,
+  "coverage": {
+    "total": 100,
+    "parsed": 27
+  }
+}

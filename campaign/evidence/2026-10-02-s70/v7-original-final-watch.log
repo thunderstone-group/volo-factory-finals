@@ -1,0 +1,8 @@
+v7-github-repeat 3bf0eb62b562 ('RUNNING', 'start_agent')
+v7-github-repeat 3bf0eb62b562 ('RUNNING', 'run_tests')
+v7-github-repeat 3bf0eb62b562 ('FAILED', None)
+v7-sheet-repeat2 31ff91b909a0 ('QUEUED', None)
+v7-sheet-repeat2 31ff91b909a0 ('RUNNING', 'start_agent')
+v7-sheet-repeat2 31ff91b909a0 ('RUNNING', 'run_tests')
+v7-sheet-repeat2 31ff91b909a0 ('FAILED', None)
+Original repeats finished; inspect authoritative board.

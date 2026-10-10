@@ -1,0 +1,14 @@
+{
+  "app": "dependency-build-checked-github",
+  "judge": "gh99",
+  "counts": {
+    "error": 20,
+    "pass": 69,
+    "fail": 14
+  },
+  "seconds": 154.2,
+  "coverage": {
+    "total": 100,
+    "parsed": 83
+  }
+}

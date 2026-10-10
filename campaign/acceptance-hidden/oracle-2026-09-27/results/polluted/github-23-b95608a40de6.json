@@ -1,0 +1,921 @@
+{
+ "tests": [
+  {
+   "title": "REQ-1-1-1: Register a New GitHub Account - Scenario 1",
+   "file": "10-REQ-1-1-1.spec.cjs",
+   "line": 65,
+   "status": "pass",
+   "seconds": 0.45,
+   "error": "",
+   "start": "2026-09-27T14:41:13.530Z"
+  },
+  {
+   "title": "REQ-1-1-1: Register a New GitHub Account - Scenario 2",
+   "file": "10-REQ-1-1-1.spec.cjs",
+   "line": 91,
+   "status": "pass",
+   "seconds": 0.39,
+   "error": "",
+   "start": "2026-09-27T14:41:14.192Z"
+  },
+  {
+   "title": "REQ-1-1-1: Register a New GitHub Account - Scenario 3",
+   "file": "10-REQ-1-1-1.spec.cjs",
+   "line": 109,
+   "status": "pass",
+   "seconds": 0.4,
+   "error": "",
+   "start": "2026-09-27T14:41:14.592Z"
+  },
+  {
+   "title": "REQ-1-1-2: Sign In with an Existing Account - Scenario 1",
+   "file": "11-REQ-1-1-2.spec.cjs",
+   "line": 37,
+   "status": "pass",
+   "seconds": 0.21,
+   "error": "",
+   "start": "2026-09-27T14:41:15.003Z"
+  },
+  {
+   "title": "REQ-1-1-2: Sign In with an Existing Account - Scenario 2",
+   "file": "11-REQ-1-1-2.spec.cjs",
+   "line": 48,
+   "status": "pass",
+   "seconds": 0.24,
+   "error": "",
+   "start": "2026-09-27T14:41:15.220Z"
+  },
+  {
+   "title": "REQ-1-1-2: Sign In with an Existing Account - Scenario 3",
+   "file": "11-REQ-1-1-2.spec.cjs",
+   "line": 60,
+   "status": "pass",
+   "seconds": 0.23,
+   "error": "",
+   "start": "2026-09-27T14:41:15.470Z"
+  },
+  {
+   "title": "REQ-1-1-2: Sign In with an Existing Account - Scenario 4",
+   "file": "11-REQ-1-1-2.spec.cjs",
+   "line": 68,
+   "status": "pass",
+   "seconds": 0.33,
+   "error": "",
+   "start": "2026-09-27T14:41:15.707Z"
+  },
+  {
+   "title": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 1",
+   "file": "12-REQ-1-1-3.spec.cjs",
+   "line": 88,
+   "status": "pass",
+   "seconds": 1.03,
+   "error": "",
+   "start": "2026-09-27T14:41:16.048Z"
+  },
+  {
+   "title": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 2",
+   "file": "12-REQ-1-1-3.spec.cjs",
+   "line": 105,
+   "status": "pass",
+   "seconds": 0.43,
+   "error": "",
+   "start": "2026-09-27T14:41:17.083Z"
+  },
+  {
+   "title": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 3",
+   "file": "12-REQ-1-1-3.spec.cjs",
+   "line": 122,
+   "status": "pass",
+   "seconds": 0.42,
+   "error": "",
+   "start": "2026-09-27T14:41:17.517Z"
+  },
+  {
+   "title": "SIM: reset alice-dev password through recovery",
+   "file": "12z-sim-reset-alice.spec.cjs",
+   "line": 4,
+   "status": "pass",
+   "seconds": 0.17,
+   "error": "",
+   "start": "2026-09-27T14:41:17.940Z"
+  },
+  {
+   "title": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 1",
+   "file": "13-REQ-1-2.spec.cjs",
+   "line": 43,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:41:18.117Z"
+  },
+  {
+   "title": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 2",
+   "file": "13-REQ-1-2.spec.cjs",
+   "line": 55,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:41:28.420Z"
+  },
+  {
+   "title": "REQ-1-3: Change Account Password - Scenario 1",
+   "file": "14-REQ-1-3.spec.cjs",
+   "line": 93,
+   "status": "pass",
+   "seconds": 0.61,
+   "error": "",
+   "start": "2026-09-27T14:41:38.848Z"
+  },
+  {
+   "title": "REQ-1-3: Change Account Password - Scenario 2",
+   "file": "14-REQ-1-3.spec.cjs",
+   "line": 103,
+   "status": "pass",
+   "seconds": 0.59,
+   "error": "",
+   "start": "2026-09-27T14:41:39.576Z"
+  },
+  {
+   "title": "REQ-1-3: Change Account Password - Scenario 3",
+   "file": "14-REQ-1-3.spec.cjs",
+   "line": 120,
+   "status": "pass",
+   "seconds": 0.62,
+   "error": "",
+   "start": "2026-09-27T14:41:40.176Z"
+  },
+  {
+   "title": "REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+   "file": "15-REQ-2-1-1.spec.cjs",
+   "line": 32,
+   "status": "pass",
+   "seconds": 0.19,
+   "error": "",
+   "start": "2026-09-27T14:41:40.799Z"
+  },
+  {
+   "title": "REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+   "file": "15-REQ-2-1-1.spec.cjs",
+   "line": 46,
+   "status": "pass",
+   "seconds": 0.19,
+   "error": "",
+   "start": "2026-09-27T14:41:40.989Z"
+  },
+  {
+   "title": "REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+   "file": "16-REQ-2-1-2.spec.cjs",
+   "line": 54,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:41:41.185Z"
+  },
+  {
+   "title": "REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+   "file": "16-REQ-2-1-2.spec.cjs",
+   "line": 73,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:41:51.516Z"
+  },
+  {
+   "title": "REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+   "file": "16-REQ-2-1-2.spec.cjs",
+   "line": 97,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:42:02.072Z"
+  },
+  {
+   "title": "REQ-2-2-1: Create an Organization Team - Scenario 1",
+   "file": "17-REQ-2-2-1.spec.cjs",
+   "line": 44,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:42:12.538Z"
+  },
+  {
+   "title": "REQ-2-2-1: Create an Organization Team - Scenario 2",
+   "file": "17-REQ-2-2-1.spec.cjs",
+   "line": 60,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:42:22.982Z"
+  },
+  {
+   "title": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+   "file": "18-REQ-2-2-2.spec.cjs",
+   "line": 44,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:42:33.420Z"
+  },
+  {
+   "title": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+   "file": "18-REQ-2-2-2.spec.cjs",
+   "line": 70,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:42:43.861Z"
+  },
+  {
+   "title": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+   "file": "19-REQ-2-2-3.spec.cjs",
+   "line": 110,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:42:54.303Z"
+  },
+  {
+   "title": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+   "file": "19-REQ-2-2-3.spec.cjs",
+   "line": 143,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:43:04.784Z"
+  },
+  {
+   "title": "REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+   "file": "20-REQ-2-2-4.spec.cjs",
+   "line": 71,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:43:15.234Z"
+  },
+  {
+   "title": "REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+   "file": "20-REQ-2-2-4.spec.cjs",
+   "line": 90,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:43:25.752Z"
+  },
+  {
+   "title": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+   "file": "21-REQ-2-3.spec.cjs",
+   "line": 70,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:43:36.230Z"
+  },
+  {
+   "title": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+   "file": "21-REQ-2-3.spec.cjs",
+   "line": 85,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:43:46.656Z"
+  },
+  {
+   "title": "REQ-3-1: Search for and Locate Repositories - Scenario 1",
+   "file": "30-REQ-3-1.spec.cjs",
+   "line": 21,
+   "status": "pass",
+   "seconds": 0.17,
+   "error": "",
+   "start": "2026-09-27T14:43:57.081Z"
+  },
+  {
+   "title": "REQ-3-1: Search for and Locate Repositories - Scenario 2",
+   "file": "30-REQ-3-1.spec.cjs",
+   "line": 37,
+   "status": "pass",
+   "seconds": 0.1,
+   "error": "",
+   "start": "2026-09-27T14:43:57.383Z"
+  },
+  {
+   "title": "REQ-3-1: Search for and Locate Repositories - Scenario 3",
+   "file": "30-REQ-3-1.spec.cjs",
+   "line": 47,
+   "status": "pass",
+   "seconds": 0.11,
+   "error": "",
+   "start": "2026-09-27T14:43:57.490Z"
+  },
+  {
+   "title": "REQ-3-1: Search for and Locate Repositories - Scenario 4",
+   "file": "30-REQ-3-1.spec.cjs",
+   "line": 61,
+   "status": "pass",
+   "seconds": 0.11,
+   "error": "",
+   "start": "2026-09-27T14:43:57.607Z"
+  },
+  {
+   "title": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 1",
+   "file": "31-REQ-3-2-1.spec.cjs",
+   "line": 42,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:43:57.726Z"
+  },
+  {
+   "title": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 2",
+   "file": "31-REQ-3-2-1.spec.cjs",
+   "line": 67,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:44:08.045Z"
+  },
+  {
+   "title": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 3",
+   "file": "31-REQ-3-2-1.spec.cjs",
+   "line": 96,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:44:18.507Z"
+  },
+  {
+   "title": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 1",
+   "file": "32-REQ-3-2-2.spec.cjs",
+   "line": 46,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:44:28.956Z"
+  },
+  {
+   "title": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 2",
+   "file": "32-REQ-3-2-2.spec.cjs",
+   "line": 69,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:44:39.412Z"
+  },
+  {
+   "title": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 1",
+   "file": "33-REQ-3-2-3.spec.cjs",
+   "line": 57,
+   "status": "pass",
+   "seconds": 0.36,
+   "error": "",
+   "start": "2026-09-27T14:44:49.839Z"
+  },
+  {
+   "title": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 2",
+   "file": "33-REQ-3-2-3.spec.cjs",
+   "line": 79,
+   "status": "pass",
+   "seconds": 0.27,
+   "error": "",
+   "start": "2026-09-27T14:44:50.331Z"
+  },
+  {
+   "title": "REQ-3-3: View a Public Repository Overview - Scenario 1",
+   "file": "34-REQ-3-3.spec.cjs",
+   "line": 14,
+   "status": "pass",
+   "seconds": 0.15,
+   "error": "",
+   "start": "2026-09-27T14:44:50.611Z"
+  },
+  {
+   "title": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 1",
+   "file": "35-REQ-3-4.spec.cjs",
+   "line": 67,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:44:50.766Z"
+  },
+  {
+   "title": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 2",
+   "file": "35-REQ-3-4.spec.cjs",
+   "line": 101,
+   "status": "pass",
+   "seconds": 0.33,
+   "error": "",
+   "start": "2026-09-27T14:45:01.073Z"
+  },
+  {
+   "title": "REQ-4-1: Browse Repository Files and Directories - Scenario 1",
+   "file": "36-REQ-4-1.spec.cjs",
+   "line": 55,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:45:01.534Z"
+  },
+  {
+   "title": "REQ-4-2-1: View Repository Commit History - Scenario 1",
+   "file": "37-REQ-4-2-1.spec.cjs",
+   "line": 32,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:45:11.855Z"
+  },
+  {
+   "title": "REQ-4-2-2: Inspect Commit and Revision Differences - Scenario 1",
+   "file": "38-REQ-4-2-2.spec.cjs",
+   "line": 40,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:45:22.293Z"
+  },
+  {
+   "title": "REQ-4-2-3: Search Code Within a Repository - Scenario 1",
+   "file": "39-REQ-4-2-3.spec.cjs",
+   "line": 39,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:45:32.704Z"
+  },
+  {
+   "title": "REQ-4-2-3: Search Code Within a Repository - Scenario 2",
+   "file": "39-REQ-4-2-3.spec.cjs",
+   "line": 54,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:45:43.114Z"
+  },
+  {
+   "title": "REQ-4-2-3: Search Code Within a Repository - Scenario 3",
+   "file": "39-REQ-4-2-3.spec.cjs",
+   "line": 65,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:45:43.420Z"
+  },
+  {
+   "title": "REQ-4-2-3: Search Code Within a Repository - Scenario 4",
+   "file": "39-REQ-4-2-3.spec.cjs",
+   "line": 79,
+   "status": "pass",
+   "seconds": 0.29,
+   "error": "",
+   "start": "2026-09-27T14:45:53.726Z"
+  },
+  {
+   "title": "REQ-4-3-1: List and Switch Repository Branches - Scenario 1",
+   "file": "40-REQ-4-3-1.spec.cjs",
+   "line": 32,
+   "status": "pass",
+   "seconds": 0.25,
+   "error": "",
+   "start": "2026-09-27T14:45:54.132Z"
+  },
+  {
+   "title": "REQ-4-3-1: List and Switch Repository Branches - Scenario 2",
+   "file": "40-REQ-4-3-1.spec.cjs",
+   "line": 53,
+   "status": "pass",
+   "seconds": 0.17,
+   "error": "",
+   "start": "2026-09-27T14:45:54.384Z"
+  },
+  {
+   "title": "REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 1",
+   "file": "41-REQ-4-3-2.spec.cjs",
+   "line": 45,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:45:54.566Z"
+  },
+  {
+   "title": "REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 2",
+   "file": "41-REQ-4-3-2.spec.cjs",
+   "line": 67,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:46:04.861Z"
+  },
+  {
+   "title": "REQ-4-3-3: Change the Repository Default Branch - Scenario 1",
+   "file": "42-REQ-4-3-3.spec.cjs",
+   "line": 86,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:46:15.299Z"
+  },
+  {
+   "title": "REQ-4-3-3: Change the Repository Default Branch - Scenario 2",
+   "file": "42-REQ-4-3-3.spec.cjs",
+   "line": 114,
+   "status": "pass",
+   "seconds": 0.31,
+   "error": "",
+   "start": "2026-09-27T14:46:25.711Z"
+  },
+  {
+   "title": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 1",
+   "file": "43-REQ-4-4.spec.cjs",
+   "line": 52,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:46:26.144Z"
+  },
+  {
+   "title": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 2",
+   "file": "43-REQ-4-4.spec.cjs",
+   "line": 82,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:46:36.458Z"
+  },
+  {
+   "title": "REQ-5-1-1: List and Filter Repository Issues - Scenario 1",
+   "file": "50-REQ-5-1-1.spec.cjs",
+   "line": 159,
+   "status": "pass",
+   "seconds": 0.22,
+   "error": "",
+   "start": "2026-09-27T14:46:46.910Z"
+  },
+  {
+   "title": "REQ-5-1-1: List and Filter Repository Issues - Scenario 2",
+   "file": "50-REQ-5-1-1.spec.cjs",
+   "line": 179,
+   "status": "pass",
+   "seconds": 0.19,
+   "error": "",
+   "start": "2026-09-27T14:46:47.236Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 1",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 162,
+   "status": "pass",
+   "seconds": 0.19,
+   "error": "",
+   "start": "2026-09-27T14:46:47.434Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 2",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 177,
+   "status": "pass",
+   "seconds": 0.19,
+   "error": "",
+   "start": "2026-09-27T14:46:47.629Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 3",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 187,
+   "status": "pass",
+   "seconds": 0.18,
+   "error": "",
+   "start": "2026-09-27T14:46:47.822Z"
+  },
+  {
+   "title": "REQ-5-2-1: Create a Repository Issue - Scenario 1",
+   "file": "52-REQ-5-2-1.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:46:48.012Z"
+  },
+  {
+   "title": "REQ-5-2-1: Create a Repository Issue - Scenario 2",
+   "file": "52-REQ-5-2-1.spec.cjs",
+   "line": 176,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:46:58.337Z"
+  },
+  {
+   "title": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 1",
+   "file": "53-REQ-5-2-2.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:47:08.839Z"
+  },
+  {
+   "title": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 2",
+   "file": "53-REQ-5-2-2.spec.cjs",
+   "line": 185,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:47:19.395Z"
+  },
+  {
+   "title": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 1",
+   "file": "54-REQ-5-2-3.spec.cjs",
+   "line": 159,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:47:29.871Z"
+  },
+  {
+   "title": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 2",
+   "file": "54-REQ-5-2-3.spec.cjs",
+   "line": 177,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:47:40.461Z"
+  },
+  {
+   "title": "REQ-5-3-1: Assign or Unassign Issue Participants - Scenario 1",
+   "file": "55-REQ-5-3-1.spec.cjs",
+   "line": 264,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:47:50.997Z"
+  },
+  {
+   "title": "REQ-5-3-2: Apply Labels to an Issue - Scenario 1",
+   "file": "56-REQ-5-3-2.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:48:01.555Z"
+  },
+  {
+   "title": "REQ-5-3-3: Assign Issues and Pull Requests to a Milestone - Scenario 1",
+   "file": "57-REQ-5-3-3.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:48:12.250Z"
+  },
+  {
+   "title": "REQ-5-4: Close or Reopen an Issue - Scenario 1",
+   "file": "58-REQ-5-4.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:48:22.721Z"
+  },
+  {
+   "title": "REQ-5-4: Close or Reopen an Issue - Scenario 2",
+   "file": "58-REQ-5-4.spec.cjs",
+   "line": 180,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:48:33.222Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 165,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:48:43.763Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 194,
+   "status": "pass",
+   "seconds": 0.25,
+   "error": "",
+   "start": "2026-09-27T14:48:54.191Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 214,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:48:54.569Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 1",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 162,
+   "status": "pass",
+   "seconds": 0.27,
+   "error": "",
+   "start": "2026-09-27T14:49:04.906Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 2",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 177,
+   "status": "pass",
+   "seconds": 0.21,
+   "error": "",
+   "start": "2026-09-27T14:49:05.287Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 3",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 190,
+   "status": "pass",
+   "seconds": 0.21,
+   "error": "",
+   "start": "2026-09-27T14:49:05.501Z"
+  },
+  {
+   "title": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+   "file": "61-REQ-6-2-2.spec.cjs",
+   "line": 161,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:49:05.722Z"
+  },
+  {
+   "title": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 2",
+   "file": "61-REQ-6-2-2.spec.cjs",
+   "line": 175,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:49:16.047Z"
+  },
+  {
+   "title": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1",
+   "file": "62-REQ-6-2-3.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:49:26.511Z"
+  },
+  {
+   "title": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 2",
+   "file": "62-REQ-6-2-3.spec.cjs",
+   "line": 187,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:49:37.057Z"
+  },
+  {
+   "title": "REQ-6-2-4: Create a Draft Pull Request - Scenario 1",
+   "file": "63-REQ-6-2-4.spec.cjs",
+   "line": 264,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:49:47.716Z"
+  },
+  {
+   "title": "REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+   "file": "63-REQ-6-2-4.spec.cjs",
+   "line": 310,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:49:58.283Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 160,
+   "status": "pass",
+   "seconds": 0.36,
+   "error": "",
+   "start": "2026-09-27T14:50:08.772Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 179,
+   "status": "pass",
+   "seconds": 0.22,
+   "error": "",
+   "start": "2026-09-27T14:50:09.285Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 3",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 192,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:50:09.507Z"
+  },
+  {
+   "title": "REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+   "file": "65-REQ-6-3-2.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:50:19.811Z"
+  },
+  {
+   "title": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1",
+   "file": "66-REQ-6-3-3.spec.cjs",
+   "line": 159,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:50:30.214Z"
+  },
+  {
+   "title": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2",
+   "file": "66-REQ-6-3-3.spec.cjs",
+   "line": 173,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:50:40.615Z"
+  },
+  {
+   "title": "REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+   "file": "67-REQ-6-3-4.spec.cjs",
+   "line": 160,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:50:51.025Z"
+  },
+  {
+   "title": "REQ-6-3-4: Submit a Pull Request Review - Scenario 2",
+   "file": "67-REQ-6-3-4.spec.cjs",
+   "line": 176,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:51:01.467Z"
+  },
+  {
+   "title": "REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1",
+   "file": "68-REQ-6-4.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:51:11.906Z"
+  },
+  {
+   "title": "REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+   "file": "69-REQ-6-5.spec.cjs",
+   "line": 160,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:51:22.340Z"
+  },
+  {
+   "title": "REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+   "file": "69-REQ-6-5.spec.cjs",
+   "line": 184,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:51:32.778Z"
+  },
+  {
+   "title": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 1",
+   "file": "70-REQ-6-6.spec.cjs",
+   "line": 159,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:51:43.208Z"
+  },
+  {
+   "title": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 2",
+   "file": "70-REQ-6-6.spec.cjs",
+   "line": 175,
+   "status": "pass",
+   "seconds": 0.29,
+   "error": "",
+   "start": "2026-09-27T14:51:53.638Z"
+  }
+ ],
+ "stats": {
+  "startTime": "2026-09-27T14:41:12.748Z",
+  "duration": 641317.6170000001,
+  "expected": 41,
+  "skipped": 0,
+  "unexpected": 60,
+  "flaky": 0
+ }
+}

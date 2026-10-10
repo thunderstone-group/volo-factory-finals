@@ -1,0 +1,18 @@
+{
+  "task": "github-real",
+  "label": "hintsf240-s1",
+  "package_sha256": "f240c187052af90768b43634a6cf18b0cee40c0191e652738c0785f9a6da3973",
+  "agent_env": [],
+  "exit": 0,
+  "seconds": 2765.4,
+  "proxy": {
+    "exit": 1,
+    "tail": "4d8eea6954c7ea2b80c78eff9f5276f96b99e6a88914deee65038b\", \"tests/23-REQ-4-3-1-scenario-2.spec.ts\": \"bcfeec399d619b96909c0b423b1ed6ceb1a6bad384a126ce291d1da61f3530dc\", \"tests/24-REQ-4-3-1-scenario-3.spec.ts\": \"46b44eff1984eca4881fe5e564f1749af703a670084e8e74b619c2ca31c9d7f4\", \"tests/25-REQ-4-5-scenario-1.spec.ts\": \"d9d52c62500e8b35e0b0a3f1fdc1e9f3b3390ba5ccd0d0b7efd2f3f3827eb8e4\", \"tests/26-REQ-4-5-scenario-2.spec.ts\": \"a27ee5f06e930a6869a4c4fea76fcaeb2a39b0145f045c356febc3824e4d8999\", \"tests/27-REQ-4-5-scenario-3.spec.ts\": \"b3a29d7190434f748d4acc3040a847c1d7e72497adb47c75d6d584a206b27f6a\", \"tests/28-REQ-5-5-scenario-1.spec.ts\": \"4286674339e415a923156eb9ecc8c4608644ca687cc6326537ee4793d31e7491\", \"tests/29-REQ-5-5-scenario-2.spec.ts\": \"c156f606f593d8afb262f76dafe49f13de90a8c10aec73c1ae39d68b08bec363\", \"tests/30-REQ-5-5-scenario-3.spec.ts\": \"bd266a0e8992485a46d3e3e6b3242a834d7cf1b8512979ec3dcf4574ea5fa071\", \"tests/evolution-navigation.ts\": \"1a59c9ff1f03277ca2dedd4f5f3434154a75b0fbc37c1e5b117f460663967f6e\", \"tests/helpers.ts\": \"f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3\", \"tests/interactions.ts\": \"f2d79d4c1b95cacad6288e271ed1752c12556477a9661d1e0f4e0395f673b15a\"}, \"test_suite_sha256\": \"296a9dd7e8056d894373de6effb1f87f2e03bd2fd8edb7222d979b8ffe0372af\", \"image_id\": \"sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de\", \"suite_duration_seconds\": 88.551, \"container_exit_code\": 1, \"passed\": 27, \"failed\": 3, \"total\": 30, \"wall_seconds\": 94.563}\n",
+    "report": "~/projects/arcbench-campaign/finals-proxy/results/local/github-real-hintsf240-s1-proxy.json"
+  },
+  "regression": {
+    "exit": 0,
+    "tail": "{\"summaries\": {\"v6-fixed-independent\": {\"counts\": {\"pass\": 107, \"fail\": 4}, \"seconds\": 208.7, \"unavailable\": null}}, \"task\": \"github\", \"app_dir\": \"~/projects/arcbench-campaign/finals-local/runs/github-real-hintsf240-s1/workspace\", \"wall_seconds\": 209.924, \"app_sha256\": \"79b25e50d87bc10cf90abfb2e496b95d07f7a89aa266f20487c23432d96d9c13\", \"original_requirements_sha256\": \"9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8\", \"suite_sha256\": {\"v6-fixed-independent\": \"28456b7cdd76edcd2427997421d57d4f26b42051eff68cf3b05e7404f9958609\"}, \"image_id\": \"sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de\"}\n",
+    "report": "~/projects/arcbench-campaign/finals-proxy/results/local/github-real-hintsf240-s1-regression.json"
+  }
+}

@@ -1,0 +1,90 @@
+```typescript
+import { test, expect, type Page } from '@playwright/test';
+
+const CSV = 'Score,Name,Keep\n3,a1,X1\n1,b1,X2\n3,c1,X3\n2,d1,X4\n1,e1,X5\n';
+
+async function importWorkbook(page: Page) {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Import CSV' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Import CSV' });
+  await dialog.getByLabel('CSV file').setInputFiles({
+    name: 'tiedsort.csv',
+    mimeType: 'text/csv',
+    buffer: Buffer.from(CSV, 'utf-8'),
+  });
+  await dialog.getByRole('button', { name: 'Confirm import' }).click();
+  await page.getByRole('link', { name: 'tiedsort' }).click();
+  await expect(page.getByRole('grid')).toBeVisible();
+}
+
+function cell(page: Page, row: number, col: number) {
+  return page
+    .getByRole('grid')
+    .getByRole('row')
+    .nth(row)
+    .getByRole('gridcell')
+    .nth(col);
+}
+
+async function selectRange(page: Page, r1: number, c1: number, r2: number, c2: number) {
+  const a = await cell(page, r1, c1).boundingBox();
+  const b = await cell(page, r2, c2).boundingBox();
+  await page.mouse.move(a!.x + a!.width / 2, a!.y + a!.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(b!.x + b!.width / 2, b!.y + b!.height / 2);
+  await page.mouse.up();
+  await expect(cell(page, r1, c1)).toHaveAttribute('aria-selected', 'true');
+  await expect(cell(page, r2, c2)).toHaveAttribute('aria-selected', 'true');
+  await expect(cell(page, r2, c2 + 1)).toHaveAttribute('aria-selected', 'false');
+}
+
+async function sortRange(page: Page, by: string, order: 'Ascending' | 'Descending') {
+  await page.getByRole('button', { name: 'Data' }).click();
+  await page.getByRole('menuitem', { name: 'Sort range' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Sort range' });
+  await dialog.getByRole('combobox', { name: 'Sort by' }).selectOption({ label: by });
+  await dialog.getByRole('combobox', { name: 'Order' }).selectOption({ label: order });
+  await dialog.getByRole('checkbox', { name: 'Data has header row' }).check();
+  await dialog.getByRole('button', { name: 'Sort' }).click();
+  await expect(page.getByRole('dialog', { name: 'Sort range' })).toBeHidden();
+}
+
+async function readColumn(page: Page, col: number, rows: number): Promise<string[]> {
+  const values: string[] = [];
+  for (let r = 1; r <= rows; r++) {
+    values.push((await cell(page, r, col).textContent()) ?? '');
+  }
+  return values;
+}
+
+test('REQ-5-1-1: sort range preserves original relative order of tied keys in both directions and leaves unselected data unchanged', async ({ page }) => {
+  test.setTimeout(15000);
+  await importWorkbook(page);
+
+  // Select A1:B6 (header + 5 data rows); column C is outside the selection.
+  await selectRange(page, 0, 0, 5, 1);
+
+  // Ascending sort by Score: ties (1,1) and (3,3) keep original relative order.
+  await sortRange(page, 'Score', 'Ascending');
+  await expect.poll(async () => readColumn(page, 0, 5)).toEqual(['1', '1', '2', '3', '3']);
+  expect(await readColumn(page, 1, 5)).toEqual(['b1', 'e1', 'd1', 'a1', 'c1']);
+  // Unselected column C rows moved with their records but values unchanged.
+  expect(await readColumn(page, 2, 5)).toEqual(['X2', 'X5', 'X4', 'X1', 'X3']);
+
+  // Re-select the same range after the sort.
+  await selectRange(page, 0, 0, 5, 1);
+
+  // Descending sort by Score: ties keep original relative order (stable).
+  await sortRange(page, 'Score', 'Descending');
+  await expect.poll(async () => readColumn(page, 0, 5)).toEqual(['3', '3', '2', '1', '1']);
+  expect(await readColumn(page, 1, 5)).toEqual(['a1', 'c1', 'd1', 'b1', 'e1']);
+  expect(await readColumn(page, 2, 5)).toEqual(['X1', 'X3', 'X4', 'X2', 'X5']);
+
+  // Order and results persist after refresh.
+  await page.reload();
+  await expect(page.getByRole('grid')).toBeVisible();
+  expect(await readColumn(page, 0, 5)).toEqual(['3', '3', '2', '1', '1']);
+  expect(await readColumn(page, 1, 5)).toEqual(['a1', 'c1', 'd1', 'b1', 'e1']);
+  expect(await readColumn(page, 2, 5)).toEqual(['X1', 'X3', 'X4', 'X2', 'X5']);
+});
+```

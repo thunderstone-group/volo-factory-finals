@@ -1,0 +1,9 @@
+{
+  "scope": "Same actual R2 app and unchanged public requirements; only collision advice changed. This does not prove an official score gain.",
+  "before": [
+    "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Add comment\" shares comment with a field label"
+  ],
+  "after": [],
+  "before_mentions_mandated_add_comment": true,
+  "after_mentions_mandated_add_comment": false
+}

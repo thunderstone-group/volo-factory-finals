@@ -1,0 +1,1565 @@
+{
+  "github-real": {
+    "report": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r1/gh/template/.arc/playwright-report.json",
+    "report_sha256": "0d4dd60dc3c0737150407c3b79def51ff5f86ca9417c6b880aa7f9bacd109097",
+    "official_passed": 3,
+    "cases": [
+      {
+        "key": "REQ-1-1-1#1",
+        "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 1",
+        "file": "REQ-1-1-1-registration.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10028,
+        "frames": [
+          "github-real-F01"
+        ]
+      },
+      {
+        "key": "REQ-1-1-1#2",
+        "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 2",
+        "file": "REQ-1-1-1-registration.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10029,
+        "frames": [
+          "github-real-F01"
+        ]
+      },
+      {
+        "key": "REQ-1-1-1#3",
+        "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 3",
+        "file": "REQ-1-1-1-registration.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10031,
+        "frames": [
+          "github-real-F01"
+        ]
+      },
+      {
+        "key": "REQ-1-1-2#1",
+        "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1",
+        "file": "REQ-1-1-2-sign-in.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10029,
+        "frames": [
+          "github-real-F02"
+        ]
+      },
+      {
+        "key": "REQ-1-1-2#2",
+        "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 2",
+        "file": "REQ-1-1-2-sign-in.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10030,
+        "frames": [
+          "github-real-F02"
+        ]
+      },
+      {
+        "key": "REQ-1-1-2#3",
+        "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 3",
+        "file": "REQ-1-1-2-sign-in.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10035,
+        "frames": [
+          "github-real-F02"
+        ]
+      },
+      {
+        "key": "REQ-1-4#1",
+        "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 1",
+        "file": "REQ-1-4-active-sessions.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10027,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-1-4#2",
+        "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 2",
+        "file": "REQ-1-4-active-sessions.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10029,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-1-4#3",
+        "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 3",
+        "file": "REQ-1-4-active-sessions.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10028,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-2-1-2#1",
+        "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 1",
+        "file": "REQ-2-1-2-create-organization.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10028,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-2-1-2#2",
+        "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 2",
+        "file": "REQ-2-1-2-create-organization.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10030,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-2-1-2#3",
+        "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 3",
+        "file": "REQ-2-1-2-create-organization.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10029,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-2-4#1",
+        "name": "REQ-2-4: View Organization Audit Log - Scenario 1",
+        "file": "REQ-2-4-audit-log.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10032,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-2-4#2",
+        "name": "REQ-2-4: View Organization Audit Log - Scenario 2",
+        "file": "REQ-2-4-audit-log.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10034,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-2-4#3",
+        "name": "REQ-2-4: View Organization Audit Log - Scenario 3",
+        "file": "REQ-2-4-audit-log.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10030,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-3-1#1",
+        "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 1",
+        "file": "REQ-3-1-search-repositories.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 729,
+        "frames": []
+      },
+      {
+        "key": "REQ-3-1#2",
+        "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 2",
+        "file": "REQ-3-1-search-repositories.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 309,
+        "frames": []
+      },
+      {
+        "key": "REQ-3-1#3",
+        "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 3",
+        "file": "REQ-3-1-search-repositories.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 318,
+        "frames": []
+      },
+      {
+        "key": "REQ-3-5#1",
+        "name": "REQ-3-5: Archive and Restore a Repository - Scenario 1",
+        "file": "REQ-3-5-archive-repository.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10025,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-3-5#2",
+        "name": "REQ-3-5: Archive and Restore a Repository - Scenario 2",
+        "file": "REQ-3-5-archive-repository.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10030,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-3-5#3",
+        "name": "REQ-3-5: Archive and Restore a Repository - Scenario 3",
+        "file": "REQ-3-5-archive-repository.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10031,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-4-3-1#1",
+        "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 1",
+        "file": "REQ-4-3-1-switch-branches.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10038,
+        "frames": [
+          "github-real-F04"
+        ]
+      },
+      {
+        "key": "REQ-4-3-1#2",
+        "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 2",
+        "file": "REQ-4-3-1-switch-branches.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10031,
+        "frames": [
+          "github-real-F04"
+        ]
+      },
+      {
+        "key": "REQ-4-3-1#3",
+        "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 3",
+        "file": "REQ-4-3-1-switch-branches.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10033,
+        "frames": [
+          "github-real-F04"
+        ]
+      },
+      {
+        "key": "REQ-4-5#1",
+        "name": "REQ-4-5: Create and View Repository Releases - Scenario 1",
+        "file": "REQ-4-5-releases.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10030,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-4-5#2",
+        "name": "REQ-4-5: Create and View Repository Releases - Scenario 2",
+        "file": "REQ-4-5-releases.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10037,
+        "frames": [
+          "github-real-F04"
+        ]
+      },
+      {
+        "key": "REQ-4-5#3",
+        "name": "REQ-4-5: Create and View Repository Releases - Scenario 3",
+        "file": "REQ-4-5-releases.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10029,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-5-5#1",
+        "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 1",
+        "file": "REQ-5-5-issue-reactions.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10029,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-5-5#2",
+        "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 2",
+        "file": "REQ-5-5-issue-reactions.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10029,
+        "frames": [
+          "github-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-5-5#3",
+        "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 3",
+        "file": "REQ-5-5-issue-reactions.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10031,
+        "frames": [
+          "github-real-F04"
+        ]
+      }
+    ],
+    "unique_frames": [
+      {
+        "id": "github-real-F01",
+        "source": "/workspace/tests/REQ-1-1-1-registration.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-1-1-1-registration.spec.ts",
+          "column": 84,
+          "line": 9
+        },
+        "lines": [
+          {
+            "line": 7,
+            "code": " async function openEvolutionSignUp(page: Page): Promise<void> {"
+          },
+          {
+            "line": 8,
+            "code": "   await openEvolutionAccountAccess(page);"
+          },
+          {
+            "line": 9,
+            "code": "   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();"
+          },
+          {
+            "line": 10,
+            "code": "   await page.getByRole('main').getByRole('link', { name: 'Create an account', exact: true }).click();"
+          },
+          {
+            "line": 11,
+            "code": " }"
+          },
+          {
+            "line": 12,
+            "code": ""
+          }
+        ],
+        "cases": [
+          "REQ-1-1-1#1",
+          "REQ-1-1-1#2",
+          "REQ-1-1-1#3"
+        ]
+      },
+      {
+        "id": "github-real-F02",
+        "source": "/workspace/tests/REQ-1-1-2-sign-in.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-1-1-2-sign-in.spec.ts",
+          "column": 84,
+          "line": 9
+        },
+        "lines": [
+          {
+            "line": 7,
+            "code": " async function openEvolutionSignIn(page: import('@playwright/test').Page): Promise<void> {"
+          },
+          {
+            "line": 8,
+            "code": "   await openEvolutionAccountAccess(page);"
+          },
+          {
+            "line": 9,
+            "code": "   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();"
+          },
+          {
+            "line": 10,
+            "code": " }"
+          },
+          {
+            "line": 11,
+            "code": ""
+          },
+          {
+            "line": 12,
+            "code": " test('REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1', async ({ page }, testInfo) => {"
+          }
+        ],
+        "cases": [
+          "REQ-1-1-2#1",
+          "REQ-1-1-2#2",
+          "REQ-1-1-2#3"
+        ]
+      },
+      {
+        "id": "github-real-F03",
+        "source": "/workspace/tests/support/evolution-e2e.ts",
+        "location": {
+          "file": "/workspace/tests/support/evolution-e2e.ts",
+          "column": 84,
+          "line": 97
+        },
+        "lines": [
+          {
+            "line": 95,
+            "code": " export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {"
+          },
+          {
+            "line": 96,
+            "code": "   await openEvolutionAccountAccess(page);"
+          },
+          {
+            "line": 97,
+            "code": "   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();"
+          },
+          {
+            "line": 98,
+            "code": "   await page.getByLabel('Username or email', { exact: true }).fill(account.username);"
+          },
+          {
+            "line": 99,
+            "code": "   await page.getByLabel('Password', { exact: true }).fill(account.password);"
+          },
+          {
+            "line": 100,
+            "code": "   await page.getByRole('button', { name: 'Sign in', exact: true }).click();"
+          }
+        ],
+        "cases": [
+          "REQ-1-4#1",
+          "REQ-1-4#2",
+          "REQ-1-4#3",
+          "REQ-2-1-2#1",
+          "REQ-2-1-2#2",
+          "REQ-2-1-2#3",
+          "REQ-2-4#1",
+          "REQ-2-4#2",
+          "REQ-2-4#3",
+          "REQ-3-5#1",
+          "REQ-3-5#2",
+          "REQ-3-5#3",
+          "REQ-4-5#1",
+          "REQ-4-5#3",
+          "REQ-5-5#1",
+          "REQ-5-5#2"
+        ]
+      },
+      {
+        "id": "github-real-F04",
+        "source": "/workspace/tests/support/evolution-e2e.ts",
+        "location": {
+          "file": "/workspace/tests/support/evolution-e2e.ts",
+          "column": 16,
+          "line": 107
+        },
+        "lines": [
+          {
+            "line": 105,
+            "code": "   if (await page.getByRole('banner').count() === 0) await page.goto(evolutionBaseUrl());"
+          },
+          {
+            "line": 106,
+            "code": "   const search = page.getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true });"
+          },
+          {
+            "line": 107,
+            "code": "   await search.fill(name);"
+          },
+          {
+            "line": 108,
+            "code": "   await search.press('Enter');"
+          },
+          {
+            "line": 109,
+            "code": "   const result = page.getByRole('main').getByRole('link', { name, exact: true });"
+          },
+          {
+            "line": 110,
+            "code": "   await expect(result).toBeVisible();"
+          }
+        ],
+        "cases": [
+          "REQ-4-3-1#1",
+          "REQ-4-3-1#2",
+          "REQ-4-3-1#3",
+          "REQ-4-5#2",
+          "REQ-5-5#3"
+        ]
+      }
+    ],
+    "frame_occurrences": [
+      {
+        "frame": "github-real-F01",
+        "case": "REQ-1-1-1#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   7 | async function openEvolutionSignUp(page: Page): Promise<void> {\n   8 |   await openEvolutionAccountAccess(page);\n>  9 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n     |                                                                                    ^\n  10 |   await page.getByRole('main').getByRole('link', { name: 'Create an account', exact: true }).click();\n  11 | }\n  12 |\n    at openEvolutionSignUp (/workspace/tests/REQ-1-1-1-registration.spec.ts:9:84)\n    at /workspace/tests/REQ-1-1-1-registration.spec.ts:32:3"
+      },
+      {
+        "frame": "github-real-F01",
+        "case": "REQ-1-1-1#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   7 | async function openEvolutionSignUp(page: Page): Promise<void> {\n   8 |   await openEvolutionAccountAccess(page);\n>  9 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n     |                                                                                    ^\n  10 |   await page.getByRole('main').getByRole('link', { name: 'Create an account', exact: true }).click();\n  11 | }\n  12 |\n    at openEvolutionSignUp (/workspace/tests/REQ-1-1-1-registration.spec.ts:9:84)\n    at /workspace/tests/REQ-1-1-1-registration.spec.ts:51:3"
+      },
+      {
+        "frame": "github-real-F01",
+        "case": "REQ-1-1-1#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   7 | async function openEvolutionSignUp(page: Page): Promise<void> {\n   8 |   await openEvolutionAccountAccess(page);\n>  9 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n     |                                                                                    ^\n  10 |   await page.getByRole('main').getByRole('link', { name: 'Create an account', exact: true }).click();\n  11 | }\n  12 |\n    at openEvolutionSignUp (/workspace/tests/REQ-1-1-1-registration.spec.ts:9:84)\n    at /workspace/tests/REQ-1-1-1-registration.spec.ts:71:3"
+      },
+      {
+        "frame": "github-real-F02",
+        "case": "REQ-1-1-2#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   7 | async function openEvolutionSignIn(page: import('@playwright/test').Page): Promise<void> {\n   8 |   await openEvolutionAccountAccess(page);\n>  9 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n     |                                                                                    ^\n  10 | }\n  11 |\n  12 | test('REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1', async ({ page }, testInfo) => {\n    at openEvolutionSignIn (/workspace/tests/REQ-1-1-2-sign-in.spec.ts:9:84)\n    at /workspace/tests/REQ-1-1-2-sign-in.spec.ts:15:3"
+      },
+      {
+        "frame": "github-real-F02",
+        "case": "REQ-1-1-2#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   7 | async function openEvolutionSignIn(page: import('@playwright/test').Page): Promise<void> {\n   8 |   await openEvolutionAccountAccess(page);\n>  9 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n     |                                                                                    ^\n  10 | }\n  11 |\n  12 | test('REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1', async ({ page }, testInfo) => {\n    at openEvolutionSignIn (/workspace/tests/REQ-1-1-2-sign-in.spec.ts:9:84)\n    at /workspace/tests/REQ-1-1-2-sign-in.spec.ts:28:3"
+      },
+      {
+        "frame": "github-real-F02",
+        "case": "REQ-1-1-2#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   7 | async function openEvolutionSignIn(page: import('@playwright/test').Page): Promise<void> {\n   8 |   await openEvolutionAccountAccess(page);\n>  9 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n     |                                                                                    ^\n  10 | }\n  11 |\n  12 | test('REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1', async ({ page }, testInfo) => {\n    at openEvolutionSignIn (/workspace/tests/REQ-1-1-2-sign-in.spec.ts:9:84)\n    at /workspace/tests/REQ-1-1-2-sign-in.spec.ts:39:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-1-4#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openActiveSessions (/workspace/tests/REQ-1-4-active-sessions.spec.ts:9:3)\n    at /workspace/tests/REQ-1-4-active-sessions.spec.ts:16:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-1-4#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at /workspace/tests/REQ-1-4-active-sessions.spec.ts:26:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-1-4#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at /workspace/tests/REQ-1-4-active-sessions.spec.ts:45:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-2-1-2#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openOrganizationForm (/workspace/tests/REQ-2-1-2-create-organization.spec.ts:10:3)\n    at /workspace/tests/REQ-2-1-2-create-organization.spec.ts:17:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-2-1-2#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openOrganizationForm (/workspace/tests/REQ-2-1-2-create-organization.spec.ts:10:3)\n    at /workspace/tests/REQ-2-1-2-create-organization.spec.ts:28:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-2-1-2#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openOrganizationForm (/workspace/tests/REQ-2-1-2-create-organization.spec.ts:10:3)\n    at /workspace/tests/REQ-2-1-2-create-organization.spec.ts:38:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-2-4#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openAuditLog (/workspace/tests/REQ-2-4-audit-log.spec.ts:10:3)\n    at /workspace/tests/REQ-2-4-audit-log.spec.ts:16:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-2-4#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openAuditLog (/workspace/tests/REQ-2-4-audit-log.spec.ts:10:3)\n    at /workspace/tests/REQ-2-4-audit-log.spec.ts:30:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-2-4#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at /workspace/tests/REQ-2-4-audit-log.spec.ts:45:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-3-5#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openArchiveSettings (/workspace/tests/REQ-3-5-archive-repository.spec.ts:19:3)\n    at /workspace/tests/REQ-3-5-archive-repository.spec.ts:26:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-3-5#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at /workspace/tests/REQ-3-5-archive-repository.spec.ts:38:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-3-5#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openArchiveSettings (/workspace/tests/REQ-3-5-archive-repository.spec.ts:19:3)\n    at /workspace/tests/REQ-3-5-archive-repository.spec.ts:50:3"
+      },
+      {
+        "frame": "github-real-F04",
+        "case": "REQ-4-3-1#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n\n\n   at support/evolution-e2e.ts:107\n\n  105 |   if (await page.getByRole('banner').count() === 0) await page.goto(evolutionBaseUrl());\n  106 |   const search = page.getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true });\n> 107 |   await search.fill(name);\n      |                ^\n  108 |   await search.press('Enter');\n  109 |   const result = page.getByRole('main').getByRole('link', { name, exact: true });\n  110 |   await expect(result).toBeVisible();\n    at openEvolutionRepository (/workspace/tests/support/evolution-e2e.ts:107:16)\n    at openBranchRepository (/workspace/tests/REQ-4-3-1-switch-branches.spec.ts:14:3)\n    at /workspace/tests/REQ-4-3-1-switch-branches.spec.ts:20:3"
+      },
+      {
+        "frame": "github-real-F04",
+        "case": "REQ-4-3-1#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n\n\n   at support/evolution-e2e.ts:107\n\n  105 |   if (await page.getByRole('banner').count() === 0) await page.goto(evolutionBaseUrl());\n  106 |   const search = page.getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true });\n> 107 |   await search.fill(name);\n      |                ^\n  108 |   await search.press('Enter');\n  109 |   const result = page.getByRole('main').getByRole('link', { name, exact: true });\n  110 |   await expect(result).toBeVisible();\n    at openEvolutionRepository (/workspace/tests/support/evolution-e2e.ts:107:16)\n    at openBranchRepository (/workspace/tests/REQ-4-3-1-switch-branches.spec.ts:14:3)\n    at /workspace/tests/REQ-4-3-1-switch-branches.spec.ts:33:3"
+      },
+      {
+        "frame": "github-real-F04",
+        "case": "REQ-4-3-1#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n\n\n   at support/evolution-e2e.ts:107\n\n  105 |   if (await page.getByRole('banner').count() === 0) await page.goto(evolutionBaseUrl());\n  106 |   const search = page.getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true });\n> 107 |   await search.fill(name);\n      |                ^\n  108 |   await search.press('Enter');\n  109 |   const result = page.getByRole('main').getByRole('link', { name, exact: true });\n  110 |   await expect(result).toBeVisible();\n    at openEvolutionRepository (/workspace/tests/support/evolution-e2e.ts:107:16)\n    at openBranchRepository (/workspace/tests/REQ-4-3-1-switch-branches.spec.ts:14:3)\n    at /workspace/tests/REQ-4-3-1-switch-branches.spec.ts:50:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-4-5#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openReleases (/workspace/tests/REQ-4-5-releases.spec.ts:11:17)\n    at /workspace/tests/REQ-4-5-releases.spec.ts:18:3"
+      },
+      {
+        "frame": "github-real-F04",
+        "case": "REQ-4-5#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n\n\n   at support/evolution-e2e.ts:107\n\n  105 |   if (await page.getByRole('banner').count() === 0) await page.goto(evolutionBaseUrl());\n  106 |   const search = page.getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true });\n> 107 |   await search.fill(name);\n      |                ^\n  108 |   await search.press('Enter');\n  109 |   const result = page.getByRole('main').getByRole('link', { name, exact: true });\n  110 |   await expect(result).toBeVisible();\n    at openEvolutionRepository (/workspace/tests/support/evolution-e2e.ts:107:16)\n    at openReleases (/workspace/tests/REQ-4-5-releases.spec.ts:12:3)\n    at /workspace/tests/REQ-4-5-releases.spec.ts:38:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-4-5#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openReleases (/workspace/tests/REQ-4-5-releases.spec.ts:11:17)\n    at /workspace/tests/REQ-4-5-releases.spec.ts:49:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-5-5#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openReactionIssue (/workspace/tests/REQ-5-5-issue-reactions.spec.ts:12:19)\n    at /workspace/tests/REQ-5-5-issue-reactions.spec.ts:21:3"
+      },
+      {
+        "frame": "github-real-F03",
+        "case": "REQ-5-5#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('main').getByRole('link', { name: 'Sign in', exact: true })\n\n\n   at support/evolution-e2e.ts:97\n\n   95 | export async function signInEvolution(page: Page, account: EvolutionAccount): Promise<void> {\n   96 |   await openEvolutionAccountAccess(page);\n>  97 |   await page.getByRole('main').getByRole('link', { name: 'Sign in', exact: true }).click();\n      |                                                                                    ^\n   98 |   await page.getByLabel('Username or email', { exact: true }).fill(account.username);\n   99 |   await page.getByLabel('Password', { exact: true }).fill(account.password);\n  100 |   await page.getByRole('button', { name: 'Sign in', exact: true }).click();\n    at signInEvolution (/workspace/tests/support/evolution-e2e.ts:97:84)\n    at openReactionIssue (/workspace/tests/REQ-5-5-issue-reactions.spec.ts:12:19)\n    at /workspace/tests/REQ-5-5-issue-reactions.spec.ts:34:3"
+      },
+      {
+        "frame": "github-real-F04",
+        "case": "REQ-5-5#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.fill: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true })\n\n\n   at support/evolution-e2e.ts:107\n\n  105 |   if (await page.getByRole('banner').count() === 0) await page.goto(evolutionBaseUrl());\n  106 |   const search = page.getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true });\n> 107 |   await search.fill(name);\n      |                ^\n  108 |   await search.press('Enter');\n  109 |   const result = page.getByRole('main').getByRole('link', { name, exact: true });\n  110 |   await expect(result).toBeVisible();\n    at openEvolutionRepository (/workspace/tests/support/evolution-e2e.ts:107:16)\n    at openReactionIssue (/workspace/tests/REQ-5-5-issue-reactions.spec.ts:14:3)\n    at /workspace/tests/REQ-5-5-issue-reactions.spec.ts:46:3"
+      }
+    ],
+    "config": {
+      "configFile": "/workspace/tests/playwright.config.ts",
+      "rootDir": "/workspace/tests",
+      "forbidOnly": false,
+      "fullyParallel": false,
+      "globalSetup": null,
+      "globalTeardown": null,
+      "globalTimeout": 0,
+      "grep": {},
+      "grepInvert": null,
+      "maxFailures": 0,
+      "metadata": {
+        "actualWorkers": 1
+      },
+      "preserveOutput": "always",
+      "reporter": [
+        [
+          "json",
+          {
+            "outputFile": "/workspace/template/.arc/playwright-report.json"
+          }
+        ]
+      ],
+      "reportSlowTests": {
+        "max": 5,
+        "threshold": 300000
+      },
+      "quiet": false,
+      "projects": [
+        {
+          "outputDir": "/workspace/tests/test-results",
+          "repeatEach": 1,
+          "retries": 0,
+          "metadata": {
+            "actualWorkers": 1
+          },
+          "id": "",
+          "name": "",
+          "testDir": "/workspace/tests",
+          "testIgnore": [],
+          "testMatch": [
+            "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+          ],
+          "timeout": 10000
+        }
+      ],
+      "shard": null,
+      "tags": [],
+      "updateSnapshots": "missing",
+      "updateSourceMethod": "patch",
+      "version": "1.57.0",
+      "workers": 1,
+      "webServer": null
+    },
+    "stats": {
+      "startTime": "2026-10-06T12:28:55.024Z",
+      "duration": 301423.794,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 27,
+      "flaky": 0
+    }
+  },
+  "sheet-real": {
+    "report": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r1/sh/template/.arc/playwright-report.json",
+    "report_sha256": "32b5e5e2d964a9bde1d02d1f27c0493baf7915fb6c53625de4d031ead7921f87",
+    "official_passed": 21,
+    "cases": [
+      {
+        "key": "REQ-1-2-2#1",
+        "name": "REQ-1-2-2: Rename a Workbook evolution - Scenario 1",
+        "file": "REQ-1-2-2-workbook-name-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1232,
+        "frames": []
+      },
+      {
+        "key": "REQ-1-2-2#2",
+        "name": "REQ-1-2-2: Rename a Workbook evolution - Scenario 2",
+        "file": "REQ-1-2-2-workbook-name-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 840,
+        "frames": []
+      },
+      {
+        "key": "REQ-1-2-2#3",
+        "name": "REQ-1-2-2: Rename a Workbook evolution - Scenario 3",
+        "file": "REQ-1-2-2-workbook-name-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 820,
+        "frames": []
+      },
+      {
+        "key": "REQ-2-1-3#1",
+        "name": "REQ-2-1-3: Rename a Worksheet evolution - Scenario 1",
+        "file": "REQ-2-1-3-worksheet-name-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 915,
+        "frames": []
+      },
+      {
+        "key": "REQ-2-1-3#2",
+        "name": "REQ-2-1-3: Rename a Worksheet evolution - Scenario 2",
+        "file": "REQ-2-1-3-worksheet-name-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 843,
+        "frames": []
+      },
+      {
+        "key": "REQ-2-1-3#3",
+        "name": "REQ-2-1-3: Rename a Worksheet evolution - Scenario 3",
+        "file": "REQ-2-1-3-worksheet-name-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 815,
+        "frames": []
+      },
+      {
+        "key": "REQ-3-1-1#1",
+        "name": "REQ-3-1-1: Clear cells evolution - Scenario 1",
+        "file": "REQ-3-1-1-clear-cells-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 904,
+        "frames": []
+      },
+      {
+        "key": "REQ-3-1-1#2",
+        "name": "REQ-3-1-1: Clear cells evolution - Scenario 2",
+        "file": "REQ-3-1-1-clear-cells-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 911,
+        "frames": []
+      },
+      {
+        "key": "REQ-3-1-1#3",
+        "name": "REQ-3-1-1: Clear cells evolution - Scenario 3",
+        "file": "REQ-3-1-1-clear-cells-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1168,
+        "frames": []
+      },
+      {
+        "key": "REQ-5-1-2#1",
+        "name": "REQ-5-1-2: Filter views evolution - Scenario 1",
+        "file": "REQ-5-1-2-filter-views-evolution.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10076,
+        "frames": [
+          "sheet-real-F01"
+        ]
+      },
+      {
+        "key": "REQ-5-1-2#2",
+        "name": "REQ-5-1-2: Filter views evolution - Scenario 2",
+        "file": "REQ-5-1-2-filter-views-evolution.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1120,
+        "frames": []
+      },
+      {
+        "key": "REQ-5-1-2#3",
+        "name": "REQ-5-1-2: Filter views evolution - Scenario 3",
+        "file": "REQ-5-1-2-filter-views-evolution.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10079,
+        "frames": [
+          "sheet-real-F02"
+        ]
+      },
+      {
+        "key": "REQ-5-2-1#1",
+        "name": "REQ-5-2-1: Custom validation message evolution - Scenario 1",
+        "file": "REQ-5-2-1-validation-message-evolution.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10092,
+        "frames": [
+          "sheet-real-F03"
+        ]
+      },
+      {
+        "key": "REQ-5-2-1#2",
+        "name": "REQ-5-2-1: Custom validation message evolution - Scenario 2",
+        "file": "REQ-5-2-1-validation-message-evolution.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10101,
+        "frames": [
+          "sheet-real-F04"
+        ]
+      },
+      {
+        "key": "REQ-5-2-1#3",
+        "name": "REQ-5-2-1: Custom validation message evolution - Scenario 3",
+        "file": "REQ-5-2-1-validation-message-evolution.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10102,
+        "frames": [
+          "sheet-real-F05"
+        ]
+      },
+      {
+        "key": "REQ-6-1-1#1",
+        "name": "REQ-6-1-1: Freeze panes - Scenario 1",
+        "file": "REQ-6-1-1-freeze-panes.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1118,
+        "frames": []
+      },
+      {
+        "key": "REQ-6-1-1#2",
+        "name": "REQ-6-1-1: Freeze panes - Scenario 2",
+        "file": "REQ-6-1-1-freeze-panes.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1023,
+        "frames": []
+      },
+      {
+        "key": "REQ-6-1-1#3",
+        "name": "REQ-6-1-1: Freeze panes - Scenario 3",
+        "file": "REQ-6-1-1-freeze-panes.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 917,
+        "frames": []
+      },
+      {
+        "key": "REQ-6-2-1#1",
+        "name": "REQ-6-2-1: Find and replace - Scenario 1",
+        "file": "REQ-6-2-1-find-replace.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 984,
+        "frames": []
+      },
+      {
+        "key": "REQ-6-2-1#2",
+        "name": "REQ-6-2-1: Find and replace - Scenario 2",
+        "file": "REQ-6-2-1-find-replace.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1086,
+        "frames": []
+      },
+      {
+        "key": "REQ-6-2-1#3",
+        "name": "REQ-6-2-1: Find and replace - Scenario 3",
+        "file": "REQ-6-2-1-find-replace.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1001,
+        "frames": []
+      },
+      {
+        "key": "REQ-7-1-1#1",
+        "name": "REQ-7-1-1: Named ranges - Scenario 1",
+        "file": "REQ-7-1-1-named-ranges.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10077,
+        "frames": [
+          "sheet-real-F06"
+        ]
+      },
+      {
+        "key": "REQ-7-1-1#2",
+        "name": "REQ-7-1-1: Named ranges - Scenario 2",
+        "file": "REQ-7-1-1-named-ranges.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1324,
+        "frames": []
+      },
+      {
+        "key": "REQ-7-1-1#3",
+        "name": "REQ-7-1-1: Named ranges - Scenario 3",
+        "file": "REQ-7-1-1-named-ranges.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1106,
+        "frames": []
+      },
+      {
+        "key": "REQ-7-2-1#1",
+        "name": "REQ-7-2-1: Conditional formatting - Scenario 1",
+        "file": "REQ-7-2-1-conditional-formatting.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1173,
+        "frames": []
+      },
+      {
+        "key": "REQ-7-2-1#2",
+        "name": "REQ-7-2-1: Conditional formatting - Scenario 2",
+        "file": "REQ-7-2-1-conditional-formatting.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1444,
+        "frames": []
+      },
+      {
+        "key": "REQ-7-2-1#3",
+        "name": "REQ-7-2-1: Conditional formatting - Scenario 3",
+        "file": "REQ-7-2-1-conditional-formatting.spec.ts",
+        "status": "pass",
+        "playwright_status": "passed",
+        "duration_ms": 1516,
+        "frames": []
+      },
+      {
+        "key": "REQ-8-1-1#1",
+        "name": "REQ-8-1-1: Cell notes - Scenario 1",
+        "file": "REQ-8-1-1-cell-notes.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10131,
+        "frames": [
+          "sheet-real-F07"
+        ]
+      },
+      {
+        "key": "REQ-8-1-1#2",
+        "name": "REQ-8-1-1: Cell notes - Scenario 2",
+        "file": "REQ-8-1-1-cell-notes.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10080,
+        "frames": [
+          "sheet-real-F08"
+        ]
+      },
+      {
+        "key": "REQ-8-1-1#3",
+        "name": "REQ-8-1-1: Cell notes - Scenario 3",
+        "file": "REQ-8-1-1-cell-notes.spec.ts",
+        "status": "fail",
+        "playwright_status": "timedOut",
+        "duration_ms": 10095,
+        "frames": [
+          "sheet-real-F09"
+        ]
+      }
+    ],
+    "unique_frames": [
+      {
+        "id": "sheet-real-F01",
+        "source": "/workspace/tests/REQ-5-1-2-filter-views-evolution.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-5-1-2-filter-views-evolution.spec.ts",
+          "column": 74,
+          "line": 7
+        },
+        "lines": [
+          {
+            "line": 5,
+            "code": ""
+          },
+          {
+            "line": 6,
+            "code": " async function applyCondition(page: Page, header: string, option: string, value: string): Promise<void> {"
+          },
+          {
+            "line": 7,
+            "code": "   await page.getByRole('button', { name: 'Create filter', exact: true }).click();"
+          },
+          {
+            "line": 8,
+            "code": "   const dialog = page.getByRole('dialog', { name: 'Filter', exact: true });"
+          },
+          {
+            "line": 9,
+            "code": "   await dialog.getByLabel('Range', { exact: true }).fill('D3:F7');"
+          },
+          {
+            "line": 10,
+            "code": "   await dialog.getByLabel('Column', { exact: true }).fill(header === 'Workstream' ? 'D' : 'F');"
+          }
+        ],
+        "cases": [
+          "REQ-5-1-2#1"
+        ]
+      },
+      {
+        "id": "sheet-real-F02",
+        "source": "/workspace/tests/REQ-5-1-2-filter-views-evolution.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-5-1-2-filter-views-evolution.spec.ts",
+          "column": 41,
+          "line": 61
+        },
+        "lines": [
+          {
+            "line": 59,
+            "code": "   await saveName.fill(' queued lanes ');"
+          },
+          {
+            "line": 60,
+            "code": "   await page.getByRole('button', { name: 'Save view', exact: true }).click();"
+          },
+          {
+            "line": 61,
+            "code": "   await expect(page.getByRole('alert')).toContainText('Filter view name already exists');"
+          },
+          {
+            "line": 62,
+            "code": "   await page.getByRole('dialog').filter({ has: page.getByLabel('Filter view name', { exact: true }) }).getByRole('button', { name: 'Close', exact: true }).click();"
+          },
+          {
+            "line": 63,
+            "code": "   await openDataMenu(page);"
+          },
+          {
+            "line": 64,
+            "code": "   await page.getByRole('menuitem', { name: 'Filter views', exact: true }).click();"
+          }
+        ],
+        "cases": [
+          "REQ-5-1-2#3"
+        ]
+      },
+      {
+        "id": "sheet-real-F03",
+        "source": "/workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts",
+          "column": 41,
+          "line": 18
+        },
+        "lines": [
+          {
+            "line": 16,
+            "code": "   await formulaBar(page).fill('88');"
+          },
+          {
+            "line": 17,
+            "code": "   await formulaBar(page).press('Enter');"
+          },
+          {
+            "line": 18,
+            "code": "   await expect(page.getByRole('alert')).toContainText('Capacity must be from 25 to 75');"
+          },
+          {
+            "line": 19,
+            "code": "   await expect(gridCell(page, 'J6')).toHaveText('37');"
+          },
+          {
+            "line": 20,
+            "code": "   await page.reload();"
+          },
+          {
+            "line": 21,
+            "code": "   await gridCell(page, 'J6').click();"
+          }
+        ],
+        "cases": [
+          "REQ-5-2-1#1"
+        ]
+      },
+      {
+        "id": "sheet-real-F04",
+        "source": "/workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts",
+          "column": 41,
+          "line": 33
+        },
+        "lines": [
+          {
+            "line": 31,
+            "code": "   await editor.fill('Paused');"
+          },
+          {
+            "line": 32,
+            "code": "   await editor.press('Enter');"
+          },
+          {
+            "line": 33,
+            "code": "   await expect(page.getByRole('alert')).toContainText('Choose a queue state');"
+          },
+          {
+            "line": 34,
+            "code": "   await expect(gridCell(page, 'K8')).toContainText('Ready');"
+          },
+          {
+            "line": 35,
+            "code": "   await page.reload();"
+          },
+          {
+            "line": 36,
+            "code": "   await gridCell(page, 'K8').dblclick();"
+          }
+        ],
+        "cases": [
+          "REQ-5-2-1#2"
+        ]
+      },
+      {
+        "id": "sheet-real-F05",
+        "source": "/workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts",
+          "column": 41,
+          "line": 50
+        },
+        "lines": [
+          {
+            "line": 48,
+            "code": "   await formulaBar(page).fill('24');"
+          },
+          {
+            "line": 49,
+            "code": "   await formulaBar(page).press('Enter');"
+          },
+          {
+            "line": 50,
+            "code": "   await expect(page.getByRole('alert')).toContainText('Allocate between 25 and 75');"
+          },
+          {
+            "line": 51,
+            "code": "   await expect(gridCell(page, 'L4')).toHaveText('42');"
+          },
+          {
+            "line": 52,
+            "code": "   await page.reload();"
+          },
+          {
+            "line": 53,
+            "code": "   await expect((await openValidation(page, 'L4')).getByLabel('Error message', { exact: true })).toHaveValue('Allocate between 25 and 75');"
+          }
+        ],
+        "cases": [
+          "REQ-5-2-1#3"
+        ]
+      },
+      {
+        "id": "sheet-real-F06",
+        "source": "/workspace/tests/REQ-7-1-1-named-ranges.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-7-1-1-named-ranges.spec.ts",
+          "column": 125,
+          "line": 24
+        },
+        "lines": [
+          {
+            "line": 22,
+            "code": "   }"
+          },
+          {
+            "line": 23,
+            "code": "   await expect(page.getByRole('dialog', { name: 'Named ranges', exact: true })).toContainText('CapacityPlan');"
+          },
+          {
+            "line": 24,
+            "code": "   await page.getByRole('dialog', { name: 'Named ranges', exact: true }).getByRole('button', { name: 'Close', exact: true }).click();"
+          },
+          {
+            "line": 25,
+            "code": "   await gridCell(page, 'L3').click();"
+          },
+          {
+            "line": 26,
+            "code": "   await formulaBar(page).fill('=SUM(CapacityPlan)');"
+          },
+          {
+            "line": 27,
+            "code": "   await formulaBar(page).press('Enter');"
+          }
+        ],
+        "cases": [
+          "REQ-7-1-1#1"
+        ]
+      },
+      {
+        "id": "sheet-real-F07",
+        "source": "/workspace/tests/REQ-8-1-1-cell-notes.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-8-1-1-cell-notes.spec.ts",
+          "column": 93,
+          "line": 20
+        },
+        "lines": [
+          {
+            "line": 18,
+            "code": "   await addNote(page, 'D8', note);"
+          },
+          {
+            "line": 19,
+            "code": "   await expect(gridCell(page, 'D8')).toHaveText('Manifest R41');"
+          },
+          {
+            "line": 20,
+            "code": "   await gridCell(page, 'D8').getByRole('button', { name: 'Open note for D8', exact: true }).click();"
+          },
+          {
+            "line": 21,
+            "code": "   await expect(page.getByLabel('Note', { exact: true })).toHaveValue(note);"
+          },
+          {
+            "line": 22,
+            "code": "   await page.reload();"
+          },
+          {
+            "line": 23,
+            "code": "   await gridCell(page, 'D8').getByRole('button', { name: 'Open note for D8', exact: true }).click();"
+          }
+        ],
+        "cases": [
+          "REQ-8-1-1#1"
+        ]
+      },
+      {
+        "id": "sheet-real-F08",
+        "source": "/workspace/tests/REQ-8-1-1-cell-notes.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-8-1-1-cell-notes.spec.ts",
+          "column": 93,
+          "line": 29
+        },
+        "lines": [
+          {
+            "line": 27,
+            "code": " test('REQ-8-1-1: Cell notes - Scenario 2', async ({ page }) => {"
+          },
+          {
+            "line": 28,
+            "code": "   await openVisibleWorkbook(page, 'EVO-N05-NOTE-EDIT');"
+          },
+          {
+            "line": 29,
+            "code": "   await gridCell(page, 'F6').getByRole('button', { name: 'Open note for F6', exact: true }).click();"
+          },
+          {
+            "line": 30,
+            "code": "   await page.getByRole('button', { name: 'Edit note', exact: true }).click();"
+          },
+          {
+            "line": 31,
+            "code": "   const dialog = page.getByRole('dialog', { name: 'Note for F6', exact: true });"
+          },
+          {
+            "line": 32,
+            "code": "   const noteField = dialog.getByLabel('Note', { exact: true });"
+          }
+        ],
+        "cases": [
+          "REQ-8-1-1#2"
+        ]
+      },
+      {
+        "id": "sheet-real-F09",
+        "source": "/workspace/tests/REQ-8-1-1-cell-notes.spec.ts",
+        "location": {
+          "file": "/workspace/tests/REQ-8-1-1-cell-notes.spec.ts",
+          "column": 93,
+          "line": 46
+        },
+        "lines": [
+          {
+            "line": 44,
+            "code": " test('REQ-8-1-1: Cell notes - Scenario 3', async ({ page }) => {"
+          },
+          {
+            "line": 45,
+            "code": "   await openVisibleWorkbook(page, 'EVO-N05-NOTE-DELETE');"
+          },
+          {
+            "line": 46,
+            "code": "   await gridCell(page, 'J3').getByRole('button', { name: 'Open note for J3', exact: true }).click();"
+          },
+          {
+            "line": 47,
+            "code": "   await page.getByRole('button', { name: 'Delete note', exact: true }).click();"
+          },
+          {
+            "line": 48,
+            "code": "   await expect(page.getByRole('button', { name: 'Open note for J3', exact: true })).toHaveCount(0);"
+          },
+          {
+            "line": 49,
+            "code": "   await expect(gridCell(page, 'J3')).toHaveText('Route Zeta');"
+          }
+        ],
+        "cases": [
+          "REQ-8-1-1#3"
+        ]
+      }
+    ],
+    "frame_occurrences": [
+      {
+        "frame": "sheet-real-F01",
+        "case": "REQ-5-1-2#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Create filter', exact: true })\n\n\n   5 |\n   6 | async function applyCondition(page: Page, header: string, option: string, value: string): Promise<void> {\n>  7 |   await page.getByRole('button', { name: 'Create filter', exact: true }).click();\n     |                                                                          ^\n   8 |   const dialog = page.getByRole('dialog', { name: 'Filter', exact: true });\n   9 |   await dialog.getByLabel('Range', { exact: true }).fill('D3:F7');\n  10 |   await dialog.getByLabel('Column', { exact: true }).fill(header === 'Workstream' ? 'D' : 'F');\n    at applyCondition (/workspace/tests/REQ-5-1-2-filter-views-evolution.spec.ts:7:74)\n    at /workspace/tests/REQ-5-1-2-filter-views-evolution.spec.ts:23:9"
+      },
+      {
+        "frame": "sheet-real-F02",
+        "case": "REQ-5-1-2#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Filter view name already exists\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  59 |   await saveName.fill(' queued lanes ');\n  60 |   await page.getByRole('button', { name: 'Save view', exact: true }).click();\n> 61 |   await expect(page.getByRole('alert')).toContainText('Filter view name already exists');\n     |                                         ^\n  62 |   await page.getByRole('dialog').filter({ has: page.getByLabel('Filter view name', { exact: true }) }).getByRole('button', { name: 'Close', exact: true }).click();\n  63 |   await openDataMenu(page);\n  64 |   await page.getByRole('menuitem', { name: 'Filter views', exact: true }).click();\n    at /workspace/tests/REQ-5-1-2-filter-views-evolution.spec.ts:61:41"
+      },
+      {
+        "frame": "sheet-real-F03",
+        "case": "REQ-5-2-1#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Capacity must be from 25 to 75\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  16 |   await formulaBar(page).fill('88');\n  17 |   await formulaBar(page).press('Enter');\n> 18 |   await expect(page.getByRole('alert')).toContainText('Capacity must be from 25 to 75');\n     |                                         ^\n  19 |   await expect(gridCell(page, 'J6')).toHaveText('37');\n  20 |   await page.reload();\n  21 |   await gridCell(page, 'J6').click();\n    at /workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts:18:41"
+      },
+      {
+        "frame": "sheet-real-F04",
+        "case": "REQ-5-2-1#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Choose a queue state\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  31 |   await editor.fill('Paused');\n  32 |   await editor.press('Enter');\n> 33 |   await expect(page.getByRole('alert')).toContainText('Choose a queue state');\n     |                                         ^\n  34 |   await expect(gridCell(page, 'K8')).toContainText('Ready');\n  35 |   await page.reload();\n  36 |   await gridCell(page, 'K8').dblclick();\n    at /workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts:33:41"
+      },
+      {
+        "frame": "sheet-real-F05",
+        "case": "REQ-5-2-1#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Allocate between 25 and 75\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  48 |   await formulaBar(page).fill('24');\n  49 |   await formulaBar(page).press('Enter');\n> 50 |   await expect(page.getByRole('alert')).toContainText('Allocate between 25 and 75');\n     |                                         ^\n  51 |   await expect(gridCell(page, 'L4')).toHaveText('42');\n  52 |   await page.reload();\n  53 |   await expect((await openValidation(page, 'L4')).getByLabel('Error message', { exact: true })).toHaveValue('Allocate between 25 and 75');\n    at /workspace/tests/REQ-5-2-1-validation-message-evolution.spec.ts:50:41"
+      },
+      {
+        "frame": "sheet-real-F06",
+        "case": "REQ-7-1-1#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('dialog', { name: 'Named ranges', exact: true }).getByRole('button', { name: 'Close', exact: true })\n\n\n  22 |   }\n  23 |   await expect(page.getByRole('dialog', { name: 'Named ranges', exact: true })).toContainText('CapacityPlan');\n> 24 |   await page.getByRole('dialog', { name: 'Named ranges', exact: true }).getByRole('button', { name: 'Close', exact: true }).click();\n     |                                                                                                                             ^\n  25 |   await gridCell(page, 'L3').click();\n  26 |   await formulaBar(page).fill('=SUM(CapacityPlan)');\n  27 |   await formulaBar(page).press('Enter');\n    at /workspace/tests/REQ-7-1-1-named-ranges.spec.ts:24:125"
+      },
+      {
+        "frame": "sheet-real-F07",
+        "case": "REQ-8-1-1#1",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('gridcell', { name: 'D8', exact: true }).getByRole('button', { name: 'Open note for D8', exact: true })\n\n\n  18 |   await addNote(page, 'D8', note);\n  19 |   await expect(gridCell(page, 'D8')).toHaveText('Manifest R41');\n> 20 |   await gridCell(page, 'D8').getByRole('button', { name: 'Open note for D8', exact: true }).click();\n     |                                                                                             ^\n  21 |   await expect(page.getByLabel('Note', { exact: true })).toHaveValue(note);\n  22 |   await page.reload();\n  23 |   await gridCell(page, 'D8').getByRole('button', { name: 'Open note for D8', exact: true }).click();\n    at /workspace/tests/REQ-8-1-1-cell-notes.spec.ts:20:93"
+      },
+      {
+        "frame": "sheet-real-F08",
+        "case": "REQ-8-1-1#2",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('gridcell', { name: 'F6', exact: true }).getByRole('button', { name: 'Open note for F6', exact: true })\n\n\n  27 | test('REQ-8-1-1: Cell notes - Scenario 2', async ({ page }) => {\n  28 |   await openVisibleWorkbook(page, 'EVO-N05-NOTE-EDIT');\n> 29 |   await gridCell(page, 'F6').getByRole('button', { name: 'Open note for F6', exact: true }).click();\n     |                                                                                             ^\n  30 |   await page.getByRole('button', { name: 'Edit note', exact: true }).click();\n  31 |   const dialog = page.getByRole('dialog', { name: 'Note for F6', exact: true });\n  32 |   const noteField = dialog.getByLabel('Note', { exact: true });\n    at /workspace/tests/REQ-8-1-1-cell-notes.spec.ts:29:93"
+      },
+      {
+        "frame": "sheet-real-F09",
+        "case": "REQ-8-1-1#3",
+        "run_index": 0,
+        "error_index": 1,
+        "field": "message",
+        "error_text": "Error: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('gridcell', { name: 'J3', exact: true }).getByRole('button', { name: 'Open note for J3', exact: true })\n\n\n  44 | test('REQ-8-1-1: Cell notes - Scenario 3', async ({ page }) => {\n  45 |   await openVisibleWorkbook(page, 'EVO-N05-NOTE-DELETE');\n> 46 |   await gridCell(page, 'J3').getByRole('button', { name: 'Open note for J3', exact: true }).click();\n     |                                                                                             ^\n  47 |   await page.getByRole('button', { name: 'Delete note', exact: true }).click();\n  48 |   await expect(page.getByRole('button', { name: 'Open note for J3', exact: true })).toHaveCount(0);\n  49 |   await expect(gridCell(page, 'J3')).toHaveText('Route Zeta');\n    at /workspace/tests/REQ-8-1-1-cell-notes.spec.ts:46:93"
+      }
+    ],
+    "config": {
+      "configFile": "/workspace/tests/playwright.config.ts",
+      "rootDir": "/workspace/tests",
+      "forbidOnly": false,
+      "fullyParallel": false,
+      "globalSetup": null,
+      "globalTeardown": null,
+      "globalTimeout": 0,
+      "grep": {},
+      "grepInvert": null,
+      "maxFailures": 0,
+      "metadata": {
+        "actualWorkers": 1
+      },
+      "preserveOutput": "always",
+      "reporter": [
+        [
+          "json",
+          {
+            "outputFile": "/workspace/template/.arc/playwright-report.json"
+          }
+        ]
+      ],
+      "reportSlowTests": {
+        "max": 5,
+        "threshold": 300000
+      },
+      "quiet": false,
+      "projects": [
+        {
+          "outputDir": "/workspace/tests/test-results",
+          "repeatEach": 1,
+          "retries": 0,
+          "metadata": {
+            "actualWorkers": 1
+          },
+          "id": "",
+          "name": "",
+          "testDir": "/workspace/tests",
+          "testIgnore": [],
+          "testMatch": [
+            "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+          ],
+          "timeout": 10000
+        }
+      ],
+      "shard": null,
+      "tags": [],
+      "updateSnapshots": "missing",
+      "updateSourceMethod": "patch",
+      "version": "1.57.0",
+      "workers": 1,
+      "webServer": null
+    },
+    "stats": {
+      "startTime": "2026-10-06T12:26:52.619Z",
+      "duration": 124221.59,
+      "expected": 21,
+      "skipped": 0,
+      "unexpected": 9,
+      "flaky": 0
+    }
+  }
+}

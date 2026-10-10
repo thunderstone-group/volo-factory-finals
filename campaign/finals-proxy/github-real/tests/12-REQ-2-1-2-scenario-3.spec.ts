@@ -1,0 +1,20 @@
+import { test, expect } from '@playwright/test';
+import { clickEvolutionTarget } from './evolution-navigation';
+import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+
+test.use({ storageState: { cookies: [], origins: [] } });
+
+test("REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 3", async ({ page, browser, baseURL }) => {
+  // GIVEN: The visitor starts at the application home page in a fresh unauthenticated browser session. The system pre-provisions the verified account `evo-org-owner` with email `evo.org.owner@evolution.test` and password `Evo-Password-987!`; the account can create organizations.
+
+  // WHEN: The visitor signs in as `evo-org-owner`, opens the “Account menu”, clicks “Your organizations”, clicks “New organization”, enters `-invalid-organization` in the visibly labeled “Organization name” field, enters three spaces in “Display name”, and clicks “Create organization”.
+  await page.goto('/');
+  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+  await fill(page, 'Username or email', "evo-org-owner"); await fill(page, 'Password', "Evo-Password-987!");
+  await button(page, 'Sign in');
+  await button(page, 'Account menu'); await page.getByRole('menu').getByRole('link', {name:'Your organizations',exact:true}).click(); await clickEvolutionTarget(page, 'New organization');
+  await fill(page, 'Organization name', "-invalid-organization"); await fill(page, 'Display name', "   "); await button(page, 'Create organization');
+  // THEN: The page displays both exact messages “Organization name format is invalid” and “Display name is required”, and no organization is created.
+  await text(page, 'Organization name format is invalid'); await text(page, 'Display name is required'); await visible(field(page, 'Organization name'));
+});

@@ -1,0 +1,39 @@
+{
+ "run_id": "5cbff8ffc75c",
+ "status": "FAILED",
+ "passed": 21,
+ "failed": 79,
+ "pass_rate": 21.0,
+ "tokens": 2815835,
+ "duration_seconds": 4879,
+ "failure_reason": "Runner exited with test failures or runtime errors",
+ "submission_id": "3b1bef245862",
+ "requirement_id": "hackathon--github",
+ "finished_at": "2026-09-24T20:28:48.347572",
+ "display_name": "volo-oneshot-38e217d1-main-3c761e2",
+ "model_name": "deepseek-v4-flash",
+ "feature_implemented_count": 7,
+ "feature_total_count": 47,
+ "cost": {
+  "amount": 7.750712,
+  "currency": "CNY"
+ },
+ "steps": [
+  {
+   "key": "deploy_agent",
+   "status": "completed",
+   "description": "Done"
+  },
+  {
+   "key": "start_agent",
+   "status": "completed",
+   "description": "Done"
+  },
+  {
+   "key": "run_tests",
+   "status": "completed",
+   "description": "Evaluation completed"
+  }
+ ],
+ "failed_tests": []
+}

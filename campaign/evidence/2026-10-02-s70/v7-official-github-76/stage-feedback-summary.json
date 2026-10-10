@@ -1,0 +1,182 @@
+{
+  "source_run": "c5e4493bad81",
+  "official_full_passed": 76,
+  "staged_selftest_passed": 76,
+  "total": 100,
+  "failures": [
+    {
+      "stage": 1,
+      "title": "REQ-1-3-change-password.spec.ts REQ-1-3: Change Account Password - Scenario 1",
+      "kind": "timeout",
+      "error": "Test timeout of 60000ms exceeded.",
+      "screenshot": "output/REQ-1-3-change-password-RE-c618d-count-Password---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 1,
+      "title": "REQ-1-3-change-password.spec.ts REQ-1-3: Change Account Password - Scenario 2",
+      "kind": "timeout",
+      "error": "Test timeout of 60000ms exceeded.",
+      "screenshot": "output/REQ-1-3-change-password-RE-45b52-count-Password---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 1,
+      "title": "REQ-1-3-change-password.spec.ts REQ-1-3: Change Account Password - Scenario 3",
+      "kind": "timeout",
+      "error": "Test timeout of 60000ms exceeded.",
+      "screenshot": "output/REQ-1-3-change-password-RE-3ef14-count-Password---Scenario-3/test-failed-1.png"
+    },
+    {
+      "stage": 1,
+      "title": "REQ-2-2-3-add-organization-member.spec.ts REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Member', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('Member', { exact: true }) resolved to 6 elements:\n    1) <span class=\"role\">Member</span> aka getByText('Member').nth(3)\n    2) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(1)\n    3) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(2)\n    4) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(3)\n    5) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(4)\n    6) <span class=\"role\">Member</span> aka getByText('Member', { exact: true }).nth(5)\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Member', { exact: true })",
+      "screenshot": "output/REQ-2-2-3-add-organization-7c557-ization-Member---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 1,
+      "title": "REQ-2-3-grant-repository-access.spec.ts REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+      "kind": "timeout",
+      "error": "Test timeout of 60000ms exceeded.",
+      "screenshot": "output/REQ-2-3-grant-repository-a-52073-ople-and-Teams---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 2,
+      "title": "REQ-4-2-2-view-commit-diff.spec.ts REQ-4-2-2: Inspect Commit and Revision Differences - Scenario 1",
+      "kind": "navigation",
+      "error": "Error: Could not find a visible navigation target named \"Document search flow\"",
+      "screenshot": "output/REQ-4-2-2-view-commit-diff-eace5-on-Differences---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 2,
+      "title": "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 1",
+      "kind": "ambiguous locator",
+      "error": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: /code/i }) resolved to 2 elements:\n    1) <a aria-current=\"page\" href=\"#/repos/acme-demo/acme-docs\">Code</a> aka getByRole('link', { name: 'Code' }).first()\n    2) <a data-action=\"clear-repo-search\" href=\"#/repos/acme-demo/acme-docs\">Code</a> aka getByRole('link', { name: 'Code' }).nth(1)\n\nCall log:\n  - waiting for getByRole('link', { name: /code/i })",
+      "screenshot": "output/REQ-4-2-3-search-code-REQ--92c88-n-a-Repository---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 2,
+      "title": "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 2",
+      "kind": "ambiguous locator",
+      "error": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: /code/i }) resolved to 2 elements:\n    1) <a aria-current=\"page\" href=\"#/repos/acme-demo/acme-docs\">Code</a> aka getByRole('link', { name: 'Code' }).first()\n    2) <a data-action=\"clear-repo-search\" href=\"#/repos/acme-demo/acme-docs\">Code</a> aka getByRole('link', { name: 'Code' }).nth(1)\n\nCall log:\n  - waiting for getByRole('link', { name: /code/i })",
+      "screenshot": "output/REQ-4-2-3-search-code-REQ--37987-n-a-Repository---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 2,
+      "title": "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 3",
+      "kind": "ambiguous locator",
+      "error": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: /code/i }) resolved to 2 elements:\n    1) <a aria-current=\"page\" href=\"#/repos/acme-demo/acme-docs\">Code</a> aka getByRole('link', { name: 'Code' }).first()\n    2) <a data-action=\"clear-repo-search\" href=\"#/repos/acme-demo/acme-docs\">Code</a> aka getByRole('link', { name: 'Code' }).nth(1)\n\nCall log:\n  - waiting for getByRole('link', { name: /code/i })",
+      "screenshot": "output/REQ-4-2-3-search-code-REQ--cdf3a-n-a-Repository---Scenario-3/test-failed-1.png"
+    },
+    {
+      "stage": 2,
+      "title": "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 4",
+      "kind": "ambiguous locator",
+      "error": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: /code/i }) resolved to 2 elements:\n    1) <a aria-current=\"page\" href=\"#/repos/acme-demo/acme-docs\">Code</a> aka getByRole('link', { name: 'Code' }).first()\n    2) <a data-action=\"clear-repo-search\" href=\"#/repos/acme-demo/acme-docs\">Code</a> aka getByRole('link', { name: 'Code' }).nth(1)\n\nCall log:\n  - waiting for getByRole('link', { name: /code/i })",
+      "screenshot": "output/REQ-4-2-3-search-code-REQ--bec25-n-a-Repository---Scenario-4/test-failed-1.png"
+    },
+    {
+      "stage": 2,
+      "title": "REQ-4-4-manage-files.spec.ts REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 2",
+      "kind": "timeout",
+      "error": "Test timeout of 60000ms exceeded.",
+      "screenshot": "output/REQ-4-4-manage-files-REQ-4-06595--Web-Interface---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-1-protect-branch.spec.ts REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('main', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('main', { exact: true }) resolved to 4 elements:\n    1) <span>main</span> aka locator('span').filter({ hasText: /^main$/ })\n    2) <selectedcontent>main</selectedcontent> aka getByLabel('Default branch').locator('button')\n    3) <option selected value=\"main\">main</option> aka getByLabel('Default branch')\n    4) <h3>main</h3> aka getByRole('heading', { name: 'main' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('main', { exact: true })",
+      "screenshot": "output/REQ-6-1-protect-branch-REQ-4ffaa-k-Requirements---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-1-protect-branch.spec.ts REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/test.*pending|pending.*test/i)\nExpected: visible\nError: strict mode violation: getByText(/test.*pending|pending.*test/i) resolved to 2 elements:\n    1) <p>…</p> aka getByText('test pending', { exact: true })\n    2) <span class=\"combobox\" data-combobox=\"cb-test-1\">…</span> aka getByText('test pendingpendingsuccessfailure')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/test.*pending|pending.*test/i)",
+      "screenshot": "output/REQ-6-1-protect-branch-REQ-b6d67-k-Requirements---Scenario-3/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-2-2-compare-branches.spec.ts REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 2",
+      "kind": "timeout",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/identical/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/identical/i)",
+      "screenshot": "output/REQ-6-2-2-compare-branches-3ffcb-a-Pull-Request---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-2-3-create-pull-request.spec.ts REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1",
+      "kind": "navigation",
+      "error": "Error: Could not find a visible navigation target named \"Compare\"",
+      "screenshot": "output/REQ-6-2-3-create-pull-requ-33a22-arison-Results---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-2-3-create-pull-request.spec.ts REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 2",
+      "kind": "navigation",
+      "error": "Error: Could not find a visible navigation target named \"Compare\"",
+      "screenshot": "output/REQ-6-2-3-create-pull-requ-4e7ff-arison-Results---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-2-4-create-draft-pull-request.spec.ts REQ-6-2-4: Create a Draft Pull Request - Scenario 1",
+      "kind": "navigation",
+      "error": "Error: Could not find a visible navigation target named \"Compare\"",
+      "screenshot": "output/REQ-6-2-4-create-draft-pul-b5d8b-t-Pull-Request---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-2-4-create-draft-pull-request.spec.ts REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('main', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('main', { exact: true }) resolved to 2 elements:\n    1) <span>main</span> aka locator('span').filter({ hasText: 'Default branch: main' }).locator('span')\n    2) <span class=\"branch-target\">main</span> aka getByText('main').nth(1)\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('main', { exact: true })",
+      "screenshot": "output/REQ-6-2-4-create-draft-pul-25b56-t-Pull-Request---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-3-1-view-pull-request.spec.ts REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/commit/i)\nExpected: visible\nError: strict mode violation: getByText(/commit/i) resolved to 2 elements:\n    1) <a aria-current=\"page\" href=\"#/repos/acme-demo/acme-docs/pulls/2/commits\">Commits</a> aka getByRole('link', { name: 'Commits' })\n    2) <h2>Commit history</h2> aka getByRole('heading', { name: 'Commit history' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/commit/i)",
+      "screenshot": "output/REQ-6-3-1-view-pull-reques-1a77e-ew-and-Commits---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-3-1-view-pull-request.spec.ts REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/commit/i)\nExpected: visible\nError: strict mode violation: getByText(/commit/i) resolved to 2 elements:\n    1) <a aria-current=\"page\" href=\"#/repos/acme-demo/acme-docs/pulls/2/commits\">Commits</a> aka getByRole('link', { name: 'Commits' })\n    2) <h2>Commit history</h2> aka getByRole('heading', { name: 'Commit history' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/commit/i)",
+      "screenshot": "output/REQ-6-3-1-view-pull-reques-3eb0e-ew-and-Commits---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-3-3-add-review-comment.spec.ts REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2",
+      "kind": "evaluator ReferenceError",
+      "error": "ReferenceError: uniqueAccount is not defined",
+      "screenshot": "output/REQ-6-3-3-add-review-comme-00e76-ged-Code-Lines---Scenario-2/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-3-4-submit-review.spec.ts REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/approved/i)\nExpected: visible\nError: strict mode violation: getByText(/approved/i) resolved to 2 elements:\n    1) <p class=\"decision\">Approved</p> aka getByText('Approved', { exact: true })\n    2) <article class=\"activity-item\">pr-reviewer approved these changes</article> aka getByText('pr-reviewer approved these')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/approved/i)",
+      "screenshot": "output/REQ-6-3-4-submit-review-RE-cd71f-Request-Review---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-5-merge-pull-request.spec.ts REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/merged/i)\nExpected: visible\nError: strict mode violation: getByText(/merged/i) resolved to 3 elements:\n    1) <span class=\"status\" title=\"Merged\">Merged</span> aka getByText('Merged', { exact: true })\n    2) <p class=\"merged\">Merged by pr-maintainer at just now as sha_tq3</p> aka getByText('Merged by pr-maintainer at')\n    3) <article class=\"activity-item\">pr-maintainer merged this pull request</article> aka getByText('pr-maintainer merged this')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/merged/i)",
+      "screenshot": "output/REQ-6-5-merge-pull-request-1c756-e-Pull-Request---Scenario-1/test-failed-1.png"
+    },
+    {
+      "stage": 3,
+      "title": "REQ-6-5-merge-pull-request.spec.ts REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+      "kind": "ambiguous locator",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/review|required|protection/i)\nExpected: visible\nError: strict mode violation: getByText(/review|required|protection/i) resolved to 4 elements:\n    1) <p role=\"status\" class=\"blocked\">Review required by branch protection</p> aka getByText('Review required by branch')\n    2) <h2>Reviewers</h2> aka getByRole('heading', { name: 'Reviewers' })\n    3) <button type=\"button\" data-id=\"p-9\" data-action=\"open-reviewers\">Reviewers</button> aka getByRole('button', { name: 'Reviewers' })\n    4) <span class=\"setter\">bob-reviewer</span> aka getByText('bob-reviewer')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/review|required|protection/i)",
+      "screenshot": "output/REQ-6-5-merge-pull-request-f34da-e-Pull-Request---Scenario-2/test-failed-1.png"
+    }
+  ],
+  "failure_types": {
+    "timeout": 6,
+    "ambiguous locator": 13,
+    "navigation": 4,
+    "evaluator ReferenceError": 1
+  }
+}

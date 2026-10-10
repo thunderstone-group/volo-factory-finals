@@ -1,0 +1,18 @@
+--- before/frontend/public/app.js
++++ proposed/frontend/public/app.js
+@@ -261,6 +261,15 @@
+         return '<article class="card"><a href="#/org/' + encodeURIComponent(o.name) + '">' + esc(o.displayName) + '</a></article>';
+       }).join('') : '<p>No organizations</p>') +
+       '<h2>Repositories</h2>' + (pubs.length ? pubs.map(repoCard).join('') : '<p>No repositories</p>');
++    if (issueRows.length) {
++      html += '<h2>Issues</h2>' + issueRows.map(function (row) {
++        return '<article class="card issue-row">' +
++          '<a href="' + repoBase(row.repo) + '/issues/' + row.issue.number + '">' + esc(row.issue.title) + '</a> ' +
++          '<span class="number">#' + row.issue.number + '</span> ' +
++          '<span class="status" title="' + esc(row.issue.status === 'open' ? 'Open' : 'Closed') + '">' +
++          (row.issue.status === 'open' ? 'Open' : 'Closed') + '</span></article>';
++      }).join('');
++    }
+     if (extra.length) html += '<h2>Your work</h2>' + extra.map(repoCard).join('');
+     return html;
+   }

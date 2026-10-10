@@ -1,0 +1,5 @@
+10-08 11:12 start 40e7a9018dec
+10-08 11:49 done 40e7a9018dec PASSED passed 22 failed 8 sec 2102
+10-08 11:49 start df55d6e20a23
+10-08 12:27 done df55d6e20a23 CANCELLED passed 0 failed 0 sec None
+10-08 12:27 loop end n=2

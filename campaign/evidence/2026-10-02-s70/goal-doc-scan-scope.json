@@ -1,0 +1,12 @@
+{
+  "changed_files_scanned": [
+    "docs/SESSION_HANDOFF.md",
+    "docs/progress.md",
+    "docs/archive/README.md",
+    "docs/archive/handoffs/2026-10-02-1509.md",
+    "docs/evidence/2026-10-02-refreshed-input-and-selftest.json"
+  ],
+  "changed_files_leaks": 0,
+  "full_docs_scan_preexisting_finding_file": "docs/evidence/2026-09-12-model-comparison.json",
+  "preexisting_file_unchanged_from_HEAD": true
+}

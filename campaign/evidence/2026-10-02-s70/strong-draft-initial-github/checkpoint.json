@@ -1,0 +1,17 @@
+{
+  "phase": "waiting_for_tests",
+  "draft_model": "kimi-k2.7-code-highspeed",
+  "completed_calls": 1,
+  "file_hashes": {
+    "README.md": "6879b0ce3a4fff03895c75e0c5ebe25c1bf99967209a7ac75c5707b2caa7e08f",
+    "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+    "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+    "frontend/public/styles.css": "a6e530ca01d9ccdb0ee09adacbf4c7a8deb5142b20c9f99c3b68a6cdabf78257",
+    "frontend/public/seed.js": "cc8fd1580ac58214187645823cfbe82d96859f230477f94e315e89b2bbb35a5f",
+    "frontend/public/app.js": "55c606f39fae2cbdae12bd95a0efcca1b64b02a110a0fa0729088314b3d06ac8",
+    "frontend/public/lib/arc.js": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14",
+    "backend/server.js": "9db1f43fe2e20311a2e00b407cf23ceb930e955956c549d551d927d907dcb6e4",
+    "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+  },
+  "scope": "Exact first draft before any model repair; fixed independent judges are not fed to the live agent."
+}

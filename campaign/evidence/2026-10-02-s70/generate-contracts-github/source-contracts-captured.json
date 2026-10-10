@@ -1,0 +1,323 @@
+{
+ "proposed": [
+  {
+   "id": "REQ-5-3-1#contract-1",
+   "requirement": "REQ-5-3-1",
+   "explanation": "REQ-5-3-1 limits the Assignees settings control to Triage, Maintain, or Admin and says controls are unavailable to users without the role. The seeded repository grants carol-reader only Read, yet issueDetail renders the sidebar Assignees button unconditionally, so a Read-only viewer is offered and can open the assignment picker.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "issueDetail",
+     "kind": "function",
+     "alias": "issueDetail"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "issueDetail",
+   "setup": "window.ARC = window.ARC || {}; const A = window.ARC; A.state = JSON.parse(JSON.stringify(window.SEED)); A.state.session = 'u-carol'; A.state.ui = {}; A.save = function(){}; A.render = function(){}; A.navigate = function(){};",
+   "precondition": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const grant = (repo.grants || []).find(function(g){return g.subjectType === 'user' && g.subjectId === 'u-carol';}); assert.strictEqual(grant && grant.role, 'Read'); const org = window.ARC.state.orgs.find(function(o){return o.id === repo.ownerId;}); assert.ok(!(org.members || []).some(function(m){return m.userId === 'u-carol' && m.role === 'Owner';})); assert.ok((repo.issues || []).some(function(i){return i.num === 1;}));",
+   "check": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const html = issueDetail(repo, 'Read', 1); assert.ok(html.indexOf('open-assignees') === -1, 'Read-only viewer is rendered the Assignees control');",
+   "requirement_text": "Only a signed-in user with Triage, Maintain, or Admin may click the settings icon in the “Assignees” area on the right side of an issue, search for and check assignable members, or uncheck selected members and close the menu. Matching assignee options update as the user types in the search textbox; pressing Enter or activating a separate search button is not required before selecting an option. Assignable members are accounts that have at least Triage permission on the current repository; the system stores the issue-account relationship, operator, and time and records an activity, while non-assignable users do not appear in results. The settings icon is a button named “Assignees”; the open selector contains a textbox named “Search assignees” and items with role option named exactly after the member username. Seed data provides an eligible member not initially assigned to the target issue. Clicking the member option immediately saves the assignment and closes the selector without a separate Save action; the exact username is visible in metadata and remains after reload. Reopening Assignees shows the selected member without requiring another search; clicking that option again immediately removes the assignment and closes the selector so the username is no longer displayed as an assignee. Historical assignment and unassignment activities remain historical records. Unassignment only deletes that issue relationship and does not delete the member account or repository grant; controls are unavailable to users without the role and the server rejects their submissions. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-5-1-2 (View an Issue and Its Discussion); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-6-4#contract-1",
+   "requirement": "REQ-6-4",
+   "explanation": "REQ-6-4 requires a requested reviewer to have Write, Maintain, or Admin on the repository. The seeded repository grants carol-reader only Read, but reviewerOptions lists every non-author user without checking repository permission, so an ineligible Read user is offered and selectable.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "reviewerOptions",
+     "kind": "function",
+     "alias": "reviewerOptions"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "reviewerOptions",
+   "setup": "window.ARC = window.ARC || {}; const A = window.ARC; A.state = JSON.parse(JSON.stringify(window.SEED)); A.state.session = 'u-alice'; A.state.ui = {}; A.save = function(){}; A.render = function(){};",
+   "precondition": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = (repo.pulls || []).find(function(p){return p.num === 1;}); assert.ok(pr); assert.strictEqual(pr.status, 'Open'); assert.strictEqual(pr.author, 'u-alice'); assert.deepStrictEqual(pr.requestedReviewers, []); const carol = (repo.grants || []).find(function(g){return g.subjectType === 'user' && g.subjectId === 'u-carol';}); assert.strictEqual(carol && carol.role, 'Read'); const dave = (repo.grants || []).find(function(g){return g.subjectType === 'user' && g.subjectId === 'u-dave';}); assert.strictEqual(dave && dave.role, 'Write');",
+   "check": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = (repo.pulls || []).find(function(p){return p.num === 1;}); const out = reviewerOptions(repo, pr); assert.ok(out.indexOf('dave-dev') !== -1); assert.ok(out.indexOf('carol-reader') === -1, 'Read-only user is offered as a reviewer');",
+   "requirement_text": "The Reviewers button opens a picker with a textbox named Search. Typing an eligible username immediately reveals an option with that exact accessible name. Selecting the option saves the request immediately without a separate Save action, closes the picker, and displays the username in the reviewer area; it remains after reload. Each requested reviewer has a button named Remove followed by a space and the username; clicking it immediately removes the request and the username from that area, without a confirmation step. The seed PR is Open, belongs to the signed-in author, and initially has no request or submitted review from the eligible target reviewer; the target is a distinct non-author collaborator with Write or higher permission. Removing a request persists across reload. A “reviewer request” is a pending-review relationship between a PR and a candidate reviewer account, displayed in the Reviewers area on the right side of the PR detail page; it is not the same as a submitted review decision. The author of an Open or Draft PR, Maintain, Admin, or organization Owner may create or delete this relationship. Matching reviewer options update as the user types in the search textbox; pressing Enter or activating a separate search button is not required before selecting an option. A candidate reviewer must have Write, Maintain, or Admin on the repository and must not be the PR author; the system stores or deletes the “PR-reviewer request” relationship together with the operator and time. Removing a request does not delete reviews, comments, or activity records already submitted by that user and does not change the user's effective review decision. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-2-3 (Create a Pull Request from Comparison Results) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-2-3#contract-1",
+   "requirement": "REQ-2-3",
+   "explanation": "REQ-2-3 says an organization Owner or repository Admin may grant a repository role. manageAccess treats Maintain as an administrator, so a repository Maintain collaborator is rendered the Add people or teams picker.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "manageAccess",
+     "kind": "function",
+     "alias": "manageAccess"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "manageAccess",
+   "setup": "window.ARC = window.ARC || {}; const A = window.ARC; A.state = JSON.parse(JSON.stringify(window.SEED)); A.state.session = 'u-bob'; A.state.ui = {}; A.save = function(){}; A.render = function(){}; const repo = A.state.repos.find(function(r){return r.id === 'r-acme-docs';}); repo.grants = repo.grants || []; repo.grants.push({ subjectType: 'user', subjectId: 'u-bob', role: 'Maintain' });",
+   "precondition": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const g = (repo.grants || []).find(function(x){return x.subjectType === 'user' && x.subjectId === 'u-bob';}); assert.ok(g && g.role === 'Maintain'); const org = window.ARC.state.orgs.find(function(o){return o.id === repo.ownerId;}); assert.ok(!(org.members || []).some(function(m){return m.userId === 'u-bob' && m.role === 'Owner';}));",
+   "check": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const html = manageAccess(repo, 'Maintain'); assert.ok(html.indexOf('open-access-picker') === -1, 'Maintain-role collaborator is offered the grant picker');",
+   "requirement_text": "From the repository's “Settings” link, open the “Manage access” link and activate “Add people or teams”. The picker presents a textbox “Search”, a matching selectable team option whose name contains the team name, a combobox “Role” with clickable role options including “Write”, and an “Add” button. While the picker is active, hide the opening Add people or teams button from the active view so the submit action is unambiguous. After saving, the authorization list visibly shows the exact team name and Write role and retains the team after reload. Existing grants appear as rows whose accessible names include the subject name; each row contains a native select labeled “Role” and a “Save” button. Selecting the option labeled “Read” and saving replaces Write; after reload exactly one row for the team remains and contains Read. The creation scenario supplies a repository Admin and an organization team not yet granted access; the replacement scenario supplies a separate repository/team with an existing Write grant. An organization Owner or repository Admin may grant a repository role of Read, Triage, Write, Maintain, or Admin to a current organization member or team. In the access-subject picker, matching member or team options update as the administrator types; pressing Enter or activating a separate search button is not required before selecting an option. A private repository is accessible only to an organization Owner, a member with a direct repository role, or a direct member of a team that has a repository role; an ordinary organization Member has no default private-repository access. For a given subject and repository, only one direct role grant is stored — saving the same role again does not create a second record, and changing the role replaces the original role. An account's effective repository role is the highest among Admin from Owner status and all still-valid direct grants and team grants; team hierarchy does not propagate membership or authorization. The system stores the authorization subject, repository, role, grantor, and timestamp and authorizes operations according to the ROOT role matrix; unauthorized accounts cannot see private repositories. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-2-1-2 (Create an Organization After Authentication) and REQ-2-2-1 (Create an Organization Team); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-6-5#contract-1",
+   "requirement": "REQ-6-5",
+   "explanation": "REQ-6-5 requires the merge system to reread and enforce branch-protection conditions before confirmation and to leave a blocked PR unchanged. Seeded PR 3 is switched to Open and targets protected main without a non-author approval or successful test; the confirmation handler merges it anyway.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "confirm-merge",
+     "kind": "method",
+     "alias": "confirmMerge"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "confirmMerge",
+   "setup": "window.ARC = window.ARC || {}; const A = window.ARC; A.state = JSON.parse(JSON.stringify(window.SEED)); A.state.session = 'u-alice'; A.state.ui = {}; A.save = function(){}; A.render = function(){}; A.notify = function(){}; const repo = A.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = repo.pulls.find(function(p){return p.num === 3;}); pr.status = 'Open';",
+   "precondition": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = repo.pulls.find(function(p){return p.num === 3;}); assert.ok((repo.protection || []).some(function(x){return x.branch === 'main' && x.requireApproval && x.requireCheck;})); assert.strictEqual(pr.status, 'Open'); assert.strictEqual(pr.base, 'main'); assert.strictEqual(pr.compare, 'draft-feature'); assert.ok(!(pr.reviews || []).some(function(r){return r.decision === 'Approved' && r.reviewer !== pr.author;})); assert.ok(!(pr.checks && pr.checks.test && pr.checks.test.status === 'success'));",
+   "check": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = repo.pulls.find(function(p){return p.num === 3;}); confirmMerge({ dataset: { id: 'r-acme-docs', num: '3' } }); assert.notStrictEqual(pr.status, 'Merged', 'Blocked pull request was merged without the required approval and test success');",
+   "requirement_text": "On an eligible PR, Merge pull request and then Confirm merge are buttons; confirming displays Merged, and that state remains after reload. A blocked PR keeps a visible disabled Merge pull request button and explains its unmet review or protection condition before any click. Seed data supplies a Maintain account and separate Open PRs for success and refusal. The eligible PR targets protected main, has a current non-author approval and test: success, and has no conflicts. The blocked PR targets a protected branch and lacks the required valid approval; its disabled button is accompanied by Review required by branch protection. Each seed state is restored independently before reuse. “Merge” is the only write operation that writes the current compare commit's changes from an Open PR into the base branch; it is not simply marking the PR as complete. Only Maintain, Admin, or organization Owner may merge from the PR detail page using the sole supported “Create a merge commit” method; the merge confirmation area should display satisfied and unsatisfied conditions. Before confirmation, the system rereads the target branch head, current compare commit, merge-conflict state, and protection rules — there must be no valid Request changes; if the target is protected, each enabled rule requirement is enforced independently, requiring 1 valid non-author Approve for the current compare commit when Require 1 approval is enabled and requiring `test` success when Require status check test is enabled. An unprotected target has no additional approval-count or check-success requirement, but merging still requires no merge conflicts and no valid Request changes review. After validation succeeds, the system atomically creates a merge commit whose parents are the target-branch head at merge time and the current compare commit, updates the target-branch head, sets the PR to Merged, and stores the merger, time, and resulting commit identifier. If any condition is unsatisfied or persistence fails, the page explains the applicable reason and neither the target branch nor PR changes; a missing required approval displays “Review required by branch protection”. Merged is terminal. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-4 (Submit a Pull Request Review) and REQ-6-1 (Protect Branches with Review and Status-Check Requirements); it must reuse that context and keep pages and data consistent after the context changes."
+  }
+ ],
+ "first_execution": [
+  {
+   "id": "REQ-5-3-1#contract-1",
+   "status": "error",
+   "calls": {
+    "issueDetail": 1,
+    "issueOf": 1,
+    "canWriteRole": 1,
+    "canTriageRole": 1,
+    "ui": 2,
+    "S": 4,
+    "esc": 1
+   },
+   "assertions": 0,
+   "phase": "check",
+   "error_name": "TypeError",
+   "message": "A.esc is not a function",
+   "error": "evalmachine.<anonymous>:1\n\"use strict\"; ((s) => A.esc(s))\n                        ^\n\nTypeError: A.esc is not a function\n    at evalmachine.<anonymous>:1:25\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:28:70)\n    at issueDetail (evalmachine.<anonymous>:8:33)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:28:70)\n    at evalmachine.<anonymous>:3:101\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)"
+  },
+  {
+   "id": "REQ-6-4#contract-1",
+   "status": "error",
+   "calls": {
+    "reviewerOptions": 1,
+    "ui": 1,
+    "S": 3,
+    "users": 1,
+    "esc": 1
+   },
+   "assertions": 0,
+   "phase": "check",
+   "error_name": "TypeError",
+   "message": "A.esc is not a function",
+   "error": "evalmachine.<anonymous>:1\n\"use strict\"; ((s) => A.esc(s))\n                        ^\n\nTypeError: A.esc is not a function\n    at evalmachine.<anonymous>:1:25\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:28:70)\n    at evalmachine.<anonymous>:6:177\n    at Array.map (<anonymous>)\n    at reviewerOptions (evalmachine.<anonymous>:6:23)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:28:70)\n    at evalmachine.<anonymous>:3:170\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)"
+  },
+  {
+   "id": "REQ-2-3#contract-1",
+   "status": "error",
+   "calls": {
+    "manageAccess": 1,
+    "ui": 1,
+    "S": 3,
+    "uname": 1,
+    "userById": 1,
+    "byId": 1,
+    "users": 1,
+    "esc": 1
+   },
+   "assertions": 0,
+   "phase": "check",
+   "error_name": "TypeError",
+   "message": "A.esc is not a function",
+   "error": "evalmachine.<anonymous>:1\n\"use strict\"; ((s) => A.esc(s))\n                        ^\n\nTypeError: A.esc is not a function\n    at evalmachine.<anonymous>:1:25\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:28:70)\n    at evalmachine.<anonymous>:10:32\n    at Array.map (<anonymous>)\n    at manageAccess (evalmachine.<anonymous>:5:25)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:28:70)\n    at evalmachine.<anonymous>:3:101\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)"
+  },
+  {
+   "id": "REQ-6-5#contract-1",
+   "status": "error",
+   "calls": {
+    "confirmMerge": 1,
+    "repoById": 0
+   },
+   "assertions": 0,
+   "phase": "check",
+   "error_name": "TypeError",
+   "message": "Cannot read properties of undefined (reading 'dataset')",
+   "error": "evalmachine.<anonymous>:2\n        const repo = repoById(el.dataset.id);\n                                 ^\n\nTypeError: Cannot read properties of undefined (reading 'dataset')\n    at evalmachine.<anonymous>:2:34\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:28:70)\n    at evalmachine.<anonymous>:3:150\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)"
+  }
+ ],
+ "probes": [
+  {
+   "id": "REQ-5-3-1#contract-1",
+   "requirement": "REQ-5-3-1",
+   "explanation": "REQ-5-3-1 allows the Assignees settings control only for Triage, Maintain, or Admin and states controls are unavailable to users without the role; the seeded repository grants carol-reader only Read. issueDetail renders the data-action=\"open-assignees\" button unconditionally outside any canTriage guard, so a Read-only viewer is offered the control. Setup now stubs A.esc (the app delegates esc to window.ARC.esc, a rendering helper not otherwise supplied by the runner) so the observation is not lost to a missing fixture helper; a Triage control render is included to prove the fixture and role selection are valid.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "issueDetail",
+     "kind": "function",
+     "alias": "issueDetail"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "issueDetail",
+   "setup": "window.ARC = window.ARC || {}; const A = window.ARC; A.state = JSON.parse(JSON.stringify(window.SEED)); A.state.session = 'u-carol'; A.state.ui = {}; A.esc = function (s) { return String(s == null ? '' : s); }; A.save = function () {}; A.render = function () {}; A.navigate = function () {};",
+   "precondition": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const grant = (repo.grants || []).find(function(g){return g.subjectType === 'user' && g.subjectId === 'u-carol';}); assert.strictEqual(grant && grant.role, 'Read'); const org = window.ARC.state.orgs.find(function(o){return o.id === repo.ownerId;}); assert.ok(!(org.members || []).some(function(m){return m.userId === 'u-carol' && m.role === 'Owner';})); assert.ok((repo.issues || []).some(function(i){return i.num === 1;}));",
+   "check": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); assert.ok(issueDetail(repo, 'Triage', 1).indexOf('data-action=\"open-assignees\"') !== -1, 'fixture: Triage control missing'); assert.ok(issueDetail(repo, 'Read', 1).indexOf('data-action=\"open-assignees\"') === -1, 'Read-only viewer is rendered the Assignees control');",
+   "requirement_text": "Only a signed-in user with Triage, Maintain, or Admin may click the settings icon in the “Assignees” area on the right side of an issue, search for and check assignable members, or uncheck selected members and close the menu. Matching assignee options update as the user types in the search textbox; pressing Enter or activating a separate search button is not required before selecting an option. Assignable members are accounts that have at least Triage permission on the current repository; the system stores the issue-account relationship, operator, and time and records an activity, while non-assignable users do not appear in results. The settings icon is a button named “Assignees”; the open selector contains a textbox named “Search assignees” and items with role option named exactly after the member username. Seed data provides an eligible member not initially assigned to the target issue. Clicking the member option immediately saves the assignment and closes the selector without a separate Save action; the exact username is visible in metadata and remains after reload. Reopening Assignees shows the selected member without requiring another search; clicking that option again immediately removes the assignment and closes the selector so the username is no longer displayed as an assignee. Historical assignment and unassignment activities remain historical records. Unassignment only deletes that issue relationship and does not delete the member account or repository grant; controls are unavailable to users without the role and the server rejects their submissions. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-5-1-2 (View an Issue and Its Discussion); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-6-4#contract-1",
+   "requirement": "REQ-6-4",
+   "explanation": "REQ-6-4 requires a candidate reviewer to have Write, Maintain, or Admin on the repository. reviewerOptions filters only by author and existing requests, never by repository permission, so carol-reader (granted Read) is offered and selectable as a reviewer. Setup now stubs the A.esc rendering helper so the selection list is actually produced; the eligible Write user dave-dev is asserted present as a valid control.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "reviewerOptions",
+     "kind": "function",
+     "alias": "reviewerOptions"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "reviewerOptions",
+   "setup": "window.ARC = window.ARC || {}; const A = window.ARC; A.state = JSON.parse(JSON.stringify(window.SEED)); A.state.session = 'u-alice'; A.state.ui = {}; A.esc = function (s) { return String(s == null ? '' : s); }; A.save = function () {}; A.render = function () {};",
+   "precondition": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = (repo.pulls || []).find(function(p){return p.num === 1;}); assert.ok(pr); assert.strictEqual(pr.status, 'Open'); assert.strictEqual(pr.author, 'u-alice'); assert.deepStrictEqual(pr.requestedReviewers, []); const carol = (repo.grants || []).find(function(g){return g.subjectType === 'user' && g.subjectId === 'u-carol';}); assert.strictEqual(carol && carol.role, 'Read'); const dave = (repo.grants || []).find(function(g){return g.subjectType === 'user' && g.subjectId === 'u-dave';}); assert.strictEqual(dave && dave.role, 'Write');",
+   "check": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = (repo.pulls || []).find(function(p){return p.num === 1;}); const out = reviewerOptions(repo, pr); assert.ok(out.indexOf('dave-dev') !== -1, 'fixture: eligible Write reviewer missing'); assert.ok(out.indexOf('carol-reader') === -1, 'Read-only user is offered as a reviewer');",
+   "requirement_text": "The Reviewers button opens a picker with a textbox named Search. Typing an eligible username immediately reveals an option with that exact accessible name. Selecting the option saves the request immediately without a separate Save action, closes the picker, and displays the username in the reviewer area; it remains after reload. Each requested reviewer has a button named Remove followed by a space and the username; clicking it immediately removes the request and the username from that area, without a confirmation step. The seed PR is Open, belongs to the signed-in author, and initially has no request or submitted review from the eligible target reviewer; the target is a distinct non-author collaborator with Write or higher permission. Removing a request persists across reload. A “reviewer request” is a pending-review relationship between a PR and a candidate reviewer account, displayed in the Reviewers area on the right side of the PR detail page; it is not the same as a submitted review decision. The author of an Open or Draft PR, Maintain, Admin, or organization Owner may create or delete this relationship. Matching reviewer options update as the user types in the search textbox; pressing Enter or activating a separate search button is not required before selecting an option. A candidate reviewer must have Write, Maintain, or Admin on the repository and must not be the PR author; the system stores or deletes the “PR-reviewer request” relationship together with the operator and time. Removing a request does not delete reviews, comments, or activity records already submitted by that user and does not change the user's effective review decision. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-2-3 (Create a Pull Request from Comparison Results) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-2-3#contract-1",
+   "requirement": "REQ-2-3",
+   "explanation": "REQ-2-3 permits granting a repository role only to an organization Owner or repository Admin. manageAccess computes admin as role === 'Admin' || role === 'Maintain', so a repository Maintain collaborator is rendered the \"Add people or teams\" picker. The fixture gives bob-reviewer a direct Maintain grant on the public org repo (he is an ordinary org Member, not Owner), and an Admin render is asserted as the valid control.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "manageAccess",
+     "kind": "function",
+     "alias": "manageAccess"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "manageAccess",
+   "setup": "window.ARC = window.ARC || {}; const A = window.ARC; A.state = JSON.parse(JSON.stringify(window.SEED)); A.state.session = 'u-bob'; A.state.ui = {}; A.esc = function (s) { return String(s == null ? '' : s); }; A.save = function () {}; A.render = function () {}; const repo = A.state.repos.find(function(r){return r.id === 'r-acme-docs';}); repo.grants = repo.grants || []; repo.grants.push({ subjectType: 'user', subjectId: 'u-bob', role: 'Maintain' });",
+   "precondition": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const g = (repo.grants || []).find(function(x){return x.subjectType === 'user' && x.subjectId === 'u-bob';}); assert.ok(g && g.role === 'Maintain'); const org = window.ARC.state.orgs.find(function(o){return o.id === repo.ownerId;}); assert.ok(!(org.members || []).some(function(m){return m.userId === 'u-bob' && m.role === 'Owner';}));",
+   "check": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); assert.ok(manageAccess(repo, 'Admin').indexOf('data-action=\"open-access-picker\"') !== -1, 'fixture: Admin grant control missing'); assert.ok(manageAccess(repo, 'Maintain').indexOf('data-action=\"open-access-picker\"') === -1, 'Maintain-role collaborator is offered the grant picker');",
+   "requirement_text": "From the repository's “Settings” link, open the “Manage access” link and activate “Add people or teams”. The picker presents a textbox “Search”, a matching selectable team option whose name contains the team name, a combobox “Role” with clickable role options including “Write”, and an “Add” button. While the picker is active, hide the opening Add people or teams button from the active view so the submit action is unambiguous. After saving, the authorization list visibly shows the exact team name and Write role and retains the team after reload. Existing grants appear as rows whose accessible names include the subject name; each row contains a native select labeled “Role” and a “Save” button. Selecting the option labeled “Read” and saving replaces Write; after reload exactly one row for the team remains and contains Read. The creation scenario supplies a repository Admin and an organization team not yet granted access; the replacement scenario supplies a separate repository/team with an existing Write grant. An organization Owner or repository Admin may grant a repository role of Read, Triage, Write, Maintain, or Admin to a current organization member or team. In the access-subject picker, matching member or team options update as the administrator types; pressing Enter or activating a separate search button is not required before selecting an option. A private repository is accessible only to an organization Owner, a member with a direct repository role, or a direct member of a team that has a repository role; an ordinary organization Member has no default private-repository access. For a given subject and repository, only one direct role grant is stored — saving the same role again does not create a second record, and changing the role replaces the original role. An account's effective repository role is the highest among Admin from Owner status and all still-valid direct grants and team grants; team hierarchy does not propagate membership or authorization. The system stores the authorization subject, repository, role, grantor, and timestamp and authorizes operations according to the ROOT role matrix; unauthorized accounts cannot see private repositories. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-2-1-2 (Create an Organization After Authentication) and REQ-2-2-1 (Create an Organization Team); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-6-5#contract-1",
+   "requirement": "REQ-6-5",
+   "explanation": "REQ-6-5 requires that before confirmation the system reread and enforce branch-protection rules and that, if any condition is unsatisfied, neither the target branch nor the PR changes. The confirm-merge handler unconditionally sets status to Merged with no protection recheck. Fixture: the actor alice-dev is Owner of the owning organization (Admin, so permitted to merge); seeded PR 3 (base main, compare draft-feature) is moved to Open, targets protected main (requireApproval + requireCheck), and has no non-author approval and test status pending, so it is a blocked-but-otherwise-eligible PR. The corrected check passes the action's real argument shape { el: { dataset } }, which the previous invocation omitted.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "confirm-merge",
+     "kind": "method",
+     "alias": "confirmMerge"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "confirmMerge",
+   "setup": "window.ARC = window.ARC || {}; const A = window.ARC; A.state = JSON.parse(JSON.stringify(window.SEED)); A.state.session = 'u-alice'; A.state.ui = {}; A.esc = function (s) { return String(s == null ? '' : s); }; A.save = function () {}; A.render = function () {}; A.notify = function () {}; const repo = A.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = repo.pulls.find(function(p){return p.num === 3;}); pr.status = 'Open';",
+   "precondition": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const org = window.ARC.state.orgs.find(function(o){return o.id === repo.ownerId;}); assert.ok((org.members || []).some(function(m){return m.userId === 'u-alice' && m.role === 'Owner';})); assert.ok((repo.protection || []).some(function(x){return x.branch === 'main' && x.requireApproval && x.requireCheck;})); const pr = repo.pulls.find(function(p){return p.num === 3;}); assert.strictEqual(pr.status, 'Open'); assert.strictEqual(pr.base, 'main'); assert.strictEqual(pr.compare, 'draft-feature'); assert.ok(!(pr.reviews || []).some(function(r){return r.decision === 'Approved' && r.reviewer !== pr.author;})); assert.ok(!(pr.checks && pr.checks.test && pr.checks.test.status === 'success'));",
+   "check": "const repo = window.ARC.state.repos.find(function(r){return r.id === 'r-acme-docs';}); const pr = repo.pulls.find(function(p){return p.num === 3;}); confirmMerge({ el: { dataset: { id: 'r-acme-docs', num: '3' } } }); assert.notStrictEqual(pr.status, 'Merged', 'Blocked pull request was merged without the required approval and test success');",
+   "requirement_text": "On an eligible PR, Merge pull request and then Confirm merge are buttons; confirming displays Merged, and that state remains after reload. A blocked PR keeps a visible disabled Merge pull request button and explains its unmet review or protection condition before any click. Seed data supplies a Maintain account and separate Open PRs for success and refusal. The eligible PR targets protected main, has a current non-author approval and test: success, and has no conflicts. The blocked PR targets a protected branch and lacks the required valid approval; its disabled button is accompanied by Review required by branch protection. Each seed state is restored independently before reuse. “Merge” is the only write operation that writes the current compare commit's changes from an Open PR into the base branch; it is not simply marking the PR as complete. Only Maintain, Admin, or organization Owner may merge from the PR detail page using the sole supported “Create a merge commit” method; the merge confirmation area should display satisfied and unsatisfied conditions. Before confirmation, the system rereads the target branch head, current compare commit, merge-conflict state, and protection rules — there must be no valid Request changes; if the target is protected, each enabled rule requirement is enforced independently, requiring 1 valid non-author Approve for the current compare commit when Require 1 approval is enabled and requiring `test` success when Require status check test is enabled. An unprotected target has no additional approval-count or check-success requirement, but merging still requires no merge conflicts and no valid Request changes review. After validation succeeds, the system atomically creates a merge commit whose parents are the target-branch head at merge time and the current compare commit, updates the target-branch head, sets the PR to Merged, and stores the merger, time, and resulting commit identifier. If any condition is unsatisfied or persistence fails, the page explains the applicable reason and neither the target branch nor PR changes; a missing required approval displays “Review required by branch protection”. Merged is terminal. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-4 (Submit a Pull Request Review) and REQ-6-1 (Protect Branches with Review and Status-Check Requirements); it must reuse that context and keep pages and data consistent after the context changes."
+  }
+ ],
+ "source_hashes": {
+  "frontend/public/app.js": "475d75641f9a22f55b75810816d0ff4b7cf3712ba3bfae880013eb96dac88664",
+  "frontend/public/seed.js": "3887e7908514d22046e1beb66822e5b2ae88d63b3f4426da5732714c919e9c2a"
+ },
+ "validation": [
+  {
+   "id": "REQ-5-3-1#contract-1",
+   "status": "fail",
+   "calls": {
+    "issueDetail": 2,
+    "issueOf": 2,
+    "canWriteRole": 2,
+    "canTriageRole": 2,
+    "ui": 4,
+    "S": 18,
+    "esc": 34,
+    "uname": 10,
+    "userById": 10,
+    "byId": 10,
+    "users": 10
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Read-only viewer is rendered the Assignees control",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: Read-only viewer is rendered the Assignees control\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:220\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-6-4#contract-1",
+   "status": "fail",
+   "calls": {
+    "reviewerOptions": 1,
+    "ui": 1,
+    "S": 3,
+    "users": 1,
+    "esc": 3
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Read-only user is offered as a reviewer",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: Read-only user is offered as a reviewer\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:291\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-2-3#contract-1",
+   "status": "fail",
+   "calls": {
+    "manageAccess": 2,
+    "ui": 2,
+    "S": 10,
+    "uname": 6,
+    "userById": 6,
+    "byId": 6,
+    "users": 6,
+    "esc": 36
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Maintain-role collaborator is offered the grant picker",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: Maintain-role collaborator is offered the grant picker\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:226\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-6-5#contract-1",
+   "status": "fail",
+   "calls": {
+    "confirmMerge": 1,
+    "repoById": 1,
+    "byId": 1,
+    "repos": 1,
+    "S": 3,
+    "pullOf": 1,
+    "ui": 1
+   },
+   "assertions": 1,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Blocked pull request was merged without the required approval and test success",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Blocked pull request was merged without the required approval and test success\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:225\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/agent/contract_runner.cjs:42:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  }
+ ]
+}

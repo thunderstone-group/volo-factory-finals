@@ -1,0 +1,17 @@
+{
+  "submission_id": "f56d97c2fdb1",
+  "run_id": "4666c04f629e",
+  "task": "hackathon--github",
+  "status": "QUEUED",
+  "model": "deepseek-v4-flash-vision-exp",
+  "same_agent_package": true,
+  "known_package_sha256": "8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a",
+  "previous_github_run": "583ef28ff0bc",
+  "previous_github_passed": 18,
+  "retained_sheet_run": "9d673d2969ed",
+  "retained_sheet_passed": 80,
+  "input_change": "Full GitHub requirements updated; descriptions changed in 40/47 atomic nodes, scenarios in 46/47.",
+  "new_requirements_sha256": "9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8",
+  "formal_balance_before": 215.263572,
+  "purpose": "Test refreshed public input with unchanged agent; reuse submission best-per-task scoring, no new upload."
+}

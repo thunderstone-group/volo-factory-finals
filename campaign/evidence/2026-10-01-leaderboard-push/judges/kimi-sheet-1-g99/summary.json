@@ -1,0 +1,14 @@
+{
+  "app": "kimi-sheet-1",
+  "judge": "g99",
+  "counts": {
+    "pass": 29,
+    "fail": 39,
+    "error": 36
+  },
+  "seconds": 430.6,
+  "coverage": {
+    "total": 100,
+    "parsed": 68
+  }
+}

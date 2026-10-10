@@ -1,0 +1,335 @@
+// Generated from src/prelude.cjs + src/22-REQ-3-1-2.body.cjs by build.sh
+const { test, expect } = require('@playwright/test');
+const fs = require('fs');
+
+// ---------------------------------------------------------------------------
+// Shared helpers (the same block is repeated in every sheet-A spec file).
+// Locators follow the requirement text: role + exact accessible name.
+// ---------------------------------------------------------------------------
+const uniq = () => `${Date.now().toString(36)}${Math.floor(Math.random() * 46656).toString(36)}`;
+
+const grid = (page) => page.getByRole('grid', { name: 'Worksheet grid', exact: true });
+const cell = (page, ref) => page.getByRole('gridcell', { name: ref, exact: true });
+const formulaBar = (page) => page.getByRole('textbox', { name: 'Formula bar', exact: true });
+const tab = (page, name) => page.getByRole('tab', { name, exact: true });
+const btn = (scope, name) => scope.getByRole('button', { name, exact: true });
+const menuItem = (page, name) => page.getByRole('menuitem', { name, exact: true });
+const dialog = (page, name) => page.getByRole('dialog', { name, exact: true });
+const link = (page, name) => page.getByRole('link', { name, exact: true });
+const heading = (page, name) => page.getByRole('heading', { name, exact: true });
+const message = (page, text) => page.getByText(text, { exact: true });
+
+// Home page -> "New blank workbook" -> creation page -> "Create" -> editor.
+// With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+async function createWorkbook(page, name) {
+  await page.goto('/');
+  await btn(page, 'New blank workbook').click();
+  await btn(page, 'Create').click();
+  await expect(cell(page, 'A1')).toBeVisible();
+  if (name) await renameWorkbook(page, name);
+}
+
+async function renameWorkbook(page, name) {
+  await btn(page, 'Rename workbook').click();
+  const box = page.getByRole('textbox', { name: 'Workbook name', exact: true });
+  await box.fill(name);
+  await btn(page, 'Save').click();
+  await expect(box).toBeHidden();
+}
+
+// "Reopen": back to the application entry point, then click the workbook link.
+async function reopenFromHome(page, name) {
+  await page.goto('/');
+  await link(page, name).click();
+  await expect(cell(page, 'A1')).toBeVisible();
+}
+
+// Select a cell, type into the labelled formula bar, commit with Enter.
+async function setCell(page, ref, value) {
+  await cell(page, ref).click();
+  const bar = formulaBar(page);
+  await bar.fill(value);
+  await bar.press('Enter');
+}
+
+async function setCells(page, pairs) {
+  for (const [ref, value] of pairs) await setCell(page, ref, value);
+}
+
+// Double-click a grid cell, type into the inline editor "Edit <ref>", commit with Enter.
+async function editInGrid(page, ref, value) {
+  await cell(page, ref).dblclick();
+  const editor = page.getByRole('textbox', { name: `Edit ${ref}`, exact: true });
+  await editor.fill(value);
+  await editor.press('Enter');
+  await expect(editor).toBeHidden();
+}
+
+async function expectCells(page, expected) {
+  for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+}
+
+async function expectFormula(page, ref, value) {
+  await cell(page, ref).click();
+  await expect(formulaBar(page)).toHaveValue(value);
+}
+
+// Drag from one corner cell to the diagonally opposite cell (mouse down on the first cell, move over the grid,
+// mouse up on the second; Playwright scrolls each end into view before pressing / releasing).
+async function selectRange(page, from, to) {
+  if (from === to) {
+    await cell(page, from).click();
+    return;
+  }
+  await cell(page, from).dragTo(cell(page, to), { steps: 5 });
+}
+
+// Every cell in `inside` is selected, every cell in `outside` is explicitly not selected,
+// and nothing else in the grid is selected.
+async function expectSelection(page, inside, outside) {
+  for (const ref of inside) await expect(cell(page, ref)).toHaveAttribute('aria-selected', 'true');
+  for (const ref of outside) await expect(cell(page, ref)).toHaveAttribute('aria-selected', 'false');
+  await expect(page.getByRole('gridcell', { selected: true })).toHaveCount(inside.length);
+}
+
+async function addWorksheet(page, expectedName) {
+  await btn(page, 'Add worksheet').click();
+  await expect(tab(page, expectedName)).toHaveAttribute('aria-selected', 'true');
+}
+
+async function switchTo(page, name) {
+  await tab(page, name).click();
+  await expect(tab(page, name)).toHaveAttribute('aria-selected', 'true');
+}
+
+async function sheetMenu(page, sheet, command) {
+  await btn(page, `Worksheet options for ${sheet}`).click();
+  await menuItem(page, command).click();
+}
+
+async function renameSheet(page, from, to) {
+  await sheetMenu(page, from, 'Rename');
+  const dlg = dialog(page, 'Rename worksheet');
+  await dlg.getByRole('textbox', { name: 'Worksheet name', exact: true }).fill(to);
+  await btn(dlg, 'Save').click();
+}
+
+async function dataMenu(page, command) {
+  await btn(page, 'Data').click();
+  await menuItem(page, command).click();
+}
+
+// Named combo box: a native <select> is driven with selectOption, a custom combo box by clicking the option.
+async function choose(page, scope, label, option) {
+  const combo = scope.getByRole('combobox', { name: label, exact: true });
+  if (await combo.evaluate((el) => el.tagName === 'SELECT')) {
+    await combo.selectOption({ label: option });
+  } else {
+    await combo.click();
+    await page.getByRole('option', { name: option, exact: true }).click();
+  }
+}
+
+async function addNumberRule(page, from, to, min, max) {
+  await selectRange(page, from, to);
+  await dataMenu(page, 'Data validation');
+  const dlg = dialog(page, 'Data validation');
+  await choose(page, dlg, 'Rule type', 'Number range');
+  await dlg.getByRole('textbox', { name: 'Minimum', exact: true }).fill(String(min));
+  await dlg.getByRole('textbox', { name: 'Maximum', exact: true }).fill(String(max));
+  await btn(dlg, 'Save').click();
+  await expect(dlg).toBeHidden();
+}
+
+async function addDropdownRule(page, from, to, allowed) {
+  await selectRange(page, from, to);
+  await dataMenu(page, 'Data validation');
+  const dlg = dialog(page, 'Data validation');
+  await choose(page, dlg, 'Rule type', 'Dropdown');
+  await dlg.getByRole('textbox', { name: 'Allowed values', exact: true }).fill(allowed);
+  await btn(dlg, 'Save').click();
+  await expect(dlg).toBeHidden();
+}
+
+// Select the source range, create the pivot on a new worksheet (Pivot1) and apply the field layout.
+async function createPivot(page, from, to, fields) {
+  await selectRange(page, from, to);
+  await dataMenu(page, 'Create pivot table');
+  const dlg = dialog(page, 'Create pivot table');
+  await expect(dlg.getByText(`Source range: ${from}:${to}`, { exact: true })).toBeVisible();
+  await dlg.getByRole('radio', { name: 'New worksheet', exact: true }).check();
+  await btn(dlg, 'Create').click();
+  await expect(dlg).toBeHidden();
+  await tab(page, 'Pivot1').click();
+  const editor = page.getByRole('region', { name: 'Pivot table editor', exact: true });
+  await choose(page, editor, 'Rows', fields.rows);
+  if (fields.columns) await choose(page, editor, 'Columns', fields.columns);
+  await choose(page, editor, 'Values', fields.values);
+  await choose(page, editor, 'Summarize by', fields.summarize);
+  await btn(editor, 'Apply').click();
+}
+
+// External clipboard content, as a test would provide it.
+async function putOnClipboard(page, text) {
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.evaluate((t) => navigator.clipboard.writeText(t), text);
+}
+
+// Ctrl+V as the Linux runner sends it. On macOS Chromium, Control+V is not bound to the paste command and pages
+// often expect the Meta key there, so when no page handler consumed Control+V we also press Meta+V, which Playwright
+// maps to the native paste command: the page then gets the same real paste it would get from Control+V on Linux.
+async function pressCtrlV(page) {
+  if (process.platform !== 'darwin') {
+    await page.keyboard.press('Control+V');
+    return;
+  }
+  await page.evaluate(() => {
+    window.__oracleCtrlV = 'unseen';
+    window.__oracleCtrlVListener = (e) => {
+      if (e.ctrlKey && e.code === 'KeyV') window.__oracleCtrlV = e.defaultPrevented ? 'prevented' : 'open';
+    };
+    window.addEventListener('keydown', window.__oracleCtrlVListener);
+  });
+  await page.keyboard.press('Control+V');
+  const seen = await page.evaluate(() => {
+    window.removeEventListener('keydown', window.__oracleCtrlVListener);
+    return window.__oracleCtrlV;
+  });
+  if (seen === 'open') await page.keyboard.press('Meta+V');
+}
+
+// Home page -> "Import CSV" dialog -> "CSV file" -> "Confirm import".
+async function importCsv(page, fileName, content) {
+  await page.goto('/');
+  await btn(page, 'Import CSV').click();
+  const dlg = dialog(page, 'Import CSV');
+  await expect(dlg).toBeVisible();
+  await dlg.getByLabel('CSV file', { exact: true }).setInputFiles({
+    name: fileName,
+    mimeType: 'text/csv',
+    buffer: Buffer.from(content, 'utf8'),
+  });
+  await btn(dlg, 'Confirm import').click();
+}
+
+// RFC 4180 reader: accepts CRLF or LF row ends, quoted fields, doubled quotes; a final row end adds no row.
+function parseCsv(input) {
+  const text = input.replace(/^﻿/, '');
+  const rows = [];
+  let row = [];
+  let field = '';
+  let quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; } else if (c === '"') quoted = false; else field += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ',') { row.push(field); field = ''; } else if (c === '\r' || c === '\n') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(field); rows.push(row); row = []; field = '';
+    } else field += c;
+  }
+  if (field !== '' || row.length) { row.push(field); rows.push(row); }
+  return rows.map((r) => r.map((v) => v.replace(/\r\n/g, '\n')));
+}
+
+// Toolbar "Export CSV": a browser download whose suggested name ends with .csv; returns the parsed rows.
+async function exportCsv(page) {
+  const downloading = page.waitForEvent('download');
+  await btn(page, 'Export CSV').click();
+  const download = await downloading;
+  expect(download.suggestedFilename()).toMatch(/\.csv$/);
+  return parseCsv(fs.readFileSync(await download.path(), 'utf8'));
+}
+// ---------------------------------------------------------------------------
+
+// REQ-3-1-2 Paste Two-Dimensional Table Data (external clipboard, Ctrl+V or grid context menu "Paste")
+
+test('REQ-3-1-2 S1: 从 B2 原子粘贴二维表格，保留空字段和矩形外数据', async ({ page }) => {
+  await createWorkbook(page);
+  await setCells(page, [['A1', 'Outside'], ['E4', 'Keep']]);
+  await expectCells(page, { A1: 'Outside', E4: 'Keep' });
+
+  await putOnClipboard(page, 'Alpha\t\t3\nBeta\tTwo\t4');
+  await cell(page, 'B2').click();
+  await pressCtrlV(page);
+
+  const expected = {
+    B2: 'Alpha', C2: '', D2: '3',
+    B3: 'Beta', C3: 'Two', D3: '4',
+    A1: 'Outside', E4: 'Keep', E2: '', B4: '', A2: '',
+  };
+  await expectCells(page, expected);
+  await page.reload();
+  await expectCells(page, expected);
+});
+
+test('REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态', async ({ page }) => {
+  await createWorkbook(page);
+  await setCells(page, [['B1', 'Name'], ['C1', 'Score'], ['B2', 'Ann'], ['C2', '10'], ['B3', 'Bob'], ['C3', '20']]);
+  await expect(cell(page, 'C3')).toHaveText('20');
+  await addNumberRule(page, 'C2', 'C3', 0, 100);
+
+  // C3 would receive 101, outside 0..100: the whole rectangle B2:C3 is rejected.
+  await putOnClipboard(page, 'Cat\t50\nDan\t101');
+  await cell(page, 'B2').click();
+  await pressCtrlV(page);
+
+  await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+  const original = { B2: 'Ann', C2: '10', B3: 'Bob', C3: '20' };
+  await expectCells(page, original);
+  await page.reload();
+  await expectCells(page, original);
+  await expect(page.getByRole('gridcell').filter({ hasText: /^(Cat|Dan)$/ })).toHaveCount(0);
+});
+
+test('REQ-3-1-2 S3: 右键粘贴替换目标公式并重算依赖项', async ({ page }) => {
+  await createWorkbook(page);
+  await setCells(page, [['A1', '5'], ['B1', '=A1*2'], ['C1', '=B1+1']]);
+  await expectCells(page, { B1: '10', C1: '11' });
+
+  await putOnClipboard(page, '7');
+  await cell(page, 'B1').click();
+  await cell(page, 'B1').click({ button: 'right' });
+  await menuItem(page, 'Paste').click();
+
+  await expectCells(page, { A1: '5', B1: '7', C1: '8' });
+  await expectFormula(page, 'B1', '7');
+  await page.reload();
+  await expectCells(page, { A1: '5', B1: '7', C1: '8' });
+  await expectFormula(page, 'B1', '7');
+  await expectFormula(page, 'C1', '=B1+1');
+});
+
+test('REQ-3-1-2 S4: 从 A1 粘贴单行表格并保持外部单元格不变', async ({ page }) => {
+  await createWorkbook(page);
+  await setCells(page, [['A2', 'Below'], ['D1', 'Right']]);
+  await expectCells(page, { A2: 'Below', D1: 'Right' });
+
+  await putOnClipboard(page, 'East\t1200\tOpen');
+  await cell(page, 'A1').click();
+  await pressCtrlV(page);
+
+  const expected = { A1: 'East', B1: '1200', C1: 'Open', D1: 'Right', A2: 'Below', B2: '', C2: '' };
+  await expectCells(page, expected);
+  await page.reload();
+  await expectCells(page, expected);
+});
+
+test('REQ-3-1-2 S5: 从 C3 粘贴两行两列表格并保留源外内容', async ({ page }) => {
+  await createWorkbook(page);
+  await setCells(page, [['C2', 'Above'], ['B3', 'Left'], ['E3', 'Right'], ['C5', 'Below']]);
+  await expectCells(page, { C2: 'Above', B3: 'Left', E3: 'Right', C5: 'Below' });
+
+  await putOnClipboard(page, 'North\t800\nSouth\t500');
+  await cell(page, 'C3').click();
+  await pressCtrlV(page);
+
+  const expected = {
+    C3: 'North', D3: '800', C4: 'South', D4: '500',
+    C2: 'Above', B3: 'Left', E3: 'Right', C5: 'Below', B4: '', E4: '', D2: '', D5: '',
+  };
+  await expectCells(page, expected);
+  await page.reload();
+  await expectCells(page, expected);
+});

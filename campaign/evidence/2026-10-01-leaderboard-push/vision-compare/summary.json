@@ -1,0 +1,9 @@
+{
+  "status": "failed",
+  "error": "RuntimeError: model stream failed (StreamError)",
+  "model": "deepseek-v4-flash-vision-exp",
+  "seconds": 232.6,
+  "estimated_cost_cny": 0.124903,
+  "baseline_model": "deepseek-v4-flash",
+  "baseline_seconds": 348.484
+}

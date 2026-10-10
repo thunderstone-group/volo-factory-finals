@@ -1,0 +1,16 @@
+{
+  "app": "official-github-27",
+  "selected": [
+    "REQ-6-1#2",
+    "REQ-6-3-3",
+    "REQ-6-3-3#2",
+    "REQ-6-3-4",
+    "REQ-6-3-4#2",
+    "REQ-6-5",
+    "REQ-6-6#2"
+  ],
+  "counts": {
+    "fail": 7
+  },
+  "seconds": 41.3
+}

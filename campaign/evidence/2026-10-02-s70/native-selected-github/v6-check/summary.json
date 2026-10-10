@@ -1,0 +1,11 @@
+{
+  "app": "github",
+  "judge": "v6",
+  "counts": {
+    "pass": 109,
+    "fail": 2
+  },
+  "seconds": 46.8,
+  "model_api_calls": 0,
+  "unavailable": null
+}

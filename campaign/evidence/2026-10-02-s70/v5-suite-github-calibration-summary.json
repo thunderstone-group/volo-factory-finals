@@ -1,0 +1,22 @@
+[
+  {
+    "application": "official-github-refreshed",
+    "official_full_score": 46,
+    "counts": {
+      "pass": 85,
+      "fail": 10,
+      "error": 6
+    },
+    "seconds": 79.5
+  },
+  {
+    "application": "home-native-repair-github",
+    "official_full_score": null,
+    "counts": {
+      "pass": 92,
+      "fail": 7,
+      "error": 1
+    },
+    "seconds": 67.0
+  }
+]

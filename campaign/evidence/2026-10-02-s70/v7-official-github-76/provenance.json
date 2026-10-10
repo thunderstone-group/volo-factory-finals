@@ -1,0 +1,22 @@
+{
+  "run_id": "c5e4493bad81",
+  "formal_result": {
+    "passed": 76,
+    "total": 100
+  },
+  "archive_sha256": "8887cf96cb400734686b743cfe4e582e2417e744dce352a20435e0c1592107b6",
+  "prefix": "template/",
+  "files_extracted": [
+    "backend/package-lock.json",
+    "backend/package.json",
+    "backend/server.js",
+    "frontend/package-lock.json",
+    "frontend/package.json",
+    "frontend/public/app.js",
+    "frontend/public/index.html",
+    "frontend/public/lib/arc.js",
+    "frontend/public/seed.js",
+    "frontend/public/styles.css"
+  ],
+  "scope": "Own frontend and backend only; evaluator files were not opened"
+}

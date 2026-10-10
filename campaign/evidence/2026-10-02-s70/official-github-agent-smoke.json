@@ -1,0 +1,1032 @@
+{
+  "executed": true,
+  "problems": [
+    "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Add comment\" shares comment with a field label",
+    "10 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"commit history\", \"code search\", \"no-such-token\", \"Create branch: feature/api-v2\", \"Branch <new default branch name>\", \"Add <file name>\", \"must not be saved\", \"docs/guide.md\", \"reviewer request\", \"PR-reviewer request\""
+  ],
+  "vocabulary_missing": 10,
+  "scenarios": {
+    "counts": {
+      "pass": 84,
+      "error": 4,
+      "fail": 16
+    },
+    "coverage": {
+      "total": 100,
+      "parsed": 96
+    },
+    "seconds": 159.9,
+    "source_contracts": {
+      "fail": 4
+    },
+    "failing": [
+      {
+        "id": "REQ-4-3-3#2",
+        "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+      },
+      {
+        "id": "REQ-5-1-1",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Open', exact: true }).first()\n\n\n  31 |\n  32 |   // Open filter still known title\n> 33 |   await page.getByRole('link', { name: 'Open', exact: true }).first().click();\n     |                                                                       ^\n  34 |   const search = page.getByRole('searchb"
+      },
+      {
+        "id": "REQ-5-1-1#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Closed', exact: true }).first()\n\n\n  65 |   await gotoAcme(page);\n  66 |\n> 67 |   await page.getByRole('link', { name: 'Closed', exact: true }).first().click();\n     |                                                                         ^\n  68 |   const search = page.getByRole('searchbox', "
+      },
+      {
+        "id": "REQ-5-1-2",
+        "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'Improve onboarding', exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  15 |   await gotoAcme(page);\n  16 |   const titleLink = page.getBy"
+      },
+      {
+        "id": "REQ-5-1-2#2",
+        "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Open', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Open', { exact: true }).first()\n\n\n  106 |   await page.waitForLoadState('domcontentloaded');\n  107 |\n> 108 |   await expect(page.getByText('Open', { exact: tr"
+      },
+      {
+        "id": "REQ-5-2-1",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  134 |\n  135 |   // Invalid: title only spaces\n> 136 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  137 |   const titleField = page.getByLabel('Title', {"
+      },
+      {
+        "id": "REQ-5-2-1#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  157 |   await gotoAcme(page);\n  158 |\n> 159 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  160 |   const titleField = page.getByLabel('Title', { exact: "
+      },
+      {
+        "id": "REQ-5-2-2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  176 |   const unique = u();\n  177 |   await gotoAcme(page);\n> 178 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  179 |   await page.getByLabel('Title', "
+      },
+      {
+        "id": "REQ-5-2-2#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  208 |   const original = 'pw-blank-' + unique;\n  209 |   await gotoAcme(page);\n> 210 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  211 |   await page.g"
+      },
+      {
+        "id": "REQ-5-2-3",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  231 |   const unique = u();\n  232 |   await gotoAcme(page);\n> 233 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  234 |   await page.getByLabel('Title', "
+      },
+      {
+        "id": "REQ-5-2-3#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  254 | test('REQ-5-2-3#2: REQ-5-2-3: Comment on an Issue Discussion - Scenario 2', async ({ page }) => {\n  255 |   await gotoAcme(page);\n> 256 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      | "
+      },
+      {
+        "id": "REQ-5-3-1",
+        "observation": "The test used the name 'pw-assign-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+      },
+      {
+        "id": "REQ-5-3-2",
+        "observation": "The test used the name 'pw-label-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+      },
+      {
+        "id": "REQ-5-3-3",
+        "observation": "The test used the name 'pw-milestone-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+      },
+      {
+        "id": "REQ-5-4",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  372 |   const unique = u();\n  373 |   await gotoAcme(page);\n> 374 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  375 |   await page.getByLabel('Title', "
+      },
+      {
+        "id": "REQ-5-4#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  391 | test('REQ-5-4#2: REQ-5-4: Close or Reopen an Issue - Scenario 2', async ({ page }) => {\n  392 |   await gotoAcme(page);\n> 393 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      |           "
+      },
+      {
+        "id": "REQ-6-2-3#contract-1",
+        "observation": "Expected values to be strictly equal:\n\n2 !== 1\n"
+      },
+      {
+        "id": "REQ-4-3-2#contract-2",
+        "observation": "Expected values to be strictly equal:\n\n1 !== 0\n"
+      },
+      {
+        "id": "REQ-4-4#contract-3",
+        "observation": "Expected values to be strictly equal:\n\n1 !== 0\n"
+      },
+      {
+        "id": "REQ-6-3-4#contract-4",
+        "observation": "Expected values to be strictly equal:\n\n1 !== 0\n"
+      }
+    ],
+    "invariants": [],
+    "translation": {}
+  },
+  "repair": {
+    "accepted": false,
+    "reason": "no failing scenario passes after the change"
+  },
+  "browser_before": [
+    {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Home",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Your organizations",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Agree to the terms",
+          "action": ""
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Label",
+          "action": "arc:combobox"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "GitHub",
+          "action": "arc:nav"
+        }
+      ],
+      "screens": [
+        "#/",
+        "#/signin",
+        "#/signup",
+        "#/forgot",
+        "#/org/Acme%20Demo",
+        "#/repo/Acme%20Demo/acme-docs",
+        "#/repo/alice-dev/acme-docs-fork",
+        "#/orgs",
+        "#/org/Acme%20Demo/people",
+        "#/org/Acme%20Demo/teams",
+        "#/repo/Acme%20Demo/acme-docs/issues",
+        "#/repo/Acme%20Demo/acme-docs/pulls"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+    }
+  ],
+  "tests": {
+    "seconds": 761.4,
+    "calls": 6,
+    "cost_cny": 0.839258,
+    "scenarios": 100,
+    "tests": 100,
+    "audit_checks": 0,
+    "audit_errors": 0,
+    "files": [
+      {
+        "file": "t01-REQ-1.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 15
+      },
+      {
+        "file": "t02-REQ-2.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 15
+      },
+      {
+        "file": "t03-REQ-3.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 14
+      },
+      {
+        "file": "t04-REQ-4.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 15
+      },
+      {
+        "file": "t05-REQ-5.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 16
+      },
+      {
+        "file": "t06-REQ-6.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 25
+      }
+    ],
+    "mended": {
+      "broken": 3,
+      "files": [],
+      "calls": 1,
+      "cost_cny": 0.144557,
+      "counts_before": {
+        "pass": 45,
+        "fail": 34,
+        "error": 25
+      },
+      "seconds": 128.6
+    },
+    "source_contracts": 4,
+    "used": true
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "fatal": 0,
+      "failing": [
+        "REQ-5-1-1",
+        "REQ-5-1-1#2",
+        "REQ-5-1-2",
+        "REQ-5-1-2#2",
+        "REQ-5-2-1",
+        "REQ-5-2-1#2",
+        "REQ-5-2-2",
+        "REQ-5-2-2#2",
+        "REQ-5-2-3",
+        "REQ-5-2-3#2",
+        "REQ-5-4",
+        "REQ-5-4#2",
+        "REQ-6-2-3#contract-1",
+        "REQ-4-3-2#contract-2",
+        "REQ-4-4#contract-3",
+        "REQ-6-3-4#contract-4"
+      ],
+      "passing_before": 84,
+      "accepted": true,
+      "gained": [
+        "REQ-4-3-2#contract-2",
+        "REQ-4-4#contract-3",
+        "REQ-6-2-3#contract-1",
+        "REQ-6-3-4#contract-4"
+      ],
+      "reason": "4 more scenario(s) pass",
+      "scenarios": {
+        "counts": {
+          "pass": 88,
+          "error": 4,
+          "fail": 12
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 96
+        },
+        "seconds": 160.1,
+        "source_contracts": {
+          "pass": 4
+        },
+        "failing": [
+          {
+            "id": "REQ-4-3-3#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-5-1-1",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Open', exact: true }).first()\n\n\n  31 |\n  32 |   // Open filter still known title\n> 33 |   await page.getByRole('link', { name: 'Open', exact: true }).first().click();\n     |                                                                       ^\n  34 |   const search = page.getByRole('searchb"
+          },
+          {
+            "id": "REQ-5-1-1#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Closed', exact: true }).first()\n\n\n  65 |   await gotoAcme(page);\n  66 |\n> 67 |   await page.getByRole('link', { name: 'Closed', exact: true }).first().click();\n     |                                                                         ^\n  68 |   const search = page.getByRole('searchbox', "
+          },
+          {
+            "id": "REQ-5-1-2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'Improve onboarding', exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  15 |   await gotoAcme(page);\n  16 |   const titleLink = page.getBy"
+          },
+          {
+            "id": "REQ-5-1-2#2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Open', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Open', { exact: true }).first()\n\n\n  106 |   await page.waitForLoadState('domcontentloaded');\n  107 |\n> 108 |   await expect(page.getByText('Open', { exact: tr"
+          },
+          {
+            "id": "REQ-5-2-1",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  134 |\n  135 |   // Invalid: title only spaces\n> 136 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  137 |   const titleField = page.getByLabel('Title', {"
+          },
+          {
+            "id": "REQ-5-2-1#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  157 |   await gotoAcme(page);\n  158 |\n> 159 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  160 |   const titleField = page.getByLabel('Title', { exact: "
+          },
+          {
+            "id": "REQ-5-2-2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  176 |   const unique = u();\n  177 |   await gotoAcme(page);\n> 178 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  179 |   await page.getByLabel('Title', "
+          },
+          {
+            "id": "REQ-5-2-2#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  208 |   const original = 'pw-blank-' + unique;\n  209 |   await gotoAcme(page);\n> 210 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  211 |   await page.g"
+          },
+          {
+            "id": "REQ-5-2-3",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  231 |   const unique = u();\n  232 |   await gotoAcme(page);\n> 233 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  234 |   await page.getByLabel('Title', "
+          },
+          {
+            "id": "REQ-5-2-3#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  254 | test('REQ-5-2-3#2: REQ-5-2-3: Comment on an Issue Discussion - Scenario 2', async ({ page }) => {\n  255 |   await gotoAcme(page);\n> 256 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      | "
+          },
+          {
+            "id": "REQ-5-3-1",
+            "observation": "The test used the name 'pw-assign-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+          },
+          {
+            "id": "REQ-5-3-2",
+            "observation": "The test used the name 'pw-label-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+          },
+          {
+            "id": "REQ-5-3-3",
+            "observation": "The test used the name 'pw-milestone-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+          },
+          {
+            "id": "REQ-5-4",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  372 |   const unique = u();\n  373 |   await gotoAcme(page);\n> 374 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  375 |   await page.getByLabel('Title', "
+          },
+          {
+            "id": "REQ-5-4#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  391 | test('REQ-5-4#2: REQ-5-4: Close or Reopen an Issue - Scenario 2', async ({ page }) => {\n  392 |   await gotoAcme(page);\n> 393 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      |           "
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "browser_after": [
+        {
+          "executed": true,
+          "diagnostic_only": true,
+          "errors": [],
+          "page_errors": [],
+          "actions": [
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Home",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Your organizations",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Agree to the terms",
+              "action": ""
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Label",
+              "action": "arc:combobox"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            }
+          ],
+          "screens": [
+            "#/",
+            "#/signin",
+            "#/signup",
+            "#/forgot",
+            "#/org/Acme%20Demo",
+            "#/repo/Acme%20Demo/acme-docs",
+            "#/repo/alice-dev/acme-docs-fork",
+            "#/orgs",
+            "#/org/Acme%20Demo/people",
+            "#/org/Acme%20Demo/teams",
+            "#/repo/Acme%20Demo/acme-docs/issues",
+            "#/repo/Acme%20Demo/acme-docs/pulls"
+          ],
+          "browser": "143.0.7499.4",
+          "playwright": "1.57.0"
+        }
+      ],
+      "files": [
+        "frontend/public/index.html",
+        "frontend/public/seed.js",
+        "frontend/public/app.js"
+      ],
+      "replied": true,
+      "seconds": 456.0,
+      "cost_cny": 0.34728
+    },
+    {
+      "round": 2,
+      "fatal": 0,
+      "failing": [
+        "REQ-5-1-1",
+        "REQ-5-1-1#2",
+        "REQ-5-1-2",
+        "REQ-5-1-2#2",
+        "REQ-5-2-1",
+        "REQ-5-2-1#2",
+        "REQ-5-2-2",
+        "REQ-5-2-2#2",
+        "REQ-5-2-3",
+        "REQ-5-2-3#2",
+        "REQ-5-4",
+        "REQ-5-4#2"
+      ],
+      "passing_before": 88,
+      "accepted": false,
+      "gained": [],
+      "reason": "no failing scenario passes after the change",
+      "scenarios": {
+        "counts": {
+          "pass": 88,
+          "error": 4,
+          "fail": 12
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 96
+        },
+        "seconds": 157.6,
+        "source_contracts": {
+          "pass": 4
+        },
+        "failing": [
+          {
+            "id": "REQ-4-3-3#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-5-1-1",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Open', exact: true }).first()\n\n\n  31 |\n  32 |   // Open filter still known title\n> 33 |   await page.getByRole('link', { name: 'Open', exact: true }).first().click();\n     |                                                                       ^\n  34 |   const search = page.getByRole('searchb"
+          },
+          {
+            "id": "REQ-5-1-1#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Closed', exact: true }).first()\n\n\n  65 |   await gotoAcme(page);\n  66 |\n> 67 |   await page.getByRole('link', { name: 'Closed', exact: true }).first().click();\n     |                                                                         ^\n  68 |   const search = page.getByRole('searchbox', "
+          },
+          {
+            "id": "REQ-5-1-2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'Improve onboarding', exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  15 |   await gotoAcme(page);\n  16 |   const titleLink = page.getBy"
+          },
+          {
+            "id": "REQ-5-1-2#2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Open', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Open', { exact: true }).first()\n\n\n  106 |   await page.waitForLoadState('domcontentloaded');\n  107 |\n> 108 |   await expect(page.getByText('Open', { exact: tr"
+          },
+          {
+            "id": "REQ-5-2-1",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  134 |\n  135 |   // Invalid: title only spaces\n> 136 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  137 |   const titleField = page.getByLabel('Title', {"
+          },
+          {
+            "id": "REQ-5-2-1#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  157 |   await gotoAcme(page);\n  158 |\n> 159 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  160 |   const titleField = page.getByLabel('Title', { exact: "
+          },
+          {
+            "id": "REQ-5-2-2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  176 |   const unique = u();\n  177 |   await gotoAcme(page);\n> 178 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  179 |   await page.getByLabel('Title', "
+          },
+          {
+            "id": "REQ-5-2-2#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  208 |   const original = 'pw-blank-' + unique;\n  209 |   await gotoAcme(page);\n> 210 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  211 |   await page.g"
+          },
+          {
+            "id": "REQ-5-2-3",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  231 |   const unique = u();\n  232 |   await gotoAcme(page);\n> 233 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  234 |   await page.getByLabel('Title', "
+          },
+          {
+            "id": "REQ-5-2-3#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  254 | test('REQ-5-2-3#2: REQ-5-2-3: Comment on an Issue Discussion - Scenario 2', async ({ page }) => {\n  255 |   await gotoAcme(page);\n> 256 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      | "
+          },
+          {
+            "id": "REQ-5-3-1",
+            "observation": "The test used the name 'pw-assign-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+          },
+          {
+            "id": "REQ-5-3-2",
+            "observation": "The test used the name 'pw-label-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+          },
+          {
+            "id": "REQ-5-3-3",
+            "observation": "The test used the name 'pw-milestone-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+          },
+          {
+            "id": "REQ-5-4",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  372 |   const unique = u();\n  373 |   await gotoAcme(page);\n> 374 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  375 |   await page.getByLabel('Title', "
+          },
+          {
+            "id": "REQ-5-4#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  391 | test('REQ-5-4#2: REQ-5-4: Close or Reopen an Issue - Scenario 2', async ({ page }) => {\n  392 |   await gotoAcme(page);\n> 393 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      |           "
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "browser_after": [
+        {
+          "executed": true,
+          "diagnostic_only": true,
+          "errors": [],
+          "page_errors": [],
+          "actions": [
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Home",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Your organizations",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Agree to the terms",
+              "action": ""
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Label",
+              "action": "arc:combobox"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "GitHub",
+              "action": "arc:nav"
+            }
+          ],
+          "screens": [
+            "#/",
+            "#/signin",
+            "#/signup",
+            "#/forgot",
+            "#/org/Acme%20Demo",
+            "#/repo/Acme%20Demo/acme-docs",
+            "#/repo/alice-dev/acme-docs-fork",
+            "#/orgs",
+            "#/org/Acme%20Demo/people",
+            "#/org/Acme%20Demo/teams",
+            "#/repo/Acme%20Demo/acme-docs/issues",
+            "#/repo/Acme%20Demo/acme-docs/pulls"
+          ],
+          "browser": "143.0.7499.4",
+          "playwright": "1.57.0"
+        }
+      ],
+      "replied": true,
+      "seconds": 248.4,
+      "cost_cny": 0.094728
+    }
+  ],
+  "stopped": "repair call limit reached (24)",
+  "problems_after": [],
+  "scenarios_after": {
+    "counts": {
+      "pass": 88,
+      "error": 4,
+      "fail": 12
+    },
+    "coverage": {
+      "total": 100,
+      "parsed": 96
+    },
+    "seconds": 160.1,
+    "source_contracts": {
+      "pass": 4
+    },
+    "failing": [
+      {
+        "id": "REQ-4-3-3#2",
+        "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+      },
+      {
+        "id": "REQ-5-1-1",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Open', exact: true }).first()\n\n\n  31 |\n  32 |   // Open filter still known title\n> 33 |   await page.getByRole('link', { name: 'Open', exact: true }).first().click();\n     |                                                                       ^\n  34 |   const search = page.getByRole('searchb"
+      },
+      {
+        "id": "REQ-5-1-1#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Closed', exact: true }).first()\n\n\n  65 |   await gotoAcme(page);\n  66 |\n> 67 |   await page.getByRole('link', { name: 'Closed', exact: true }).first().click();\n     |                                                                         ^\n  68 |   const search = page.getByRole('searchbox', "
+      },
+      {
+        "id": "REQ-5-1-2",
+        "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'Improve onboarding', exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  15 |   await gotoAcme(page);\n  16 |   const titleLink = page.getBy"
+      },
+      {
+        "id": "REQ-5-1-2#2",
+        "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Open', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Open', { exact: true }).first()\n\n\n  106 |   await page.waitForLoadState('domcontentloaded');\n  107 |\n> 108 |   await expect(page.getByText('Open', { exact: tr"
+      },
+      {
+        "id": "REQ-5-2-1",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  134 |\n  135 |   // Invalid: title only spaces\n> 136 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  137 |   const titleField = page.getByLabel('Title', {"
+      },
+      {
+        "id": "REQ-5-2-1#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  157 |   await gotoAcme(page);\n  158 |\n> 159 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  160 |   const titleField = page.getByLabel('Title', { exact: "
+      },
+      {
+        "id": "REQ-5-2-2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  176 |   const unique = u();\n  177 |   await gotoAcme(page);\n> 178 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  179 |   await page.getByLabel('Title', "
+      },
+      {
+        "id": "REQ-5-2-2#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  208 |   const original = 'pw-blank-' + unique;\n  209 |   await gotoAcme(page);\n> 210 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  211 |   await page.g"
+      },
+      {
+        "id": "REQ-5-2-3",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  231 |   const unique = u();\n  232 |   await gotoAcme(page);\n> 233 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  234 |   await page.getByLabel('Title', "
+      },
+      {
+        "id": "REQ-5-2-3#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  254 | test('REQ-5-2-3#2: REQ-5-2-3: Comment on an Issue Discussion - Scenario 2', async ({ page }) => {\n  255 |   await gotoAcme(page);\n> 256 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      | "
+      },
+      {
+        "id": "REQ-5-3-1",
+        "observation": "The test used the name 'pw-assign-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+      },
+      {
+        "id": "REQ-5-3-2",
+        "observation": "The test used the name 'pw-label-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+      },
+      {
+        "id": "REQ-5-3-3",
+        "observation": "The test used the name 'pw-milestone-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+      },
+      {
+        "id": "REQ-5-4",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  372 |   const unique = u();\n  373 |   await gotoAcme(page);\n> 374 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  375 |   await page.getByLabel('Title', "
+      },
+      {
+        "id": "REQ-5-4#2",
+        "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  391 | test('REQ-5-4#2: REQ-5-4: Close or Reopen an Issue - Scenario 2', async ({ page }) => {\n  392 |   await gotoAcme(page);\n> 393 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      |           "
+      }
+    ],
+    "invariants": [],
+    "translation": {}
+  },
+  "before_source_review": {
+    "stopped": "4 repairs in a row were discarded",
+    "scenarios_after": {
+      "counts": {
+        "pass": 84,
+        "error": 4,
+        "fail": 12
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 96
+      },
+      "seconds": 159.2,
+      "source_contracts": {},
+      "failing": [
+        {
+          "id": "REQ-4-3-3#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-5-1-1",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Open', exact: true }).first()\n\n\n  31 |\n  32 |   // Open filter still known title\n> 33 |   await page.getByRole('link', { name: 'Open', exact: true }).first().click();\n     |                                                                       ^\n  34 |   const search = page.getByRole('searchb"
+        },
+        {
+          "id": "REQ-5-1-1#2",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Closed', exact: true }).first()\n\n\n  65 |   await gotoAcme(page);\n  66 |\n> 67 |   await page.getByRole('link', { name: 'Closed', exact: true }).first().click();\n     |                                                                         ^\n  68 |   const search = page.getByRole('searchbox', "
+        },
+        {
+          "id": "REQ-5-1-2",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'Improve onboarding', exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  15 |   await gotoAcme(page);\n  16 |   const titleLink = page.getBy"
+        },
+        {
+          "id": "REQ-5-1-2#2",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Open', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Open', { exact: true }).first()\n\n\n  106 |   await page.waitForLoadState('domcontentloaded');\n  107 |\n> 108 |   await expect(page.getByText('Open', { exact: tr"
+        },
+        {
+          "id": "REQ-5-2-1",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  134 |\n  135 |   // Invalid: title only spaces\n> 136 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  137 |   const titleField = page.getByLabel('Title', {"
+        },
+        {
+          "id": "REQ-5-2-1#2",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  157 |   await gotoAcme(page);\n  158 |\n> 159 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  160 |   const titleField = page.getByLabel('Title', { exact: "
+        },
+        {
+          "id": "REQ-5-2-2",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  176 |   const unique = u();\n  177 |   await gotoAcme(page);\n> 178 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  179 |   await page.getByLabel('Title', "
+        },
+        {
+          "id": "REQ-5-2-2#2",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  208 |   const original = 'pw-blank-' + unique;\n  209 |   await gotoAcme(page);\n> 210 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  211 |   await page.g"
+        },
+        {
+          "id": "REQ-5-2-3",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  231 |   const unique = u();\n  232 |   await gotoAcme(page);\n> 233 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  234 |   await page.getByLabel('Title', "
+        },
+        {
+          "id": "REQ-5-2-3#2",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  254 | test('REQ-5-2-3#2: REQ-5-2-3: Comment on an Issue Discussion - Scenario 2', async ({ page }) => {\n  255 |   await gotoAcme(page);\n> 256 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      | "
+        },
+        {
+          "id": "REQ-5-3-1",
+          "observation": "The test used the name 'pw-assign-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+        },
+        {
+          "id": "REQ-5-3-2",
+          "observation": "The test used the name 'pw-label-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+        },
+        {
+          "id": "REQ-5-3-3",
+          "observation": "The test used the name 'pw-milestone-', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded."
+        },
+        {
+          "id": "REQ-5-4",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New issue', exact: true })\n\n\n  372 |   const unique = u();\n  373 |   await gotoAcme(page);\n> 374 |   await page.getByRole('link', { name: 'New issue', exact: true }).click();\n      |                                                                    ^\n  375 |   await page.getByLabel('Title', "
+        },
+        {
+          "id": "REQ-5-4#2",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Improve onboarding', exact: true }).first()\n\n\n  391 | test('REQ-5-4#2: REQ-5-4: Close or Reopen an Issue - Scenario 2', async ({ page }) => {\n  392 |   await gotoAcme(page);\n> 393 |   await page.getByRole('link', { name: 'Improve onboarding', exact: true }).first().click();\n      |           "
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "tests": {
+      "seconds": 761.4,
+      "calls": 6,
+      "cost_cny": 0.839258,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 14
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 16
+        },
+        {
+          "file": "t06-REQ-6.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 25
+        }
+      ],
+      "used": true
+    },
+    "rounds": 20
+  },
+  "source_review": {
+    "proposed": 4,
+    "probes": 4,
+    "results": [
+      {
+        "id": "REQ-6-2-3#contract-1",
+        "status": "fail",
+        "calls": {
+          "createPr": 1,
+          "repoById": 1,
+          "repos": 1,
+          "newPr": 1,
+          "prsOf": 1,
+          "ui": 2,
+          "diffBetween": 1,
+          "fileList": 2,
+          "branchByName": 2,
+          "branchList": 2,
+          "repoHash": 1,
+          "ownerName": 1,
+          "orgById": 1,
+          "orgs": 1
+        },
+        "assertions": 1,
+        "phase": "check",
+        "error_name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n2 !== 1\n",
+        "error": "node:assert:90\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n2 !== 1\n\n    at Proxy.<anonymous> (/workspace/submission/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:7:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (/workspace/submission/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1529:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1613:10)\n    at Module.load (node:internal/modules/cjs/loader:1275:32)\n    at Module._load (node:internal/modules/cjs/loader:1096:12)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)"
+      },
+      {
+        "id": "REQ-4-3-2#contract-2",
+        "status": "fail",
+        "calls": {
+          "pickBranch": 1,
+          "repoById": 1,
+          "repos": 1,
+          "validBranchName": 1,
+          "branchByName": 2,
+          "branchList": 2,
+          "fileList": 1,
+          "repoHash": 1,
+          "ownerName": 1,
+          "orgById": 1,
+          "orgs": 1
+        },
+        "assertions": 1,
+        "phase": "check",
+        "error_name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n1 !== 0\n",
+        "error": "node:assert:90\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n\n    at Proxy.<anonymous> (/workspace/submission/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:5:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (/workspace/submission/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1529:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1613:10)\n    at Module.load (node:internal/modules/cjs/loader:1275:32)\n    at Module._load (node:internal/modules/cjs/loader:1096:12)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)"
+      },
+      {
+        "id": "REQ-4-4#contract-3",
+        "status": "fail",
+        "calls": {
+          "saveFile": 1,
+          "repoById": 1,
+          "repos": 1,
+          "fileAt": 1,
+          "fileList": 1,
+          "branchByName": 2,
+          "branchList": 2,
+          "ui": 1,
+          "repoHash": 1,
+          "ownerName": 1,
+          "orgById": 1,
+          "orgs": 1
+        },
+        "assertions": 1,
+        "phase": "check",
+        "error_name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n1 !== 0\n",
+        "error": "node:assert:90\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n\n    at Proxy.<anonymous> (/workspace/submission/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:5:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (/workspace/submission/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1529:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1613:10)\n    at Module.load (node:internal/modules/cjs/loader:1275:32)\n    at Module._load (node:internal/modules/cjs/loader:1096:12)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)"
+      },
+      {
+        "id": "REQ-6-3-4#contract-4",
+        "status": "fail",
+        "calls": {
+          "submitReview": 1
+        },
+        "assertions": 1,
+        "phase": "check",
+        "error_name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n1 !== 0\n",
+        "error": "node:assert:90\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n\n    at Proxy.<anonymous> (/workspace/submission/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:6:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (/workspace/submission/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1529:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1613:10)\n    at Module.load (node:internal/modules/cjs/loader:1275:32)\n    at Module._load (node:internal/modules/cjs/loader:1096:12)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)"
+      }
+    ],
+    "skipped": null,
+    "seconds": 1026.6,
+    "calls": 4,
+    "cost_cny": 0.626933
+  }
+}

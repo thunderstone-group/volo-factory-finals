@@ -1,0 +1,47 @@
+{
+  "pilot_cost_cny_estimated": 1.2032464,
+  "calls": 4,
+  "captured_response_replay_calls": 0,
+  "accepted_claims": 18,
+  "added_results": {
+    "sheet": {
+      "pass": 8,
+      "fail": 1
+    },
+    "github": {
+      "pass": 6,
+      "fail": 3
+    }
+  },
+  "review": [
+    {
+      "id": "REQ-3-1-1#audit-2",
+      "classification": "confirmed product defect",
+      "evidence": "After invalid inline edit, commitCellEditor clears editing state and notifies but returns without rendering the old value. Browser observed blank cell instead of 50.",
+      "source": "sheet-81-cbe0e2b43105/template/frontend/public/app.js:702"
+    },
+    {
+      "id": "REQ-6-2-2#audit-1",
+      "classification": "product permission defect confirmed; test assertion overly specific",
+      "evidence": "screens.compare checks only currentUser and canViewRepo, then exposes Create pull request. Requirement restricts compare creation to writing roles. The pilot asserts disabled link rather than attempting the prohibited flow; revised prompt must avoid inventing that UI detail.",
+      "source": "github-24-65c9a5df6145/template/frontend/public/app.js:252"
+    },
+    {
+      "id": "REQ-6-1#audit-1",
+      "classification": "test navigation assumption",
+      "evidence": "Test looks for Code while still on branch settings; that navigation is not established by the cited requirement. It never exercised direct-write rejection."
+    },
+    {
+      "id": "REQ-6-2-3#audit-1",
+      "classification": "test navigation assumption",
+      "evidence": "Test looks for Pull requests on a PR detail screen rather than returning through the documented repository entry. It never exercised duplicate submission."
+    }
+  ],
+  "decision": "Pilot shows novel coverage and two source-confirmed defect classes. Prompt tightened for unsupported navigation and implied disabled-control assertions. No independent-generation or official improvement has yet been established.",
+  "formal_baseline": {
+    "submission": "91bc50f2f30d",
+    "github": "49930bdb20c3",
+    "sheet": "06836d4c5363",
+    "package": "bfddd36c"
+  }
+}

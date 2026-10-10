@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-02T04:50:36.004879+08:00",
+  "first_replay": "Seven recovered declarations parse, but all seven failed on each frozen app before their target behaviors.",
+  "confirmed_test_problems": [
+    "New repository was assumed to be reachable from an organization People page, whereas its documented entry is the signed-in workspace.",
+    "Some headings were required to equal data exactly although the requirement only specifies containment.",
+    "The non-Admin scenario unconditionally clicks Settings/Branches despite their permitted absence."
+  ],
+  "operator_correction": "File editing is explicitly provided by the public requirements (Add file, Create new file, File contents, Commit changes). The suspicion that those controls were invented was incorrect. The lexical guard correctly accepted them; no model call was spent on that mistaken premise.",
+  "decision": "Reject this fixture replay as quality evidence. Regenerate from the original skipped file with source-based navigation and scope guidance, preserving the old runnable tests."
+}

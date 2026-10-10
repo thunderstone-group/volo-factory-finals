@@ -1,0 +1,13 @@
+{
+  "task": "github",
+  "app": "github-24-65c9a5df6145",
+  "mode": "baseline",
+  "seconds": 69.1,
+  "counts": {
+    "pass": 28,
+    "fail": 7,
+    "error": 6
+  },
+  "added_counts": {},
+  "added_findings": []
+}

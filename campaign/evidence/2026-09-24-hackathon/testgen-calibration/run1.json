@@ -1,0 +1,319 @@
+{
+ "kind": "testgen",
+ "scenarios": [
+  {
+   "id": "REQ-1-1-1",
+   "name": "Open a workbook",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-1-2-1",
+   "name": "Create and reopen a blank workbook",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-2-2",
+   "name": "Save a valid new name",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-1-2-2#2",
+   "name": "Reject an empty name",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-1-3-1",
+   "name": "Import a valid CSV",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-1-3-1#2",
+   "name": "Reject an unparseable CSV",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-3-2",
+   "name": "Export a worksheet containing formulas",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-2-1-1",
+   "name": "Add a worksheet and preserve it after refresh",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test's own code threw: TypeError: cell(...).click is not a function",
+   "source": "",
+   "at": "t02-REQ-2.spec.cjs:20",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-2",
+   "name": "Keep worksheet data independent when switching",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test's own code threw: TypeError: cell(...).click is not a function",
+   "source": "",
+   "at": "t02-REQ-2.spec.cjs:20",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-2#2",
+   "name": "Keep Filter and Validation Entry Points Isolated When Switching",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test's own code threw: TypeError: cell(...).click is not a function",
+   "source": "",
+   "at": "t02-REQ-2.spec.cjs:20",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-3",
+   "name": "Save a unique worksheet name",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-3#2",
+   "name": "Reject a duplicate name",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-2-1-3#3",
+   "name": "Reject an empty worksheet name",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-4",
+   "name": "Delete one of multiple worksheets",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-4#2",
+   "name": "Preserve the last worksheet",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-4#3",
+   "name": "Reject deletion of a pivot table source worksheet",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('dialog', { name: 'Delete worksheet', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('dialog', { name: 'Delete worksheet', exact: true })\n\n\n  125 |\n  126 |   const confirmDialog = page.getByRole('dialog', { name: 'Delete worksheet', exact: true });\n> 127 |   await expect(confirmDialog).toBeVisible();\n      |                               ^\n  128 |   await confirmDialog.getByRole('button', { name: 'Delete worksheet', exact: true }).click();\n  129 |\n  130 |   await expect(page.getByText('Please delete or rebuild dependen",
+   "source": "test('REQ-2-1-4#3: Reject deletion of a pivot table source worksheet', async ({ page }) => {\n  await createBlankWorkbook(page);\n\n  await setCell(page, 'A1', 'Region');\n  await setCell(page, 'B1', 'Sales');\n  await setCell(page, 'A2', 'East');\n  await setCell(page, 'B2', '100');\n\n  await dragSelect(page, 'A1', 'B2');\n  await page.getByRole('button', { name: 'Data', exact: true }).click();\n  await page.getByRole('menuitem', { name: 'Create pivot table', exact: true }).click();\n\n  const createDialog = page.getByRole('dialog', { name: 'Create pivot table', exact: true });\n  await expect(createDialog).toBeVisible();\n  await createDialog.getByRole('radio', { name: 'New worksheet', exact: true }).click();\n  await createDialog.getByRole('button', { name: 'Create', exact: true }).click();\n\n  const editor = page.getByRole('region', { name: 'Pivot table editor', exact: true });\n  await expect(editor).toBeVisible();\n  await selectPivotField(page, editor, 'Rows', 'Region');\n  await selectPivotField(page, editor, 'Values', 'Sales');\n  await selectPivotField(page, editor, 'Summarize by', 'SUM');\n  await editor.getByRole('button', { name: 'Apply', exact: true }).click();\n\n  await expect(page.getByRole('tab', { name: 'Pivot1', exact: true })).toBeVisible();\n  await expect(cell(page, 'A2')).toHaveText('East');\n  await expect(cell(page, 'B2')).toHaveText('100');\n\n  await page.getByRole('tab', { name: 'Sheet1', exact: true }).click();\n  await openWorksheetMenu(page, 'Sheet1');\n  await page.getByRole('menuitem', { name: 'Delete', exact: true }).click();\n\n  const confirmDialog = page.getByRole('dialog', { name: 'Delete worksheet', exact: true });\n  await expect(confirmDialog).toBeVisible();\n  await confirmDialog.getByRole('button', { name: 'Delete worksheet', exact: true }).click();\n\n  await expect(page.getByText('Please delete or rebuild dependent pivot tables first', { exact: true })).toBeVisible();\n  await expect(page.getByRole('tab', { name: 'Sheet1', exact: true })).toBeVisible();\n  await expect(cell(page, 'A2')).toHaveText('East');\n\n  await page.getByRole('tab', { name: 'Pivot1', exact: true }).click();\n  await expect(cell(page, 'A2')).toHaveText('East');\n  await expect(cell(page, 'B2')).toHaveText('100');\n});",
+   "at": "t03-REQ-2.spec.cjs:127",
+   "seconds": 5.7
+  },
+  {
+   "id": "REQ-2-2-1",
+   "name": "Insert a row into existing data",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-2-2-1#2",
+   "name": "Delete a row and reopen",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-2-2-2",
+   "name": "Insert a column beside existing data",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-2-2-2#2",
+   "name": "Delete a column referenced by a formula",
+   "file": "t03-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-1-1",
+   "name": "Edit a cell and preserve it after refresh",
+   "file": "t04-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-3-1-1#2",
+   "name": "Cancel an uncommitted edit",
+   "file": "t04-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('textbox', { name: 'Edit A1', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('textbox', { name: 'Edit A1', exact: true })\n\n\n  81 |   await cell(page, 'A1').dblclick();\n  82 |   const editor = page.getByRole('textbox', { name: 'Edit A1', exact: true });\n> 83 |   await expect(editor).toBeVisible();\n     |                        ^\n  84 |   await editor.fill('Unsaved value');\n  85 |   await page.keyboard.press('Escape');\n  86 |\n    at /private/tmp/claude-501/-Users-e0-7-projects/7f16c387-dfb4-4435-a927-a282ac849158/scratch",
+   "source": "test('REQ-3-1-1#2: Cancel an uncommitted edit', async ({ page }) => {\n  await createBlankWorkbook(page);\n  await setCell(page, 'A1', 'Saved value');\n\n  await clickCell(page, 'A1');\n  const bar = formulaBar(page);\n  await expect(bar).toHaveValue('Saved value');\n\n  await cell(page, 'A1').dblclick();\n  const editor = page.getByRole('textbox', { name: 'Edit A1', exact: true });\n  await expect(editor).toBeVisible();\n  await editor.fill('Unsaved value');\n  await page.keyboard.press('Escape');\n\n  await expect(editor).not.toBeVisible();\n  await expect(cell(page, 'A1')).toHaveText('Saved value');\n  await expect(bar).toHaveValue('Saved value');\n\n  await reloadEditor(page);\n  await expect(cell(page, 'A1')).toHaveText('Saved value');\n  await expect(page.getByText('Unsaved value', { exact: true })).toHaveCount(0);\n});",
+   "at": "t04-REQ-3.spec.cjs:83",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-3-1-2",
+   "name": "Paste multi-row, multi-column data",
+   "file": "t04-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"Alpha\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div data-r=\"2\" data-c=\"2\" role=\"gridcell\" aria-label=\"B2\" aria-selected=\"true\" class=\"cell selected current\"></div>\n      - unexpected value \"\"\n\n\n  105 |   await page.keyboard.press('Control+V');\n  106 |\n> 107 |   await expect(cell(page, 'B2')).toHaveText('Alpha');\n      |                                  ^\n  108 |   await expect(cell(page, 'C2')).toHaveText('');\n  109 |   await expect",
+   "source": "test('REQ-3-1-2: Paste multi-row, multi-column data', async ({ page }) => {\n  await createBlankWorkbook(page);\n  await setCell(page, 'A1', 'Outside');\n  await setCell(page, 'E4', 'Keep');\n\n  const clipboardText = 'Alpha\\t\\t3\\nBeta\\tTwo\\t4';\n  await page.evaluate((t) => navigator.clipboard.writeText(t), clipboardText);\n\n  await clickCell(page, 'B2');\n  await page.keyboard.press('Control+V');\n\n  await expect(cell(page, 'B2')).toHaveText('Alpha');\n  await expect(cell(page, 'C2')).toHaveText('');\n  await expect(cell(page, 'D2')).toHaveText('3');\n  await expect(cell(page, 'B3')).toHaveText('Beta');\n  await expect(cell(page, 'C3')).toHaveText('Two');\n  await expect(cell(page, 'D3')).toHaveText('4');\n  await expect(cell(page, 'A1')).toHaveText('Outside');\n  await expect(cell(page, 'E4')).toHaveText('Keep');\n\n  await reloadEditor(page);\n  await expect(cell(page, 'B2')).toHaveText('Alpha');\n  await expect(cell(page, 'C2')).toHaveText('');\n  await expect(cell(page, 'D2')).toHaveText('3');\n  await expect(cell(page, 'B3')).toHaveText('Beta');\n  await expect(cell(page, 'C3')).toHaveText('Two');\n  await expect(cell(page, 'D3')).toHaveText('4');\n  await expect(cell(page, 'A1')).toHaveText('Outside');\n  await expect(cell(page, 'E4')).toHaveText('Keep');\n});",
+   "at": "t04-REQ-3.spec.cjs:107",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-3-1-3",
+   "name": "Select an exact rectangular range",
+   "file": "t04-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.7
+  },
+  {
+   "id": "REQ-3-2-1",
+   "name": "Copy a range to a new location",
+   "file": "t04-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"3\"\nReceived: \"#ERROR!\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div data-r=\"2\" data-c=\"2\" role=\"gridcell\" aria-label=\"B2\" aria-selected=\"true\" class=\"cell selected current\">#ERROR!</div>\n      - unexpected value \"#ERROR!\"\n\n\n  174 |   await setCell(page, 'A2', '3');\n  175 |   await setCell(page, 'B2', '=A1+$B$1');\n> 176 |   await expect(cell(page, 'B2')).toHaveText('3');\n      |                                  ^\n  177 |\n  178 |   await dragRange",
+   "source": "test('REQ-3-2-1: Copy a range to a new location', async ({ page }) => {\n  await createBlankWorkbook(page);\n  await setCell(page, 'G1', 'Keep');\n  await setCell(page, 'A1', '1');\n  await setCell(page, 'B1', '2');\n  await setCell(page, 'A2', '3');\n  await setCell(page, 'B2', '=A1+$B$1');\n  await expect(cell(page, 'B2')).toHaveText('3');\n\n  await dragRange(page, 'A1', 'B2');\n  await page.keyboard.press('Control+C');\n  await clickCell(page, 'D1');\n  await page.keyboard.press('Control+V');\n\n  await expect(cell(page, 'D1')).toHaveText('1');\n  await expect(cell(page, 'E1')).toHaveText('2');\n  await expect(cell(page, 'D2')).toHaveText('3');\n  await expect(cell(page, 'E2')).toHaveText('3');\n  await expect(cell(page, 'A1')).toHaveText('1');\n  await expect(cell(page, 'B1')).toHaveText('2');\n  await expect(cell(page, 'A2')).toHaveText('3');\n  await expect(cell(page, 'B2')).toHaveText('3');\n  await expect(cell(page, 'G1')).toHaveText('Keep');\n\n  await clickCell(page, 'E2');\n  await expect(formulaBar(page)).toHaveValue('=D1+$B$1');\n\n  await reloadEditor(page);\n  await expect(cell(page, 'D1')).toHaveText('1');\n  await expect(cell(page, 'E1')).toHaveText('2');\n  await expect(cell(page, 'D2')).toHaveText('3');\n  await expect(cell(page, 'E2')).toHaveText('3');\n  await expect(cell(page, 'A1')).toHaveText('1');\n  await expect(cell(page, 'B1')).toHaveText('2');\n  await expect(cell(page, 'A2')).toHaveText('3');\n  await expect(cell(page, 'B2')).toHaveText('3');\n  await expect(cell(page, 'G1')).toHaveText('Keep');\n\n  await clickCell(page, 'E2');\n  await expect(formulaBar(page)).toHaveValue('=D1+$B$1');\n});",
+   "at": "t04-REQ-3.spec.cjs:176",
+   "seconds": 5.4
+  },
+  {
+   "id": "REQ-3-2-1#2",
+   "name": "Cut and move a range",
+   "file": "t04-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-3-2-2",
+   "name": "Undo and redo one modification",
+   "file": "t05-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-2-2#2",
+   "name": "A new modification clears the redo branch",
+   "file": "t05-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Edit A1', { exact: true })\n\n\n  34 |   await cell(page, coord).dblclick();\n  35 |   const editor = page.getByLabel(`Edit ${coord}`, { exact: true });\n> 36 |   await editor.fill(String(value));\n     |                ^\n  37 |   await editor.press('Enter');\n  38 | }\n  39 |\n    at enterValueInline (/private/tmp/claude-501/-Users-e0-7-projects/7f16c387-dfb4-4435-a927-a282ac849158/scratchpad/tg/sheet-1/t05-REQ-3.spec.cjs:36:16)\n    at /private/tmp/claude-501/-Users-e0-7-projects/7f16c387-dfb4-4435-a927-a282ac849158/scratchpad/tg/sheet-1/t05-REQ-3.spec.cjs:116:3",
+   "source": "test('REQ-3-2-2#2: A new modification clears the redo branch', async ({ page }) => {\n  const oldValue = 'old-' + unique();\n  const newValue = 'new-' + unique();\n\n  await createBlankWorkbook(page);\n  await enterValue(page, 'A1', oldValue);\n  await expect(cell(page, 'A1')).toHaveText(oldValue);\n\n  const redoButton = page.getByRole('button', { name: 'Redo', exact: true });\n  await page.getByRole('button', { name: 'Undo', exact: true }).click();\n  await expect(cell(page, 'A1')).toHaveText('');\n  await expect(redoButton).toBeEnabled();\n\n  await enterValueInline(page, 'A1', newValue);\n  await expect(cell(page, 'A1')).toHaveText(newValue);\n  await cell(page, 'A1').click();\n  await expect(redoButton).toBeDisabled();\n  await page.keyboard.press('Control+y');\n  await expect(cell(page, 'A1')).toHaveText(newValue);\n\n  await page.reload();\n  await expect(cell(page, 'A1')).toHaveText(newValue);\n});",
+   "at": "t05-REQ-3.spec.cjs:36",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-3-2-2#3",
+   "name": "Undo and redo a source-value edit with dependent formulas",
+   "file": "t05-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-3-2-2#4",
+   "name": "Undo and redo row/column changes with validation",
+   "file": "t05-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  }
+ ],
+ "invariants": [],
+ "coverage": {
+  "total": 48,
+  "parsed": 27
+ },
+ "seconds": 40.5
+}

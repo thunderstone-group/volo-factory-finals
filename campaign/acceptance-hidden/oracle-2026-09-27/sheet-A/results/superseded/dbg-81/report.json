@@ -1,0 +1,136 @@
+{
+  "config": {
+    "configFile": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oracle-sheetA-WeW18M/playwright.config.cjs",
+    "rootDir": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-81/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-81/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.spec\\.cjs$/"
+        ],
+        "timeout": 10000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "20-REQ-2-2-2.spec.cjs",
+      "file": "20-REQ-2-2-2.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10051,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs",
+                        "column": 86,
+                        "line": 69
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \u001b[32m\"#\u001b[7mREF\u001b[27m!\"\u001b[39m\nReceived: \u001b[31m\"#\u001b[7mERROR\u001b[27m!\"\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\u001b[22m\n\u001b[2m    13 × locator resolved to <div data-r=\"2\" data-c=\"2\" data-id=\"B2\" data-cell=\"B2\" role=\"gridcell\" aria-label=\"B2\" aria-selected=\"true\" class=\"cell selected\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"#ERROR!\"\u001b[22m\n\n\n  67 |\n  68 | async function expectCells(page, expected) {\n> 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);\n     |                                                                                      ^\n  70 | }\n  71 |\n  72 | async function expectFormula(page, ref, value) {\n    at expectCells (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:69:86)\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:283:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:36.090Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-81/artifacts/20-REQ-2-2-2-REQ-2-2-2-S2-删除公式直接引用的-B-列后显示引用错误，重新打开后保持/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-81/artifacts/20-REQ-2-2-2-REQ-2-2-2-S2-删除公式直接引用的-B-列后显示引用错误，重新打开后保持/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7cc70f9bad2e910662c3-a8ea60602d564cf7e7d4",
+          "file": "20-REQ-2-2-2.spec.cjs",
+          "line": 275,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-27T12:16:35.807Z",
+    "duration": 10469.171,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

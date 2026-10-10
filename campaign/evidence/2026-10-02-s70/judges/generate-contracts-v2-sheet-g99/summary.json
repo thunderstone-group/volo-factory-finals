@@ -1,0 +1,13 @@
+{
+  "app": "generate-contracts-v2-sheet",
+  "judge": "g99",
+  "counts": {
+    "pass": 90,
+    "fail": 10
+  },
+  "seconds": 78.7,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

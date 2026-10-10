@@ -1,0 +1,147 @@
+{
+  "version": 3,
+  "agreement": 292,
+  "total": 300,
+  "target": 290,
+  "disagreement_count": 8,
+  "all_disagreements_explained": true,
+  "official_apps": {
+    "r1-github": {
+      "official_passed": 3,
+      "proxy_passed": 3,
+      "agreement": 30,
+      "wall_seconds": 328.9,
+      "all_frame_occurrences_extracted": 27
+    },
+    "r1-sheet": {
+      "official_passed": 21,
+      "proxy_passed": 21,
+      "agreement": 30,
+      "wall_seconds": 157.523,
+      "all_frame_occurrences_extracted": 9
+    },
+    "r2-github": {
+      "official_passed": 21,
+      "proxy_passed": 22,
+      "agreement": 27,
+      "wall_seconds": 137.753,
+      "all_frame_occurrences_extracted": 14
+    },
+    "r2-sheet": {
+      "official_passed": 29,
+      "proxy_passed": 29,
+      "agreement": 30,
+      "wall_seconds": 77.034,
+      "all_frame_occurrences_extracted": 1
+    },
+    "r3-github": {
+      "official_passed": 3,
+      "proxy_passed": 3,
+      "agreement": 30,
+      "wall_seconds": 328.105,
+      "all_frame_occurrences_extracted": 27
+    },
+    "r3-sheet": {
+      "official_passed": 24,
+      "proxy_passed": 24,
+      "agreement": 30,
+      "wall_seconds": 127.312,
+      "all_frame_occurrences_extracted": 6
+    },
+    "r4-github": {
+      "official_passed": 15,
+      "proxy_passed": 13,
+      "agreement": 28,
+      "wall_seconds": 226.752,
+      "all_frame_occurrences_extracted": 17
+    },
+    "r4-sheet": {
+      "official_passed": 11,
+      "proxy_passed": 11,
+      "agreement": 30,
+      "wall_seconds": 253.156,
+      "all_frame_occurrences_extracted": 19
+    },
+    "r5-github": {
+      "official_passed": 16,
+      "proxy_passed": 17,
+      "agreement": 27,
+      "wall_seconds": 180.614,
+      "all_frame_occurrences_extracted": 19
+    },
+    "r5-sheet": {
+      "official_passed": 26,
+      "proxy_passed": 26,
+      "agreement": 30,
+      "wall_seconds": 106.104,
+      "all_frame_occurrences_extracted": 4
+    }
+  },
+  "local_apps": {
+    "local-github-real-c340ea0e8e-s1": {
+      "passed": 21,
+      "total": 30,
+      "wall_seconds": 149.301
+    },
+    "local-github-real-c452126573-s1": {
+      "passed": 19,
+      "total": 30,
+      "wall_seconds": 168.04
+    },
+    "local-github-real-place3c0294d9-s2": {
+      "passed": 23,
+      "total": 30,
+      "wall_seconds": 128.011
+    },
+    "local-sheet-real-c340ea0e8e-s1": {
+      "passed": 26,
+      "total": 30,
+      "wall_seconds": 106.716
+    },
+    "local-sheet-real-c452126573-s1": {
+      "passed": 11,
+      "total": 30,
+      "wall_seconds": 248.96
+    }
+  },
+  "source_and_snapshot_hashes": {
+    "r1-github": "c23b4a7174a920bc05cf882f6fc93161435cbf51504b5633d94a9813ce6ab5ee",
+    "r1-sheet": "3b712617134fea45ab129ef965f3084892147c5768f2ee38cbaa844aec87cb2e",
+    "r2-github": "f5206aee0c9406ac0184e1012157b9811a7021feb2bb148fc0955759d3432b4e",
+    "r2-sheet": "c0191d985af9d6ce27e4ed64e98af666b08c854c02bb6f4e6e59dc0a86e33f9f",
+    "r3-github": "743f77c123f5375e68c45d38fc745197c486760dae4068acfc9dc3585e168188",
+    "r3-sheet": "e2e926949d3c99a98a15dba6abcb43bc3f7018d88b10010e46dbb1d78d7c3f98",
+    "r4-github": "a59e1118a72573aad8f579a6d78f72c54fa66fb1fcf5ac16da26b59107484396",
+    "r4-sheet": "d1223036c7a130ac94f316031a97932dbc648ec76a8cbf0340057850a5b33d5d",
+    "r5-github": "8a4e7491638992685934898573ca16c2cea760b1eaa22adafe9efafad24e82e6",
+    "r5-sheet": "396c6202a0942c96d3a9a63c1cf76643bff01c7ce6093f96d771c47c25950170",
+    "local-github-real-c340ea0e8e-s1": "8f1c1567b922fc06a32b5367399474bae8cb7dab0d3d50f80628c3baf2e855f3",
+    "local-github-real-c452126573-s1": "111f122c4b5db363c67705a6903a9af1a01398d9d83efe1c7ccfdbc92246b2b5",
+    "local-github-real-place3c0294d9-s2": "befc40e054d272d4eaf7fc2f0f1b7e50a87ec39852aa654a920c0cbe653acfb6",
+    "local-sheet-real-c340ea0e8e-s1": "48639d1feb3f962c0114a13cfd941160284bbe275a2b32901b7c183ae9b2c9eb",
+    "local-sheet-real-c452126573-s1": "4fc6fe8496e4baeddf4bc96afced83855766f9280b1dcef8cda82e4443a23ee0"
+  },
+  "reference_runs": {
+    "github": [
+      {
+        "start": "2026-10-06T17:24:08.774000+00:00",
+        "duration_ms": 62984.226
+      },
+      {
+        "start": "2026-10-06T17:31:04.633000+00:00",
+        "duration_ms": 60129.951
+      }
+    ],
+    "sheet": [
+      {
+        "start": "2026-10-06T17:19:23.075000+00:00",
+        "duration_ms": 71090.94499999999
+      },
+      {
+        "start": "2026-10-06T17:24:08.801000+00:00",
+        "duration_ms": 72208.342
+      }
+    ]
+  },
+  "reference_regression_audit": "results/real-final-audit-v3.json"
+}

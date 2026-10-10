@@ -1,0 +1,21 @@
+{
+  "observed_at": "2026-10-02T19:19:33.350073+08:00",
+  "main_sha": "c2cd10c8ea4d9f8b851a36af4996b1ebfc898ddb",
+  "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb",
+  "matches_running_v6_package": true,
+  "one_shot_tests": {
+    "run": 276,
+    "skipped": 3,
+    "latest_focused_pass": 126
+  },
+  "legacy_tests": {
+    "run": 226,
+    "skipped": 12
+  },
+  "secret_scan": {
+    "commits": 46,
+    "findings": 0
+  },
+  "formal_submission_unchanged": "f56d97c2fdb1",
+  "new_formal_score": null
+}

@@ -1,0 +1,14 @@
+{
+  "github": {
+    "all_atomics": 52,
+    "selected_atomics": 10,
+    "excluded_atomics": 42,
+    "scenarios": 30
+  },
+  "sheet": {
+    "all_atomics": 10,
+    "selected_atomics": 10,
+    "excluded_atomics": 0,
+    "scenarios": 30
+  }
+}

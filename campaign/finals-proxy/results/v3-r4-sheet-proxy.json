@@ -1,0 +1,308 @@
+{
+  "task": "sheet-real",
+  "app_dir": "~/projects/arcbench-campaign/finals-proxy/calibration/apps/v3/r4-sheet",
+  "app_sha256": "d1223036c7a130ac94f316031a97932dbc648ec76a8cbf0340057850a5b33d5d",
+  "frozen_manifest_sha256": "725756baccc60533e98ae43245dcb4bc4bf6ae53f981e0b18c81a8aa96319e3c",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "REQ-1-2-2 - trim and persist an available workbook name",
+      "file": "01-REQ-1-2-2-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2406,
+      "error": null
+    },
+    {
+      "name": "REQ-1-2-2 - reject a case-insensitive duplicate workbook name",
+      "file": "02-REQ-1-2-2-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1948,
+      "error": null
+    },
+    {
+      "name": "REQ-1-2-2 - reject a workbook name longer than 80 characters",
+      "file": "03-REQ-1-2-2-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1873,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-3 - trim and persist an available worksheet name",
+      "file": "04-REQ-2-1-3-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2201,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-3 - reject a worksheet name differing only by case",
+      "file": "05-REQ-2-1-3-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2370,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-3 - reject a worksheet name longer than 50 characters",
+      "file": "06-REQ-2-1-3-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2070,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1-1 - clear a text cell with Delete",
+      "file": "07-REQ-3-1-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1853,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1-1 - clear a formula and recalculate its dependent result",
+      "file": "08-REQ-3-1-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1845,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1-1 - clear every cell in a selected rectangular range",
+      "file": "09-REQ-3-1-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2059,
+      "error": null
+    },
+    {
+      "name": "REQ-5-1-2 - save a two-condition filter view",
+      "file": "10-REQ-5-1-2-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10138,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Create filter', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Create filter', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/10-REQ-5-1-2-scenario-1.spec.ts:13:15"
+    },
+    {
+      "name": "REQ-5-1-2 - apply a persisted saved filter view",
+      "file": "11-REQ-5-1-2-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10160,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('menuitem', { name: 'Filter views', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('menuitem', { name: 'Filter views', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at /proxy/sheet-real/tests/11-REQ-5-1-2-scenario-2.spec.ts:12:45"
+    },
+    {
+      "name": "REQ-5-1-2 - reject and delete a saved filter view",
+      "file": "12-REQ-5-1-2-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10142,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Save filter view', exact: true })\n\n\n  12 |   await rectangle(page, 'D3', 'F7');\n  13 |   await command(page, \"Data\"); await command(page, \"Create filter\");\n> 14 |   await command(page, \"Data\"); await page.getByRole('menuitem', {name:\"Save filter view\",exact:true}).click();\n     |                                                                                                       ^\n  15 |   await fill(page, 'Filter view name', ' queued lanes '); await button(page, 'Save view');\n  16 |   // The published THEN refers to this intermediate rejected save, before the deletion.\n  17 |   await expect(page.getByRole('alert')).toContainText('Filter view name already exists');\n    at /proxy/sheet-real/tests/12-REQ-5-1-2-scenario-3.spec.ts:14:103"
+    },
+    {
+      "name": "REQ-5-2-1 - show a custom numeric error from the formula bar",
+      "file": "13-REQ-5-2-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2596,
+      "error": null
+    },
+    {
+      "name": "REQ-5-2-1 - show a custom dropdown error from the grid",
+      "file": "14-REQ-5-2-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2038,
+      "error": null
+    },
+    {
+      "name": "REQ-5-2-1 - persist an updated custom error message",
+      "file": "15-REQ-5-2-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10183,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Data validation', exact: true })\n\n\n  11 |   await page.goto('/'); await activate(page, \"EVO-M05-VALIDATION-EDIT\");\n  12 |   await visible(named(page, \"gridcell\", \"L4\")); await named(page, \"gridcell\", \"L4\").click();\n> 13 |   await command(page, \"Data\"); await page.getByRole('menuitem', {name:\"Data validation\",exact:true}).click();\n     |                                                                                                      ^\n  14 |   const dialog=named(page,'dialog','Data validation'); await visible(dialog); await fill(dialog,'Error message','Allocate between 25 and 75'); await button(dialog,'Save');\n  15 |   await visible(named(page, \"gridcell\", \"L4\")); await named(page, \"gridcell\", \"L4\").click();\n  16 |   await fill(page, 'Formula bar', \"24\"); await field(page, 'Formula bar').press('Enter');\n    at /proxy/sheet-real/tests/15-REQ-5-2-1-scenario-3.spec.ts:13:102"
+    },
+    {
+      "name": "REQ-6-1-1 - freeze the first row",
+      "file": "16-REQ-6-1-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10149,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Freeze rows through 1', exact: true })\n\n\n  11 |   await page.goto('/'); await activate(page, \"EVO-N01-FREEZE-ROW\");\n  12 |   await visible(named(page, \"gridcell\", \"B1\")); await named(page, \"gridcell\", \"B1\").click();\n> 13 |   await button(page, 'View'); await page.getByRole('menuitem', {name:\"Freeze rows through 1\",exact:true}).click();\n     |                                                                                                           ^\n  14 |   // THEN: The editor displays the button \"Frozen rows: 1; columns: 0\" and displays the same button after refresh.\n  15 |   await visible(named(page,'button','Frozen rows: 1; columns: 0'));\n  16 |   await page.reload();\n    at /proxy/sheet-real/tests/16-REQ-6-1-1-scenario-1.spec.ts:13:107"
+    },
+    {
+      "name": "REQ-6-1-1 - freeze the first column",
+      "file": "17-REQ-6-1-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10154,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Freeze columns through A', exact: true })\n\n\n  11 |   await page.goto('/'); await activate(page, \"EVO-N01-FREEZE-COLUMN\");\n  12 |   await visible(named(page, \"gridcell\", \"A8\")); await named(page, \"gridcell\", \"A8\").click();\n> 13 |   await button(page, 'View'); await page.getByRole('menuitem', {name:\"Freeze columns through A\",exact:true}).click();\n     |                                                                                                              ^\n  14 |   // THEN: The editor displays the button \"Frozen rows: 0; columns: 1\" and displays the same button after refresh.\n  15 |   await visible(named(page,'button','Frozen rows: 0; columns: 1'));\n  16 |   await page.reload();\n    at /proxy/sheet-real/tests/17-REQ-6-1-1-scenario-2.spec.ts:13:110"
+    },
+    {
+      "name": "REQ-6-1-1 - freeze both row and column panes",
+      "file": "18-REQ-6-1-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10259,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Freeze panes at C4', exact: true })\n\n\n  11 |   await page.goto('/'); await activate(page, \"EVO-N01-FREEZE-BOTH\");\n  12 |   await visible(named(page, \"gridcell\", \"C4\")); await named(page, \"gridcell\", \"C4\").click();\n> 13 |   await button(page, 'View'); await page.getByRole('menuitem', {name:\"Freeze panes at C4\",exact:true}).click();\n     |                                                                                                        ^\n  14 |   // THEN: The editor displays the button \"Frozen rows: 3; columns: 2\" and displays the same button after refresh.\n  15 |   await visible(named(page,'button','Frozen rows: 3; columns: 2'));\n  16 |   await page.reload();\n    at /proxy/sheet-real/tests/18-REQ-6-1-1-scenario-3.spec.ts:13:104"
+    },
+    {
+      "name": "REQ-6-2-1 - find the next matching cell",
+      "file": "19-REQ-6-2-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10146,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Find and replace', exact: true })\n\n\n  11 |   await page.goto('/'); await activate(page, \"EVO-N02-FIND-NEXT\");\n  12 |   await visible(named(page, \"gridcell\", \"A1\")); await named(page, \"gridcell\", \"A1\").click();\n> 13 |   await button(page, 'Edit'); await page.getByRole('menuitem', {name:\"Find and replace\",exact:true}).click();\n     |                                                                                                      ^\n  14 |   const dialog=named(page,'dialog','Find and replace'); await visible(dialog); await fill(dialog,'Find','Cobalt');\n  15 |   await button(dialog,'Find next'); await button(dialog,'Find next');\n  16 |   // THEN: Cell E7 is selected and the dialog displays exactly \"Match 2 of 3\".\n    at /proxy/sheet-real/tests/19-REQ-6-2-1-scenario-1.spec.ts:13:102"
+    },
+    {
+      "name": "REQ-6-2-1 - replace all matching text in the active worksheet",
+      "file": "20-REQ-6-2-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10146,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Find and replace', exact: true })\n\n\n  10 |   // WHEN: The visitor opens `EVO-N02-REPLACE-ALL`, opens \"Edit\", clicks \"Find and replace\", enters `Cobalt` in \"Find\", enters `Indigo` in \"Replace with\", and clicks \"Replace all\".\n  11 |   await page.goto('/'); await activate(page, \"EVO-N02-REPLACE-ALL\");\n> 12 |   await button(page, 'Edit'); await page.getByRole('menuitem', {name:\"Find and replace\",exact:true}).click();\n     |                                                                                                      ^\n  13 |   const dialog=named(page,'dialog','Find and replace'); await visible(dialog); await fill(dialog,'Find','Cobalt');\n  14 |   await fill(dialog,'Replace with','Indigo'); await button(dialog,'Replace all');\n  15 |   // THEN: The dialog displays exactly \"Replaced 3 cells\"; F3, F6, and F9 display `Indigo`, F12 displays `Copper`, and these values remain after refresh.\n    at /proxy/sheet-real/tests/20-REQ-6-2-1-scenario-2.spec.ts:12:102"
+    },
+    {
+      "name": "REQ-6-2-1 - replace only exact-case matches",
+      "file": "21-REQ-6-2-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10151,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Find and replace', exact: true })\n\n\n  10 |   // WHEN: The visitor opens `EVO-N02-CASE-SENSITIVE`, opens \"Edit\", clicks \"Find and replace\", enters `Cobalt` in \"Find\", enters `Azure` in \"Replace with\", checks \"Match case\", and clicks \"Replace all\".\n  11 |   await page.goto('/'); await activate(page, \"EVO-N02-CASE-SENSITIVE\");\n> 12 |   await button(page, 'Edit'); await page.getByRole('menuitem', {name:\"Find and replace\",exact:true}).click();\n     |                                                                                                      ^\n  13 |   const dialog=named(page,'dialog','Find and replace'); await visible(dialog); await fill(dialog,'Find','Cobalt');\n  14 |   await fill(dialog,'Replace with','Azure'); await checked(dialog,'Match case',true); await button(dialog,'Replace all');\n  15 |   // THEN: The dialog displays exactly \"Replaced 1 cells\"; G3 displays `Azure`, while G4 and G5 retain `cobalt` and `Cobalt-7` after refresh.\n    at /proxy/sheet-real/tests/21-REQ-6-2-1-scenario-3.spec.ts:12:102"
+    },
+    {
+      "name": "REQ-7-1-1 - create a named range and use it in a formula",
+      "file": "22-REQ-7-1-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10162,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Named ranges', exact: true })\n\n\n  10 |   // WHEN: The visitor opens `EVO-N03-NAMED-CREATE`, opens \"Data\", clicks \"Named ranges\", clicks \"Add named range\", enters `CapacityPlan` in \"Name\", enters `ForecastModel!J3:J5` in \"Range\", clicks \"Save\", selects L3, enters `=SUM(CapacityPlan)` in \"Formula bar\", and presses Enter.\n  11 |   await page.goto('/'); await activate(page, \"EVO-N03-NAMED-CREATE\");\n> 12 |   await command(page, \"Data\"); await page.getByRole('menuitem', {name:\"Named ranges\",exact:true}).click();\n     |                                                                                                   ^\n  13 |   const dialog=named(page,'dialog','Named ranges'); await visible(dialog);\n  14 |   await button(page,'Add named range'); await fill(page,'Name','CapacityPlan'); await fill(page,'Range','ForecastModel!J3:J5'); await button(page,'Save');\n  15 |   // F06:22 ends an unseen conditional; retain reopening when Save closes the panel.\n    at /proxy/sheet-real/tests/22-REQ-7-1-1-scenario-1.spec.ts:12:99"
+    },
+    {
+      "name": "REQ-7-1-1 - reject an invalid named range name",
+      "file": "23-REQ-7-1-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10146,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Named ranges', exact: true })\n\n\n  10 |   // WHEN: The visitor opens `EVO-N03-NAMED-INVALID`, opens \"Data\", clicks \"Named ranges\", clicks \"Add named range\", enters `1stBatch` in \"Name\", enters `ForecastModel!K2:K3` in \"Range\", and clicks \"Save\".\n  11 |   await page.goto('/'); await activate(page, \"EVO-N03-NAMED-INVALID\");\n> 12 |   await command(page, \"Data\"); await page.getByRole('menuitem', {name:\"Named ranges\",exact:true}).click();\n     |                                                                                                   ^\n  13 |   const dialog=named(page,'dialog','Named ranges'); await visible(dialog);\n  14 |   await button(page,'Add named range'); await fill(page,'Name','1stBatch'); await fill(page,'Range','ForecastModel!K2:K3'); await button(page,'Save');\n  15 |   // THEN: The exact message \"Named range must start with a letter\" is visible, and \"Named ranges\" contains no entry named `1stBatch` after refresh.\n    at /proxy/sheet-real/tests/23-REQ-7-1-1-scenario-2.spec.ts:12:99"
+    },
+    {
+      "name": "REQ-7-1-1 - update an existing named range",
+      "file": "24-REQ-7-1-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10163,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Named ranges', exact: true })\n\n\n  10 |   // WHEN: The visitor opens `EVO-N03-NAMED-UPDATE`, opens \"Data\", clicks \"Named ranges\", clicks \"Edit MarginBase\", replaces \"Range\" with `ForecastModel!K2:K4`, and clicks \"Save\".\n  11 |   await page.goto('/'); await activate(page, \"EVO-N03-NAMED-UPDATE\");\n> 12 |   await command(page, \"Data\"); await page.getByRole('menuitem', {name:\"Named ranges\",exact:true}).click();\n     |                                                                                                   ^\n  13 |   const dialog=named(page,'dialog','Named ranges'); await visible(dialog);\n  14 |   await button(page,'Edit MarginBase'); await dialog.getByLabel('Range', {exact:true}).fill('ForecastModel!K2:K4'); await dialog.getByRole('button', {name:'Save',exact:true}).click();\n  15 |   // THEN: M2 displays `25`; after refresh, \"Edit MarginBase\" shows `ForecastModel!K2:K4` in \"Range\" and M2 still displays `25`.\n    at /proxy/sheet-real/tests/24-REQ-7-1-1-scenario-3.spec.ts:12:99"
+    },
+    {
+      "name": "REQ-7-2-1 - apply a numeric threshold format",
+      "file": "25-REQ-7-2-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10269,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Conditional formatting', exact: true })\n\n\n  11 |   await page.goto('/'); await activate(page, \"EVO-N04-FORMAT-NUMBER\");\n  12 |   await rectangle(page,'J4','J6');\n> 13 |   await button(page, 'Format'); await page.getByRole('menuitem', {name:\"Conditional formatting\",exact:true}).click();\n     |                                                                                                              ^\n  14 |   const dialog=named(page,'dialog','Conditional formatting'); await visible(dialog);\n  15 |   await choose(dialog,'Condition','Greater than'); await fill(dialog,'Value','25'); await choose(dialog,'Style','Red fill'); await button(dialog,'Save');\n  16 |   // THEN: J5 and J6 have background color rgb(254, 226, 226), J4 does not have that color, and the same colors remain after refresh.\n    at /proxy/sheet-real/tests/25-REQ-7-2-1-scenario-1.spec.ts:13:110"
+    },
+    {
+      "name": "REQ-7-2-1 - apply a text-match format",
+      "file": "26-REQ-7-2-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10258,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Conditional formatting', exact: true })\n\n\n  11 |   await page.goto('/'); await activate(page, \"EVO-N04-FORMAT-TEXT\");\n  12 |   await rectangle(page,'K4','K6');\n> 13 |   await button(page, 'Format'); await page.getByRole('menuitem', {name:\"Conditional formatting\",exact:true}).click();\n     |                                                                                                              ^\n  14 |   const dialog=named(page,'dialog','Conditional formatting'); await visible(dialog);\n  15 |   await choose(dialog,'Condition','Text contains'); await fill(dialog,'Value','Watch'); await choose(dialog,'Style','Yellow fill'); await button(dialog,'Save');\n  16 |   // THEN: K4 has background color rgb(254, 249, 195), K5 and K6 do not have that color, and the rule remains listed after refresh.\n    at /proxy/sheet-real/tests/26-REQ-7-2-1-scenario-2.spec.ts:13:110"
+    },
+    {
+      "name": "REQ-7-2-1 - edit and delete a conditional formatting rule",
+      "file": "27-REQ-7-2-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10148,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Conditional formatting', exact: true })\n\n\n  10 |   // WHEN: The visitor opens `EVO-N04-FORMAT-EDIT`, opens \"Format\", clicks \"Conditional formatting\", clicks \"Edit rule 1\", chooses \"Green fill\" in \"Style\", clicks \"Save\", then reopens \"Conditional formatting\" and clicks \"Delete rule 1\".\n  11 |   await page.goto('/'); await activate(page, \"EVO-N04-FORMAT-EDIT\");\n> 12 |   await button(page, 'Format'); await page.getByRole('menuitem', {name:\"Conditional formatting\",exact:true}).click();\n     |                                                                                                              ^\n  13 |   const dialog=named(page,'dialog','Conditional formatting'); await visible(dialog);\n  14 |   await button(dialog,'Edit rule 1'); await choose(dialog,'Style','Green fill'); await button(dialog,'Save');\n  15 |   // Observe the intermediate edited style before executing the published deletion.\n    at /proxy/sheet-real/tests/27-REQ-7-2-1-scenario-3.spec.ts:12:110"
+    },
+    {
+      "name": "REQ-8-1-1 - create and persist a cell note",
+      "file": "28-REQ-8-1-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10139,
+      "error": "Test timeout of 10000ms exceeded.\nError: locator.click: Test timeout of 10000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Add note', exact: true })\n\n\n  11 |   await page.goto('/'); await activate(page, \"EVO-N05-NOTE-CREATE\");\n  12 |   await visible(named(page, \"gridcell\", \"D8\")); await named(page, \"gridcell\", \"D8\").click();\n> 13 |   await button(page, 'Insert'); await page.getByRole('menuitem', {name:\"Add note\",exact:true}).click();\n     |                                                                                                ^\n  14 |   const dialog=named(page,'dialog','Note for D8'); await visible(dialog); await fill(dialog,'Note',\"Confirm the harbor reference before release\"); await button(dialog,'Save note');\n  15 |   // THEN: D8 still displays `Manifest R41`, \"Open note for D8\" is visible, and opening it displays exactly `Confirm the harbor reference before release`, including after refresh.\n  16 |   await visible(named(page, 'gridcell', \"D8\")); await expect(named(page, 'gridcell', \"D8\")).toHaveText(\"Manifest R41\");\n    at /proxy/sheet-real/tests/28-REQ-8-1-1-scenario-1.spec.ts:13:96"
+    },
+    {
+      "name": "REQ-8-1-1 - edit an existing cell note",
+      "file": "29-REQ-8-1-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10145,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'F6', exact: true }).getByRole('button', { name: 'Open note for F6', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('gridcell', { name: 'F6', exact: true }).getByRole('button', { name: 'Open note for F6', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/29-REQ-8-1-1-scenario-2.spec.ts:12:15"
+    },
+    {
+      "name": "REQ-8-1-1 - delete an existing cell note",
+      "file": "30-REQ-8-1-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10148,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'J3', exact: true }).getByRole('button', { name: 'Open note for J3', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('gridcell', { name: 'J3', exact: true }).getByRole('button', { name: 'Open note for J3', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/30-REQ-8-1-1-scenario-3.spec.ts:12:15"
+    }
+  ],
+  "requirements_file": "sheet-real/requirements/requirements.yaml",
+  "requirements_sha256": "7a2ee0a9d81317bcc3f92fd627effae0c510412b891ab6c79896c4517b139962",
+  "test_task": "sheet-real",
+  "test_source_manifest_sha256": "725756baccc60533e98ae43245dcb4bc4bf6ae53f981e0b18c81a8aa96319e3c",
+  "test_files_sha256": {
+    "tests/01-REQ-1-2-2-scenario-1.spec.ts": "22b442c793332ac06efe4725914a2f8c12e80b0095abdea846da885d30d37294",
+    "tests/02-REQ-1-2-2-scenario-2.spec.ts": "1726c7e163db3a83922c5d32ade3c2a08c5b7e5c80102afdebe2df07623863e4",
+    "tests/03-REQ-1-2-2-scenario-3.spec.ts": "26f8a113b350f92c1553043e72192baeac888b95b5ad5b0949fbe88043db6a4c",
+    "tests/04-REQ-2-1-3-scenario-1.spec.ts": "633d6ee13cf715202225c4e02447d314c1fea2ddc8eb1f4c553a5ed6b3d6e2eb",
+    "tests/05-REQ-2-1-3-scenario-2.spec.ts": "0e5cb05506238117357efe4fd45cba0d18ad6e1d690b1a08968795f5abdf002f",
+    "tests/06-REQ-2-1-3-scenario-3.spec.ts": "d1635a44cff77d23016368994531e4e5ddcae50995144981b79ddaaeb227c0b0",
+    "tests/07-REQ-3-1-1-scenario-1.spec.ts": "987fe76bbc96b267b97debfa015f805e91171534d291f975774bf6a89f73a408",
+    "tests/08-REQ-3-1-1-scenario-2.spec.ts": "49ca079338258611c3004911f7cf81ff982abad4bf6c6c4e84c41e70ce6adff2",
+    "tests/09-REQ-3-1-1-scenario-3.spec.ts": "fe2790c16fcff937c024210f08c630953d6e4ab85faa6a7e1632e61a648860f7",
+    "tests/10-REQ-5-1-2-scenario-1.spec.ts": "57ff98b58de057e685b2b37f88e77d7833e599e51399d88d5eda48beafb0057f",
+    "tests/11-REQ-5-1-2-scenario-2.spec.ts": "232c9429aa342bda21d78d75fade14ef0e6d9b82940a05e1adf6bbdebc56fdb0",
+    "tests/12-REQ-5-1-2-scenario-3.spec.ts": "e9f5e71822a9bed03ed5b1794082b80a8da4ff2d24af3cbf7e7df09cd49f805c",
+    "tests/13-REQ-5-2-1-scenario-1.spec.ts": "b71959f8bcaa0deaee57d03cae1a4605be072e5107e694e798c4efe16b7bd81c",
+    "tests/14-REQ-5-2-1-scenario-2.spec.ts": "502e546515f5205a759a4731f63003c684fafc8315cdba9cfdefcab00e7fcbe7",
+    "tests/15-REQ-5-2-1-scenario-3.spec.ts": "49238ba636e8c0d3edf204a76546dc69cc11d8cc7e6fd2c6c6f62c56addda7a4",
+    "tests/16-REQ-6-1-1-scenario-1.spec.ts": "7903f36b901c8385f8b59de645ffaa95b938dcb671128b5fd6bd6982edff9613",
+    "tests/17-REQ-6-1-1-scenario-2.spec.ts": "860fac12326b23c822b5d0175eab563011f14548035a41442a65087f9baeee60",
+    "tests/18-REQ-6-1-1-scenario-3.spec.ts": "ed4d24bee8c82ff2539e6b62736b771cf1d834afca115c0059aff32d67ca57f7",
+    "tests/19-REQ-6-2-1-scenario-1.spec.ts": "79992ae23674bb8925a106b60412271dd6d77b05b317cd7bd199a81efa3f3dab",
+    "tests/20-REQ-6-2-1-scenario-2.spec.ts": "65c51bb078720cbb3fc47f7be6c2464812d0f8623350385a057a816cf7317047",
+    "tests/21-REQ-6-2-1-scenario-3.spec.ts": "5ebdc2cad331b1971402bf62b8d02018c9747dc22a510e7b971e821c5f2b5e29",
+    "tests/22-REQ-7-1-1-scenario-1.spec.ts": "1efc745068ebd6fc5280cc376bbd513488fff0abbac47464fd91f119cc3c2983",
+    "tests/23-REQ-7-1-1-scenario-2.spec.ts": "0dbb92f1d74a9e7db2144cafc5007593350c708955def4728bb127b9d3183134",
+    "tests/24-REQ-7-1-1-scenario-3.spec.ts": "1189bda465b09de9d3ae9f6d87c40e9f16e60026062f206ce78a143b6e013da9",
+    "tests/25-REQ-7-2-1-scenario-1.spec.ts": "aab072ca83b018a3cfe1e6086fc66b9e9b2bab1a1f1cf26107f8f6107cf01079",
+    "tests/26-REQ-7-2-1-scenario-2.spec.ts": "c9fd73c28a82615b445fa02002179e26b3bd74a39290458e6f29ca9cc38de7e2",
+    "tests/27-REQ-7-2-1-scenario-3.spec.ts": "694041c969be63befa1a5a7e89e07434958e4095ae3fc5fffbbf38dc9383595c",
+    "tests/28-REQ-8-1-1-scenario-1.spec.ts": "3baacb088cad171e864bddec911c81dc82a299ea5dfba27bf701baecee1018d1",
+    "tests/29-REQ-8-1-1-scenario-2.spec.ts": "a71644039e73a62ce38e802992980a9fba5d1b0f771a402fff1ce16b1ba995bc",
+    "tests/30-REQ-8-1-1-scenario-3.spec.ts": "db223aceade9072bb2a69c427f008bf8d65cd8c83c98ad1e38a4c68fa0200d4a",
+    "tests/helpers.ts": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+    "tests/interactions.ts": "8a6faa41fb82e413e3006168afc8d9a833799dafd659700bd6e5a908d7991514"
+  },
+  "test_suite_sha256": "741e3d370d71937f4ed4f1b4cd9252cbaeb896f0597d4f88e6ad26efb7b49e8f",
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 249.047,
+  "container_exit_code": 1,
+  "passed": 11,
+  "failed": 19,
+  "total": 30,
+  "wall_seconds": 253.156
+}

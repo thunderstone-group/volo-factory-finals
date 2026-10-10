@@ -1,0 +1,391 @@
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: Independent acceptance did not pass
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: ...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+# LATE_FAILURE
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-732iocwi/application/checks/requirements.cjs:4:8
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 71.072125
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-732iocwi/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 74.954542
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] patch_and_verify passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] deliver passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] finish passed=False
+[volo] verification detail: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'hello' !== 'wrong'
+
+    at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-08eiypwn/application/checks/greeting.cjs:1:86
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'hello',
+  expected: 'wrong',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] deliver passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-p3qe0hy8/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 73.479041
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-p3qe0hy8/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 77.380958
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-r6xcrzi4/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 72.498459
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-r6xcrzi4/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 76.540417
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-nk_a_jpo/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 73.595167
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-nk_a_jpo/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 77.587292
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-vuyt3ypa/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 72.438333
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-vuyt3ypa/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 76.362958
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-jdvm6q_c/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 71.549166
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-jdvm6q_c/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 75.455333
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# Subtest: prepared interface check
+not ok 1 - prepared interface check
+  ---
+  duration_ms: 0.657667
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-ahgh5zek/application/checks/browser.cjs:16:12'
+  failureType: 'testCodeFailure'
+  error: 'Provided Playwright is unavailable'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    sharedBrowser (/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-ahgh5zek/application/checks/browser.cjs:6:52)
+    TestContext.<anonymous> (/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-ahgh5zek/application/checks/browser.cjs:17:32)
+    Test.runInAsyncScope (node:async_hooks:226:14)
+    Test.run (node:internal/test_runner/test:1118:25)
+    Test.start (node:internal/test_runner/test:1015:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17)
+  ...
+# Subtest: checks/requirements.cjs
+ok 2 - checks/requirements.cjs
+  ---
+  duration_ms: 41.438792
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 62.908459
+
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] deliver passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: build_app did not run: Tool was not offered in this execution mode: build_app
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] finish passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=length
+[volo] model calls=4 reported_tokens=600 finish=length
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+[volo] finish passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] finish passed=True
+[volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] write_files error: write_files did not run: Tool was not offered in this execution mode: write_files
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+----------------------------------------------------------------------
+Ran 226 tests in 82.816s
+
+OK (skipped=12)

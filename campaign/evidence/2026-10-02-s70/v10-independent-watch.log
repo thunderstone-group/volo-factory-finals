@@ -1,0 +1,6 @@
+generation terminal {"task": "github", "exit": 0, "seconds": 2285.9, "package_sha256": "b44592c90510d3a9576e41fa9e2d5ceea39aac586e692b718fb23ed0cb6c341d"}
+{"task": "github", "judge": "v6-fixed", "counts": {"pass": 107, "fail": 4}, "seconds": 45.8, "unavailable": null, "model_calls": 0}
+generation terminal {"task": "sheet", "exit": 0, "seconds": 8779.4, "package_sha256": "b44592c90510d3a9576e41fa9e2d5ceea39aac586e692b718fb23ed0cb6c341d"}
+{"task": "sheet", "judge": "cov99n-arm", "counts": {"pass": 94, "fail": 6}, "seconds": 73.4, "unavailable": null, "model_calls": 0}
+{"task": "sheet", "judge": "g99", "counts": {"pass": 89, "fail": 11}, "seconds": 84.0, "unavailable": null, "model_calls": 0}
+Independent diagnostics complete. Review artifacts before replacing any formal submission.

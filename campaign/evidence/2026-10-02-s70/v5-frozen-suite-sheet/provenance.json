@@ -1,0 +1,16 @@
+{
+  "source": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-tests-kguym2f0",
+  "candidate": "e4a76b801595686de7c93d25cb2a8b45f4c9b39b8ae312dcb0df59379bf204a4",
+  "task": "sheet",
+  "stage": "first written suite before later repairs",
+  "file_hashes": {
+    "suite.json": "0a388e509f212d47a26d95a449470391b645bede932498a384abe1e85f7472f1",
+    "t01-REQ-1.spec.cjs": "57c3fdf2cd496e4b654bd3612186c4ae9747f506ac68324638458064ef6f2b5e",
+    "t02-REQ-2.spec.cjs": "f679437b6fc04931570c62d16c3b42851e0b6a405d1f53f211052d31ed8efea8",
+    "t03-REQ-3.spec.cjs": "cb7efcbeb334ad6b42a724aacac49b40f4c4ee6206e4a6884414eea267bcc3dc",
+    "t04-REQ-4.spec.cjs": "c4f9c0c55ea8542947c748e23723c2e039d2e1f27fc98b6734e5deccaf0b9ae6",
+    "t05-REQ-5.spec.cjs": "3e1e59ef5df3c868c238bc51eb193626d53e759a3f10baf89089bb945b9cb039"
+  },
+  "source_unchanged_during_copy": true,
+  "contains_organizer_tests": false
+}

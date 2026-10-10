@@ -1,0 +1,538 @@
+{
+  "usage": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 7,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 7
+    },
+    "completed_calls": 7,
+    "completion_tokens": 331259,
+    "draft_call_limit": 4,
+    "estimated_cost_cny": 2.276517,
+    "estimated_repair_cost_cny": 1.069639,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 331259,
+    "known_prompt_tokens": 592601,
+    "prompt_tokens": 592601,
+    "refused_calls": 0,
+    "repair_call_limit": 24,
+    "repair_cny_limit": 10.0,
+    "side_calls": 5,
+    "unknown_usage_calls": []
+  },
+  "smoke": {
+    "executed": true,
+    "problems": [
+      "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Worksheet options for \" shares worksheet with a field label"
+    ],
+    "vocabulary_missing": 0,
+    "scenarios": {
+      "counts": {
+        "pass": 100,
+        "error": 3,
+        "fail": 1
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      },
+      "seconds": 41.5,
+      "source_contracts": {
+        "error": 3,
+        "fail": 1
+      },
+      "failing": [
+        {
+          "id": "REQ-3-2-1#contract-1",
+          "observation": "ARC clipboard API unavailable in this probe context"
+        },
+        {
+          "id": "REQ-5-3-1#contract-1",
+          "observation": "Cannot convert undefined or null to object"
+        },
+        {
+          "id": "REQ-2-2-1#contract-1",
+          "observation": "REQ-2-2-1: a row insertion must not silently lose a complete record; when the shift cannot be carried out the operation must fail with an error and the pre-operation grid must be retained\n\n19 !== 20\n"
+        },
+        {
+          "id": "REQ-2-2-2#contract-1",
+          "observation": "Cannot convert undefined or null to object"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "repair": {
+      "accepted": true,
+      "reason": "1 more scenario(s) pass",
+      "files": [
+        "frontend/public/app.js"
+      ]
+    },
+    "browser_before": [
+      {
+        "executed": true,
+        "diagnostic_only": true,
+        "errors": [],
+        "page_errors": [],
+        "actions": [
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "New blank workbook",
+            "action": "new-workbook-page"
+          },
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Worksheet options for Sheet1",
+            "action": "sheet-menu"
+          },
+          {
+            "scope": "page-popover",
+            "name": "Rename",
+            "action": "open-rename-sheet"
+          },
+          {
+            "scope": "dialog",
+            "name": "Save",
+            "action": ""
+          },
+          {
+            "scope": "page",
+            "name": "Worksheet options for Sheet2",
+            "action": "sheet-menu"
+          },
+          {
+            "scope": "page-popover",
+            "name": "Rename",
+            "action": "open-rename-sheet"
+          },
+          {
+            "scope": "dialog",
+            "name": "Cancel",
+            "action": "arc:close"
+          },
+          {
+            "scope": "page",
+            "name": "Worksheet options for Sheet3",
+            "action": "sheet-menu"
+          },
+          {
+            "scope": "page-popover",
+            "name": "Rename",
+            "action": "open-rename-sheet"
+          },
+          {
+            "scope": "page",
+            "name": "Worksheet options for Sheet1",
+            "action": "sheet-menu"
+          },
+          {
+            "scope": "page-popover",
+            "name": "Rename",
+            "action": "open-rename-sheet"
+          },
+          {
+            "scope": "dialog",
+            "name": "Save",
+            "action": ""
+          },
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          }
+        ],
+        "screens": [
+          "#/",
+          "#/new-workbook",
+          "#/workbook/wb-q3-sales",
+          "#/workbook/wb_qccz7wl"
+        ],
+        "browser": "143.0.7499.4",
+        "playwright": "1.57.0"
+      }
+    ],
+    "tests": {
+      "seconds": 737.6,
+      "calls": 5,
+      "cost_cny": 0.807704,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 13
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 24
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 22
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 26
+        }
+      ],
+      "source_contracts": 4,
+      "used": true
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-2-1#contract-1"
+        ],
+        "passing_before": 100,
+        "accepted": true,
+        "first_try": {
+          "reason": "the change broke 2 passing scenario(s): REQ-2-1-3#2, REQ-2-1-3#3, and fixed only 1",
+          "gained": 1,
+          "lost": 2
+        },
+        "follow_up": "regression",
+        "follow_up_finish": "stop",
+        "gained": [
+          "REQ-2-2-1#contract-1"
+        ],
+        "reason": "1 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 101,
+            "error": 3
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 100
+          },
+          "seconds": 43.2,
+          "source_contracts": {
+            "error": 3,
+            "pass": 1
+          },
+          "failing": [
+            {
+              "id": "REQ-3-2-1#contract-1",
+              "observation": "ARC clipboard API unavailable in this probe context"
+            },
+            {
+              "id": "REQ-5-3-1#contract-1",
+              "observation": "Cannot convert undefined or null to object"
+            },
+            {
+              "id": "REQ-2-2-2#contract-1",
+              "observation": "Cannot convert undefined or null to object"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "New blank workbook",
+                "action": "new-workbook-page"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "open-rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet2",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "open-rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Cancel",
+                "action": "arc:close"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet3",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "open-rename-sheet"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "open-rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/new-workbook",
+              "#/workbook/wb-q3-sales",
+              "#/workbook/wb_9gq9efx"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 182.6,
+        "cost_cny": 0.085478
+      }
+    ],
+    "problems_after": [],
+    "scenarios_after": {
+      "counts": {
+        "pass": 101,
+        "error": 3
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      },
+      "seconds": 43.2,
+      "source_contracts": {
+        "error": 3,
+        "pass": 1
+      },
+      "failing": [
+        {
+          "id": "REQ-3-2-1#contract-1",
+          "observation": "ARC clipboard API unavailable in this probe context"
+        },
+        {
+          "id": "REQ-5-3-1#contract-1",
+          "observation": "Cannot convert undefined or null to object"
+        },
+        {
+          "id": "REQ-2-2-2#contract-1",
+          "observation": "Cannot convert undefined or null to object"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "before_source_review": {
+      "stopped": null,
+      "scenarios_after": {
+        "counts": {
+          "pass": 100
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        },
+        "seconds": 41.2,
+        "source_contracts": {},
+        "failing": [],
+        "invariants": [],
+        "translation": {}
+      },
+      "tests": {
+        "seconds": 737.6,
+        "calls": 5,
+        "cost_cny": 0.807704,
+        "scenarios": 100,
+        "tests": 100,
+        "audit_checks": 0,
+        "audit_errors": 0,
+        "files": [
+          {
+            "file": "t01-REQ-1.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 13
+          },
+          {
+            "file": "t02-REQ-2.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 24
+          },
+          {
+            "file": "t03-REQ-3.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 22
+          },
+          {
+            "file": "t04-REQ-4.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t05-REQ-5.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 26
+          }
+        ],
+        "used": true
+      },
+      "rounds": 2
+    },
+    "source_review": {
+      "proposed": 4,
+      "probes": 4,
+      "results": [
+        {
+          "id": "REQ-3-2-1#contract-1",
+          "status": "error",
+          "calls": {
+            "pasteText": 0
+          },
+          "assertions": 0,
+          "phase": "setup",
+          "error_name": "Error",
+          "message": "ARC clipboard API unavailable in this probe context",
+          "error": "evalmachine.<anonymous>:13\nif (typeof window.ARC.copyToClipboard !== 'function') { throw new Error('ARC clipboard API unavailable in this probe context'); }\n                                                        ^\n\nError: ARC clipboard API unavailable in this probe context\n    at evalmachine.<anonymous>:13:63\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:45:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)"
+        },
+        {
+          "id": "REQ-5-3-1#contract-1",
+          "status": "error",
+          "calls": {
+            "computePivot": 1,
+            "normSel": 1,
+            "makeCtx": 1,
+            "displayValue": 1,
+            "cellName": 1,
+            "colLetter": 1
+          },
+          "assertions": 0,
+          "phase": "check",
+          "error_name": "TypeError",
+          "message": "Cannot convert undefined or null to object",
+          "error": "evalmachine.<anonymous>:2\n    const v = valueOf(ctx, key);\n              ^\n\nTypeError: Cannot convert undefined or null to object\n    at valueOf (<anonymous>)\n    at displayValue (evalmachine.<anonymous>:2:15)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:41:26)\n    at computePivot (evalmachine.<anonymous>:8:61)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:41:26)\n    at evalmachine.<anonymous>:6:15\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)"
+        },
+        {
+          "id": "REQ-2-2-1#contract-1",
+          "status": "fail",
+          "calls": {
+            "insertRow": 1,
+            "currentWb": 1,
+            "findWb": 1,
+            "activeSheet": 1,
+            "pushHistory": 1,
+            "hist": 1,
+            "remapSheet": 1,
+            "parseCell": 20,
+            "colNum": 20,
+            "cellName": 19,
+            "colLetter": 19,
+            "normSel": 1,
+            "repairPivots": 1,
+            "stamp": 1
+          },
+          "assertions": 1,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "REQ-2-2-1: a row insertion must not silently lose a complete record; when the shift cannot be carried out the operation must fail with an error and the pre-operation grid must be retained\n\n19 !== 20\n",
+          "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: REQ-2-2-1: a row insertion must not silently lose a complete record; when the shift cannot be carried out the operation must fail with an error and the pre-operation grid must be retained\n\n19 !== 20\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:12:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+        },
+        {
+          "id": "REQ-2-2-2#contract-1",
+          "status": "error",
+          "calls": {
+            "pivotEditor": 0,
+            "deleteCol": 0,
+            "computePivot": 1,
+            "normSel": 1,
+            "makeCtx": 1,
+            "displayValue": 1,
+            "cellName": 1,
+            "colLetter": 1
+          },
+          "assertions": 0,
+          "phase": "setup",
+          "error_name": "TypeError",
+          "message": "Cannot convert undefined or null to object",
+          "error": "evalmachine.<anonymous>:2\n    const v = valueOf(ctx, key);\n              ^\n\nTypeError: Cannot convert undefined or null to object\n    at valueOf (<anonymous>)\n    at displayValue (evalmachine.<anonymous>:2:15)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:41:26)\n    at computePivot (evalmachine.<anonymous>:8:61)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:41:26)\n    at evalmachine.<anonymous>:15:11\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-sheet/agent/contract_runner.cjs:45:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)"
+        }
+      ],
+      "skipped": null,
+      "seconds": 874.9,
+      "calls": 4,
+      "cost_cny": 0.751543
+    }
+  }
+}

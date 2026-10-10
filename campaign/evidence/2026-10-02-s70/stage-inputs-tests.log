@@ -1,0 +1,20 @@
+test_alias_path_cannot_turn_unchanged_response_into_success (test_evolution.EvolutionTests) ... ok
+test_concurrent_metadata_change_aborts_without_losing_it (test_evolution.EvolutionTests) ... ok
+test_concurrent_source_change_aborts_publication (test_evolution.EvolutionTests) ... ok
+test_failed_publish_restores_original (test_evolution.EvolutionTests) ... ok
+test_in_place_patch_reads_source_and_preserves_unchanged_binary_and_text (test_evolution.EvolutionTests) ... ok
+test_large_task_inputs_are_preserved_without_consuming_application_snapshot (test_evolution.EvolutionTests) ... ok
+test_local_dotfiles_and_build_artifacts_are_not_sent (test_evolution.EvolutionTests) ... ok
+test_partial_or_invalid_upgrade_leaves_original_untouched (test_evolution.EvolutionTests) ... ok
+test_platform_cli_detects_prepopulated_application (test_evolution.EvolutionTests) ... ok
+test_preserved_metadata_is_not_writable_by_generated_patch (test_evolution.EvolutionTests) ... ok
+test_repair_cannot_modify_retained_task_inputs (test_evolution.EvolutionTests) ... ok
+test_separate_template_stays_unchanged (test_evolution.EvolutionTests) ... ok
+test_snapshot_limits_and_symlinks_fail_before_http (test_evolution.EvolutionTests) ... ok
+test_unchanged_response_is_not_an_upgrade (test_evolution.EvolutionTests) ... ok
+test_upgrade_runs_requirement_written_checks_and_source_review (test_evolution.EvolutionTests) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.183s
+
+OK

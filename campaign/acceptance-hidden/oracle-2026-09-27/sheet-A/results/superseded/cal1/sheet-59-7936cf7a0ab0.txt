@@ -1,0 +1,312 @@
+/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 31: 52775 Killed: 9               ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 25/48
+--- timedOut: REQ-2-1-2 S3: 切换工作表时筛选与校验入口保持隔离
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByRole('button', { name: 'Open dropdown for C2', exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('button', { name: 'Open dropdown for C2', exact: true })
+      333 |   await addDropdownRule(page, 'C2', 'C3', 'Open, Closed');
+      334 |   const dropdownC2 = btn(page, 'Open dropdown for C2');
+    > 335 |   await expect(dropdownC2).toBeVisible();
+          |                            ^
+      336 |
+      337 |   await addWorksheet(page, 'Sheet2');
+      338 |   await setCell(page, 'A1', 'Notes');
+--- timedOut: REQ-2-1-4 S3: 透视表源工作表不能删除，源数据和透视结果均保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+    Expected: "Region"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+        13 × locator resolved to <span data-row="0" data-col="0" tabindex="0" data-cell="A1" role="gridcell" aria-label="A1" aria-selected="true" class="cell selected" data-id="wb__r2l1s2i|sh__x8iqtfc|0|0"></span>
+           - unexpected value ""
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-2-1-4 S4: 删除透视结果工作表会移除配置并允许随后删除原源表
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'B4', exact: true })
+    Expected: "2000"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'B4', exact: true })
+        13 × locator resolved to <span data-row="3" data-col="1" class="cell" tabindex="-1" data-cell="B4" role="gridcell" aria-label="B4" aria-selected="false" data-id="wb__xcrntx9|sh__td4nxjr|3|1"></span>
+           - unexpected value ""
+      351 |   await switchTo(page, 'Sheet1');
+      352 |   await createPivot(page, 'A1', 'B3', { rows: 'Region', values: 'Sales', summarize: 'SUM' });
+    > 353 |   await expect(cell(page, 'B4')).toHaveText('2000');
+          |                                  ^
+      354 |
+--- timedOut: REQ-2-2-1 S1: 在第 3 行上方插入空白行，整行数据下移且刷新后保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'A3', exact: true })
+    Expected: ""
+    Received: "North"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'A3', exact: true })
+        13 × locator resolved to <span data-row="2" data-col="0" class="cell" tabindex="-1" data-cell="A3" role="gridcell" aria-label="A3" aria-selected="false" data-id="wb__xqr1xdg|sh1|2|0">North</span>
+           - unexpected value "North"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- failed: REQ-2-2-1 S3: 在目标行下方插入空白行并保持其他数据
+    Error: page.reload: net::ERR_CONNECTION_REFUSED
+    Call log:
+      - waiting for navigation until "load"
+      303 |   const expected = { A1: 'Region', B1: 'Sales', A2: 'East', B2: '1200', A3: '', B3: '', A4: 'North', B4: '800', A5: '' };
+      304 |   await expectCells(page, expected);
+    > 305 |   await page.reload();
+          |              ^
+      306 |   await expectCells(page, expected);
+      307 | });
+      308 |
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:305:14
+--- failed: REQ-2-2-1 S4: 插入行后调整公式引用并保持计算结果
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:310:9
+--- failed: REQ-2-2-1 S5: 插入行时校验规则随原单元格下移
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:324:9
+--- failed: REQ-2-2-2 S1: 在 B 列左侧插入空白列，整列数据右移且刷新后保持
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:264:9
+--- failed: REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:277:9
+--- failed: REQ-2-2-2 S3: 在目标列右侧插入空白列并保持其他数据
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:290:9
+--- failed: REQ-2-2-2 S4: 插入列后调整公式引用并保持计算结果
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:302:9
+--- failed: REQ-2-2-2 S5: 插入列时校验规则随原单元格右移
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:316:9
+--- failed: REQ-3-1-1 S1: 通过公式栏提交单元格值，依赖公式重算并持久化
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:259:9
+--- failed: REQ-3-1-1 S2: Escape 取消网格内未提交编辑，刷新后保留原值
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:279:9
+--- failed: REQ-3-1-1 S3: 通过网格提交文本、数字、布尔值、日期文本和公式
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:300:9
+--- failed: REQ-3-1-1 S4: 在更深的单元格位置提交公式并在刷新后保持
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:322:9
+--- failed: REQ-3-1-2 S1: 从 B2 原子粘贴二维表格，保留空字段和矩形外数据
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:259:9
+--- failed: REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:278:9
+--- failed: REQ-3-1-2 S3: 右键粘贴替换目标公式并重算依赖项
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:297:9
+--- failed: REQ-3-1-2 S4: 从 A1 粘贴单行表格并保持外部单元格不变
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:315:9
+--- failed: REQ-3-1-2 S5: 从 C3 粘贴两行两列表格并保留源外内容
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:330:9
+--- failed: REQ-3-1-3 S1: 拖拽选择精确的矩形区域
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/23-REQ-3-1-3.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/23-REQ-3-1-3.spec.cjs:259:9
+--- failed: REQ-3-1-3 S2: 刷新后恢复完整选区，新的单元格选择会替换该选区
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3411/
+    Call log:
+      - navigating to "http://127.0.0.1:3411/", waiting until "load"
+      23 | // With a name, the new workbook is renamed so it can be reopened from the home page by its link.
+      24 | async function createWorkbook(page, name) {
+    > 25 |   await page.goto('/');
+         |              ^
+      26 |   await btn(page, 'New blank workbook').click();
+      27 |   await btn(page, 'Create').click();
+      28 |   await expect(cell(page, 'A1')).toBeVisible();
+        at createWorkbook (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/23-REQ-3-1-3.spec.cjs:25:14)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/23-REQ-3-1-3.spec.cjs:280:9

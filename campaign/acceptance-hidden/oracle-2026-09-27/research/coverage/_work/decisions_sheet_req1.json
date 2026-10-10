@@ -1,0 +1,15 @@
+[
+  {"req": "REQ-1-1-1", "n": 1, "tier": "full", "cat": [], "rationale": "自写测试 REQ-1-1-1#2 记录打开工作簿后的 URL，回首页再 goto(url) 直接命中，并校验完整 seeded 状态（含 last-updated 文本），与本题「稳定 URL 恢复状态」完全对应（第一条测试只测了 reload，配合 #2 的 URL 直达即覆盖）。"},
+  {"req": "REQ-1-1-1", "n": 2, "tier": "none", "cat": ["ISOLATION"], "rationale": "t01/t02 全程只操作 Q3 Sales 及其派生的新建工作簿，没有任何测试同时打开两个不同工作簿并互相比对数据不串；两条 REQ-1-1-1 测试测的都是刷新/URL 持久化，不是隔离。"},
+  {"req": "REQ-1-2-1", "n": 1, "tier": "full", "cat": [], "rationale": "REQ-1-2-1 测试创建空白工作簿后校验唯一 Sheet1 tab + A1 选中 + grid 属性，reload 后再次校验同样状态，完全匹配。"},
+  {"req": "REQ-1-2-2", "n": 1, "tier": "full", "cat": [], "rationale": "REQ-1-2-2 测试重命名保存后立即校验，并回首页点击新名称重新进入校验名称与 Sheet1 状态一致，满足「重开后一致」。"},
+  {"req": "REQ-1-2-2", "n": 2, "tier": "partial", "cat": ["PERSIST"], "rationale": "REQ-1-2-2#2 测试空格名被拒绝、报错和原名称立即可见，但没有刷新或回首页重新打开后再核对名称，意图明确要求「重新打开后仍保留原名称」。"},
+  {"req": "REQ-1-3-1", "n": 1, "tier": "full", "cat": [], "rationale": "REQ-1-3-1 测试 UTF-8 中文/英文/空字段导入，reload 后核对多个单元格，并回首页重新点开工作簿再核对 A1，完整覆盖刷新与重开两种持久化。"},
+  {"req": "REQ-1-3-1", "n": 2, "tier": "skip", "cat": [], "rationale": "hidden_intent_zh 标记为 unknown，按要求跳过不评级。"},
+  {"req": "REQ-1-3-1", "n": 3, "tier": "skip", "cat": [], "rationale": "hidden_intent_zh 标记为 unknown，按要求跳过不评级。"},
+  {"req": "REQ-1-3-1", "n": 4, "tier": "skip", "cat": [], "rationale": "hidden_intent_zh 标记为 unknown，按要求跳过不评级。"},
+  {"req": "REQ-1-3-2", "n": 1, "tier": "full", "cat": [], "rationale": "REQ-1-3-2 测试公式结果导出为计算值、正确转义逗号/换行/引号，reload 后原公式与数据不变，完整覆盖。"},
+  {"req": "REQ-1-3-2", "n": 2, "tier": "full", "cat": [], "rationale": "同一条 REQ-1-3-2 测试在导出后重新点击 D2 校验公式栏仍显示原公式 `=B2+B3`（未被导出结果覆盖），活动工作表未变，直接对应本题。"},
+  {"req": "REQ-1-3-2", "n": 3, "tier": "none", "cat": ["OTHER"], "rationale": "四条 REQ-1-3-2 测试导出时活动工作表始终是 Sheet1（#4 虽切到 Sheet2 写值但导出前又切回 Sheet1），没有一条测试在第二个工作表处于激活状态时执行导出并校验其内容。"},
+  {"req": "REQ-1-3-2", "n": 4, "tier": "full", "cat": [], "rationale": "REQ-1-3-2#4 精确复现：新建 Sheet2 写入数据后切回 Sheet1 再导出，导出内容只含 Sheet1（Alpha,1），reload 后 Sheet1 状态不变。"}
+]

@@ -1,0 +1,14 @@
+{
+  "github": {
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v7-official-github-79/application",
+    "source_sha256": "72c64d2452f809b5fdb4d317192b0b81da475360ef55ea9d0232d434adb8d4d5",
+    "reference": "reference/github-app",
+    "freeze_version": 1
+  },
+  "sheet": {
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v7-official-sheet-87/application",
+    "source_sha256": "a6dfaee259b5fc9cdc4740b47e3798f99649639c02cc4e5055c8691eac3c522d",
+    "reference": "reference/sheet-app",
+    "freeze_version": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "case": "github-controlled73",
+  "counts": {
+    "pass": 107,
+    "fail": 4
+  },
+  "entry_checks": {
+    "pass": 11
+  },
+  "ordinary_checks": {
+    "pass": 96,
+    "fail": 4
+  },
+  "seconds": 58.1,
+  "unavailable": null,
+  "model_api_calls": 0
+}

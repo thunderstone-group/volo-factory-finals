@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-02T01:52:13.936624+08:00",
+  "submission_id": "1b6b453f30dc",
+  "package_sha256": "c2a2b32a5ed1ff709859cfe3989143cc44bc1343d8937d8ed20e110eb6f518b0",
+  "model": "deepseek-v4-flash-vision-exp",
+  "decision": "Start one official paired experiment while the two local trials continue.",
+  "reason": "The user asked for a concrete submission time. Code, package integrity, regression checks and current requirements are verified. Complete local repair loops can run for hours, so wait-for-final-local-score gate is relaxed for this single bounded official experiment.",
+  "uncertainty": "Independent final-app local scores remain pending. This submission does not assert improvement or authorize promotion to main.",
+  "official_credit_before_cny": 234.623313,
+  "run_ids": {
+    "github": "47d482ac1890",
+    "sheet": "6f78f5bdce60"
+  }
+}

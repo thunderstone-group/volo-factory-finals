@@ -1,0 +1,852 @@
+{
+ "app": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-semantic-entry-v6-github/application",
+ "requirements": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/requirements-after-stage-announcement/hackathon--github/requirements.yaml",
+ "model": "deepseek-v4-flash-vision-exp",
+ "seconds": 880.9,
+ "error": null,
+ "draft_files": [
+  "frontend/public/seed.js",
+  "frontend/public/app.js",
+  "frontend/public/styles.css"
+ ],
+ "summary": {
+  "calls": 2,
+  "draft_call_limit": 4,
+  "repair_call_limit": 1,
+  "completed_calls": 1,
+  "failed_calls": 1,
+  "failure_limit": 5,
+  "refused_calls": 0,
+  "known_prompt_tokens": 117203,
+  "prompt_tokens": null,
+  "known_completion_tokens": 32608,
+  "completion_tokens": null,
+  "unknown_usage_calls": [
+   1
+  ],
+  "estimated_cost_cny": 0.505617,
+  "estimated_repair_cost_cny": 0.505617,
+  "repair_cny_limit": 1.0,
+  "side_calls": 0,
+  "fallback_model": null,
+  "calls_by_model": {
+   "deepseek-v4-flash-vision-exp": 2
+  },
+  "billing_status": "unknown"
+ },
+ "smoke": {
+  "executed": true,
+  "problems": [
+   "3 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “No repositories” appears only as `No repositories.`; “src” appears only as `script src=`; “Default branch” appears only as `Default branch demo`",
+   "34 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"Sign up\", \"not-an-email\", \"short\", \"different\", \"-invalid-demo\", \"invalid.username@example.test\", \"Valid-password-123!-incorrect\", \"unknown@example.test\", \"does-not-match\", \"organization name/repository name\", \"Remove <username>\", \"Remove bob-reviewer\", \"Account is already a member\", \"Pending invitation\", \"Member menu <username>\", \"Member menu existing-member\", \"Member menu protected-member\", \"owner/repository name\", \"clone page entry\", \"Repository created by Playwright\", \"Forked from <source repository name>\", \"owner/fork name\", \"commit history\", \"code search\", \"Branch <current branch name>\", \"Create branch: <name>\", \"pw-branch-<unique suffix>\", \"Update default branch\", \"pw-file-<unique suffix>.md\", \"Add <file name>\", \"must not be saved\", \"activity timeline\", \"merge code changes from the compare branch into the base branch\", \"Save changes\""
+  ],
+  "vocabulary_missing": 34,
+  "scenarios": {
+   "counts": {
+    "pass": 49,
+    "fail": 32,
+    "error": 33
+   },
+   "coverage": {
+    "total": 100,
+    "parsed": 81
+   },
+   "seconds": 368.9,
+   "source_contracts": {},
+   "failing": [
+    {
+     "id": "REQ-5-1-1#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Issues\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  58 |   await page.goto('/');\n  59 |   const name = \"Issues\";\n> 60 |   await expect.poll(async () => {\n     |   ^\n  61 |     for (const role of ['button','link"
+    },
+    {
+     "id": "REQ-5-1-1#entry-2",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Issues\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  76 |   await page.goto('/');\n  77 |   const name = \"Issues\";\n> 78 |   await expect.poll(async () => {\n     |   ^\n  79 |     for (const role of ['button','link"
+    },
+    {
+     "id": "REQ-5-1-2#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  94 |   await page.goto('/');\n  95 |   const name = \"Improve onboarding\";\n> 96 |   await expect.poll(async () => {\n     |   ^\n  97 |     for (const"
+    },
+    {
+     "id": "REQ-5-1-2#entry-2",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  112 |   await page.goto('/');\n  113 |   const name = \"Improve onboarding\";\n> 114 |   await expect.poll(async () => {\n      |   ^\n  115 |     for ("
+    },
+    {
+     "id": "REQ-5-1-2#entry-3",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  130 |   await page.goto('/');\n  131 |   const name = \"Improve onboarding\";\n> 132 |   await expect.poll(async () => {\n      |   ^\n  133 |     for ("
+    },
+    {
+     "id": "REQ-6-2-1#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Pull requests\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  148 |   await page.goto('/');\n  149 |   const name = \"Pull requests\";\n> 150 |   await expect.poll(async () => {\n      |   ^\n  151 |     for (const role"
+    },
+    {
+     "id": "REQ-6-2-1#entry-2",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Pull requests\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  166 |   await page.goto('/');\n  167 |   const name = \"Pull requests\";\n> 168 |   await expect.poll(async () => {\n      |   ^\n  169 |     for (const role"
+    },
+    {
+     "id": "REQ-6-3-1#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Overview onboarding PR\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  184 |   await page.goto('/');\n  185 |   const name = \"Overview onboarding PR\";\n> 186 |   await expect.poll(async () => {\n      |   ^\n  187 |  "
+    },
+    {
+     "id": "REQ-2-2-2",
+     "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('bob-reviewer', { exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByText('bob-reviewer', { exact: true })\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n\n\n  199 |\n  200 |   // THEN: the member disappears immediately and stay"
+    },
+    {
+     "id": "REQ-2-2-3",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Add member', exact: true }).first()\n\n\n  232 |\n  233 |   // WHEN: add new-member with the Member role.\n> 234 |   await page.getByRole('button', { name: 'Add member', exact: true }).first().click();\n      |                                                                               ^\n  235 "
+    },
+    {
+     "id": "REQ-2-2-3#2",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Add member', exact: true }).first()\n\n\n  265 |\n  266 |   // WHEN: submit an existing member, then an unknown username.\n> 267 |   await page.getByRole('button', { name: 'Add member', exact: true }).first().click();\n      |                                                                       "
+    },
+    {
+     "id": "REQ-2-3",
+     "observation": "Blocked by helper:t02-REQ-2.spec.cjs:50 (shared with 1 other test(s))."
+    },
+    {
+     "id": "REQ-2-3#2",
+     "observation": "Blocked by helper:t02-REQ-2.spec.cjs:50 (shared with 1 other test(s))."
+    },
+    {
+     "id": "REQ-3-1",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  42 |\n  43 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 44 "
+    },
+    {
+     "id": "REQ-3-1#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  57 |\n  58 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 59 "
+    },
+    {
+     "id": "REQ-3-1#3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  70 |\n  71 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 72 "
+    },
+    {
+     "id": "REQ-3-1#4",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  81 |\n  82 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 83 "
+    },
+    {
+     "id": "REQ-3-2-1",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Repository created by Playwright').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Repository created by Playwright').first()\n\n\n  110 |   await expect(page.getByRole('heading', { name: new RegExp(name) }).first()).toBeVisible();\n "
+    },
+    {
+     "id": "REQ-3-2-3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Copied', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Copied', { exact: true }).first()\n\n\n  186 |   await page.getByRole('button', { name: /copy/i }).first().click();\n  187 |\n> 188 |   await expect(page.getByTe"
+    },
+    {
+     "id": "REQ-3-2-3#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Copied', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Copied', { exact: true }).first()\n\n\n  202 |   await page.getByRole('button', { name: /copy/i }).first().click();\n  203 |\n> 204 |   await expect(page.getByTe"
+    },
+    {
+     "id": "REQ-3-4",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Code', exact: true }).first()\n\n\n  235 |\n  236 |   // back to the repository overview to read its visibility marker\n> 237 |   await page.getByRole('link', { name: 'Code', exact: true }).first().click();\n      |                                                                       ^\n  238 |   a"
+    },
+    {
+     "id": "REQ-4-1",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-2-1",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-2-2",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-2-3",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-2-3#2",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-2-3#3",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-2-3#4",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-3-1",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-3-1#2",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-3-2",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-3-2#2",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-3-3",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-3-3#2",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-4",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-4-4#2",
+     "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-2#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-3#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-4",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-5-4#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+    },
+    {
+     "id": "REQ-6-2-2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/commit/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/commit/i).first()\n\n\n  207 |\n  208 |   await expect(page.getByText('src/search.ts', { exact: true }).first()).toBeVisible();\n> 209 |   await expect(page.getByText(/commit/i)"
+    },
+    {
+     "id": "REQ-6-2-4",
+     "observation": "Error: expect(locator).toBeDisabled() failed\n\nLocator: getByRole('button', { name: 'Merge pull request', exact: true })\nExpected: disabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true })\n\n\n  289 |   await expect(page.getByRole('heading', { name: title, exact: true }"
+    },
+    {
+     "id": "REQ-6-2-4#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/ready for review/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/ready for review/i).first()\n\n\n  304 |   await expect(page.getByText('draft-feature', { exact: true }).first()).toBeVisible();\n  305 |   await expect(page.getByTex"
+    },
+    {
+     "id": "REQ-6-3-1",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i).first()\n\n\n  321 |\n  322 |   await clickNamed(page, 'Files changed');\n> 323 |   await expect(page.getByText(/changed files/i).first()).toBeVisible();"
+    },
+    {
+     "id": "REQ-6-3-1#3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i).first()\n\n\n  343 |   await clickNamed(page, 'Files changed');\n  344 |   await expect(page.getByRole('heading', { name: 'Overview onboarding PR', exac"
+    },
+    {
+     "id": "REQ-6-3-3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('PW review comment muqweedyhsf3', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('PW review comment muqweedyhsf3', { exact: true })\n\n\n  370 |   await clickNamed(page, 'Add single comment');\n  371 |\n> 372 |   await expect(p"
+    },
+    {
+     "id": "REQ-6-3-3#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('PW pending comment muqweirotc7b', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('PW pending comment muqweirotc7b', { exact: true })\n\n\n  387 |   await clickNamed(page, 'Start a review');\n  388 |\n> 389 |   await expect(pag"
+    },
+    {
+     "id": "REQ-6-3-4",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/approved/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/approved/i).first()\n\n\n  405 |   await clickNamed(page, 'Submit review');\n  406 |\n> 407 |   await expect(page.getByText(/approved/i).first()).toBeVisible();\n      |       "
+    },
+    {
+     "id": "REQ-6-3-4#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changes requested/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changes requested/i).first()\n\n\n  420 |   await clickNamed(page, 'Submit review');\n  421 |\n> 422 |   await expect(page.getByText(/changes requested/i).first()).to"
+    },
+    {
+     "id": "REQ-6-5",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator:  getByText('Create a merge commit', { exact: true }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Create a merge commit', { exact: true }).first()\n    9 × locator resolved to <option>Create a merge commit</option>\n      - unexpected value \"hidden\"\n"
+    },
+    {
+     "id": "helper:t02-REQ-2.spec.cjs:50",
+     "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  48 | // Open a readable repository through the top global search control.\n  49 | async function openRepository(page, name) {\n> 50 |   await page.getByRole('searchbox', { name: 'Search', exact: true }).fill(name);\n     |                                          "
+    },
+    {
+     "id": "helper:t04-REQ-4.spec.cjs:29",
+     "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true }).first()\n\n\n  27 | async function openRepository(page, repoName) {\n  28 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true }).first();\n> 29 |   await search.fill(repoName);\n     |                ^\n  30 |   await search.press('Enter');\n  31 |"
+    },
+    {
+     "id": "helper:t05-REQ-5.spec.cjs:25",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  23 | async function openRepository(page, repoName) {\n  24 |   const search = page.getByRole('sea"
+    }
+   ],
+   "invariants": [],
+   "translation": {}
+  },
+  "repair": {
+   "accepted": true,
+   "reason": "36 more scenario(s) pass",
+   "files": [
+    "frontend/public/app.js",
+    "frontend/public/styles.css"
+   ]
+  },
+  "browser_before": [
+   {
+    "executed": true,
+    "diagnostic_only": true,
+    "errors": [],
+    "page_errors": [],
+    "actions": [
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Home",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Agree to the terms",
+      "action": ""
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     }
+    ],
+    "screens": [
+     "#/",
+     "#/login",
+     "#/repos/acme-demo/acme-docs",
+     "#/repos/acme-demo/branch-switch-demo",
+     "#/repos/acme-demo/default-branch-demo",
+     "#/repos/acme-demo/file-management-demo",
+     "#/repos/acme-demo/branch-protection-demo",
+     "#/orgs/acme-demo",
+     "#/register",
+     "#/forgot",
+     "#/repos/acme-demo/acme-docs/issues",
+     "#/repos/acme-demo/acme-docs/pulls"
+    ],
+    "browser": "143.0.7499.4",
+    "playwright": "1.57.0"
+   }
+  ],
+  "rounds": [
+   {
+    "round": 1,
+    "fatal": 0,
+    "failing": [
+     "REQ-5-1-1#entry-1",
+     "REQ-5-1-1#entry-2",
+     "REQ-5-1-2#entry-1",
+     "REQ-5-1-2#entry-2",
+     "REQ-5-1-2#entry-3",
+     "REQ-6-2-1#entry-1",
+     "REQ-6-2-1#entry-2",
+     "REQ-6-3-1#entry-1",
+     "REQ-2-2-2",
+     "REQ-2-2-3",
+     "REQ-2-2-3#2",
+     "REQ-3-1",
+     "REQ-3-1#2",
+     "REQ-3-1#3",
+     "REQ-3-1#4",
+     "REQ-3-2-1",
+     "REQ-3-2-3",
+     "REQ-3-2-3#2",
+     "REQ-3-4",
+     "REQ-6-2-2",
+     "REQ-6-2-4",
+     "REQ-6-2-4#2",
+     "REQ-6-3-1",
+     "REQ-6-3-1#3",
+     "REQ-6-3-3",
+     "REQ-6-3-3#2",
+     "REQ-6-3-4",
+     "REQ-6-3-4#2",
+     "REQ-6-5",
+     "helper:t02-REQ-2.spec.cjs:50",
+     "helper:t04-REQ-4.spec.cjs:29",
+     "helper:t05-REQ-5.spec.cjs:25"
+    ],
+    "passing_before": 49,
+    "accepted": true,
+    "gained": [
+     "REQ-2-2-3",
+     "REQ-2-2-3#2",
+     "REQ-3-1",
+     "REQ-3-1#2",
+     "REQ-3-1#3",
+     "REQ-3-1#4",
+     "REQ-3-2-1",
+     "REQ-3-2-3",
+     "REQ-3-2-3#2",
+     "REQ-3-4",
+     "REQ-4-1",
+     "REQ-4-2-1",
+     "REQ-4-2-2",
+     "REQ-4-2-3",
+     "REQ-4-2-3#3",
+     "REQ-4-2-3#4",
+     "REQ-4-3-1",
+     "REQ-4-3-1#2",
+     "REQ-4-3-2",
+     "REQ-4-3-2#2",
+     "REQ-4-3-3#2",
+     "REQ-4-4",
+     "REQ-4-4#2",
+     "REQ-5-1-1",
+     "REQ-5-1-1#2",
+     "REQ-5-1-1#entry-1",
+     "REQ-5-1-1#entry-2",
+     "REQ-5-1-2#entry-1",
+     "REQ-5-1-2#entry-2",
+     "REQ-5-1-2#entry-3",
+     "REQ-5-2-1#2",
+     "REQ-5-4#2",
+     "REQ-6-2-1#entry-1",
+     "REQ-6-2-1#entry-2",
+     "REQ-6-2-2",
+     "REQ-6-3-1#entry-1"
+    ],
+    "reason": "36 more scenario(s) pass",
+    "scenarios": {
+     "counts": {
+      "pass": 85,
+      "fail": 26
+     },
+     "coverage": {
+      "total": 100,
+      "parsed": 111
+     },
+     "seconds": 169.4,
+     "source_contracts": {},
+     "failing": [
+      {
+       "id": "REQ-2-2-2",
+       "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('bob-reviewer', { exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByText('bob-reviewer', { exact: true })\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n\n\n  199 |\n  200 |   // THEN: the member disappears immediately and stay"
+      },
+      {
+       "id": "REQ-2-3",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row', { name: /frontend-team/ }).getByText('Write', { exact: true })\nExpected: visible\nError: strict mode violation: getByRole('row', { name: /frontend-team/ }).getByText('Write', { exact: true }) resolved to 2 elements:\n    1) <span class=\"role-text\">Write</span> aka locator('article:nth-child(18) > div > .role-text')\n    2) <option"
+      },
+      {
+       "id": "REQ-2-3#2",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row', { name: /access-role-team/ }).getByText('Write', { exact: true })\nExpected: visible\nError: strict mode violation: getByRole('row', { name: /access-role-team/ }).getByText('Write', { exact: true }) resolved to 2 elements:\n    1) <span class=\"role-text\">Write</span> aka getByLabel('access-role-team').locator('span').filter({ hasT"
+      },
+      {
+       "id": "REQ-4-2-3#2",
+       "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true }).last()\nExpected: \"no-such-token\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true }).last()\n\n\n  120 |   await expect(\n  121 |     page.getByRole('searchbox', { na"
+      },
+      {
+       "id": "REQ-4-3-3",
+       "observation": "TimeoutError: locator.selectOption: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Default branch', { exact: true })\n\n\n  219 |   await page.getByRole('link', { name: 'Branches', exact: true }).first().click();\n  220 |\n> 221 |   await page.getByLabel('Default branch', { exact: true }).selectOption('release');\n      |                                                            ^\n  222"
+      },
+      {
+       "id": "REQ-5-1-2",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Improve onboarding', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Improve onboarding', exact: true })\n\n\n  91 |   await openIssue(page, 'acme-docs', 'Improve onboarding');\n  92 |\n> 93"
+      },
+      {
+       "id": "REQ-5-1-2#2",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Improve onboarding', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Improve onboarding', exact: true })\n\n\n  103 |   await page.reload();\n  104 |\n> 105 |   await expect(page.getByRole('"
+      },
+      {
+       "id": "REQ-5-1-2#3",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Improve onboarding', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Improve onboarding', exact: true })\n\n\n  114 |   await openIssue(page, 'acme-docs', 'Improve onboarding');\n  115 |\n> "
+      },
+      {
+       "id": "REQ-5-2-1",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Playwright onboarding muqwnj4q820u', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Playwright onboarding muqwnj4q820u', exact: true })\n\n\n  134 |   await page.getByRole('button', { nam"
+      },
+      {
+       "id": "REQ-5-2-2",
+       "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Edit issue title', exact: true })\n\n\n  165 |   await openIssue(page, 'acme-docs', 'Editable onboarding issue');\n  166 |\n> 167 |   await page.getByRole('button', { name: 'Edit issue title', exact: true }).click();\n      |                                                                        "
+      },
+      {
+       "id": "REQ-5-2-2#2",
+       "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Edit issue title', exact: true })\n\n\n  182 |   await openIssue(page, 'acme-docs', 'Original issue title');\n  183 |\n> 184 |   await page.getByRole('button', { name: 'Edit issue title', exact: true }).click();\n      |                                                                             "
+      },
+      {
+       "id": "REQ-5-2-3",
+       "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Comment', { exact: true })\n\n\n  202 |   await openIssue(page, 'acme-docs', 'Commentable onboarding issue');\n  203 |\n> 204 |   await page.getByLabel('Comment', { exact: true }).fill(comment);\n      |                                                     ^\n  205 |   await page.getByRole('button', { name: 'Comment"
+      },
+      {
+       "id": "REQ-5-2-3#2",
+       "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Comment', { exact: true })\n\n\n  219 |   const before = await articles.count();\n  220 |\n> 221 |   await page.getByLabel('Comment', { exact: true }).fill('   ');\n      |                                                     ^\n  222 |   const commentButton = page.getByRole('button', { name: 'Comment', exact: true "
+      },
+      {
+       "id": "REQ-5-3-1",
+       "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Assignees', exact: true })\n\n\n  241 |\n  242 |   // Assign.\n> 243 |   await page.getByRole('button', { name: 'Assignees', exact: true }).click();\n      |                                                                      ^\n  244 |   await page.getByRole('textbox', { name: 'Search assignees'"
+      },
+      {
+       "id": "REQ-5-3-2",
+       "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Labels', exact: true })\n\n\n  265 |   await openIssue(page, 'acme-docs', 'Labelable onboarding issue');\n  266 |\n> 267 |   await page.getByRole('button', { name: 'Labels', exact: true }).click();\n      |                                                                   ^\n  268 |   await page.g"
+      },
+      {
+       "id": "REQ-5-3-3",
+       "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Milestone', exact: true })\n\n\n  280 |   await openIssue(page, 'acme-docs', 'Milestone onboarding issue');\n  281 |\n> 282 |   await page.getByRole('button', { name: 'Milestone', exact: true }).click();\n      |                                                                      ^\n  283 |   awa"
+      },
+      {
+       "id": "REQ-5-4",
+       "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Close issue', exact: true })\n\n\n  295 |   await openIssue(page, 'acme-docs', 'Closable onboarding issue');\n  296 |\n> 297 |   await page.getByRole('button', { name: 'Close issue', exact: true }).click();\n      |                                                                        ^\n  298 | "
+      },
+      {
+       "id": "REQ-6-2-4",
+       "observation": "Error: expect(locator).toBeDisabled() failed\n\nLocator: getByRole('button', { name: 'Merge pull request', exact: true })\nExpected: disabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true })\n\n\n  289 |   await expect(page.getByRole('heading', { name: title, exact: true }"
+      },
+      {
+       "id": "REQ-6-2-4#2",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/ready for review/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/ready for review/i).first()\n\n\n  304 |   await expect(page.getByText('draft-feature', { exact: true }).first()).toBeVisible();\n  305 |   await expect(page.getByTex"
+      },
+      {
+       "id": "REQ-6-3-1",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i).first()\n\n\n  321 |\n  322 |   await clickNamed(page, 'Files changed');\n> 323 |   await expect(page.getByText(/changed files/i).first()).toBeVisible();"
+      },
+      {
+       "id": "REQ-6-3-1#3",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i).first()\n\n\n  343 |   await clickNamed(page, 'Files changed');\n  344 |   await expect(page.getByRole('heading', { name: 'Overview onboarding PR', exac"
+      },
+      {
+       "id": "REQ-6-3-3",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('PW review comment muqwp7qngt1q', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('PW review comment muqwp7qngt1q', { exact: true })\n\n\n  370 |   await clickNamed(page, 'Add single comment');\n  371 |\n> 372 |   await expect(p"
+      },
+      {
+       "id": "REQ-6-3-3#2",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('PW pending comment muqwpc64rd5x', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('PW pending comment muqwpc64rd5x', { exact: true })\n\n\n  387 |   await clickNamed(page, 'Start a review');\n  388 |\n> 389 |   await expect(pag"
+      },
+      {
+       "id": "REQ-6-3-4",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/approved/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/approved/i).first()\n\n\n  405 |   await clickNamed(page, 'Submit review');\n  406 |\n> 407 |   await expect(page.getByText(/approved/i).first()).toBeVisible();\n      |       "
+      },
+      {
+       "id": "REQ-6-3-4#2",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changes requested/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changes requested/i).first()\n\n\n  420 |   await clickNamed(page, 'Submit review');\n  421 |\n> 422 |   await expect(page.getByText(/changes requested/i).first()).to"
+      },
+      {
+       "id": "REQ-6-5",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator:  getByText('Create a merge commit', { exact: true }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Create a merge commit', { exact: true }).first()\n    9 × locator resolved to <option>Create a merge commit</option>\n      - unexpected value \"hidden\"\n"
+      }
+     ],
+     "invariants": [],
+     "translation": {}
+    },
+    "browser_after": [
+     {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [
+       "Cannot access 'canTriage' before initialization"
+      ],
+      "actions": [
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Home",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       }
+      ],
+      "screens": [
+       "#/",
+       "#/login",
+       "#/repos/acme-demo/acme-docs",
+       "#/repos/acme-demo/acme-docs/issues",
+       "#/repos/acme-demo/acme-docs/pulls",
+       "#/repos/acme-demo/branch-switch-demo",
+       "#/repos/acme-demo/default-branch-demo",
+       "#/repos/acme-demo/file-management-demo",
+       "#/repos/acme-demo/branch-protection-demo",
+       "#/repos/acme-demo/branch-protection-demo/pulls",
+       "#/repos/acme-demo/acme-docs/issues/1",
+       "#/repos/acme-demo/acme-docs/issues/2"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+     }
+    ],
+    "files": [
+     "frontend/public/app.js",
+     "frontend/public/styles.css"
+    ],
+    "replied": true,
+    "seconds": 505.0,
+    "cost_cny": 0.505617
+   }
+  ],
+  "stopped": "repair call limit reached (1)",
+  "problems_after": [
+   "clicking `GitHub` (data-action `arc:nav`) on screen `#/repos/acme-demo/acme-docs/issues/1` throws: Cannot access 'canTriage' before initialization. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+   "browser interaction error: Cannot access 'canTriage' before initialization"
+  ],
+  "scenarios_after": {
+   "counts": {
+    "pass": 85,
+    "fail": 26
+   },
+   "coverage": {
+    "total": 100,
+    "parsed": 111
+   },
+   "seconds": 169.4,
+   "source_contracts": {},
+   "failing": [
+    {
+     "id": "REQ-2-2-2",
+     "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('bob-reviewer', { exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByText('bob-reviewer', { exact: true })\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n\n\n  199 |\n  200 |   // THEN: the member disappears immediately and stay"
+    },
+    {
+     "id": "REQ-2-3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row', { name: /frontend-team/ }).getByText('Write', { exact: true })\nExpected: visible\nError: strict mode violation: getByRole('row', { name: /frontend-team/ }).getByText('Write', { exact: true }) resolved to 2 elements:\n    1) <span class=\"role-text\">Write</span> aka locator('article:nth-child(18) > div > .role-text')\n    2) <option"
+    },
+    {
+     "id": "REQ-2-3#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row', { name: /access-role-team/ }).getByText('Write', { exact: true })\nExpected: visible\nError: strict mode violation: getByRole('row', { name: /access-role-team/ }).getByText('Write', { exact: true }) resolved to 2 elements:\n    1) <span class=\"role-text\">Write</span> aka getByLabel('access-role-team').locator('span').filter({ hasT"
+    },
+    {
+     "id": "REQ-4-2-3#2",
+     "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true }).last()\nExpected: \"no-such-token\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true }).last()\n\n\n  120 |   await expect(\n  121 |     page.getByRole('searchbox', { na"
+    },
+    {
+     "id": "REQ-4-3-3",
+     "observation": "TimeoutError: locator.selectOption: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Default branch', { exact: true })\n\n\n  219 |   await page.getByRole('link', { name: 'Branches', exact: true }).first().click();\n  220 |\n> 221 |   await page.getByLabel('Default branch', { exact: true }).selectOption('release');\n      |                                                            ^\n  222"
+    },
+    {
+     "id": "REQ-5-1-2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Improve onboarding', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Improve onboarding', exact: true })\n\n\n  91 |   await openIssue(page, 'acme-docs', 'Improve onboarding');\n  92 |\n> 93"
+    },
+    {
+     "id": "REQ-5-1-2#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Improve onboarding', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Improve onboarding', exact: true })\n\n\n  103 |   await page.reload();\n  104 |\n> 105 |   await expect(page.getByRole('"
+    },
+    {
+     "id": "REQ-5-1-2#3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Improve onboarding', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Improve onboarding', exact: true })\n\n\n  114 |   await openIssue(page, 'acme-docs', 'Improve onboarding');\n  115 |\n> "
+    },
+    {
+     "id": "REQ-5-2-1",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Playwright onboarding muqwnj4q820u', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Playwright onboarding muqwnj4q820u', exact: true })\n\n\n  134 |   await page.getByRole('button', { nam"
+    },
+    {
+     "id": "REQ-5-2-2",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Edit issue title', exact: true })\n\n\n  165 |   await openIssue(page, 'acme-docs', 'Editable onboarding issue');\n  166 |\n> 167 |   await page.getByRole('button', { name: 'Edit issue title', exact: true }).click();\n      |                                                                        "
+    },
+    {
+     "id": "REQ-5-2-2#2",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Edit issue title', exact: true })\n\n\n  182 |   await openIssue(page, 'acme-docs', 'Original issue title');\n  183 |\n> 184 |   await page.getByRole('button', { name: 'Edit issue title', exact: true }).click();\n      |                                                                             "
+    },
+    {
+     "id": "REQ-5-2-3",
+     "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Comment', { exact: true })\n\n\n  202 |   await openIssue(page, 'acme-docs', 'Commentable onboarding issue');\n  203 |\n> 204 |   await page.getByLabel('Comment', { exact: true }).fill(comment);\n      |                                                     ^\n  205 |   await page.getByRole('button', { name: 'Comment"
+    },
+    {
+     "id": "REQ-5-2-3#2",
+     "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Comment', { exact: true })\n\n\n  219 |   const before = await articles.count();\n  220 |\n> 221 |   await page.getByLabel('Comment', { exact: true }).fill('   ');\n      |                                                     ^\n  222 |   const commentButton = page.getByRole('button', { name: 'Comment', exact: true "
+    },
+    {
+     "id": "REQ-5-3-1",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Assignees', exact: true })\n\n\n  241 |\n  242 |   // Assign.\n> 243 |   await page.getByRole('button', { name: 'Assignees', exact: true }).click();\n      |                                                                      ^\n  244 |   await page.getByRole('textbox', { name: 'Search assignees'"
+    },
+    {
+     "id": "REQ-5-3-2",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Labels', exact: true })\n\n\n  265 |   await openIssue(page, 'acme-docs', 'Labelable onboarding issue');\n  266 |\n> 267 |   await page.getByRole('button', { name: 'Labels', exact: true }).click();\n      |                                                                   ^\n  268 |   await page.g"
+    },
+    {
+     "id": "REQ-5-3-3",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Milestone', exact: true })\n\n\n  280 |   await openIssue(page, 'acme-docs', 'Milestone onboarding issue');\n  281 |\n> 282 |   await page.getByRole('button', { name: 'Milestone', exact: true }).click();\n      |                                                                      ^\n  283 |   awa"
+    },
+    {
+     "id": "REQ-5-4",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Close issue', exact: true })\n\n\n  295 |   await openIssue(page, 'acme-docs', 'Closable onboarding issue');\n  296 |\n> 297 |   await page.getByRole('button', { name: 'Close issue', exact: true }).click();\n      |                                                                        ^\n  298 | "
+    },
+    {
+     "id": "REQ-6-2-4",
+     "observation": "Error: expect(locator).toBeDisabled() failed\n\nLocator: getByRole('button', { name: 'Merge pull request', exact: true })\nExpected: disabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true })\n\n\n  289 |   await expect(page.getByRole('heading', { name: title, exact: true }"
+    },
+    {
+     "id": "REQ-6-2-4#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/ready for review/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/ready for review/i).first()\n\n\n  304 |   await expect(page.getByText('draft-feature', { exact: true }).first()).toBeVisible();\n  305 |   await expect(page.getByTex"
+    },
+    {
+     "id": "REQ-6-3-1",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i).first()\n\n\n  321 |\n  322 |   await clickNamed(page, 'Files changed');\n> 323 |   await expect(page.getByText(/changed files/i).first()).toBeVisible();"
+    },
+    {
+     "id": "REQ-6-3-1#3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i).first()\n\n\n  343 |   await clickNamed(page, 'Files changed');\n  344 |   await expect(page.getByRole('heading', { name: 'Overview onboarding PR', exac"
+    },
+    {
+     "id": "REQ-6-3-3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('PW review comment muqwp7qngt1q', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('PW review comment muqwp7qngt1q', { exact: true })\n\n\n  370 |   await clickNamed(page, 'Add single comment');\n  371 |\n> 372 |   await expect(p"
+    },
+    {
+     "id": "REQ-6-3-3#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('PW pending comment muqwpc64rd5x', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('PW pending comment muqwpc64rd5x', { exact: true })\n\n\n  387 |   await clickNamed(page, 'Start a review');\n  388 |\n> 389 |   await expect(pag"
+    },
+    {
+     "id": "REQ-6-3-4",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/approved/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/approved/i).first()\n\n\n  405 |   await clickNamed(page, 'Submit review');\n  406 |\n> 407 |   await expect(page.getByText(/approved/i).first()).toBeVisible();\n      |       "
+    },
+    {
+     "id": "REQ-6-3-4#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changes requested/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changes requested/i).first()\n\n\n  420 |   await clickNamed(page, 'Submit review');\n  421 |\n> 422 |   await expect(page.getByText(/changes requested/i).first()).to"
+    },
+    {
+     "id": "REQ-6-5",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator:  getByText('Create a merge commit', { exact: true }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Create a merge commit', { exact: true }).first()\n    9 × locator resolved to <option>Create a merge commit</option>\n      - unexpected value \"hidden\"\n"
+    }
+   ],
+   "invariants": [],
+   "translation": {}
+  }
+ }
+}

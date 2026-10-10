@@ -1,0 +1,55 @@
+{
+ "kind": "testgen",
+ "scenarios": [
+  {
+   "id": "EV-1.1",
+   "name": "Remove active catalog filters",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "EV-1.2",
+   "name": "Submit a customer service contact message",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "EV-3.1",
+   "name": "Expand checkout order summary details",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "EV-3.2",
+   "name": "Add order comment before payment",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  }
+ ],
+ "invariants": [],
+ "coverage": {
+  "total": 4,
+  "parsed": 4
+ },
+ "seconds": 2.3
+}

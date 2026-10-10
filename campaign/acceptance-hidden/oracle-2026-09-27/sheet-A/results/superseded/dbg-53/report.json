@@ -1,0 +1,2054 @@
+{
+  "config": {
+    "configFile": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oracle-sheetA-LdnwBF/playwright.config.cjs",
+    "rootDir": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.spec\\.cjs$/"
+        ],
+        "timeout": 10000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "10-REQ-1-1-1.spec.cjs",
+      "file": "10-REQ-1-1-1.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-1-1-1 S1: 从首页打开已保存工作簿，并通过稳定 URL 恢复状态",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 264,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:51.850Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "08b5c2591aba944d530d-a0e4cec37902227a37c1",
+          "file": "10-REQ-1-1-1.spec.cjs",
+          "line": 267,
+          "column": 1
+        },
+        {
+          "title": "REQ-1-1-1 S2: 从首页打开指定工作簿时不会带入其他工作簿数据",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 300,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:52.216Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "08b5c2591aba944d530d-42690d9bb053f5374d14",
+          "file": "10-REQ-1-1-1.spec.cjs",
+          "line": 298,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "11-REQ-1-2-1.spec.cjs",
+      "file": "11-REQ-1-2-1.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-1-2-1 S1: 创建空白工作簿，并在刷新后保留 Sheet1 与 A1 选中状态",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:52.524Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c16d778935f064bd8a8a-b1417d4fa15c435a25cc",
+          "file": "11-REQ-1-2-1.spec.cjs",
+          "line": 258,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "12-REQ-1-2-2.spec.cjs",
+      "file": "12-REQ-1-2-2.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-1-2-2 S1: 保存有效工作簿名，并在首页和重新打开后保持一致",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:52.697Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2e2406993e9ef6d63b09-1f637190c09604065a83",
+          "file": "12-REQ-1-2-2.spec.cjs",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "REQ-1-2-2 S2: 纯空格名称被拒绝，重新打开后仍保留原名称",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 263,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:52.954Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2e2406993e9ef6d63b09-4387d88a5da7e04bab4e",
+          "file": "12-REQ-1-2-2.spec.cjs",
+          "line": 286,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "13-REQ-1-3-1.spec.cjs",
+      "file": "13-REQ-1-3-1.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-1-3-1 S1: 导入 UTF-8 CSV，并在刷新后保持原始行列与特殊字段",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 319,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:53.224Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9280c769c639a6b337e-f2593ea64a5c74660074",
+          "file": "13-REQ-1-3-1.spec.cjs",
+          "line": 259,
+          "column": 1
+        },
+        {
+          "title": "REQ-1-3-1 S2: （推断）未闭合引号的无效 CSV 被拒绝，首页不出现该工作簿且不显示部分结果",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 256,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:53.547Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9280c769c639a6b337e-6578a76ef44f39904191",
+          "file": "13-REQ-1-3-1.spec.cjs",
+          "line": 283,
+          "column": 1
+        },
+        {
+          "title": "REQ-1-3-1 S3: （推断）多点号文件名只去掉末尾 .csv，首行保持普通数据，重新打开后行列不变",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 299,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:53.806Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9280c769c639a6b337e-b954adbad4d45bc0a962",
+          "file": "13-REQ-1-3-1.spec.cjs",
+          "line": 294,
+          "column": 1
+        },
+        {
+          "title": "REQ-1-3-1 S4: （推断）CRLF 行尾、字段内换行和整行空字段的 CSV 导入后行列对齐，重新打开后保持",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 325,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:54.109Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b9280c769c639a6b337e-1e82b845c6676daff692",
+          "file": "13-REQ-1-3-1.spec.cjs",
+          "line": 308,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "14-REQ-1-3-2.spec.cjs",
+      "file": "14-REQ-1-3-2.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-1-3-2 S1: 导出活动工作表的计算结果与特殊文本，且刷新后原数据不变",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 397,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:54.441Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3f190783fa06c07ad739-a54dfa8fdc14e45fc52b",
+          "file": "14-REQ-1-3-2.spec.cjs",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "REQ-1-3-2 S2: 导出公式结果不会改写原公式或活动工作表",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 368,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:54.841Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3f190783fa06c07ad739-fe23d1aec3cf6b1ab609",
+          "file": "14-REQ-1-3-2.spec.cjs",
+          "line": 288,
+          "column": 1
+        },
+        {
+          "title": "REQ-1-3-2 S3: 导出当前活动的第二个工作表内容",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 346,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:55.213Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3f190783fa06c07ad739-0d892327f0d9020e9df8",
+          "file": "14-REQ-1-3-2.spec.cjs",
+          "line": 306,
+          "column": 1
+        },
+        {
+          "title": "REQ-1-3-2 S4: 切回 Sheet1 后导出仍只包含当前工作表内容",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 530,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:55.563Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3f190783fa06c07ad739-e9983d5f9287799e9504",
+          "file": "14-REQ-1-3-2.spec.cjs",
+          "line": 323,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "15-REQ-2-1-1.spec.cjs",
+      "file": "15-REQ-2-1-1.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2-1-1 S1: 新增并持久化 Sheet2，且不修改现有工作表数据",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:56.099Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "03c0cb25d24b4b93ff92-1ac19908bdd8f16219ba",
+          "file": "15-REQ-2-1-1.spec.cjs",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-1 S2: 新增工作表使用第一个未占用的 SheetN 名称",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 262,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:56.355Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "03c0cb25d24b4b93ff92-5371dcc7fd7291f963a8",
+          "file": "15-REQ-2-1-1.spec.cjs",
+          "line": 281,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "16-REQ-2-1-2.spec.cjs",
+      "file": "16-REQ-2-1-2.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2-1-2 S1: 切换工作表时恢复各自数据、选中单元格和公式栏",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 426,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:56.624Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "74ddeb5b2e9bcd11c638-62881ba1b7cd1e9fd513",
+          "file": "16-REQ-2-1-2.spec.cjs",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-2 S2: 切换工作表时恢复公式原文并隔离普通值",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 457,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:57.053Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "74ddeb5b2e9bcd11c638-c30381a997417b3b9d0c",
+          "file": "16-REQ-2-1-2.spec.cjs",
+          "line": 293,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-2 S3: 切换工作表时筛选与校验入口保持隔离",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10038,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs",
+                        "column": 28,
+                        "line": 335
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Open dropdown for C2', exact: true })\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Open dropdown for C2', exact: true })\u001b[22m\n\n\n  333 |   await addDropdownRule(page, 'C2', 'C3', 'Open, Closed');\n  334 |   const dropdownC2 = btn(page, 'Open dropdown for C2');\n> 335 |   await expect(dropdownC2).toBeVisible();\n      |                            ^\n  336 |\n  337 |   await addWorksheet(page, 'Sheet2');\n  338 |   await setCell(page, 'A1', 'Notes');\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:335:28"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:16:57.515Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/16-REQ-2-1-2-REQ-2-1-2-S3-切换工作表时筛选与校验入口保持隔离/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/16-REQ-2-1-2-REQ-2-1-2-S3-切换工作表时筛选与校验入口保持隔离/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "74ddeb5b2e9bcd11c638-acdf582a029b3206fb08",
+          "file": "16-REQ-2-1-2.spec.cjs",
+          "line": 321,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-2 S4: 在三张工作表之间切换时分别恢复各自选中单元格",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 571,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:07.832Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "74ddeb5b2e9bcd11c638-c790443ef01f17510da5",
+          "file": "16-REQ-2-1-2.spec.cjs",
+          "line": 360,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-2 S5: 切换工作表时保持各自公式栏原文与计算结果",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 476,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:08.509Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "74ddeb5b2e9bcd11c638-27ea7ad254b3578f482c",
+          "file": "16-REQ-2-1-2.spec.cjs",
+          "line": 390,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "17-REQ-2-1-3.spec.cjs",
+      "file": "17-REQ-2-1-3.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2-1-3 S1: 保存唯一工作表名称，并在刷新后保持",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 267,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:08.992Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43fbe761bc0537792202-0a51bb0dbebbf8f01a18",
+          "file": "17-REQ-2-1-3.spec.cjs",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-3 S2: 重复工作表名称被拒绝，原名称保持不变",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 222,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:09.263Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43fbe761bc0537792202-6da0389aaa49f2c30194",
+          "file": "17-REQ-2-1-3.spec.cjs",
+          "line": 280,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-3 S3: 空工作表名称被拒绝，刷新后仍保留原名称",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 204,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:09.488Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43fbe761bc0537792202-61c235a41743c56a8eb4",
+          "file": "17-REQ-2-1-3.spec.cjs",
+          "line": 296,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "18-REQ-2-1-4.spec.cjs",
+      "file": "18-REQ-2-1-4.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2-1-4 S1: 删除多工作表中的当前工作表，并在刷新后保持删除状态",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 301,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:09.699Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "68dd3ff293c1a9c1d4b7-460a1b1df7620daac6f5",
+          "file": "18-REQ-2-1-4.spec.cjs",
+          "line": 281,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-4 S2: 最后一个工作表不能删除，刷新后仍然存在",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 223,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:10.004Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "68dd3ff293c1a9c1d4b7-5bb3690bb8c328b0ed95",
+          "file": "18-REQ-2-1-4.spec.cjs",
+          "line": 303,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-4 S3: 透视表源工作表不能删除，源数据和透视结果均保持",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10029,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs",
+                        "column": 86,
+                        "line": 69
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \u001b[32m\"Region\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\u001b[22m\n\u001b[2m    13 × locator resolved to <div tabindex=\"-1\" role=\"gridcell\" aria-label=\"A1\" data-coord=\"A1\" aria-selected=\"true\" data-sheet=\"s_wd2n9cn\" data-action=\"select-cell\" class=\"grid-cell selected\"></div>\u001b[22m\n\u001b[2m       - unexpected value \"\"\u001b[22m\n\n\n  67 |\n  68 | async function expectCells(page, expected) {\n> 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);\n     |                                                                                      ^\n  70 | }\n  71 |\n  72 | async function expectFormula(page, ref, value) {\n    at expectCells (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:69:86)\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:324:9"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:10.230Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/18-REQ-2-1-4-REQ-2-1-4-S3-透视表源工作表不能删除，源数据和透视结果均保持/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/18-REQ-2-1-4-REQ-2-1-4-S3-透视表源工作表不能删除，源数据和透视结果均保持/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "68dd3ff293c1a9c1d4b7-3845b709714648e19223",
+          "file": "18-REQ-2-1-4.spec.cjs",
+          "line": 319,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-1-4 S4: 删除透视结果工作表会移除配置并允许随后删除原源表",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10042,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs",
+                        "column": 34,
+                        "line": 353
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('gridcell', { name: 'B4', exact: true })\nExpected: \u001b[32m\"2000\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('gridcell', { name: 'B4', exact: true })\u001b[22m\n\u001b[2m    13 × locator resolved to <div tabindex=\"-1\" role=\"gridcell\" aria-label=\"B4\" data-coord=\"B4\" class=\"grid-cell\" aria-selected=\"false\" data-sheet=\"s_ob3a04r\" data-action=\"select-cell\"></div>\u001b[22m\n\u001b[2m       - unexpected value \"\"\u001b[22m\n\n\n  351 |   await switchTo(page, 'Sheet1');\n  352 |   await createPivot(page, 'A1', 'B3', { rows: 'Region', values: 'Sales', summarize: 'SUM' });\n> 353 |   await expect(cell(page, 'B4')).toHaveText('2000');\n      |                                  ^\n  354 |\n  355 |   const pivotDialog = await deleteSheetConfirmed(page, 'Pivot1');\n  356 |   await expect(pivotDialog).toBeHidden();\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:353:34"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:20.534Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/18-REQ-2-1-4-REQ-2-1-4-S4-删除透视结果工作表会移除配置并允许随后删除原源表/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/18-REQ-2-1-4-REQ-2-1-4-S4-删除透视结果工作表会移除配置并允许随后删除原源表/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "68dd3ff293c1a9c1d4b7-e0abda300ba4a6ece2c3",
+          "file": "18-REQ-2-1-4.spec.cjs",
+          "line": 344,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "19-REQ-2-2-1.spec.cjs",
+      "file": "19-REQ-2-2-1.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2-2-1 S1: 在第 3 行上方插入空白行，整行数据下移且刷新后保持",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 451,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:30.954Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bf8d2c528d8b670269f2-ba08c904eafbb7aa8eb1",
+          "file": "19-REQ-2-2-1.spec.cjs",
+          "line": 269,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-2-1 S2: 删除第 3 行后后续数据上移，重新打开后顺序保持",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 453,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:31.515Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bf8d2c528d8b670269f2-2a4bf99d89fd8dffea25",
+          "file": "19-REQ-2-2-1.spec.cjs",
+          "line": 281,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-2-1 S3: 在目标行下方插入空白行并保持其他数据",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 429,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:31.972Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bf8d2c528d8b670269f2-508c1341cde6896811c8",
+          "file": "19-REQ-2-2-1.spec.cjs",
+          "line": 297,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-2-1 S4: 插入行后调整公式引用并保持计算结果",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 389,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:32.404Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bf8d2c528d8b670269f2-37b5bf7c249108171671",
+          "file": "19-REQ-2-2-1.spec.cjs",
+          "line": 309,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-2-1 S5: 插入行时校验规则随原单元格下移",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10043,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs",
+                        "column": 70,
+                        "line": 336
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Please enter a number from 0 to 100', { exact: true })\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Please enter a number from 0 to 100', { exact: true })\u001b[22m\n\n\n  334 |   await expect(cell(page, 'B2')).toHaveText('101');\n  335 |   await setCell(page, 'B3', '101');\n> 336 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();\n      |                                                                      ^\n  337 |   await expect(cell(page, 'B3')).toHaveText('50');\n  338 |\n  339 |   await page.reload();\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:336:70"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:32.797Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/19-REQ-2-2-1-REQ-2-2-1-S5-插入行时校验规则随原单元格下移/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/19-REQ-2-2-1-REQ-2-2-1-S5-插入行时校验规则随原单元格下移/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "bf8d2c528d8b670269f2-b40d498e228954f23031",
+          "file": "19-REQ-2-2-1.spec.cjs",
+          "line": 323,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "20-REQ-2-2-2.spec.cjs",
+      "file": "20-REQ-2-2-2.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-2-2-2 S1: 在 B 列左侧插入空白列，整列数据右移且刷新后保持",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 456,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:43.119Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7cc70f9bad2e910662c3-3efb51656ef79ba87d7e",
+          "file": "20-REQ-2-2-2.spec.cjs",
+          "line": 263,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10045,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs",
+                        "column": 86,
+                        "line": 69
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \u001b[32m\"#\u001b[7mREF\u001b[27m!\"\u001b[39m\nReceived: \u001b[31m\"#\u001b[7mERROR\u001b[27m!\"\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\u001b[22m\n\u001b[2m    13 × locator resolved to <div tabindex=\"-1\" role=\"gridcell\" aria-label=\"B2\" data-coord=\"B2\" data-sheet=\"bs1\" class=\"grid-cell\" aria-selected=\"false\" data-action=\"select-cell\">#ERROR!</div>\u001b[22m\n\u001b[2m       - unexpected value \"#ERROR!\"\u001b[22m\n\n\n  67 |\n  68 | async function expectCells(page, expected) {\n> 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);\n     |                                                                                      ^\n  70 | }\n  71 |\n  72 | async function expectFormula(page, ref, value) {\n    at expectCells (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:69:86)\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:283:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:43.723Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/20-REQ-2-2-2-REQ-2-2-2-S2-删除公式直接引用的-B-列后显示引用错误，重新打开后保持/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/20-REQ-2-2-2-REQ-2-2-2-S2-删除公式直接引用的-B-列后显示引用错误，重新打开后保持/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7cc70f9bad2e910662c3-a8ea60602d564cf7e7d4",
+          "file": "20-REQ-2-2-2.spec.cjs",
+          "line": 275,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-2-2 S3: 在目标列右侧插入空白列并保持其他数据",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 405,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:54.027Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7cc70f9bad2e910662c3-f5cd6a2823f29048f2f1",
+          "file": "20-REQ-2-2-2.spec.cjs",
+          "line": 289,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-2-2 S4: 插入列后调整公式引用并保持计算结果",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 322,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:54.526Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7cc70f9bad2e910662c3-5e9ccb4f812d8cb1a945",
+          "file": "20-REQ-2-2-2.spec.cjs",
+          "line": 301,
+          "column": 1
+        },
+        {
+          "title": "REQ-2-2-2 S5: 插入列时校验规则随原单元格右移",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10033,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs",
+                        "column": 70,
+                        "line": 328
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Please enter a number from 0 to 100', { exact: true })\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Please enter a number from 0 to 100', { exact: true })\u001b[22m\n\n\n  326 |   await expect(cell(page, 'B2')).toHaveText('101');\n  327 |   await setCell(page, 'C2', '101');\n> 328 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();\n      |                                                                      ^\n  329 |   await expect(cell(page, 'C2')).toHaveText('50');\n  330 |\n  331 |   await page.reload();\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:328:70"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:17:54.852Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/20-REQ-2-2-2-REQ-2-2-2-S5-插入列时校验规则随原单元格右移/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/20-REQ-2-2-2-REQ-2-2-2-S5-插入列时校验规则随原单元格右移/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7cc70f9bad2e910662c3-bed0762f5e5d9402fd43",
+          "file": "20-REQ-2-2-2.spec.cjs",
+          "line": 315,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "21-REQ-3-1-1.spec.cjs",
+      "file": "21-REQ-3-1-1.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-3-1-1 S1: 通过公式栏提交单元格值，依赖公式重算并持久化",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 413,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:05.142Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "933e78bba28d2fd767a2-ef4d5966fd87f50c6886",
+          "file": "21-REQ-3-1-1.spec.cjs",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "REQ-3-1-1 S2: Escape 取消网格内未提交编辑，刷新后保留原值",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:05.656Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "933e78bba28d2fd767a2-7f482dec362c6a8b94db",
+          "file": "21-REQ-3-1-1.spec.cjs",
+          "line": 278,
+          "column": 1
+        },
+        {
+          "title": "REQ-3-1-1 S3: 通过网格提交文本、数字、布尔值、日期文本和公式",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10041,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs",
+                        "column": 24,
+                        "line": 65
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeHidden\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('textbox', { name: 'Edit A1', exact: true })\nExpected: hidden\nReceived: visible\n\nCall log:\n\u001b[2m  - Expect \"toBeHidden\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Edit A1', exact: true })\u001b[22m\n\u001b[2m    14 × locator resolved to <input type=\"text\" class=\"cell-editor\" aria-label=\"Edit A1\"/>\u001b[22m\n\u001b[2m       - unexpected value \"visible\"\u001b[22m\n\n\n  63 |   await editor.fill(value);\n  64 |   await editor.press('Enter');\n> 65 |   await expect(editor).toBeHidden();\n     |                        ^\n  66 | }\n  67 |\n  68 | async function expectCells(page, expected) {\n    at editInGrid (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:65:24)\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:301:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:05.914Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/21-REQ-3-1-1-REQ-3-1-1-S3-通过网格提交文本、数字、布尔值、日期文本和公式/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/21-REQ-3-1-1-REQ-3-1-1-S3-通过网格提交文本、数字、布尔值、日期文本和公式/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "933e78bba28d2fd767a2-0ca8f0917bbfb02d0b91",
+          "file": "21-REQ-3-1-1.spec.cjs",
+          "line": 299,
+          "column": 1
+        },
+        {
+          "title": "REQ-3-1-1 S4: 在更深的单元格位置提交公式并在刷新后保持",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10039,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs",
+                        "column": 24,
+                        "line": 65
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeHidden\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('textbox', { name: 'Edit F12', exact: true })\nExpected: hidden\nReceived: visible\n\nCall log:\n\u001b[2m  - Expect \"toBeHidden\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Edit F12', exact: true })\u001b[22m\n\u001b[2m    13 × locator resolved to <input type=\"text\" class=\"cell-editor\" aria-label=\"Edit F12\"/>\u001b[22m\n\u001b[2m       - unexpected value \"visible\"\u001b[22m\n\n\n  63 |   await editor.fill(value);\n  64 |   await editor.press('Enter');\n> 65 |   await expect(editor).toBeHidden();\n     |                        ^\n  66 | }\n  67 |\n  68 | async function expectCells(page, expected) {\n    at editInGrid (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:65:24)\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:325:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:16.216Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/21-REQ-3-1-1-REQ-3-1-1-S4-在更深的单元格位置提交公式并在刷新后保持/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/21-REQ-3-1-1-REQ-3-1-1-S4-在更深的单元格位置提交公式并在刷新后保持/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "933e78bba28d2fd767a2-a30bfaef82cce709dc03",
+          "file": "21-REQ-3-1-1.spec.cjs",
+          "line": 321,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "22-REQ-3-1-2.spec.cjs",
+      "file": "22-REQ-3-1-2.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-3-1-2 S1: 从 B2 原子粘贴二维表格，保留空字段和矩形外数据",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 318,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:26.627Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fcf405cfe4a942a964de-6c1842ab1aa483c1c6cc",
+          "file": "22-REQ-3-1-2.spec.cjs",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 10045,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 10000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs",
+                        "column": 70,
+                        "line": 288
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Please enter a number from 0 to 100', { exact: true })\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Please enter a number from 0 to 100', { exact: true })\u001b[22m\n\n\n  286 |   await pressCtrlV(page);\n  287 |\n> 288 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();\n      |                                                                      ^\n  289 |   const original = { B2: 'Ann', C2: '10', B3: 'Bob', C3: '20' };\n  290 |   await expectCells(page, original);\n  291 |   await page.reload();\n    at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:288:70"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:27.048Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/22-REQ-3-1-2-REQ-3-1-2-S2-粘贴中任一值违反校验时整批拒绝且不留下部分状态/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/22-REQ-3-1-2-REQ-3-1-2-S2-粘贴中任一值违反校验时整批拒绝且不留下部分状态/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fcf405cfe4a942a964de-d32683f32ee4f7c14ede",
+          "file": "22-REQ-3-1-2.spec.cjs",
+          "line": 277,
+          "column": 1
+        },
+        {
+          "title": "REQ-3-1-2 S3: 右键粘贴替换目标公式并重算依赖项",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 517,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:37.360Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fcf405cfe4a942a964de-16bd5d2bf13324c86d95",
+          "file": "22-REQ-3-1-2.spec.cjs",
+          "line": 296,
+          "column": 1
+        },
+        {
+          "title": "REQ-3-1-2 S4: 从 A1 粘贴单行表格并保持外部单元格不变",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 269,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:37.994Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fcf405cfe4a942a964de-69ea1e233562c1ad9de4",
+          "file": "22-REQ-3-1-2.spec.cjs",
+          "line": 314,
+          "column": 1
+        },
+        {
+          "title": "REQ-3-1-2 S5: 从 C3 粘贴两行两列表格并保留源外内容",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 330,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:38.267Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fcf405cfe4a942a964de-01dd82c3f1bf0e1c60d0",
+          "file": "22-REQ-3-1-2.spec.cjs",
+          "line": 329,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "23-REQ-3-1-3.spec.cjs",
+      "file": "23-REQ-3-1-3.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "REQ-3-1-3 S1: 拖拽选择精确的矩形区域",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 612,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:38.605Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b33a4c6fa5cd1b873b8-2dd921a38eb36fda31d4",
+          "file": "23-REQ-3-1-3.spec.cjs",
+          "line": 258,
+          "column": 1
+        },
+        {
+          "title": "REQ-3-1-3 S2: 刷新后恢复完整选区，新的单元格选择会替换该选区",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 10000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 319,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T12:18:39.221Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b33a4c6fa5cd1b873b8-f0788185447af6e6f614",
+          "file": "23-REQ-3-1-3.spec.cjs",
+          "line": 279,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-27T12:16:51.565Z",
+    "duration": 108003.66,
+    "expected": 39,
+    "skipped": 0,
+    "unexpected": 9,
+    "flaky": 0
+  }
+}

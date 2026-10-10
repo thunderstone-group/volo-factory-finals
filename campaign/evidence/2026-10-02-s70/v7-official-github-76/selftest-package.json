@@ -1,0 +1,18 @@
+{
+  "sha256": "8bbb6d6c4ba32935174a5ed348358d67860adf6c353450991786ce5f268b9b3a",
+  "bytes": 40931,
+  "files": [
+    "frontend/package-lock.json",
+    "frontend/package.json",
+    "frontend/public/app.js",
+    "frontend/public/index.html",
+    "frontend/public/lib/arc.js",
+    "frontend/public/seed.js",
+    "frontend/public/styles.css",
+    "backend/package-lock.json",
+    "backend/package.json",
+    "backend/server.js"
+  ],
+  "source_run_id": "c5e4493bad81",
+  "wrapper_only": true
+}

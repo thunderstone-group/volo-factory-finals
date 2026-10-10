@@ -1,0 +1,20 @@
+{
+  "task": "github",
+  "label": "guard74-s1",
+  "package_sha256": "74b637ac17ff20dff1e8249d82d161d8ad3cd9296dcb26611cd82199edcc7fe8",
+  "agent_env": [
+    "ONESHOT_REGRESSION_GUARD=1"
+  ],
+  "exit": 0,
+  "seconds": 1137.8,
+  "proxy": {
+    "exit": 1,
+    "tail": "547452b13c5e82641126814fe504c7dc0dcbbc735f5b9ccab6f597528eb91\", \"tests/20-EV-2.10.spec.ts\": \"10331f180cae4aeae47f1b602892af074e1b31040599358ff8165d34cfbc429d\", \"tests/21-EV-3.1.spec.ts\": \"9dadcfd03988ba738e5f729d602066a46c77d78a1e20ea368a01c533aaed50a7\", \"tests/22-EV-3.2.spec.ts\": \"ea0caf3fc09f398eaa2774de33843cc757fc7f18a97b29f68d66ecd06d7797d8\", \"tests/23-EV-3.3.spec.ts\": \"cd03b720eab35abe0e756484495bc70f7fb5e24069ecb05e7aff1ae44a564aeb\", \"tests/24-EV-3.4.spec.ts\": \"5693c35b7cc391cf8f6212db441faba819d39de4af7410b2bbe584efb5b56eee\", \"tests/25-EV-3.5.spec.ts\": \"2f1e4edda56302dc61b5c8c80d68348a5feebc24134e967121d8cb7b1966d908\", \"tests/26-EV-3.6.spec.ts\": \"3ed583465a502a2df06cfa5b77e0c8f371d832fa047627a74c7c311058d9e435\", \"tests/27-EV-3.7.spec.ts\": \"62dd2ebf4b5c9f0fd2c7b07af3d68471942f95b70a294f286ee88640823e6c22\", \"tests/28-EV-3.8.spec.ts\": \"8e61beefcd244c1dc392e610b7352099369f0222af2c4ec42060fbc28317bb6c\", \"tests/29-EV-3.9.spec.ts\": \"03bc81f2a5ec5ab44b7e94e36072b7dbe732b4972a988385d84e369c89964810\", \"tests/30-EV-3.10.spec.ts\": \"db7e0a72d3774cba895d1f000084b551c71f4e56ffa98eecef4e282ba78f5677\", \"tests/helpers.ts\": \"f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3\"}, \"test_suite_sha256\": \"ae3d83d8a98ca2aa56a3a15130983bcb8ae83ab9a295aa69a3bb14b68f8f9ba6\", \"image_id\": \"sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de\", \"suite_duration_seconds\": 66.441, \"container_exit_code\": 1, \"passed\": 29, \"failed\": 1, \"total\": 30, \"wall_seconds\": 71.475}\n",
+    "report": "~/projects/arcbench-campaign/finals-proxy/results/local/github-guard74-s1-proxy.json"
+  },
+  "regression": {
+    "exit": 0,
+    "tail": "{\"summaries\": {\"v6-fixed-independent\": {\"counts\": {\"pass\": 107, \"fail\": 4}, \"seconds\": 191.2, \"unavailable\": null}}, \"task\": \"github\", \"app_dir\": \"~/projects/arcbench-campaign/finals-local/runs/github-guard74-s1/workspace\", \"wall_seconds\": 191.664, \"app_sha256\": \"096bae8c536e6543f8502b761577de8d131ee24e7c5f25b77ff39e167e05e3dd\", \"original_requirements_sha256\": \"9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8\", \"suite_sha256\": {\"v6-fixed-independent\": \"28456b7cdd76edcd2427997421d57d4f26b42051eff68cf3b05e7404f9958609\"}, \"image_id\": \"sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de\"}\n",
+    "report": "~/projects/arcbench-campaign/finals-proxy/results/local/github-guard74-s1-regression.json"
+  }
+}

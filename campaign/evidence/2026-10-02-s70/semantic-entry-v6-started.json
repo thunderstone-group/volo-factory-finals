@@ -1,0 +1,30 @@
+{
+  "candidate_source_commit": "eadfbad",
+  "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb",
+  "previous_turn": "progress: CLI main delivered; fresh v5 pair completed; v6 source checks passed",
+  "model": "deepseek-v4-flash-vision-exp",
+  "input": "updated complete public requirements, no supplied application template",
+  "processes": {
+    "github": {
+      "pid": 26805,
+      "task": "github",
+      "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb"
+    },
+    "sheet": {
+      "pid": 26804,
+      "task": "sheet",
+      "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb"
+    }
+  },
+  "official_submission_unchanged": "f56d97c2fdb1",
+  "testgen_v5_sheet_limitations": [
+    {
+      "id": "REQ-2-2-2#2",
+      "finding": "After inserting a blank B column, test simultaneously expects B1 blank, C1 3, formula B1+C1 and result 5; the formula expectation contradicts ordinary reference-preserving insertion."
+    },
+    {
+      "id": "helper:t04-REQ-4.spec.cjs:36",
+      "finding": "Later tests assume seeded A1=2/B1=3 despite the explicitly shared backend and prior sheet mutations; per-test setup must be inspected before treating these as application defects."
+    }
+  ]
+}

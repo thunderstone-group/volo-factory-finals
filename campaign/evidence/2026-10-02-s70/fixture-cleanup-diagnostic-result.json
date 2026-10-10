@@ -1,0 +1,1052 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-1-1-1",
+      "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-1-1#2",
+      "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-1-1-1#3",
+      "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 3",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-2",
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-1-2#2",
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-2#3",
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 3",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-2#4",
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 4",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-3",
+      "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-1-3#2",
+      "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-1-1-3#3",
+      "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 3",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-2",
+      "name": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-2#2",
+      "name": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-3",
+      "name": "REQ-1-3: Change Account Password - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-1-3#2",
+      "name": "REQ-1-3: Change Account Password - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-1-3#3",
+      "name": "REQ-1-3: Change Account Password - Scenario 3",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-1-1",
+      "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-1#2",
+      "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-2",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-2#2",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-2#3",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-2-1",
+      "name": "REQ-2-2-1: Create an Organization Team - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-1#2",
+      "name": "REQ-2-2-1: Create an Organization Team - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-2",
+      "name": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-2-2-2#2",
+      "name": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-2-2-3",
+      "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-2-2-3#2",
+      "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-4",
+      "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-2-2-4#2",
+      "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-2-3",
+      "name": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-3#2",
+      "name": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-1",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-1#2",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-1#3",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 3",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-1#4",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 4",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-1",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-1#2",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-1#3",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 3",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-2",
+      "name": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-2#2",
+      "name": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-3",
+      "name": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-3#2",
+      "name": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-3",
+      "name": "REQ-3-3: View a Public Repository Overview - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-4",
+      "name": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-3-4#2",
+      "name": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-1",
+      "name": "REQ-4-1: Browse Repository Files and Directories - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements).",
+      "source": "",
+      "seconds": 0.0
+    },
+    {
+      "id": "REQ-4-2-1",
+      "name": "REQ-4-2-1: View Repository Commit History - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-2",
+      "name": "REQ-4-2-2: Inspect Commit and Revision Differences - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-3",
+      "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-3#2",
+      "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-4-2-3#3",
+      "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 3",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-3#4",
+      "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 4",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-3-1",
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-1#2",
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-2",
+      "name": "REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-2#2",
+      "name": "REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-3",
+      "name": "REQ-4-3-3: Change the Repository Default Branch - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-3-3#2",
+      "name": "REQ-4-3-3: Change the Repository Default Branch - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-4",
+      "name": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-4#2",
+      "name": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-1-1",
+      "name": "List and Filter Repository Issues - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-1-1#2",
+      "name": "List and Filter Repository Issues - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2",
+      "name": "View an Issue and Its Discussion - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2#2",
+      "name": "View an Issue and Its Discussion - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-1-2#3",
+      "name": "View an Issue and Its Discussion - Scenario 3",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-2-1",
+      "name": "Create a Repository Issue - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-2-1#2",
+      "name": "Create a Repository Issue - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-2-2",
+      "name": "Edit an Issue Title and Description - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-2-2#2",
+      "name": "Edit an Issue Title and Description - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-2-3",
+      "name": "Comment on an Issue Discussion - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-2-3#2",
+      "name": "Comment on an Issue Discussion - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-3-1",
+      "name": "Assign or Unassign Issue Participants - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-3-2",
+      "name": "Apply Labels to an Issue - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-3-3",
+      "name": "Assign Issues and Pull Requests to a Milestone - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-4",
+      "name": "Close or Reopen an Issue - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-4#2",
+      "name": "Close or Reopen an Issue - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-1",
+      "name": "Protect Branches with Review and Status-Check Requirements - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-1#2",
+      "name": "Protect Branches with Review and Status-Check Requirements - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-1#3",
+      "name": "Protect Branches with Review and Status-Check Requirements - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-1",
+      "name": "List and Filter Repository Pull Requests - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-1#2",
+      "name": "List and Filter Repository Pull Requests - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-1#3",
+      "name": "List and Filter Repository Pull Requests - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-2",
+      "name": "Compare Branches Before Opening a Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-2#2",
+      "name": "Compare Branches Before Opening a Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-3",
+      "name": "Create a Pull Request from Comparison Results - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-3#2",
+      "name": "Create a Pull Request from Comparison Results - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-4",
+      "name": "Create a Draft Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-6-2-4#2",
+      "name": "Create a Draft Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-3-1",
+      "name": "View Pull Request Overview and Commits - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-1#2",
+      "name": "View Pull Request Overview and Commits - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-3-1#3",
+      "name": "View Pull Request Overview and Commits - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-3-2",
+      "name": "Inspect Changed Files and Aggregate Diff - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-3",
+      "name": "Add Review Comments to Changed Code Lines - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-6-3-3#2",
+      "name": "Add Review Comments to Changed Code Lines - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-6-3-4",
+      "name": "Submit a Pull Request Review - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-6-3-4#2",
+      "name": "Submit a Pull Request Review - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-6-4",
+      "name": "Request or Remove Pull Request Reviewers - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-5",
+      "name": "Merge an Eligible Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeEnabled() failed\n\nLocator:  getByRole('button', { name: 'Merge pull request', exact: true }).first()\nExpected: enabled\nReceived: disabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true }).first()\n    9 × locator resolved to <button disabled type=\"button\">Merge pull request</button>\n      - unexpected value \"disabled\"\n\n\n  678 |   // WHEN the maintainer merges and confirms\n  679 |   const merge = page.getByRole('button', { name: 'Merge pull request', exact: true });\n> 680 |   await expect(merge.first()).toBeEnabled();\n      |                               ^\n  681 |",
+      "source": "test('REQ-6-5: Merge an Eligible Pull Request - Scenario 1', async ({ page }) => {\n  // GIVEN a maintainer signed in on the eligible, Open, non-draft PR\n  await signIn(page, ALICE);\n  await openSeededOpenPr(page);\n\n  // the only selectable method is Create a merge commit\n  await expect(page.getByText('Create a merge commit', { exact: true }).first()).toBeVisible();\n\n  // WHEN the maintainer merges and confirms\n  const merge = page.getByRole('button', { name: 'Merge pull request', exact: true });\n  await expect(merge.first()).toBeEnabled();\n  await merge.first().click();\n  await page.getByRole('button', { name: 'Confirm merge', exact: true }).click();\n\n  // THEN the PR displays Merged with the merger\n  await expect(page.getByText('Merged', { exact: true }).first()).toBeVisible();\n  await expect(page.getByText(ALICE, { exact: true }).first()).toBeVisible();\n\n  // THEN after refreshing the PR the merged status remains\n  await page.reload();\n  await expect(page.getByText('Merged', { exact: true }).first()).toBeVisible();\n  await expect(page.getByRole('button', { name: 'Merge pull request', exact: true })).toHaveCount(0);\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - searchbox \"Search\" [ref=e13]: acme-docs\n      - button \"Account menu\" [ref=e14] [cursor=pointer]\n      - generic [ref=e15]: alice-dev\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]: Public\n      - paragraph [ref=e20]: Documentation and search flow for the Acme platform\n      - navigation [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/code/feature-search\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/settings\"\n      - paragraph [ref=e26]:\n        - button \"Code\" [ref=e27] [cursor=pointer]\n        - button \"Branch feature-search\" [ref=e29] [cursor=pointer]\n        - button \"Add file\" [ref=e30] [cursor=pointer]\n      - heading \"Improve onboarding\" [level=1] [ref=e31]\n      - paragraph [ref=e32]: \"#1 · Open\"\n      - paragraph\n... page content omitted ...\n[ref=e78]\n        - paragraph [ref=e79]: Approved\n        - paragraph [ref=e80]: Looks good to me.\n        - paragraph [ref=e81]: 2 years ago\n      - article [ref=e82]:\n        - heading \"pw-rev-muq9btbt53z2\" [level=3] [ref=e83]\n        - paragraph [ref=e84]: Approved\n        - paragraph\n        - paragraph [ref=e85]: 1 seconds ago\n      - article [ref=e86]:\n        - heading \"pw-rev-muq9btvq4293\" [level=3] [ref=e87]\n        - paragraph [ref=e88]: Changes requested\n        - paragraph [ref=e89]: Please rework the diff muq9bu9ps7h3\n        - paragraph [ref=e90]: 1 seconds ago\n    - complementary [ref=e91]:\n      - button \"Dashboard\" [ref=e92] [cursor=pointer]\n      - button \"Explore repositories\" [ref=e93] [cursor=pointer]\n      - button \"Organizations\" [ref=e94] [cursor=pointer]\n  - contentinfo [ref=e95]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t06-REQ-6.spec.cjs:680",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-6-5#2",
+      "name": "Merge an Eligible Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-6-6",
+      "name": "Close or Reopen a Pull Request Without Merging - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-6-6#2",
+      "name": "Close or Reopen a Pull Request Without Merging - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-1#contract-1",
+      "name": "REQ-6-1 counts only a reviewer's latest decision and states that any valid Request changes blocks merging; the merge area of a blocked PR must therefore offer no actionable merge control. Fixture: the seeded Open PR acme-docs#1 targets protected main with both toggles enabled, its current compare commit c-acme-3 carries a valid non-author approval (bob-reviewer) and test: success, and dana-dev — granted the minimal Write permission a reviewer needs — has one non-stale 'Changes requested' review on that same commit. The real merge-area renderer APP.pullSidebar derives eligibility from the approval count alone and never consults Request changes, so it emits an actionable Merge pull request button. Corrected from the failing version: the module-level escaping helper (var esc = ARC.esc) had no ARC.esc provided, so the renderer threw 'esc is not a function'; the fixture now supplies that escaping plumbing, which is external rendering plumbing, not the rule under test.",
+      "status": "pass",
+      "origin": "source-contract",
+      "observation": "",
+      "steps": [],
+      "source": "{\n  \"id\": \"REQ-6-1#contract-1\",\n  \"requirement\": \"REQ-6-1\",\n  \"explanation\": \"REQ-6-1 counts only a reviewer's latest decision and states that any valid Request changes blocks merging; the merge area of a blocked PR must therefore offer no actionable merge control. Fixture: the seeded Open PR acme-docs#1 targets protected main with both toggles enabled, its current compare commit c-acme-3 carries a valid non-author approval (bob-reviewer) and test: success, and dana-dev \\u2014 granted the minimal Write permission a reviewer needs \\u2014 has one non-stale 'Changes requested' review on that same commit. The real merge-area renderer APP.pullSidebar derives eligibility from the approval count alone and never consults Request changes, so it emits an actionable Merge pull request button. Corrected from the failing version: the module-level escaping helper (var esc = ARC.esc) had no ARC.esc provided, so the renderer threw 'esc is not a function'; the fixture now supplies that escaping plumbing, which is external rendering plumbing, not the rule under test.\",\n  \"functions\": [\n    {\n      \"file\": \"frontend/public/app.js\",\n      \"name\": \"APP.pullSidebar\",\n      \"kind\": \"method\",\n      \"alias\": \"pullSidebar\"\n    }\n  ],\n  \"initializers\": [\n    \"frontend/public/seed.js\"\n  ],\n  \"subject\": \"pullSidebar\",\n  \"setup\": \"window.ARC = window.ARC || {};\\nif (!ARC.state || !ARC.state.repos || !ARC.state.pulls) { ARC.state = JSON.parse(JSON.stringify(window.SEED || {})); }\\nARC.state.ui = ARC.state.ui || {};\\nARC.esc = function (s) { s = String(s == null ? '' : s); return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\\\"/g, '&quot;').replace(/'/g, '&#39;'); };\\nif (typeof ARC.currentUser !== 'function') { ARC.currentUser = function () { var id = ARC.state.session; if (!id) return null; return (ARC.state.users || []).filter(function (u) { return u.id === id; })[0] || null; }; }\\nARC.state.session = 'u-alice';\\nARC.state.grants = ARC.state.grants || [];\\nARC.state.reviews = ARC.state.reviews || [];\\nARC.state.checks = ARC.state.checks || [];\\nARC.state.grants.push({ id: 'g-probe-dana', repo: 'r-acme-docs', subjectType: 'user', subject: 'u-dana', role: 'Write', created: '2024-03-02T10:00:00Z' });\\nARC.state.reviews.push({ id: 'rv-probe-dana', pr: 'p-1', reviewer: 'u-dana', commit: 'c-acme-3', state: 'Changes requested', summary: 'Please rework the search flow.', time: '2024-03-02T12:00:00Z', stale: false });\\nARC.state.checks = ARC.state.checks.filter(function (c) { return !(c.pr === 'p-1' && c.commit === 'c-acme-3'); });\\nARC.state.checks.push({ id: 'ck-probe', pr: 'p-1', commit: 'c-acme-3', status: 'success', setter: 'u-alice', time: '2024-03-02T13:00:00Z' });\",\n  \"precondition\": \"var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0];\\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0];\\nassert(repo && pr, 'seeded repository acme-docs and pull request p-1 exist');\\nassert(pr.status === 'open' && pr.base === 'main' && pr.compareCommit === 'c-acme-3', 'p-1 is Open, targets main and its current compare commit is c-acme-3');\\nvar prot = ARC.state.protections.filter(function (p) { return p.repo === repo.id && p.branch === 'main'; })[0];\\nassert(prot && prot.approval === true && prot.check === true, 'main is protected with Require 1 approval and Require status check test');\\nvar ck = ARC.state.checks.filter(function (c) { return c.pr === pr.id && c.commit === pr.compareCommit; })[0];\\nassert(ck && ck.status === 'success', 'the required test check of the current compare commit is success');\\nvar approvals = ARC.state.reviews.filter(function (r) { return r.pr === pr.id && r.commit === pr.compareCommit && !r.stale && r.state === 'Approved' && r.reviewer !== pr.author; });\\nassert(approvals.length === 1, 'exactly one valid non-author approval exists for the current compare commit');\\nvar blocking = ARC.state.reviews.filter(function (r) { return r.pr === pr.id && r.commit === pr.compareCommit && !r.stale && r.state === 'Changes requested'; });\\nassert(blocking.length === 1, 'exactly one valid non-stale Request changes review exists for the current compare commit');\\nassert(APP.canAdmin(repo, ARC.currentUser()) === true, 'the signed-in organisation Owner holds repository Admin permission and may merge');\",\n  \"check\": \"var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0];\\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0];\\nvar html = pullSidebar.call(APP, repo, pr);\\nassert(typeof html === 'string' && html.length > 0, 'the pull request merge sidebar renders');\\nassert(html.indexOf('Merge pull request') >= 0, 'a merge control is present in the sidebar (control: the merge area is rendered for this permitted merger)');\\nassert(!/data-action=\\\"merge-pr\\\"/.test(html), 'a valid Request changes review on the current compare commit blocks merging, so no actionable Merge pull request control may be offered');\"\n}"
+    },
+    {
+      "id": "REQ-6-5#contract-1",
+      "name": "REQ-6-5 requires that on a protected target each enabled rule is enforced independently, so an Open PR with a valid non-author approval but a `test` check that is not success stays blocked and shows a disabled Merge pull request button plus the unmet-condition explanation. Fixture: seeded PR acme-docs#1 targets protected main with both Require 1 approval and Require status check test enabled; bob-reviewer's approval is valid and non-stale for the current compare commit c-acme-3, no valid Request changes exists, and the check record for that same commit is 'pending'. APP.pullSidebar (the real merge-area renderer) computes ok from pr.status and the approval rule only and never reads the check rule, so it renders an actionable Merge pull request control for a PR that the protection rule requires to be blocked. Corrected from the failing version: ARC.esc (the external escaping plumbing consumed by the module-level esc helper) is now supplied in setup so the renderer can run.",
+      "status": "pass",
+      "origin": "source-contract",
+      "observation": "",
+      "steps": [],
+      "source": "{\n  \"id\": \"REQ-6-5#contract-1\",\n  \"requirement\": \"REQ-6-5\",\n  \"explanation\": \"REQ-6-5 requires that on a protected target each enabled rule is enforced independently, so an Open PR with a valid non-author approval but a `test` check that is not success stays blocked and shows a disabled Merge pull request button plus the unmet-condition explanation. Fixture: seeded PR acme-docs#1 targets protected main with both Require 1 approval and Require status check test enabled; bob-reviewer's approval is valid and non-stale for the current compare commit c-acme-3, no valid Request changes exists, and the check record for that same commit is 'pending'. APP.pullSidebar (the real merge-area renderer) computes ok from pr.status and the approval rule only and never reads the check rule, so it renders an actionable Merge pull request control for a PR that the protection rule requires to be blocked. Corrected from the failing version: ARC.esc (the external escaping plumbing consumed by the module-level esc helper) is now supplied in setup so the renderer can run.\",\n  \"functions\": [\n    {\n      \"file\": \"frontend/public/app.js\",\n      \"name\": \"APP.pullSidebar\",\n      \"kind\": \"method\",\n      \"alias\": \"pullSidebar\"\n    }\n  ],\n  \"initializers\": [\n    \"frontend/public/seed.js\"\n  ],\n  \"subject\": \"pullSidebar\",\n  \"setup\": \"window.ARC = window.ARC || {};\\nif (!ARC.state || !ARC.state.repos || !ARC.state.pulls) { ARC.state = JSON.parse(JSON.stringify(window.SEED || {})); }\\nARC.state.ui = ARC.state.ui || {};\\nARC.esc = function (s) { s = String(s == null ? '' : s); return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\\\"/g, '&quot;').replace(/'/g, '&#39;'); };\\nif (typeof ARC.currentUser !== 'function') { ARC.currentUser = function () { var id = ARC.state.session; if (!id) return null; return (ARC.state.users || []).filter(function (u) { return u.id === id; })[0] || null; }; }\\nARC.state.session = 'u-alice';\\nARC.state.checks = ARC.state.checks || [];\\nif (!ARC.state.checks.some(function (c) { return c.pr === 'p-1' && c.commit === 'c-acme-3'; })) { ARC.state.checks.push({ id: 'ck-1', pr: 'p-1', commit: 'c-acme-3', status: 'pending', setter: null, time: null }); }\",\n  \"precondition\": \"var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0];\\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0];\\nassert(repo && pr, 'seeded repository acme-docs and pull request p-1 exist');\\nassert(pr.status === 'open' && pr.base === 'main' && pr.compareCommit === 'c-acme-3', 'p-1 is Open, targets main and its current compare commit is c-acme-3');\\nvar prot = ARC.state.protections.filter(function (p) { return p.repo === repo.id && p.branch === 'main'; })[0];\\nassert(prot && prot.approval === true && prot.check === true, 'main is protected with Require 1 approval and Require status check test');\\nvar ck = ARC.state.checks.filter(function (c) { return c.pr === pr.id && c.commit === pr.compareCommit; })[0];\\nassert(ck && ck.status === 'pending', 'the required test check of the current compare commit is pending, not success');\\nvar approvals = ARC.state.reviews.filter(function (r) { return r.pr === pr.id && r.commit === pr.compareCommit && !r.stale && r.state === 'Approved' && r.reviewer !== pr.author; });\\nassert(approvals.length === 1, 'exactly one valid non-author approval exists for the current compare commit');\\nvar blocking = ARC.state.reviews.filter(function (r) { return r.pr === pr.id && r.commit === pr.compareCommit && !r.stale && r.state === 'Changes requested'; });\\nassert(blocking.length === 0, 'no valid Request changes review exists, so only the status-check rule is unmet');\\nassert(APP.canAdmin(repo, ARC.currentUser()) === true, 'the signed-in organisation Owner holds repository Admin permission and may merge');\",\n  \"check\": \"var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0];\\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0];\\nvar html = pullSidebar.call(APP, repo, pr);\\nassert(typeof html === 'string' && html.length > 0, 'the pull request merge sidebar renders');\\nassert(html.indexOf('Merge pull request') >= 0, 'a merge control is present in the sidebar (control: the merge area is rendered for this permitted merger)');\\nassert(!/data-action=\\\"merge-pr\\\"/.test(html), 'with Require status check test enabled and test not success, the merge control must be non-actionable (disabled) rather than enabled');\"\n}"
+    },
+    {
+      "id": "REQ-6-3-3#contract-1",
+      "name": "REQ-6-3-3 requires that a draft started with Start a review stays pending: it is shown with 'Pending review' to its author but is not made public before review submission. Fixture: the seeded Open PR acme-docs#1 is viewed by alice-dev (its author, a different account from the commenter bob-reviewer) and the Files changed store holds one already-published inline comment plus one unsubmitted (published:false) inline comment by bob-reviewer on the same current compare commit c-acme-3. APP.pullFiles, the real Files-changed renderer, lists every inline record of the PR without any author or publication check, so bob-reviewer's unsubmitted draft body is rendered to alice-dev and thus becomes public before submission. Corrected from the failing version: ARC.esc (the external escaping helper consumed by the module-level esc binding) is supplied in setup, and the fixture explicitly clears ui().lineEditor so the diff-line rendering path used here runs.",
+      "status": "pass",
+      "origin": "source-contract",
+      "observation": "",
+      "steps": [],
+      "source": "{\n  \"id\": \"REQ-6-3-3#contract-1\",\n  \"requirement\": \"REQ-6-3-3\",\n  \"explanation\": \"REQ-6-3-3 requires that a draft started with Start a review stays pending: it is shown with 'Pending review' to its author but is not made public before review submission. Fixture: the seeded Open PR acme-docs#1 is viewed by alice-dev (its author, a different account from the commenter bob-reviewer) and the Files changed store holds one already-published inline comment plus one unsubmitted (published:false) inline comment by bob-reviewer on the same current compare commit c-acme-3. APP.pullFiles, the real Files-changed renderer, lists every inline record of the PR without any author or publication check, so bob-reviewer's unsubmitted draft body is rendered to alice-dev and thus becomes public before submission. Corrected from the failing version: ARC.esc (the external escaping helper consumed by the module-level esc binding) is supplied in setup, and the fixture explicitly clears ui().lineEditor so the diff-line rendering path used here runs.\",\n  \"functions\": [\n    {\n      \"file\": \"frontend/public/app.js\",\n      \"name\": \"APP.pullFiles\",\n      \"kind\": \"method\",\n      \"alias\": \"pullFiles\"\n    }\n  ],\n  \"initializers\": [\n    \"frontend/public/seed.js\"\n  ],\n  \"subject\": \"pullFiles\",\n  \"setup\": \"window.ARC = window.ARC || {};\\nif (!ARC.state || !ARC.state.repos || !ARC.state.pulls) { ARC.state = JSON.parse(JSON.stringify(window.SEED || {})); }\\nARC.state.ui = ARC.state.ui || {};\\nARC.state.ui.lineEditor = null;\\nARC.esc = function (s) { s = String(s == null ? '' : s); return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\\\"/g, '&quot;').replace(/'/g, '&#39;'); };\\nif (typeof ARC.currentUser !== 'function') { ARC.currentUser = function () { var id = ARC.state.session; if (!id) return null; return (ARC.state.users || []).filter(function (u) { return u.id === id; })[0] || null; }; }\\nARC.state.session = 'u-alice';\\nARC.state.inline = [\\n  { id: 'ic-probe-published', pr: 'p-1', path: 'src/search.ts', commit: 'c-acme-3', line: 1, author: 'u-bob', body: 'Published review note', published: true, created: '2024-03-02T11:00:00Z' },\\n  { id: 'ic-probe-pending', pr: 'p-1', path: 'src/search.ts', commit: 'c-acme-3', line: 2, author: 'u-bob', body: 'Unsubmitted draft note', published: false, created: '2024-03-02T12:00:00Z' }\\n];\",\n  \"precondition\": \"var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0];\\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0];\\nassert(repo && pr, 'seeded repository acme-docs and pull request p-1 exist');\\nassert(pr.status === 'open' && pr.author === 'u-alice', 'p-1 is Open and authored by alice-dev, the signed-in account');\\nassert(ARC.currentUser().id === pr.author, 'the signed-in account is the pull-request author');\\nvar bob = ARC.state.users.filter(function (u) { return u.username === 'bob-reviewer'; })[0];\\nassert(bob && bob.id !== pr.author, 'bob-reviewer is a different account from the pull-request author');\\nvar pending = ARC.state.inline.filter(function (c) { return c.pr === pr.id && c.published === false && c.author === bob.id; });\\nassert(pending.length === 1 && pending[0].body === 'Unsubmitted draft note', 'bob-reviewer has exactly one unsubmitted pending review draft');\\nvar submitted = ARC.state.inline.filter(function (c) { return c.pr === pr.id && c.published === true; });\\nassert(submitted.length === 1, 'one submitted inline comment exists as a control');\\nassert(!ARC.state.ui.lineEditor, 'no line editor is open');\",\n  \"check\": \"var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0];\\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0];\\nvar html = pullFiles.call(APP, repo, pr);\\nassert(typeof html === 'string' && html.length > 0, 'the Files changed view renders');\\nassert(html.indexOf('Published review note') >= 0, 'a submitted inline comment stays visible in the diff view (control)');\\nassert(html.indexOf('Unsubmitted draft note') < 0, 'an unsubmitted pending review draft must not be public to another account before review submission');\"\n}"
+    },
+    {
+      "id": "REQ-5-3-1#contract-1",
+      "name": "REQ-5-3-1 defines assignable members as accounts holding at least Triage permission on the current repository and states that non-assignable users do not appear in the results. In the seed, carol-reader is an organization member of acme-demo but holds only a direct Read grant on acme-docs (her only team is frontend-child, which has no grant and team hierarchy is not transitive), so the application's own predicate APP.canTriage(repo, carol-reader) is false, while bob-reviewer (direct Write) and the signed-in Owner are eligible. The picker renderer that the issue detail page is meant to show filters candidates by organization membership instead of repository permission, so it offers carol-reader as an assignable option. Corrected from the rejected version: the picker is declared inside the actions object, so it must be selected by its full declaration path APP.actions.assigneePicker (the runner reported APP.assigneePicker does not exist); ARC.esc and the ARC.route resolution used by the picker are supplied as external plumbing.",
+      "status": "pass",
+      "origin": "source-contract",
+      "observation": "",
+      "steps": [],
+      "source": "{\n  \"id\": \"REQ-5-3-1#contract-1\",\n  \"requirement\": \"REQ-5-3-1\",\n  \"explanation\": \"REQ-5-3-1 defines assignable members as accounts holding at least Triage permission on the current repository and states that non-assignable users do not appear in the results. In the seed, carol-reader is an organization member of acme-demo but holds only a direct Read grant on acme-docs (her only team is frontend-child, which has no grant and team hierarchy is not transitive), so the application's own predicate APP.canTriage(repo, carol-reader) is false, while bob-reviewer (direct Write) and the signed-in Owner are eligible. The picker renderer that the issue detail page is meant to show filters candidates by organization membership instead of repository permission, so it offers carol-reader as an assignable option. Corrected from the rejected version: the picker is declared inside the actions object, so it must be selected by its full declaration path APP.actions.assigneePicker (the runner reported APP.assigneePicker does not exist); ARC.esc and the ARC.route resolution used by the picker are supplied as external plumbing.\",\n  \"functions\": [\n    {\n      \"file\": \"frontend/public/app.js\",\n      \"name\": \"APP.actions.assigneePicker\",\n      \"kind\": \"method\",\n      \"alias\": \"assigneePicker\"\n    }\n  ],\n  \"initializers\": [\n    \"frontend/public/seed.js\"\n  ],\n  \"subject\": \"assigneePicker\",\n  \"setup\": \"window.ARC = window.ARC || {};\\nif (!ARC.state || !ARC.state.repos || !ARC.state.issues) { ARC.state = JSON.parse(JSON.stringify(window.SEED || {})); }\\nARC.state.ui = ARC.state.ui || {};\\nARC.state.ui.assigneeQuery = '';\\nARC.esc = function (s) { s = String(s == null ? '' : s); return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\\\"/g, '&quot;').replace(/'/g, '&#39;'); };\\nif (typeof ARC.currentUser !== 'function') { ARC.currentUser = function () { var id = ARC.state.session; if (!id) return null; return (ARC.state.users || []).filter(function (u) { return u.id === id; })[0] || null; }; }\\nARC.state.session = 'u-alice';\\nARC.route = function () { return { name: 'repos', params: ['acme-demo', 'acme-docs', 'issues', '1'] }; };\",\n  \"precondition\": \"var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0];\\nvar issue = ARC.state.issues.filter(function (i) { return i.repo === repo.id && i.number === 1; })[0];\\nvar carol = ARC.state.users.filter(function (u) { return u.username === 'carol-reader'; })[0];\\nvar bob = ARC.state.users.filter(function (u) { return u.username === 'bob-reviewer'; })[0];\\nassert(repo && issue && carol && bob, 'seeded repository acme-docs, issue 1 and both accounts exist');\\nassert(issue.status === 'open', 'issue 1 can be assigned participants');\\nassert(ARC.state.memberships.some(function (m) { return m.org === repo.owner && m.user === carol.id; }), 'carol-reader is an organization member, so membership alone would include her');\\nassert(APP.canTriage(repo, carol) === false, 'carol-reader is below Triage (Read) on the repository and is therefore not assignable');\\nassert(APP.canTriage(repo, bob) === true, 'bob-reviewer is Triage-or-higher (Write) on the repository and is assignable');\\nassert(APP.canTriage(repo, ARC.currentUser()) === true, 'the signed-in organization Owner may assign participants');\",\n  \"check\": \"var html = assigneePicker.call(APP);\\nassert(typeof html === 'string' && html.indexOf('role=\\\"option\\\"') >= 0, 'the assignee picker renders selectable member options');\\nassert(html.indexOf('bob-reviewer') >= 0, 'eligible bob-reviewer is offered as an assignable control');\\nassert(html.indexOf('carol-reader') < 0, 'carol-reader holds only Read permission on the repository and must not appear in assignee results');\"\n}"
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 100,
+    "parsed": 99
+  },
+  "seconds": 35.5,
+  "source_contracts": {
+    "pass": 4
+  }
+}

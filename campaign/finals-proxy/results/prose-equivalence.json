@@ -1,0 +1,94 @@
+{
+  "style_only": true,
+  "base_scores_are_reused_not_rerun": true,
+  "variants": {
+    "github-prose": {
+      "prose_requirements_sha256": "7746d99a0af8abcb412e64c5bfa976ad87f51d9ce8ac761bdbe46622bf571791",
+      "prose_frozen_manifest_sha256": "1db2869b83ce7a28c6ad0edbd427ce142211dfed9ce31352ad3c209d9d083e79",
+      "frozen_before_execution": true,
+      "canonical_task": "github",
+      "canonical_frozen_manifest_sha256": "569f6719e9eed44a28365ef64c036c75d0405df2010cdb1e34f8f0093a92e83b",
+      "shared_test_suite_sha256": "ae3d83d8a98ca2aa56a3a15130983bcb8ae83ab9a295aa69a3bb14b68f8f9ba6",
+      "tests_are_the_same_files": true,
+      "same_test_titles_and_order": true,
+      "test_directory": "/proxy/github/tests",
+      "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+      "settings": {
+        "workers": 1,
+        "fullyParallel": false,
+        "timeout_ms": 10000,
+        "expect_timeout_ms": 10000,
+        "retries": 0,
+        "trace": "off",
+        "baseURL": "http://127.0.0.1:3000",
+        "server_instances": 1,
+        "context_per_test": "fresh",
+        "reset_between_tests": false
+      },
+      "reference": {
+        "method": "executed_once_under_prose_task_name",
+        "report": "results/reference-github-prose-proxy.json",
+        "app_sha256": "6a6363710cfd20068a93e8e9ca5208d437759f82bdea9a2ab92a2b9af884a318",
+        "passed": 30,
+        "total": 30,
+        "wall_seconds": 67.595
+      },
+      "base": {
+        "method": "reused_completed_baseline_by_identical_execution_inputs",
+        "report": "results/base-github-proxy.json",
+        "report_sha256": "1c51ccb94c27acd3625d9c5fef709014e0db56d5f9353ab0d8e90ebc267cb0b6",
+        "app_dir": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v7-official-github-79/application",
+        "app_sha256": "72c64d2452f809b5fdb4d317192b0b81da475360ef55ea9d0232d434adb8d4d5",
+        "passed": 0,
+        "total": 30,
+        "historical_wall_seconds": 358.041,
+        "not_rerun": true
+      },
+      "argument": "The evaluator executes the identical canonical spec files and helper on the unchanged base app, in the same immutable image and with the same settings. Requirement prose is provenance, not an input consumed by Playwright or the application at evaluation time. The completed 0/30 result is reused; no new baseline execution is claimed."
+    },
+    "sheet-prose": {
+      "prose_requirements_sha256": "ed6a76a9192bae421dde754d179d6a1a500a260d729f1e335f7366c83a51d672",
+      "prose_frozen_manifest_sha256": "f0f56de4e8e0dc3a6c4d82c1fcaa7ea8463c6986218e58466d4033060678a5f9",
+      "frozen_before_execution": true,
+      "canonical_task": "sheet",
+      "canonical_frozen_manifest_sha256": "1278fbd112df8a197a60558401b9c1ad70cd1d7fe04c0722ad2e6cf538541d99",
+      "shared_test_suite_sha256": "1de23cea069f53b6b6298176383873bb289c7bf048a112b042886aa2b8e64078",
+      "tests_are_the_same_files": true,
+      "same_test_titles_and_order": true,
+      "test_directory": "/proxy/sheet/tests",
+      "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+      "settings": {
+        "workers": 1,
+        "fullyParallel": false,
+        "timeout_ms": 10000,
+        "expect_timeout_ms": 10000,
+        "retries": 0,
+        "trace": "off",
+        "baseURL": "http://127.0.0.1:3000",
+        "server_instances": 1,
+        "context_per_test": "fresh",
+        "reset_between_tests": false
+      },
+      "reference": {
+        "method": "executed_once_under_prose_task_name",
+        "report": "results/reference-sheet-prose-proxy.json",
+        "app_sha256": "d95a204e528af77fd8ee46bd901997817546123cc24c120d295d9399d053667d",
+        "passed": 30,
+        "total": 30,
+        "wall_seconds": 94.502
+      },
+      "base": {
+        "method": "reused_completed_baseline_by_identical_execution_inputs",
+        "report": "results/base-sheet-proxy.json",
+        "report_sha256": "97694b4d90cd33243d3453a769360e7da33245c840bfa0f49f3c007259d36dea",
+        "app_dir": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v7-official-sheet-87/application",
+        "app_sha256": "a6dfaee259b5fc9cdc4740b47e3798f99649639c02cc4e5055c8691eac3c522d",
+        "passed": 0,
+        "total": 30,
+        "historical_wall_seconds": 357.401,
+        "not_rerun": true
+      },
+      "argument": "The evaluator executes the identical canonical spec files and helper on the unchanged base app, in the same immutable image and with the same settings. Requirement prose is provenance, not an input consumed by Playwright or the application at evaluation time. The completed 0/30 result is reused; no new baseline execution is claimed."
+    }
+  }
+}

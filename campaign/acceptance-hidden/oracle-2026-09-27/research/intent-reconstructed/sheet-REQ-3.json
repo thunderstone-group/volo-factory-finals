@@ -1,0 +1,240 @@
+{
+ "tests": [
+  {
+   "id": "REQ-3-1-1",
+   "n": 1,
+   "title": "Edit a cell through the grid and through the formula bar; committed values display in both and persist after refresh",
+   "checks": [
+    "Entering East in A1 via the grid and pressing Enter makes grid A1 and formula bar show East",
+    "Entering 1200 in B1 via the formula bar and clicking another cell commits B1 to 1200 in both views",
+    "Entering North/800 in A2/B2 commits through visible labelled controls",
+    "After refreshing or reopening, A1:B2 still shows East,1200,North,800"
+   ]
+  },
+  {
+   "id": "REQ-3-1-1",
+   "n": 2,
+   "title": "Press Escape to cancel an uncommitted cell edit; the original value and formula bar content remain unchanged",
+   "checks": [
+    "Typing a new value in a cell and pressing Escape leaves the grid cell showing the old value",
+    "The formula bar still displays the old value after Escape",
+    "After refresh the original seeded value remains"
+   ]
+  },
+  {
+   "id": "REQ-3-1-1",
+   "n": 3,
+   "title": "Entering a formula displays the calculated result in the grid and the original formula in the formula bar; dependent formulas recalculate and persist",
+   "checks": [
+    "Entering =A1+B1 in a formula cell shows the numeric result in the grid and '=A1+B1' in the formula bar",
+    "Changing a source value updates directly and indirectly dependent formulas in dependency order",
+    "After refresh the formula expression and recalculated results remain visible"
+   ]
+  },
+  {
+   "id": "REQ-3-1-1",
+   "n": 4,
+   "title": "A failed commit displays an error and keeps the last successful value/formula and dependent results unchanged",
+   "checks": [
+    "The rejection error is shown beside the named control",
+    "The grid and formula bar continue to show the last successful value or formula",
+    "Dependent formula results remain unchanged",
+    "After refresh the original successful state is still present"
+   ]
+  },
+  {
+   "id": "REQ-3-1-2",
+   "n": 1,
+   "title": "Paste a two-dimensional tab-separated table starting at B2; the full rectangle is applied, empty fields preserved, and pasted data persists after refresh",
+   "checks": [
+    "All rows and columns of the pasted text appear starting at B2 in original order",
+    "Empty fields inside the pasted rectangle remain empty",
+    "Cells outside the target rectangle are not overwritten",
+    "After refresh or reopening the pasted values remain unchanged"
+   ]
+  },
+  {
+   "id": "REQ-3-1-2",
+   "n": 2,
+   "title": "The grid context menu exposes an ARIA menuitem named 'Paste' and clicking it pastes the external clipboard content",
+   "checks": [
+    "Right-clicking a grid cell shows a context menu with a menuitem whose accessible name is 'Paste'",
+    "Choosing Paste fills the target rectangle completely",
+    "The pasted rectangle matches the tab/newline clipboard content"
+   ]
+  },
+  {
+   "id": "REQ-3-1-2",
+   "n": 3,
+   "title": "Ctrl+V pastes the same external clipboard content as the Paste command",
+   "checks": [
+    "Focusing a target cell and pressing Ctrl+V pastes the full rectangle",
+    "Empty fields are preserved exactly as in the clipboard text",
+    "The result is identical to using the context-menu Paste command"
+   ]
+  },
+  {
+   "id": "REQ-3-1-2",
+   "n": 4,
+   "title": "Pasting at A1 overwrites only the target rectangle, replaces formulas inside it, and leaves outside cells unchanged; related formulas recalculate",
+   "checks": [
+    "Cells in the target rectangle are replaced by the pasted content",
+    "Cells outside the rectangle keep their original values",
+    "Formula cells inside the rectangle are replaced by the new pasted content",
+    "Formulas referencing the rectangle recalculate and persist after refresh"
+   ]
+  },
+  {
+   "id": "REQ-3-1-2",
+   "n": 5,
+   "title": "Paste rejected by a 0-to-100 numeric validation rule displays 'Please enter a number from 0 to 100' and leaves every target cell unchanged",
+   "checks": [
+    "The error message 'Please enter a number from 0 to 100' is displayed",
+    "No target cell is changed; all original values remain",
+    "No partial application of the pasted rectangle occurs",
+    "After refresh the original target values persist"
+   ]
+  },
+  {
+   "id": "REQ-3-1-3",
+   "n": 1,
+   "title": "Drag from one corner to the opposite cell selects a complete rectangle; aria-selected states match the rectangle and persist after refresh",
+   "checks": [
+    "The active worksheet grid exposes aria-multiselectable=\"true\"",
+    "Every gridcell inside the rectangle has aria-selected=\"true\" and every cell outside has aria-selected=\"false\"",
+    "Range operations target exactly the rectangle and do not expand to adjacent data",
+    "After refreshing or reopening, the same aria-selected states are restored"
+   ]
+  },
+  {
+   "id": "REQ-3-1-3",
+   "n": 2,
+   "title": "Selecting another cell/range replaces the previous selection, and switching worksheets preserves each worksheet's complete saved rectangle",
+   "checks": [
+    "Selecting a new cell or range updates aria-selected states so only the new rectangle is selected",
+    "Switching to another worksheet and back does not overwrite the original worksheet's rectangle",
+    "After refresh/reopen each worksheet restores its complete last successful selection, not just the top-left cell"
+   ]
+  },
+  {
+   "id": "REQ-3-2-1",
+   "n": 1,
+   "title": "Copy A1:B2 to D1:E2; source remains unchanged, target mirrors the two-dimensional layout, and the copy persists after refresh",
+   "checks": [
+    "After copy, A1:B2 still contains the original values",
+    "D1:E2 contains the same values in the same row/column order as A1:B2",
+    "Cells outside source and target ranges remain unchanged",
+    "After refresh or reopening D1:E2 still shows the copied values"
+   ]
+  },
+  {
+   "id": "REQ-3-2-1",
+   "n": 2,
+   "title": "Cut A1:B2 to D1:E2; source is cleared only after the target range is fully displayed, and the move persists after refresh",
+   "checks": [
+    "D1:E2 displays the complete cut content before the source is cleared",
+    "After paste, A1:B2 is empty and D1:E2 holds the moved values",
+    "Cells outside the two ranges are unchanged",
+    "After refresh the moved values remain in D1:E2 and A1:B2 remains empty"
+   ]
+  },
+  {
+   "id": "REQ-3-2-1",
+   "n": 3,
+   "title": "Copy formulas from A1:B2 to D1:E2; relative references adjust by the offset, absolute references stay fixed, and the formula bar shows the adjusted formula",
+   "checks": [
+    "Copied relative references change by the target offset (e.g., =A1+B1 becomes =D1+E1)",
+    "Absolute references such as =$A$1 remain unchanged",
+    "Target grid displays results calculated from the adjusted references",
+    "After refresh the adjusted formulas and calculated results persist"
+   ]
+  },
+  {
+   "id": "REQ-3-2-1",
+   "n": 4,
+   "title": "Paste into a target range protected by 0-to-100 numeric validation is rejected with 'Please enter a number from 0 to 100'; source, target, and affected formulas all retain their original state",
+   "checks": [
+    "The rejection message 'Please enter a number from 0 to 100' is displayed",
+    "Target cells keep their original values without partial update",
+    "Source range remains unchanged",
+    "After refresh the original source and target state persists"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 1,
+   "title": "Undo a cell edit with the toolbar 'Undo' button restores the previous value and formula; the undone state persists after refresh",
+   "checks": [
+    "Editing a cell then clicking Undo restores the grid and formula bar to the previous value",
+    "Dependent calculation results return to their pre-edit values",
+    "After refresh the undone state remains"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 2,
+   "title": "Redo after undo reapplies the complete cell edit; the redone value and results persist after refresh",
+   "checks": [
+    "Clicking Redo after Undo restores the edited cell value in grid and formula bar",
+    "Redo reapplies the complete operation just undone",
+    "After refresh the redone state remains"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 3,
+   "title": "Ctrl+Z and Ctrl+Y perform the same undo/redo operations as the toolbar buttons",
+   "checks": [
+    "Ctrl+Z undoes the most recent operation",
+    "Ctrl+Y redoes the operation undone by Ctrl+Z",
+    "The final visible state equals the state after redo"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 4,
+   "title": "Undo a bulk paste restores all target cells to their original values and persists after refresh",
+   "checks": [
+    "Undo after a bulk paste restores every target cell to its original value",
+    "No partial or dropped restoration occurs",
+    "After refresh the original values remain"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 5,
+   "title": "Undo a range move restores source and target ranges to their pre-move state and persists after refresh",
+   "checks": [
+    "Undo after cut/paste restores the source range to its original content",
+    "The target range returns to its pre-paste contents",
+    "After refresh the pre-move state remains"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 6,
+   "title": "Consecutive undo restores changes in reverse order and redo reapplies them in order; state after each step persists after refresh",
+   "checks": [
+    "Performing several operations and undoing them twice restores changes in reverse chronological order",
+    "Redoing twice reapplies the operations in original chronological order",
+    "After refresh the visible state matches the current undo/redo position"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 7,
+   "title": "A new modification after undo disables Redo/Ctrl+Y, and undo in one workbook does not modify another workbook",
+   "checks": [
+    "After undo, making a new edit disables the Redo button",
+    "Ctrl+Y cannot restore the previous branch after the new modification",
+    "Undo in a second workbook only changes that workbook and leaves the first workbook's state intact"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 44507,
+  "completion_tokens": 14825
+ },
+ "cost_cny": 0.1422,
+ "finish": "stop"
+}

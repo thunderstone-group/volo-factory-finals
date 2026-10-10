@@ -1,0 +1,20 @@
+{
+  "submission_id": "12e3bab723fd",
+  "source_main_sha": "4a2dde0319529e43f64d61e816193f16e59ac993",
+  "package_sha256": "4ae64326c7e942c97e37685641766881b20d7d81c061ccc309d167f395a88f48",
+  "github_run_id": "c5e4493bad81",
+  "sheet_start": "serial after GitHub terminal; watch_v7_official_pair.py",
+  "source_requirements_sha256": "9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8",
+  "old_sheet_per_case_regression": {
+    "g99": {
+      "case_count": 100,
+      "changed_cases": {}
+    },
+    "cov99n-arm": {
+      "case_count": 100,
+      "changed_cases": {}
+    }
+  },
+  "archive_verified": true,
+  "formal_score_pending": true
+}

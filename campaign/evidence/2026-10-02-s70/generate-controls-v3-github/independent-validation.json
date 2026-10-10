@@ -1,0 +1,34 @@
+{
+  "task": "github",
+  "judge_exit": 0,
+  "scores": [
+    {
+      "app": "generate-controls-v3-github",
+      "judge": "gh99",
+      "counts": {
+        "error": 15,
+        "pass": 72,
+        "fail": 14
+      },
+      "seconds": 155.9,
+      "coverage": {
+        "total": 100,
+        "parsed": 86
+      }
+    },
+    {
+      "app": "generate-controls-v3-github",
+      "judge": "gh8",
+      "counts": {
+        "pass": 65,
+        "error": 13,
+        "fail": 24
+      },
+      "seconds": 169.8,
+      "coverage": {
+        "total": 100,
+        "parsed": 89
+      }
+    }
+  ]
+}

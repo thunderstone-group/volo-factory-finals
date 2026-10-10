@@ -1,0 +1,440 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-2-1-1",
+      "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-1-1#2",
+      "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-2",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('alice-dev', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('alice-dev', { exact: true }) resolved to 2 elements:\n    1) <span class=\"signed-in-name\">alice-dev</span> aka getByRole('banner').getByText('alice-dev')\n    2) <h3>alice-dev</h3> aka getByRole('heading', { name: 'alice-dev' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('alice-dev', { exact: true })\n\n\n  221 |\n  222 |   await page.getByRole('link', { name: 'People', exact: true }).click();\n> 223 |   await expect(page.getByText(seed.alice, { exact: true })).toBeVisible();\n      |                           ",
+      "source": "test('REQ-2-1-2: REQ-2-1-2: Create an Organization After Authentication - Scenario 1', async ({ page }) => {\n  const org = newOrg();\n  await signIn(page, seed.alice, seed.alicePass);\n  await createOrganization(page, org, 'Mobile Guild');\n  await expect(page.getByRole('heading', { name: org, exact: true })).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByRole('heading', { name: org, exact: true })).toBeVisible();\n\n  await page.getByRole('link', { name: 'People', exact: true }).click();\n  await expect(page.getByText(seed.alice, { exact: true })).toBeVisible();\n  await expect(page.getByText('Owner', { exact: true })).toBeVisible();\n\n  await openYourOrganizations(page);\n  await expect(page.getByRole('link', { name: org, exact: true })).toBeVisible();\n\n  await page.getByRole('link', { name: 'New organization', exact: true }).click();\n  await page.getByLabel('Organization name', { exact: true }).fill(org);\n  await page.getByLabel('Display name', { exact: true }).fill('Duplicate');\n  await page.getByRole('button', { name: 'Create organization', exact: true }).click();\n  await expect(page.getByText('Organization name already exists', { exact: true })).toBeVisible();\n});",
+      "at": "t02-REQ-2.spec.cjs:223",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-2#2",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-2#3",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-2-1",
+      "name": "REQ-2-2-1: Create an Organization Team - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-1#2",
+      "name": "REQ-2-2-1: Create an Organization Team - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-2",
+      "name": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.9
+    },
+    {
+      "id": "REQ-2-2-2#2",
+      "name": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.9
+    },
+    {
+      "id": "REQ-2-2-3",
+      "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-2-2-3#2",
+      "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-4",
+      "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.8
+    },
+    {
+      "id": "REQ-2-2-4#2",
+      "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-2-3",
+      "name": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-2-3#2",
+      "name": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "TimeoutError: locator.selectOption: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('row', { name: /team-mupo7qxw0g0w/ }).getByRole('combobox', { name: 'Role', exact: true })\n\n\n  461 |   await expect(row).toHaveCount(1);\n  462 |\n> 463 |   await row.getByRole('combobox', { name: 'Role', exact: true }).selectOption({ label: 'Read' });\n      |                                                                  ^\n  464 |   await row.getByRole('button', { name: 'Save', exact: true }).click();\n  465 |\n  466 |   row = page.getByRole('row', { name: new RegExp(team) });\n    at ~/projects/arcbench-campaign/evidence/2026-10-01-leaderboard-push/baseline-score-github/suite/t02-REQ-2.s",
+      "source": "test('REQ-2-3#2: REQ-2-3: Grant Repository Access to People and Teams - Scenario 2', async ({ page }) => {\n  const org = newOrg();\n  const team = newTeam();\n  const repo = newRepo();\n\n  await signIn(page, seed.alice, seed.alicePass);\n  await createOrganization(page, org, org);\n  await createTeam(page, org, team);\n  await createOrgRepository(page, org, repo);\n  await openManageAccess(page);\n\n  await grantTeamAccess(page, team, 'Write');\n  let row = page.getByRole('row', { name: new RegExp(team) });\n  await expect(row).toHaveCount(1);\n\n  await row.getByRole('combobox', { name: 'Role', exact: true }).selectOption({ label: 'Read' });\n  await row.getByRole('button', { name: 'Save', exact: true }).click();\n\n  row = page.getByRole('row', { name: new RegExp(team) });\n  await expect(row).toHaveCount(1);\n  await expect(row).toContainText('Read');\n\n  await page.reload();\n  row = page.getByRole('row', { name: new RegExp(team) });\n  await expect(row).toHaveCount(1);\n  await expect(row).toContainText('Read');\n});\n\n// Added by the suite runner: a helper that uses `page` without taking it as a parameter sees the running test's page.\nrequire('@playwright/test').test.beforeEach(async ({ page }) => { globalThis.page = page; });",
+      "at": "t02-REQ-2.spec.cjs:463",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-6-1",
+      "name": "Protect Branches with Review and Status-Check Requirements - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-6-1#2",
+      "name": "Protect Branches with Review and Status-Check Requirements - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Branches', exact: true })\n\n\n   96 |   if (await settings.count()) {\n   97 |     await settings.click();\n>  98 |     await page.getByRole('link', { name: 'Branches', exact: true }).click();\n      |                                                                     ^\n   99 |   }\n  100 |   await expect(page.getByRole('button', { name: 'Add branch protection rule', exact: true })).toHaveCount(0);\n  101 | });\n    at ~/projects/arcbench-campaign/evidence/2026-10-01-leaderboard-push/baseline-score-github/suite/t06-REQ-6.spec.cjs:98:69",
+      "source": "test('REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2', async ({ page }) => {\n  await registerAndSignIn(page);\n  await openRepository(page);\n  const settings = page.getByRole('link', { name: 'Settings', exact: true });\n  if (await settings.count()) {\n    await settings.click();\n    await page.getByRole('link', { name: 'Branches', exact: true }).click();\n  }\n  await expect(page.getByRole('button', { name: 'Add branch protection rule', exact: true })).toHaveCount(0);\n});",
+      "at": "t06-REQ-6.spec.cjs:98",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-6-1#3",
+      "name": "Protect Branches with Review and Status-Check Requirements - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:56 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await page.getByRole('link', { name: 'Checks', exact: true }).click();\n  await expect(page.getByText('test: pending', { exact: true })).toBeVisible();\n  await page.getByLabel('test status', { exact: true }).selectOption({ label: 'success' });\n  await page.getByRole('button', { name: 'Save', exact: true }).click();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n});",
+      "at": "t06-REQ-6.spec.cjs:56",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-6-2-1",
+      "name": "List and Filter Repository Pull Requests - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-1#2",
+      "name": "List and Filter Repository Pull Requests - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-1#3",
+      "name": "List and Filter Repository Pull Requests - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-2",
+      "name": "Compare Branches Before Opening a Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-2#2",
+      "name": "Compare Branches Before Opening a Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-3",
+      "name": "Create a Pull Request from Comparison Results - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'pw-pr-mupo85izn43s', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'pw-pr-mupo85izn43s', exact: true })\n\n\n  171 |   await page.getByLabel('Description', { exact: true }).fill('Created by Playwright');\n  172 |   await page.getByRole('button', { name: 'Create pull request', exact: true }).click();\n> 173 |   await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n      |                                                                         ^\n  174 |   ",
+      "source": "test('REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openComparison(page);\n  await page.getByRole('button', { name: 'Create pull request', exact: true }).click();\n  const title = 'pw-pr-' + u();\n  await page.getByLabel('Title', { exact: true }).fill(title);\n  await page.getByLabel('Description', { exact: true }).fill('Created by Playwright');\n  await page.getByRole('button', { name: 'Create pull request', exact: true }).click();\n  await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n  await expect(page.getByText('Open', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n});",
+      "at": "t06-REQ-6.spec.cjs:173",
+      "seconds": 5.3
+    },
+    {
+      "id": "REQ-6-2-3#2",
+      "name": "Create a Pull Request from Comparison Results - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-4",
+      "name": "Create a Draft Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'pw-draft-mupo8a5grt5q', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'pw-draft-mupo8a5grt5q', exact: true })\n\n\n  193 |   await page.getByLabel('Title', { exact: true }).fill(title);\n  194 |   await page.getByRole('button', { name: 'Create draft pull request', exact: true }).click();\n> 195 |   await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n      |                                                                         ^\n  196 |   await expect",
+      "source": "test('REQ-6-2-4: Create a Draft Pull Request - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openComparison(page);\n  await page.getByRole('button', { name: 'Create draft pull request', exact: true }).click();\n  const title = 'pw-draft-' + u();\n  await page.getByLabel('Title', { exact: true }).fill(title);\n  await page.getByRole('button', { name: 'Create draft pull request', exact: true }).click();\n  await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n  await expect(page.getByText('Draft', { exact: true })).toBeVisible();\n  await expect(page.getByRole('button', { name: 'Merge pull request', exact: true })).toBeDisabled();\n  await page.reload();\n  await expect(page.getByText('Draft', { exact: true })).toBeVisible();\n});",
+      "at": "t06-REQ-6.spec.cjs:195",
+      "seconds": 5.3
+    },
+    {
+      "id": "REQ-6-2-4#2",
+      "name": "Create a Draft Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:56 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-2-4: Create a Draft Pull Request - Scenario 2', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, 'Draft onboarding update');\n  await expect(page.getByText('Draft', { exact: true })).toBeVisible();\n  await page.getByRole('button', { name: 'Ready for review', exact: true }).click();\n  const confirm = page.getByRole('button', { name: 'Confirm', exact: true });\n  if (await confirm.count()) {\n    await confirm.click();\n  }\n  await expect(page.getByText('Draft', { exact: true })).toHaveCount(0);\n  await expect(page.getByText('Open', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('Open', { exact: true })).toBeVisible();\n  await expect(page.getByText('Draft', { exact: true })).toHaveCount(0);\n});",
+      "at": "t06-REQ-6.spec.cjs:56",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-6-3-1",
+      "name": "View Pull Request Overview and Commits - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-1#2",
+      "name": "View Pull Request Overview and Commits - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-1#3",
+      "name": "View Pull Request Overview and Commits - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-2",
+      "name": "Inspect Changed Files and Aggregate Diff - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-3",
+      "name": "Add Review Comments to Changed Code Lines - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:56 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n  await page.getByRole('button', { name: 'Add comment', exact: true }).first().click();\n  await page.getByLabel('Comment', { exact: true }).fill('Inline review comment');\n  await page.getByRole('button', { name: 'Add single comment', exact: true }).click();\n  await expect(page.getByText('Inline review comment', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('Inline review comment', { exact: true })).toBeVisible();\n});",
+      "at": "t06-REQ-6.spec.cjs:56",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-6-3-3#2",
+      "name": "Add Review Comments to Changed Code Lines - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:56 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n  await page.getByRole('button', { name: 'Add comment', exact: true }).first().click();\n  await page.getByLabel('Comment', { exact: true }).fill('Pending inline note');\n  await page.getByRole('button', { name: 'Start a review', exact: true }).click();\n  await expect(page.getByText('Pending inline note', { exact: true })).toBeVisible();\n  await expect(page.getByText('Pending review', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('Pending inline note', { exact: true })).toBeVisible();\n});",
+      "at": "t06-REQ-6.spec.cjs:56",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-6-3-4",
+      "name": "Submit a Pull Request Review - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:56 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-3-4: Submit a Pull Request Review - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n  await page.getByRole('button', { name: 'Review changes', exact: true }).click();\n  await page.getByLabel('Summary', { exact: true }).fill('Approved by Playwright');\n  await page.getByRole('radio', { name: 'Approve', exact: true }).check();\n  await page.getByRole('button', { name: 'Submit review', exact: true }).click();\n  await expect(page.getByText('Approved', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('Approved', { exact: true })).toBeVisible();\n});",
+      "at": "t06-REQ-6.spec.cjs:56",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-6-3-4#2",
+      "name": "Submit a Pull Request Review - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-4",
+      "name": "Request or Remove Pull Request Reviewers - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: locator.fill: Error: strict mode violation: getByLabel('Search', { exact: true }) resolved to 3 elements:\n    1) <form role=\"search\" aria-label=\"Search\" class=\"header-search\" data-action=\"global-search\">…</form> aka getByRole('search', { name: 'Search' })\n    2) <input name=\"q\" type=\"search\" value=\"acme-docs\" aria-label=\"Search\" placeholder=\"Search\"/> aka getByRole('searchbox', { name: 'Search' })\n    3) <input type=\"text\" data-pr=\"1\" id=\"rv-search\" aria-label=\"Search\" data-name=\"acme-docs\" data-owner=\"Acme Demo\" data-change=\"search-reviewers\"/> aka getByRole('textbox', { name: 'Search' })\n\nCall log:\n  - waiting for getByLabel('Search', { exact: true })\n\n\n  309 |   await openPR(page, ",
+      "source": "test('REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, OPEN_PR);\n  await page.getByRole('button', { name: 'Reviewers', exact: true }).click();\n  await page.getByLabel('Search', { exact: true }).fill('bob-reviewer');\n  await page.getByRole('option', { name: 'bob-reviewer', exact: true }).click();\n  await expect(page.getByRole('button', { name: 'Remove bob-reviewer', exact: true })).toBeVisible();\n  await page.getByRole('button', { name: 'Remove bob-reviewer', exact: true }).click();\n  await expect(page.getByRole('button', { name: 'Remove bob-reviewer', exact: true })).toHaveCount(0);\n  await page.reload();\n  await expect(page.getByRole('button', { name: 'Remove bob-reviewer', exact: true })).toHaveCount(0);\n});",
+      "at": "t06-REQ-6.spec.cjs:311",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-5",
+      "name": "Merge an Eligible Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:56 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-5: Merge an Eligible Pull Request - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await expect(page.getByRole('button', { name: 'Merge pull request', exact: true })).toBeEnabled();\n  await page.getByRole('button', { name: 'Merge pull request', exact: true }).click();\n  await page.getByRole('button', { name: 'Confirm merge', exact: true }).click();\n  await expect(page.getByText('Merged', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('Merged', { exact: true })).toBeVisible();\n});",
+      "at": "t06-REQ-6.spec.cjs:56",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-6-5#2",
+      "name": "Merge an Eligible Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-6",
+      "name": "Close or Reopen a Pull Request Without Merging - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-6#2",
+      "name": "Close or Reopen a Pull Request Without Merging - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "helper:t06-REQ-6.spec.cjs:56",
+      "name": "6 tests stop at the same helper line (REQ-6-1#3, REQ-6-2-4#2, REQ-6-3-3, REQ-6-3-3#2, REQ-6-3-4, REQ-6-5)",
+      "status": "fail",
+      "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Fix search', exact: true })\n\n\n  54 |   await openRepository(page);\n  55 |   await page.getByRole('link', { name: 'Pull requests', exact: true }).click();\n> 56 |   await page.getByRole('link', { name: title, exact: true }).click();\n     |                                                              ^\n  57 |   await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n  58 | }\n  59 |\n    at openPR (~/projects/arcbench-campaign/evidence/2026-10-01-leaderboard-push/baseline-score-github/suite/t06-REQ-6.spec.cjs:56:62)\n    at ~/projects/arcbench-",
+      "steps": [],
+      "source": "test('REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await page.getByRole('link', { name: 'Checks', exact: true }).click();\n  await expect(page.getByText('test: pending', { exact: true })).toBeVisible();\n  await page.getByLabel('test status', { exact: true }).selectOption({ label: 'success' });\n  await page.getByRole('button', { name: 'Save', exact: true }).click();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n});",
+      "blocks": [
+        "REQ-6-1#3",
+        "REQ-6-2-4#2",
+        "REQ-6-3-3",
+        "REQ-6-3-3#2",
+        "REQ-6-3-4",
+        "REQ-6-5"
+      ],
+      "file": "t06-REQ-6.spec.cjs"
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 40,
+    "parsed": 35
+  },
+  "seconds": 69.1
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "application": "dependency-build-pilot-github",
+    "judge": "gh99",
+    "counts": {
+      "error": 23,
+      "pass": 56,
+      "fail": 25
+    },
+    "seconds": 233.5
+  },
+  {
+    "application": "dependency-build-pilot-github",
+    "judge": "gh8",
+    "counts": {
+      "pass": 62,
+      "error": 16,
+      "fail": 26
+    },
+    "seconds": 180.7
+  }
+]

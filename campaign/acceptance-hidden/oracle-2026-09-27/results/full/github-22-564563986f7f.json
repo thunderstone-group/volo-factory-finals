@@ -1,0 +1,912 @@
+{
+ "tests": [
+  {
+   "title": "REQ-1-1-1: Register a New GitHub Account - Scenario 1",
+   "file": "10-REQ-1-1-1.spec.cjs",
+   "line": 65,
+   "status": "pass",
+   "seconds": 0.4,
+   "error": "",
+   "start": "2026-09-27T14:32:29.468Z"
+  },
+  {
+   "title": "REQ-1-1-1: Register a New GitHub Account - Scenario 2",
+   "file": "10-REQ-1-1-1.spec.cjs",
+   "line": 91,
+   "status": "pass",
+   "seconds": 0.32,
+   "error": "",
+   "start": "2026-09-27T14:32:30.045Z"
+  },
+  {
+   "title": "REQ-1-1-1: Register a New GitHub Account - Scenario 3",
+   "file": "10-REQ-1-1-1.spec.cjs",
+   "line": 109,
+   "status": "pass",
+   "seconds": 0.31,
+   "error": "",
+   "start": "2026-09-27T14:32:30.365Z"
+  },
+  {
+   "title": "REQ-1-1-2: Sign In with an Existing Account - Scenario 1",
+   "file": "11-REQ-1-1-2.spec.cjs",
+   "line": 37,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:32:30.683Z"
+  },
+  {
+   "title": "REQ-1-1-2: Sign In with an Existing Account - Scenario 2",
+   "file": "11-REQ-1-1-2.spec.cjs",
+   "line": 48,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:32:30.886Z"
+  },
+  {
+   "title": "REQ-1-1-2: Sign In with an Existing Account - Scenario 3",
+   "file": "11-REQ-1-1-2.spec.cjs",
+   "line": 60,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:32:31.089Z"
+  },
+  {
+   "title": "REQ-1-1-2: Sign In with an Existing Account - Scenario 4",
+   "file": "11-REQ-1-1-2.spec.cjs",
+   "line": 68,
+   "status": "pass",
+   "seconds": 0.25,
+   "error": "",
+   "start": "2026-09-27T14:32:31.300Z"
+  },
+  {
+   "title": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 1",
+   "file": "12-REQ-1-1-3.spec.cjs",
+   "line": 88,
+   "status": "pass",
+   "seconds": 0.95,
+   "error": "",
+   "start": "2026-09-27T14:32:31.560Z"
+  },
+  {
+   "title": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 2",
+   "file": "12-REQ-1-1-3.spec.cjs",
+   "line": 105,
+   "status": "pass",
+   "seconds": 0.42,
+   "error": "",
+   "start": "2026-09-27T14:32:32.520Z"
+  },
+  {
+   "title": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 3",
+   "file": "12-REQ-1-1-3.spec.cjs",
+   "line": 122,
+   "status": "pass",
+   "seconds": 0.42,
+   "error": "",
+   "start": "2026-09-27T14:32:32.945Z"
+  },
+  {
+   "title": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 1",
+   "file": "13-REQ-1-2.spec.cjs",
+   "line": 43,
+   "status": "pass",
+   "seconds": 0.25,
+   "error": "",
+   "start": "2026-09-27T14:32:33.370Z"
+  },
+  {
+   "title": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 2",
+   "file": "13-REQ-1-2.spec.cjs",
+   "line": 55,
+   "status": "pass",
+   "seconds": 0.24,
+   "error": "",
+   "start": "2026-09-27T14:32:33.626Z"
+  },
+  {
+   "title": "REQ-1-3: Change Account Password - Scenario 1",
+   "file": "14-REQ-1-3.spec.cjs",
+   "line": 93,
+   "status": "pass",
+   "seconds": 0.56,
+   "error": "",
+   "start": "2026-09-27T14:32:33.868Z"
+  },
+  {
+   "title": "REQ-1-3: Change Account Password - Scenario 2",
+   "file": "14-REQ-1-3.spec.cjs",
+   "line": 103,
+   "status": "pass",
+   "seconds": 0.63,
+   "error": "",
+   "start": "2026-09-27T14:32:34.430Z"
+  },
+  {
+   "title": "REQ-1-3: Change Account Password - Scenario 3",
+   "file": "14-REQ-1-3.spec.cjs",
+   "line": 120,
+   "status": "pass",
+   "seconds": 0.6,
+   "error": "",
+   "start": "2026-09-27T14:32:35.068Z"
+  },
+  {
+   "title": "REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+   "file": "15-REQ-2-1-1.spec.cjs",
+   "line": 32,
+   "status": "pass",
+   "seconds": 0.18,
+   "error": "",
+   "start": "2026-09-27T14:32:35.676Z"
+  },
+  {
+   "title": "REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+   "file": "15-REQ-2-1-1.spec.cjs",
+   "line": 46,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:32:35.865Z"
+  },
+  {
+   "title": "REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+   "file": "16-REQ-2-1-2.spec.cjs",
+   "line": 54,
+   "status": "pass",
+   "seconds": 0.27,
+   "error": "",
+   "start": "2026-09-27T14:32:36.073Z"
+  },
+  {
+   "title": "REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+   "file": "16-REQ-2-1-2.spec.cjs",
+   "line": 73,
+   "status": "pass",
+   "seconds": 0.34,
+   "error": "",
+   "start": "2026-09-27T14:32:36.352Z"
+  },
+  {
+   "title": "REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+   "file": "16-REQ-2-1-2.spec.cjs",
+   "line": 97,
+   "status": "pass",
+   "seconds": 0.3,
+   "error": "",
+   "start": "2026-09-27T14:32:36.693Z"
+  },
+  {
+   "title": "REQ-2-2-1: Create an Organization Team - Scenario 1",
+   "file": "17-REQ-2-2-1.spec.cjs",
+   "line": 44,
+   "status": "pass",
+   "seconds": 0.32,
+   "error": "",
+   "start": "2026-09-27T14:32:37.002Z"
+  },
+  {
+   "title": "REQ-2-2-1: Create an Organization Team - Scenario 2",
+   "file": "17-REQ-2-2-1.spec.cjs",
+   "line": 60,
+   "status": "pass",
+   "seconds": 0.85,
+   "error": "",
+   "start": "2026-09-27T14:32:37.323Z"
+  },
+  {
+   "title": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+   "file": "18-REQ-2-2-2.spec.cjs",
+   "line": 44,
+   "status": "pass",
+   "seconds": 0.34,
+   "error": "",
+   "start": "2026-09-27T14:32:38.179Z"
+  },
+  {
+   "title": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+   "file": "18-REQ-2-2-2.spec.cjs",
+   "line": 70,
+   "status": "failed",
+   "seconds": 9.16,
+   "error": "Error: expect(received).toMatch(expected)\n\nExpected pattern: /(^|\\|)platform-team(\\||$)/\nReceived string:  \"None|\"\n\nCall Log:\n- Test timeout of 10000ms exceeded",
+   "start": "2026-09-27T14:32:38.525Z"
+  },
+  {
+   "title": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+   "file": "19-REQ-2-2-3.spec.cjs",
+   "line": 110,
+   "status": "pass",
+   "seconds": 0.63,
+   "error": "",
+   "start": "2026-09-27T14:32:47.995Z"
+  },
+  {
+   "title": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+   "file": "19-REQ-2-2-3.spec.cjs",
+   "line": 143,
+   "status": "pass",
+   "seconds": 0.34,
+   "error": "",
+   "start": "2026-09-27T14:32:48.753Z"
+  },
+  {
+   "title": "REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+   "file": "20-REQ-2-2-4.spec.cjs",
+   "line": 71,
+   "status": "pass",
+   "seconds": 0.56,
+   "error": "",
+   "start": "2026-09-27T14:32:49.103Z"
+  },
+  {
+   "title": "REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+   "file": "20-REQ-2-2-4.spec.cjs",
+   "line": 90,
+   "status": "pass",
+   "seconds": 0.58,
+   "error": "",
+   "start": "2026-09-27T14:32:49.665Z"
+  },
+  {
+   "title": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+   "file": "21-REQ-2-3.spec.cjs",
+   "line": 70,
+   "status": "failed",
+   "seconds": 0.42,
+   "error": "Error: locator.click: Error: strict mode violation: getByRole('combobox', { name: 'Role', exact: true }).and(locator(':not(tr *):not([role=\"row\"] *)')) resolved to 2 elements:\n    1) <button type=\"button\" id=\"cb-role-2\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-role-2-list\" aria-labelledby=\"cb-role-2-label\" data-options=\"[{\"value\":\"Read\",\"label\":\"Read\"},{\"value\":\"Triage\",\"label\":\"Triage\"},{\"value\":\"Write\",\"label\":\"Write\"},{\"value\":\"Maintain\",\"label\":\"Maintain\"},{\"value\":\"Admin\",\"label\":\"Admin\"}]\">Write</button> aka locator('#cb-r",
+   "start": "2026-09-27T14:32:50.254Z"
+  },
+  {
+   "title": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+   "file": "21-REQ-2-3.spec.cjs",
+   "line": 85,
+   "status": "failed",
+   "seconds": 0.44,
+   "error": "Error: locator.click: Error: strict mode violation: getByRole('combobox', { name: 'Role', exact: true }).and(locator(':not(tr *):not([role=\"row\"] *)')) resolved to 2 elements:\n    1) <button type=\"button\" id=\"cb-role-2\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-role-2-list\" aria-labelledby=\"cb-role-2-label\" data-options=\"[{\"value\":\"Read\",\"label\":\"Read\"},{\"value\":\"Triage\",\"label\":\"Triage\"},{\"value\":\"Write\",\"label\":\"Write\"},{\"value\":\"Maintain\",\"label\":\"Maintain\"},{\"value\":\"Admin\",\"label\":\"Admin\"}]\">Write</button> aka locator('#cb-r",
+   "start": "2026-09-27T14:32:50.952Z"
+  },
+  {
+   "title": "REQ-3-1: Search for and Locate Repositories - Scenario 1",
+   "file": "30-REQ-3-1.spec.cjs",
+   "line": 21,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:32:51.837Z"
+  },
+  {
+   "title": "REQ-3-1: Search for and Locate Repositories - Scenario 2",
+   "file": "30-REQ-3-1.spec.cjs",
+   "line": 37,
+   "status": "pass",
+   "seconds": 0.09,
+   "error": "",
+   "start": "2026-09-27T14:32:52.157Z"
+  },
+  {
+   "title": "REQ-3-1: Search for and Locate Repositories - Scenario 3",
+   "file": "30-REQ-3-1.spec.cjs",
+   "line": 47,
+   "status": "pass",
+   "seconds": 0.11,
+   "error": "",
+   "start": "2026-09-27T14:32:52.251Z"
+  },
+  {
+   "title": "REQ-3-1: Search for and Locate Repositories - Scenario 4",
+   "file": "30-REQ-3-1.spec.cjs",
+   "line": 61,
+   "status": "pass",
+   "seconds": 0.13,
+   "error": "",
+   "start": "2026-09-27T14:32:52.369Z"
+  },
+  {
+   "title": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 1",
+   "file": "31-REQ-3-2-1.spec.cjs",
+   "line": 42,
+   "status": "pass",
+   "seconds": 0.26,
+   "error": "",
+   "start": "2026-09-27T14:32:52.506Z"
+  },
+  {
+   "title": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 2",
+   "file": "31-REQ-3-2-1.spec.cjs",
+   "line": 67,
+   "status": "pass",
+   "seconds": 0.24,
+   "error": "",
+   "start": "2026-09-27T14:32:52.768Z"
+  },
+  {
+   "title": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 3",
+   "file": "31-REQ-3-2-1.spec.cjs",
+   "line": 96,
+   "status": "pass",
+   "seconds": 0.21,
+   "error": "",
+   "start": "2026-09-27T14:32:53.014Z"
+  },
+  {
+   "title": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 1",
+   "file": "32-REQ-3-2-2.spec.cjs",
+   "line": 46,
+   "status": "failed",
+   "seconds": 0.22,
+   "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/Forked from\\s+(.+\\/\\s*)?acme-docs(?![\\w.-])/)\nExpected: visible\nError: strict mode violation: getByText(/Forked from\\s+(.+\\/\\s*)?acme-docs(?![\\w.-])/) resolved to 2 elements:\n    1) <p>Forked from acme-docs</p> aka getByText('Forked from acme-docs').first()\n    2) <p>…</p> aka getByText('Forked from acme-docs').nth(1)\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByText(/Forked from\\s+(.+\\/\\s*)?acme-docs(?![\\w.-])/)\n",
+   "start": "2026-09-27T14:32:53.234Z"
+  },
+  {
+   "title": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 2",
+   "file": "32-REQ-3-2-2.spec.cjs",
+   "line": 69,
+   "status": "pass",
+   "seconds": 0.29,
+   "error": "",
+   "start": "2026-09-27T14:32:53.762Z"
+  },
+  {
+   "title": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 1",
+   "file": "33-REQ-3-2-3.spec.cjs",
+   "line": 36,
+   "status": "pass",
+   "seconds": 0.31,
+   "error": "",
+   "start": "2026-09-27T14:32:54.171Z"
+  },
+  {
+   "title": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 2",
+   "file": "33-REQ-3-2-3.spec.cjs",
+   "line": 50,
+   "status": "pass",
+   "seconds": 0.28,
+   "error": "",
+   "start": "2026-09-27T14:32:54.482Z"
+  },
+  {
+   "title": "REQ-3-3: View a Public Repository Overview - Scenario 1",
+   "file": "34-REQ-3-3.spec.cjs",
+   "line": 14,
+   "status": "pass",
+   "seconds": 0.15,
+   "error": "",
+   "start": "2026-09-27T14:32:54.765Z"
+  },
+  {
+   "title": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 1",
+   "file": "35-REQ-3-4.spec.cjs",
+   "line": 67,
+   "status": "pass",
+   "seconds": 0.38,
+   "error": "",
+   "start": "2026-09-27T14:32:54.919Z"
+  },
+  {
+   "title": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 2",
+   "file": "35-REQ-3-4.spec.cjs",
+   "line": 101,
+   "status": "pass",
+   "seconds": 1.09,
+   "error": "",
+   "start": "2026-09-27T14:32:55.298Z"
+  },
+  {
+   "title": "REQ-4-1: Browse Repository Files and Directories - Scenario 1",
+   "file": "36-REQ-4-1.spec.cjs",
+   "line": 40,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:32:56.396Z"
+  },
+  {
+   "title": "REQ-4-2-1: View Repository Commit History - Scenario 1",
+   "file": "37-REQ-4-2-1.spec.cjs",
+   "line": 32,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:33:06.687Z"
+  },
+  {
+   "title": "REQ-4-2-2: Inspect Commit and Revision Differences - Scenario 1",
+   "file": "38-REQ-4-2-2.spec.cjs",
+   "line": 40,
+   "status": "pass",
+   "seconds": 0.21,
+   "error": "",
+   "start": "2026-09-27T14:33:17.090Z"
+  },
+  {
+   "title": "REQ-4-2-3: Search Code Within a Repository - Scenario 1",
+   "file": "39-REQ-4-2-3.spec.cjs",
+   "line": 39,
+   "status": "failed",
+   "seconds": 0.14,
+   "error": "Error: locator.fill: Error: strict mode violation: getByRole('searchbox', { name: 'Search', exact: true }) resolved to 2 elements:\n    1) <input name=\"q\" type=\"search\" id=\"global-search\" aria-label=\"Search\" placeholder=\"Search\"/> aka getByPlaceholder('Search')\n    2) <input name=\"q\" type=\"search\" aria-label=\"Search\" id=\"global-search-repo\" placeholder=\"Find code\"/> aka getByPlaceholder('Find code')\n\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n",
+   "start": "2026-09-27T14:33:17.400Z"
+  },
+  {
+   "title": "REQ-4-2-3: Search Code Within a Repository - Scenario 2",
+   "file": "39-REQ-4-2-3.spec.cjs",
+   "line": 54,
+   "status": "failed",
+   "seconds": 0.16,
+   "error": "Error: locator.fill: Error: strict mode violation: getByRole('searchbox', { name: 'Search', exact: true }) resolved to 2 elements:\n    1) <input name=\"q\" type=\"search\" id=\"global-search\" aria-label=\"Search\" placeholder=\"Search\"/> aka getByPlaceholder('Search')\n    2) <input name=\"q\" type=\"search\" aria-label=\"Search\" id=\"global-search-repo\" placeholder=\"Find code\"/> aka getByPlaceholder('Find code')\n\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n",
+   "start": "2026-09-27T14:33:17.789Z"
+  },
+  {
+   "title": "REQ-4-2-3: Search Code Within a Repository - Scenario 3",
+   "file": "39-REQ-4-2-3.spec.cjs",
+   "line": 65,
+   "status": "failed",
+   "seconds": 0.15,
+   "error": "Error: locator.fill: Error: strict mode violation: getByRole('searchbox', { name: 'Search', exact: true }) resolved to 2 elements:\n    1) <input name=\"q\" type=\"search\" id=\"global-search\" aria-label=\"Search\" placeholder=\"Search\"/> aka getByPlaceholder('Search')\n    2) <input name=\"q\" type=\"search\" aria-label=\"Search\" id=\"global-search-repo\" placeholder=\"Find code\"/> aka getByPlaceholder('Find code')\n\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n",
+   "start": "2026-09-27T14:33:18.313Z"
+  },
+  {
+   "title": "REQ-4-2-3: Search Code Within a Repository - Scenario 4",
+   "file": "39-REQ-4-2-3.spec.cjs",
+   "line": 79,
+   "status": "failed",
+   "seconds": 0.17,
+   "error": "Error: locator.fill: Error: strict mode violation: getByRole('searchbox', { name: 'Search', exact: true }) resolved to 2 elements:\n    1) <input name=\"q\" type=\"search\" id=\"global-search\" aria-label=\"Search\" placeholder=\"Search\"/> aka getByPlaceholder('Search')\n    2) <input name=\"q\" type=\"search\" aria-label=\"Search\" id=\"global-search-repo\" placeholder=\"Find code\"/> aka getByPlaceholder('Find code')\n\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n",
+   "start": "2026-09-27T14:33:18.813Z"
+  },
+  {
+   "title": "REQ-4-3-1: List and Switch Repository Branches - Scenario 1",
+   "file": "40-REQ-4-3-1.spec.cjs",
+   "line": 32,
+   "status": "pass",
+   "seconds": 0.26,
+   "error": "",
+   "start": "2026-09-27T14:33:19.337Z"
+  },
+  {
+   "title": "REQ-4-3-1: List and Switch Repository Branches - Scenario 2",
+   "file": "40-REQ-4-3-1.spec.cjs",
+   "line": 53,
+   "status": "pass",
+   "seconds": 0.17,
+   "error": "",
+   "start": "2026-09-27T14:33:19.694Z"
+  },
+  {
+   "title": "REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 1",
+   "file": "41-REQ-4-3-2.spec.cjs",
+   "line": 45,
+   "status": "pass",
+   "seconds": 0.27,
+   "error": "",
+   "start": "2026-09-27T14:33:19.872Z"
+  },
+  {
+   "title": "REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 2",
+   "file": "41-REQ-4-3-2.spec.cjs",
+   "line": 67,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:33:20.145Z"
+  },
+  {
+   "title": "REQ-4-3-3: Change the Repository Default Branch - Scenario 1",
+   "file": "42-REQ-4-3-3.spec.cjs",
+   "line": 86,
+   "status": "pass",
+   "seconds": 0.44,
+   "error": "",
+   "start": "2026-09-27T14:33:30.407Z"
+  },
+  {
+   "title": "REQ-4-3-3: Change the Repository Default Branch - Scenario 2",
+   "file": "42-REQ-4-3-3.spec.cjs",
+   "line": 114,
+   "status": "pass",
+   "seconds": 1.08,
+   "error": "",
+   "start": "2026-09-27T14:33:30.950Z"
+  },
+  {
+   "title": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 1",
+   "file": "43-REQ-4-4.spec.cjs",
+   "line": 52,
+   "status": "pass",
+   "seconds": 0.3,
+   "error": "",
+   "start": "2026-09-27T14:33:32.042Z"
+  },
+  {
+   "title": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 2",
+   "file": "43-REQ-4-4.spec.cjs",
+   "line": 82,
+   "status": "pass",
+   "seconds": 0.28,
+   "error": "",
+   "start": "2026-09-27T14:33:32.349Z"
+  },
+  {
+   "title": "REQ-5-1-1: List and Filter Repository Issues - Scenario 1",
+   "file": "50-REQ-5-1-1.spec.cjs",
+   "line": 159,
+   "status": "pass",
+   "seconds": 0.19,
+   "error": "",
+   "start": "2026-09-27T14:33:32.635Z"
+  },
+  {
+   "title": "REQ-5-1-1: List and Filter Repository Issues - Scenario 2",
+   "file": "50-REQ-5-1-1.spec.cjs",
+   "line": 179,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:33:32.826Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 1",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 162,
+   "status": "pass",
+   "seconds": 0.16,
+   "error": "",
+   "start": "2026-09-27T14:33:33.027Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 2",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 177,
+   "status": "pass",
+   "seconds": 0.15,
+   "error": "",
+   "start": "2026-09-27T14:33:33.188Z"
+  },
+  {
+   "title": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 3",
+   "file": "51-REQ-5-1-2.spec.cjs",
+   "line": 187,
+   "status": "pass",
+   "seconds": 0.16,
+   "error": "",
+   "start": "2026-09-27T14:33:33.346Z"
+  },
+  {
+   "title": "REQ-5-2-1: Create a Repository Issue - Scenario 1",
+   "file": "52-REQ-5-2-1.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.23,
+   "error": "",
+   "start": "2026-09-27T14:33:33.508Z"
+  },
+  {
+   "title": "REQ-5-2-1: Create a Repository Issue - Scenario 2",
+   "file": "52-REQ-5-2-1.spec.cjs",
+   "line": 176,
+   "status": "pass",
+   "seconds": 0.43,
+   "error": "",
+   "start": "2026-09-27T14:33:33.747Z"
+  },
+  {
+   "title": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 1",
+   "file": "53-REQ-5-2-2.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.3,
+   "error": "",
+   "start": "2026-09-27T14:33:34.183Z"
+  },
+  {
+   "title": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 2",
+   "file": "53-REQ-5-2-2.spec.cjs",
+   "line": 185,
+   "status": "pass",
+   "seconds": 0.24,
+   "error": "",
+   "start": "2026-09-27T14:33:34.490Z"
+  },
+  {
+   "title": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 1",
+   "file": "54-REQ-5-2-3.spec.cjs",
+   "line": 159,
+   "status": "pass",
+   "seconds": 0.23,
+   "error": "",
+   "start": "2026-09-27T14:33:34.731Z"
+  },
+  {
+   "title": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 2",
+   "file": "54-REQ-5-2-3.spec.cjs",
+   "line": 177,
+   "status": "pass",
+   "seconds": 0.41,
+   "error": "",
+   "start": "2026-09-27T14:33:34.965Z"
+  },
+  {
+   "title": "REQ-5-3-1: Assign or Unassign Issue Participants - Scenario 1",
+   "file": "55-REQ-5-3-1.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.34,
+   "error": "",
+   "start": "2026-09-27T14:33:35.383Z"
+  },
+  {
+   "title": "REQ-5-3-2: Apply Labels to an Issue - Scenario 1",
+   "file": "56-REQ-5-3-2.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.33,
+   "error": "",
+   "start": "2026-09-27T14:33:35.729Z"
+  },
+  {
+   "title": "REQ-5-3-3: Assign Issues and Pull Requests to a Milestone - Scenario 1",
+   "file": "57-REQ-5-3-3.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.28,
+   "error": "",
+   "start": "2026-09-27T14:33:36.063Z"
+  },
+  {
+   "title": "REQ-5-4: Close or Reopen an Issue - Scenario 1",
+   "file": "58-REQ-5-4.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.27,
+   "error": "",
+   "start": "2026-09-27T14:33:36.351Z"
+  },
+  {
+   "title": "REQ-5-4: Close or Reopen an Issue - Scenario 2",
+   "file": "58-REQ-5-4.spec.cjs",
+   "line": 180,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:33:36.623Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 165,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:33:46.902Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 194,
+   "status": "pass",
+   "seconds": 0.24,
+   "error": "",
+   "start": "2026-09-27T14:33:57.288Z"
+  },
+  {
+   "title": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3",
+   "file": "59-REQ-6-1.spec.cjs",
+   "line": 214,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:33:57.629Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 1",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 162,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:34:07.920Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 2",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 177,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:34:18.312Z"
+  },
+  {
+   "title": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 3",
+   "file": "60-REQ-6-2-1.spec.cjs",
+   "line": 190,
+   "status": "pass",
+   "seconds": 0.18,
+   "error": "",
+   "start": "2026-09-27T14:34:18.600Z"
+  },
+  {
+   "title": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+   "file": "61-REQ-6-2-2.spec.cjs",
+   "line": 161,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:34:18.792Z"
+  },
+  {
+   "title": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 2",
+   "file": "61-REQ-6-2-2.spec.cjs",
+   "line": 175,
+   "status": "pass",
+   "seconds": 0.27,
+   "error": "",
+   "start": "2026-09-27T14:34:29.075Z"
+  },
+  {
+   "title": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1",
+   "file": "62-REQ-6-2-3.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:34:29.448Z"
+  },
+  {
+   "title": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 2",
+   "file": "62-REQ-6-2-3.spec.cjs",
+   "line": 187,
+   "status": "pass",
+   "seconds": 0.5,
+   "error": "",
+   "start": "2026-09-27T14:34:39.719Z"
+  },
+  {
+   "title": "REQ-6-2-4: Create a Draft Pull Request - Scenario 1",
+   "file": "63-REQ-6-2-4.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:34:40.321Z"
+  },
+  {
+   "title": "REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+   "file": "63-REQ-6-2-4.spec.cjs",
+   "line": 183,
+   "status": "pass",
+   "seconds": 0.26,
+   "error": "",
+   "start": "2026-09-27T14:34:50.614Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 160,
+   "status": "pass",
+   "seconds": 0.21,
+   "error": "",
+   "start": "2026-09-27T14:34:50.968Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 179,
+   "status": "pass",
+   "seconds": 0.18,
+   "error": "",
+   "start": "2026-09-27T14:34:51.188Z"
+  },
+  {
+   "title": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 3",
+   "file": "64-REQ-6-3-1.spec.cjs",
+   "line": 192,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:34:51.374Z"
+  },
+  {
+   "title": "REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+   "file": "65-REQ-6-3-2.spec.cjs",
+   "line": 158,
+   "status": "pass",
+   "seconds": 0.2,
+   "error": "",
+   "start": "2026-09-27T14:34:51.576Z"
+  },
+  {
+   "title": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1",
+   "file": "66-REQ-6-3-3.spec.cjs",
+   "line": 159,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:34:51.784Z"
+  },
+  {
+   "title": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2",
+   "file": "66-REQ-6-3-3.spec.cjs",
+   "line": 173,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:35:02.068Z"
+  },
+  {
+   "title": "REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+   "file": "67-REQ-6-3-4.spec.cjs",
+   "line": 160,
+   "status": "pass",
+   "seconds": 0.33,
+   "error": "",
+   "start": "2026-09-27T14:35:12.456Z"
+  },
+  {
+   "title": "REQ-6-3-4: Submit a Pull Request Review - Scenario 2",
+   "file": "67-REQ-6-3-4.spec.cjs",
+   "line": 176,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:35:12.874Z"
+  },
+  {
+   "title": "REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1",
+   "file": "68-REQ-6-4.spec.cjs",
+   "line": 158,
+   "status": "timedOut",
+   "seconds": 10.02,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:35:23.163Z"
+  },
+  {
+   "title": "REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+   "file": "69-REQ-6-5.spec.cjs",
+   "line": 160,
+   "status": "timedOut",
+   "seconds": 10.01,
+   "error": "Test timeout of 10000ms exceeded.",
+   "start": "2026-09-27T14:35:33.579Z"
+  },
+  {
+   "title": "REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+   "file": "69-REQ-6-5.spec.cjs",
+   "line": 184,
+   "status": "pass",
+   "seconds": 0.24,
+   "error": "",
+   "start": "2026-09-27T14:35:43.953Z"
+  },
+  {
+   "title": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 1",
+   "file": "70-REQ-6-6.spec.cjs",
+   "line": 159,
+   "status": "pass",
+   "seconds": 0.24,
+   "error": "",
+   "start": "2026-09-27T14:35:44.302Z"
+  },
+  {
+   "title": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 2",
+   "file": "70-REQ-6-6.spec.cjs",
+   "line": 175,
+   "status": "pass",
+   "seconds": 0.21,
+   "error": "",
+   "start": "2026-09-27T14:35:44.551Z"
+  }
+ ],
+ "stats": {
+  "startTime": "2026-09-27T14:32:29.130Z",
+  "duration": 195658.202,
+  "expected": 77,
+  "skipped": 0,
+  "unexpected": 23,
+  "flaky": 0
+ }
+}

@@ -1,0 +1,9 @@
+10-08 11:12 start f5e6ab019f92
+10-08 11:39 done f5e6ab019f92 PASSED passed 28 failed 2 sec 1527
+10-08 11:39 start 627ae7221f27
+10-08 12:03 done 627ae7221f27 PASSED passed 29 failed 1 sec 1336
+10-08 12:03 start d1703ea4ab28
+10-08 12:24 done d1703ea4ab28 PASSED passed 27 failed 3 sec 1153
+10-08 12:24 start 0e2dba2d18aa
+10-08 12:27 done 0e2dba2d18aa CANCELLED passed 0 failed 0 sec None
+10-08 12:27 loop end n=4

@@ -1,0 +1,14 @@
+{
+  "app": "control-repair-github",
+  "judge": "gh99",
+  "counts": {
+    "error": 19,
+    "pass": 63,
+    "fail": 20
+  },
+  "seconds": 173.3,
+  "coverage": {
+    "total": 100,
+    "parsed": 83
+  }
+}

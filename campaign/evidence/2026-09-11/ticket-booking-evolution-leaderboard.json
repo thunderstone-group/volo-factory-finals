@@ -1,0 +1,21 @@
+{
+  "source_url": "https://arc-bench.com/api/competitions/leaderboard?track=all&competition_id=ticket-booking-evolution",
+  "fetched_at": "2026-09-11T04:45:14.044253+00:00",
+  "data": [
+    {
+      "username": "wjzhang",
+      "model_name": "deepseek-v4-flash",
+      "track": "ticket-booking-evolution",
+      "avg_pass_rate": 0.0,
+      "total_token_millions": null,
+      "total_token_cost": null,
+      "token_cost_currency": null,
+      "cost_efficiency": null,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": false,
+      "seniority_label": "junior",
+      "avg_runtime_seconds": null,
+      "submission_count": 1
+    }
+  ]
+}

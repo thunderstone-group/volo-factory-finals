@@ -1,0 +1,197 @@
+{
+  "before": 1,
+  "after": 27,
+  "total": 41,
+  "improvements": 26,
+  "regressions": 0,
+  "changed_verdicts": [
+    {
+      "title": "REQ-5-1-1-filter-issues.spec.ts REQ-5-1-1: List and Filter Repository Issues - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-1-1-filter-issues.spec.ts REQ-5-1-1: List and Filter Repository Issues - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-1-2-view-issue.spec.ts REQ-5-1-2: View an Issue and Its Discussion - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-1-2-view-issue.spec.ts REQ-5-1-2: View an Issue and Its Discussion - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-1-2-view-issue.spec.ts REQ-5-1-2: View an Issue and Its Discussion - Scenario 3",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-2-1-create-issue.spec.ts REQ-5-2-1: Create a Repository Issue - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-2-1-create-issue.spec.ts REQ-5-2-1: Create a Repository Issue - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-2-2-edit-issue.spec.ts REQ-5-2-2: Edit an Issue Title and Description - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-2-2-edit-issue.spec.ts REQ-5-2-2: Edit an Issue Title and Description - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-2-3-comment-on-issue.spec.ts REQ-5-2-3: Comment on an Issue Discussion - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-2-3-comment-on-issue.spec.ts REQ-5-2-3: Comment on an Issue Discussion - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-3-1-assign-issue.spec.ts REQ-5-3-1: Assign or Unassign Issue Participants - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-3-2-label-issue.spec.ts REQ-5-3-2: Apply Labels to an Issue - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-3-3-set-milestone.spec.ts REQ-5-3-3: Assign Issues and Pull Requests to a Milestone - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-4-close-reopen-issue.spec.ts REQ-5-4: Close or Reopen an Issue - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-5-4-close-reopen-issue.spec.ts REQ-5-4: Close or Reopen an Issue - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-2-1-filter-pull-requests.spec.ts REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-2-1-filter-pull-requests.spec.ts REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-2-1-filter-pull-requests.spec.ts REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 3",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-2-4-create-draft-pull-request.spec.ts REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-3-2-view-changed-files.spec.ts REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-3-3-add-review-comment.spec.ts REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-3-4-submit-review.spec.ts REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-3-4-submit-review.spec.ts REQ-6-3-4: Submit a Pull Request Review - Scenario 2",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-6-close-reopen-pull-request.spec.ts REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 1",
+      "before": false,
+      "after": true
+    },
+    {
+      "title": "REQ-6-6-close-reopen-pull-request.spec.ts REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 2",
+      "before": false,
+      "after": true
+    }
+  ],
+  "remaining_failures": [
+    {
+      "title": "REQ-6-1-protect-branch.spec.ts REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('main', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('main', { exact: true }) resolved to 2 elements:\n    1) <span class=\"rule-pattern\">main</span> aka getByRole('listitem').getByText('main')\n    2) <option selected value=\"main\">main</option> aka getByLabel('Default branch')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('main', { exact: true })"
+    },
+    {
+      "title": "REQ-6-1-protect-branch.spec.ts REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/test.*pending|pending.*test/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/test.*pending|pending.*test/i)"
+    },
+    {
+      "title": "REQ-6-2-2-compare-branches.spec.ts REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+      "error": "Error: locator.selectOption: Error: Element is not a <select> element\nCall log:\n  - waiting for getByRole('combobox', { name: /base/i })\n    - locator resolved to <button type=\"button\" id=\"cb-base-1\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-base-1-list\" aria-labelledby=\"cb-base-1-label\" data-options=\"[{\"value\":\"main\",\"label\":\"main\"},{\"value\":\"feature-search\",\"label\":\"feature-search\"},{\"value\":\"draft-feature\",\"label\":\"draft-feature\"}]\">main</button>\n  - attempting select option action\n    - waiting for element to be visible and enabled"
+    },
+    {
+      "title": "REQ-6-2-2-compare-branches.spec.ts REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 2",
+      "error": "Error: locator.selectOption: Error: Element is not a <select> element\nCall log:\n  - waiting for getByRole('combobox', { name: /base/i })\n    - locator resolved to <button type=\"button\" id=\"cb-base-1\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-base-1-list\" aria-labelledby=\"cb-base-1-label\" data-options=\"[{\"value\":\"main\",\"label\":\"main\"},{\"value\":\"feature-search\",\"label\":\"feature-search\"},{\"value\":\"draft-feature\",\"label\":\"draft-feature\"}]\">main</button>\n  - attempting select option action\n    - waiting for element to be visible and enabled"
+    },
+    {
+      "title": "REQ-6-2-3-create-pull-request.spec.ts REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1",
+      "error": "Error: Could not find a visible navigation target named \"Compare\""
+    },
+    {
+      "title": "REQ-6-2-3-create-pull-request.spec.ts REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 2",
+      "error": "Error: Could not find a visible navigation target named \"Compare\""
+    },
+    {
+      "title": "REQ-6-2-4-create-draft-pull-request.spec.ts REQ-6-2-4: Create a Draft Pull Request - Scenario 1",
+      "error": "Error: Could not find a visible navigation target named \"Compare\""
+    },
+    {
+      "title": "REQ-6-3-1-view-pull-request.spec.ts REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/commit/i)\nExpected: visible\nError: strict mode violation: getByText(/commit/i) resolved to 2 elements:\n    1) <a aria-current=\"page\" href=\"#/repo/acme-demo/acme-docs/pull/2/commits\">Commits</a> aka getByRole('link', { name: 'Commits' })\n    2) <h2>Commits</h2> aka getByRole('heading', { name: 'Commits' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/commit/i)"
+    },
+    {
+      "title": "REQ-6-3-1-view-pull-request.spec.ts REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/commit/i)\nExpected: visible\nError: strict mode violation: getByText(/commit/i) resolved to 2 elements:\n    1) <a aria-current=\"page\" href=\"#/repo/acme-demo/acme-docs/pull/2/commits\">Commits</a> aka getByRole('link', { name: 'Commits' })\n    2) <h2>Commits</h2> aka getByRole('heading', { name: 'Commits' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/commit/i)"
+    },
+    {
+      "title": "REQ-6-3-1-view-pull-request.spec.ts REQ-6-3-1: View Pull Request Overview and Commits - Scenario 3",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i)\nExpected: visible\nError: strict mode violation: getByText(/changed files/i) resolved to 2 elements:\n    1) <h2>Changed files</h2> aka getByRole('heading', { name: 'Changed files' })\n    2) <p class=\"diffstat\">…</p> aka getByText('changed files +12 -3')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i)"
+    },
+    {
+      "title": "REQ-6-3-3-add-review-comment.spec.ts REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2",
+      "error": "ReferenceError: uniqueAccount is not defined"
+    },
+    {
+      "title": "REQ-6-4-request-reviewer.spec.ts REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1",
+      "error": "Test timeout of 60000ms exceeded."
+    },
+    {
+      "title": "REQ-6-5-merge-pull-request.spec.ts REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/merged/i)\nExpected: visible\nError: strict mode violation: getByText(/merged/i) resolved to 3 elements:\n    1) <span class=\"status\">Merged</span> aka getByText('Merged', { exact: true })\n    2) <p class=\"merged-info\">…</p> aka getByText('Merged by pr-maintainer today')\n    3) <li>…</li> aka getByText('pr-maintainer merged this')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/merged/i)"
+    },
+    {
+      "title": "REQ-6-5-merge-pull-request.spec.ts REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+      "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/review|required|protection/i)\nExpected: visible\nError: strict mode violation: getByText(/review|required|protection/i) resolved to 2 elements:\n    1) <button data-num=\"9\" type=\"button\" data-action=\"open-reviewers\" data-repo=\"acme-demo/acme-docs\">Reviewers</button> aka getByRole('button', { name: 'Reviewers' })\n    2) <p class=\"merge-reason\">Review required by branch protection</p> aka getByText('Review required by branch')\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/review|required|protection/i)"
+    }
+  ]
+}

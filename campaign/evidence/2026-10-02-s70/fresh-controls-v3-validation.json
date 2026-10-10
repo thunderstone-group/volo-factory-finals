@@ -1,0 +1,68 @@
+[
+  {
+    "task": "github",
+    "judge_exit": 0,
+    "scores": [
+      {
+        "app": "generate-controls-v3-github",
+        "judge": "gh99",
+        "counts": {
+          "error": 15,
+          "pass": 72,
+          "fail": 14
+        },
+        "seconds": 155.9,
+        "coverage": {
+          "total": 100,
+          "parsed": 86
+        }
+      },
+      {
+        "app": "generate-controls-v3-github",
+        "judge": "gh8",
+        "counts": {
+          "pass": 65,
+          "error": 13,
+          "fail": 24
+        },
+        "seconds": 169.8,
+        "coverage": {
+          "total": 100,
+          "parsed": 89
+        }
+      }
+    ]
+  },
+  {
+    "task": "sheet",
+    "judge_exit": 0,
+    "scores": [
+      {
+        "app": "generate-controls-v3-sheet",
+        "judge": "g99",
+        "counts": {
+          "pass": 92,
+          "fail": 8
+        },
+        "seconds": 65.8,
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        }
+      },
+      {
+        "app": "generate-controls-v3-sheet",
+        "judge": "cov99n-arm",
+        "counts": {
+          "pass": 96,
+          "fail": 4
+        },
+        "seconds": 61.0,
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        }
+      }
+    ]
+  }
+]

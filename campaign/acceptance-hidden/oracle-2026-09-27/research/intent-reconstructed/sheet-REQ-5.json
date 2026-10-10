@@ -1,0 +1,293 @@
+{
+ "tests": [
+  {
+   "id": "REQ-5-1-1",
+   "n": 1,
+   "title": "Sort range A1:C6 by Sales ascending with header row and verify row order persists after refresh",
+   "checks": [
+    "Sort range dialog appears with Sort by options Region/Sales/Status and Order options Ascending/Descending",
+    "Data has header row checked; after Sort the header Region/Sales/Status stays first and data rows are South/700/Open, North/800/Closed, East/1200/Open",
+    "Entire records move together by row and data outside the selection is unchanged",
+    "Formula bar references/results are consistent with the new positions",
+    "After refresh the sorted order remains"
+   ]
+  },
+  {
+   "id": "REQ-5-1-1",
+   "n": 2,
+   "title": "Sort range by an ISO-format date column ascending and verify dates are compared as dates",
+   "checks": [
+    "Sort by an ISO date column such as 2024-01-15, 2024-01-02, 2023-12-01 yields chronological order, not lexicographic order",
+    "Header row remains first and the selected Order is Ascending",
+    "After refresh the date-sorted order persists"
+   ]
+  },
+  {
+   "id": "REQ-5-1-1",
+   "n": 3,
+   "title": "Sort range by a text column with duplicate keys and verify equal keys keep original relative order",
+   "checks": [
+    "Sort by Region text ascending with duplicate Region values; equal sort keys preserve their original relative order",
+    "Each record's other columns move together with its row",
+    "After refresh the stable sorted order persists"
+   ]
+  },
+  {
+   "id": "REQ-5-1-1",
+   "n": 4,
+   "title": "Sort range by Sales descending via the Order combo and verify descending order persists",
+   "checks": [
+    "Order combo set to Descending; Sales values are ordered East/1200, North/800, South/700",
+    "Header row Region/Sales/Status remains first",
+    "After refresh the descending order persists"
+   ]
+  },
+  {
+   "id": "REQ-5-1-1",
+   "n": 5,
+   "title": "Sort range with Data has header row unchecked so the first row participates and verify persisted",
+   "checks": [
+    "Unchecking Data has header row makes the first row participate in sorting",
+    "The original header row is no longer fixed at the top; all selected rows are sorted by the chosen key",
+    "After refresh the sorted order including the former header row persists"
+   ]
+  },
+  {
+   "id": "REQ-5-1-1",
+   "n": 6,
+   "title": "Sort failure displays an error and the grid retains the original order immediately and after refresh",
+   "checks": [
+    "When sorting fails, a visible error is displayed beside the sort dialog/control",
+    "The grid continues to show the original row order with no partial sorting",
+    "After refresh the original order is still present"
+   ]
+  },
+  {
+   "id": "REQ-5-1-2",
+   "n": 1,
+   "title": "Create filter and apply value filters on Region and Sales with AND, hiding nonmatching rows only and persisting",
+   "checks": [
+    "Create filter on A1:C6; header buttons named Filter Region, Filter Sales, Filter Status appear",
+    "Select Region=East and Sales=1200 in the value-filter dialogs and Apply; only East/1200/Open remains visible",
+    "North and South rows are hidden but not deleted or reordered; conditions on the two columns are combined with AND",
+    "After refresh the same rows remain visible"
+   ]
+  },
+  {
+   "id": "REQ-5-1-2",
+   "n": 2,
+   "title": "Apply a Greater than condition on Sales and verify hidden rows are only concealed and persist",
+   "checks": [
+    "Open Filter Sales condition dialog, choose Condition Greater than and Value 700, then Apply",
+    "Visible rows are East/1200/Open and North/800/Closed; South/700/Open is hidden",
+    "Hidden rows are not deleted or reordered",
+    "After refresh the same visible rows remain"
+   ]
+  },
+  {
+   "id": "REQ-5-1-2",
+   "n": 3,
+   "title": "Export CSV while a filter is active includes hidden rows within the filtered range",
+   "checks": [
+    "With a filter hiding some rows, click Export CSV and start the download",
+    "Downloaded UTF-8 CSV contains all source rows including hidden rows in original row and column order",
+    "Active worksheet, filter visibility, grid values, and formula bar content are unchanged after export",
+    "After refresh the same filter state remains"
+   ]
+  },
+  {
+   "id": "REQ-5-1-2",
+   "n": 4,
+   "title": "Use value-filter checkboxes generated from distinct source values and Clear selection, then persist visible rows",
+   "checks": [
+    "Value-filter dialog lists checkboxes with accessible names North, East, and South from distinct source values",
+    "Clear selection unchecks all checkboxes; selecting East and South and Apply hides only the North row",
+    "Hidden rows are neither deleted nor reordered",
+    "After refresh the same rows remain visible"
+   ]
+  },
+  {
+   "id": "REQ-5-1-2",
+   "n": 5,
+   "title": "Clear filter restores all source records in original order and values and persists after refresh",
+   "checks": [
+    "Click Clear filter; rows East/1200/Open, North/800/Closed, South/700/Open become visible in original order with original values",
+    "Formula and validation behavior are unchanged",
+    "After refresh all rows remain visible"
+   ]
+  },
+  {
+   "id": "REQ-5-2-1",
+   "n": 1,
+   "title": "Set dropdown validation on A1:A2 with trimmed allowed values and reject an invalid grid entry preserving the original value",
+   "checks": [
+    "Data validation dialog opens with Rule type Dropdown and Allowed values 'East, North, South'; Save closes the dialog",
+    "Constrained cells expose buttons named Open dropdown for A1 and Open dropdown for A2; options use ARIA option role and accessible names East, North, South",
+    "Entering West in A1 is rejected with 'Please select one of the following values: East, North, South' and A1 retains its original value",
+    "Rule remains active after refresh"
+   ]
+  },
+  {
+   "id": "REQ-5-2-1",
+   "n": 2,
+   "title": "Set inclusive numeric validation 0 to 100 and reject an out-of-range number with the exact message",
+   "checks": [
+    "Data validation dialog with Rule type Number range, Minimum 0, Maximum 100; Save applies the inclusive rule",
+    "Entering 150 through grid or formula bar is rejected with 'Please enter a number between 0 and 100' and the original value remains",
+    "Valid value 50 is accepted",
+    "Rule and values persist after refresh"
+   ]
+  },
+  {
+   "id": "REQ-5-2-1",
+   "n": 3,
+   "title": "Reject 101 in B3 under a persisted multi-cell 0-to-100 validation rule with 'Please enter a number from 0 to 100'",
+   "checks": [
+    "A multi-cell 0-to-100 numeric rule is already persisted on the target range including B3",
+    "Entering 101 in B3 is rejected and the exact message 'Please enter a number from 0 to 100' is displayed",
+    "B3 retains its original value and no other cell changes",
+    "After refresh the rule and original values persist"
+   ]
+  },
+  {
+   "id": "REQ-5-2-1",
+   "n": 4,
+   "title": "Reject bulk paste or range move when any target cell violates validation and leave all targets original",
+   "checks": [
+    "Pasting a rectangular block containing at least one invalid value into a validated range rejects the entire paste with the appropriate validation message",
+    "All target cells retain their original values; no partial update occurs",
+    "Cut/range-move into an invalid target is likewise rejected and both source and target remain unchanged",
+    "Error is shown beside the named control and the state persists after refresh"
+   ]
+  },
+  {
+   "id": "REQ-5-2-1",
+   "n": 5,
+   "title": "Reopen an existing validation rule prefilled and delete the rule without changing existing cell values",
+   "checks": [
+    "Reopening Data validation for the rule shows the saved Rule type and parameters prefilled and a Delete rule button",
+    "Clicking Delete rule closes the dialog and removes the dropdown/constraint",
+    "Existing cell values remain unchanged",
+    "After refresh the rule is still removed"
+   ]
+  },
+  {
+   "id": "REQ-5-2-1",
+   "n": 6,
+   "title": "Modify an existing validation rule's parameters or range and verify it is effective immediately and persists",
+   "checks": [
+    "Reopen the existing rule; change the rule type, parameters, or target range and click Save",
+    "The dialog closes and the new rule is enforced immediately on the modified range",
+    "Existing cell values remain unchanged",
+    "After refresh the modified rule remains active"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 1,
+   "title": "Create pivot table in new Pivot1 with Rows=Region and Values=Sales (SUM) and verify layout, grand total, and persistence",
+   "checks": [
+    "Create pivot table dialog shows 'Source range: A1:C6' and New worksheet is selected; Create creates worksheet Pivot1",
+    "Pivot table editor has Rows=Region, Values=Sales, Summarize by=SUM; Apply succeeds",
+    "Pivot1 A1 displays Region and B1 displays 'SUM of Sales'; row groups are East, North, South in first-appearance order",
+    "Final row is Grand Total with 2700",
+    "After refresh/reopen Pivot1, field layout, and results remain; source worksheet A1:C6 is unchanged"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 2,
+   "title": "Create pivot with optional column field and verify column-field order, grand total column, and grand total row",
+   "checks": [
+    "Create pivot with Rows=Region, Columns=Status, Values=Sales, Summarize by=SUM",
+    "Column-field values are arranged from B1 onward in first-appearance order: Open, Closed, then Grand Total",
+    "A1 displays Region; row values East, North, South in first-appearance order with Grand Total as the final row",
+    "Grand Total column contains East=1200, North=800, South=700, total=2700; Open total=1900 and Closed total=800",
+    "Layout and results persist after refresh"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 3,
+   "title": "Use COUNT summarization and verify it counts non-empty records and displays 0 for empty row/column combinations",
+   "checks": [
+    "Set Summarize by=COUNT with Rows=Region, Columns=Status, Values=Sales",
+    "East/Open=1, North/Closed=1, South/Open=1, and East/Closed displays 0",
+    "Grand total row counts all qualifying records; COUNT does not fail because of empty combinations",
+    "Pivot results and layout persist after refresh"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 4,
+   "title": "Use AVERAGE summarization and verify computed averages and grand total preserve source order",
+   "checks": [
+    "Set Summarize by=AVERAGE with Rows=Region and Values=Sales",
+    "B1 displays 'AVERAGE of Sales'; East=1200, North=800, South=700",
+    "Grand Total averages all qualifying source records and equals 900",
+    "After refresh the AVERAGE results persist"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 5,
+   "title": "Refresh pivot table after source value edits recomputes from current source data and preserves source worksheet",
+   "checks": [
+    "Edit a source Sales value, for example East from 1200 to 1500",
+    "Click Refresh pivot table; the SUM of Sales becomes 3000 and the old summary is completely replaced",
+    "Source worksheet remains unchanged except for the intended edit",
+    "After refresh the new pivot result persists"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 6,
+   "title": "Refresh pivot table after row or column structure changes uses the adjusted source range",
+   "checks": [
+    "Insert or delete rows/columns within the pivot source range and click Refresh pivot table",
+    "The old summary is completely replaced by a summary computed from the current adjusted source range",
+    "New/deleted records and moved source columns are reflected in the refreshed pivot",
+    "After refresh the recomputed pivot result persists; source worksheet keeps the changed structure"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 7,
+   "title": "Refresh after a selected source header is deleted displays an error, preserves last successful result, and does not modify source worksheet",
+   "checks": [
+    "Delete a column whose header is selected as a pivot field, then click Refresh pivot table",
+    "The error 'Pivot field is no longer available. Select a new field.' is displayed",
+    "The last successful pivot result is preserved",
+    "The source worksheet contents and structure are not modified by the refresh"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 8,
+   "title": "Invalid source range or field selection on refresh displays a visible error and preserves both worksheets",
+   "checks": [
+    "Use an invalid source range or a field that is not available in the current source range and click Apply/Refresh",
+    "A visible error is displayed and the last successful pivot result remains",
+    "Neither the pivot-result worksheet nor the source worksheet is modified",
+    "After refresh the preserved state remains"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 9,
+   "title": "Apply SUM or AVERAGE to a value field with no parseable numbers and verify 'Value field requires numeric values' preserves old result",
+   "checks": [
+    "Set Rows/Columns to valid fields and Values to a text-only field such as Status with SUM or AVERAGE",
+    "The error 'Value field requires numeric values' is displayed",
+    "The old pivot result is preserved and the source worksheet is not modified",
+    "No partial pivot summary is created"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 44487,
+  "completion_tokens": 18637
+ },
+ "cost_cny": 0.3012,
+ "finish": "stop"
+}

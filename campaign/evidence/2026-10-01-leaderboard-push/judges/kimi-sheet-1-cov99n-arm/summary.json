@@ -1,0 +1,14 @@
+{
+  "app": "kimi-sheet-1",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 25,
+    "fail": 37,
+    "error": 46
+  },
+  "seconds": 447.8,
+  "coverage": {
+    "total": 100,
+    "parsed": 62
+  }
+}

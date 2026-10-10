@@ -1,0 +1,1025 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-1-1-1",
+      "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-1-1#2",
+      "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-1#3",
+      "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 3",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-2",
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-2#2",
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-1-1-2#3",
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 3",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-1-1-2#4",
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 4",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-3",
+      "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-3#2",
+      "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-3#3",
+      "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 3",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-2",
+      "name": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-2#2",
+      "name": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-3",
+      "name": "REQ-1-3: Change Account Password - Scenario 1",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-3#2",
+      "name": "REQ-1-3: Change Account Password - Scenario 2",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-3#3",
+      "name": "REQ-1-3: Change Account Password - Scenario 3",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-1",
+      "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-1#2",
+      "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-2-1-2",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-2#2",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-2#3",
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-2-1",
+      "name": "REQ-2-2-1: Create an Organization Team - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-2-1#2",
+      "name": "REQ-2-2-1: Create an Organization Team - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-2-2",
+      "name": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-2#2",
+      "name": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-3",
+      "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Access denied').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Access denied').first()\n\n\n  203 |\n  204 |   await page.goto('/acme-demo/secret-research');\n> 205 |   await expect(page.getByText('Access denied').first()).toBeVisible();\n      |                                                         ^\n  206 | });\n  207 |\n  208 | test('REQ-2-2-3#2: REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2', async ({ page }) => {\n    at ~/projects/arcbench-campaign/evidence/2026-10-02-s70/v5-suite-on-control",
+      "source": "test('REQ-2-2-3: REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1', async ({ page }) => {\n  await signIn(page, 'org-owner', PASSWORD, 'org-owner');\n  await openOrganization(page, 'Acme Demo');\n  await page.getByRole('link', { name: 'People', exact: true }).click();\n\n  await ensureAddMemberForm(page, 'Username or email');\n  await page.getByRole('textbox', { name: 'Username or email', exact: true }).fill('new-member');\n  await page.getByRole('combobox', { name: 'Role', exact: true }).click();\n  await page.getByRole('option', { name: 'Member', exact: true }).click();\n  await page.getByRole('button', { name: 'Add member', exact: true }).last().click();\n\n  await expect(page.getByText('new-member', { exact: true }).first()).toBeVisible();\n  await expect(page.getByText('Member', { exact: true }).first()).toBeVisible();\n  await expect(page.getByText('Pending invitation')).toHaveCount(0);\n  await page.reload();\n  await expect(page.getByText('new-member', { exact: true }).first()).toBeVisible();\n\n  await signOut(page);\n  await signIn(page, 'new-member@example.test', PASSWORD, 'new-member');\n  await openYourOrganizations(page);\n  await expect(page.getByRole('link', { name: 'Acme Demo', exact: true }).first()).toBeVisible();\n\n  await page.goto('/acme-demo/secret-research');\n  await expect(page.getByText('Access denied').first()).toBeVisible();\n});",
+      "at": "t02-REQ-2.spec.cjs:205",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-2-2-3#2",
+      "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-4",
+      "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-4#2",
+      "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-3",
+      "name": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-3#2",
+      "name": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('row', { name: /access-role-team/ }).getByText('Write', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('row', { name: /access-role-team/ }).getByText('Write', { exact: true })\n\n\n  278 |   const row = page.getByRole('row', { name: /access-role-team/ });\n  279 |   await expect(row).toHaveCount(1);\n> 280 |   await expect(row.getByText('Write', { exact: true })).toBeVisible();\n      |                                                         ^\n  281 |\n  282 |   await row.getByRole('combobox', { name: 'Role', exact: true })",
+      "source": "test('REQ-2-3#2: REQ-2-3: Grant Repository Access to People and Teams - Scenario 2', async ({ page }) => {\n  await signIn(page, 'repo-admin', PASSWORD, 'repo-admin');\n  await openRepository(page, 'acme-docs');\n  await page.getByRole('link', { name: 'Settings', exact: true }).click();\n  await page.getByRole('link', { name: 'Manage access', exact: true }).click();\n\n  const row = page.getByRole('row', { name: /access-role-team/ });\n  await expect(row).toHaveCount(1);\n  await expect(row.getByText('Write', { exact: true })).toBeVisible();\n\n  await row.getByRole('combobox', { name: 'Role', exact: true }).click();\n  await page.getByRole('option', { name: 'Read', exact: true }).click();\n  await row.getByRole('button', { name: 'Save', exact: true }).click();\n\n  await page.reload();\n  await expect(page.getByRole('row', { name: /access-role-team/ })).toHaveCount(1);\n  await expect(page.getByRole('row', { name: /access-role-team/ }).getByText('Read', { exact: true })).toBeVisible();\n});\n\n// Added by the suite runner: a helper that uses `page` without taking it as a parameter sees the running test's page.\nrequire('@playwright/test').test.beforeEach(async ({ page }) => { globalThis.page = page; });",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - generic [ref=e12]: repo-admin\n      - button \"Account menu\" [ref=e14] [cursor=pointer]\n  - generic [ref=e15]:\n    - main [ref=e16]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e17]\n      - paragraph [ref=e18]:\n        - text: \"Owner:\"\n        - link \"Acme Demo\" [ref=e19] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - paragraph [ref=e20]: \"Public Documentation and search for Acme. Default branch: main\"\n      - navigation \"Repository\" [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/settings\"\n      - heading \"Settings\" [level=1] [ref=e26]\n      - navigation \"Repository settings\" [ref=e27]:\n        - link \"General\" [ref=e28] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/settings/general\"\n        - link \"Manage access\" [ref=e2\n... page content omitted ...\n     - text: \"Role: Read\"\n        - row \"alice-dev Write\" [ref=e71]:\n          - text: alice-dev Role\n          - combobox \"Role\" [ref=e72]\n          - button \"Save\" [ref=e73] [cursor=pointer]\n          - text: \"Role: Write\"\n        - row \"access-role-team Write\" [ref=e74]:\n          - text: access-role-team Role\n          - combobox \"Role\" [ref=e75]\n          - button \"Save\" [ref=e76] [cursor=pointer]\n          - text: \"Role: Write\"\n        - row \"frontend-team Write\" [ref=e77]:\n          - text: frontend-team Role\n          - combobox \"Role\" [ref=e78]\n          - button \"Save\" [ref=e79] [cursor=pointer]\n          - text: Write\n    - complementary [ref=e80]:\n      - button \"Home\" [ref=e81] [cursor=pointer]\n      - button \"Explore\" [ref=e82] [cursor=pointer]\n      - button \"Trending\" [ref=e83] [cursor=pointer]\n  - contentinfo [ref=e84]: Footer Header · Sidebar · Main content · Footer\n```",
+      "at": "t02-REQ-2.spec.cjs:280",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-3-1",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-1#2",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-1#3",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 3",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-1#4",
+      "name": "REQ-3-1: Search for and Locate Repositories - Scenario 4",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-2-1",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-1#2",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-1#3",
+      "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 3",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-2",
+      "name": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-2#2",
+      "name": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-3",
+      "name": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-3#2",
+      "name": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-3",
+      "name": "REQ-3-3: View a Public Repository Overview - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-3-4",
+      "name": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 1",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-3-4#2",
+      "name": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 2",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-1",
+      "name": "REQ-4-1: Browse Repository Files and Directories - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-1",
+      "name": "REQ-4-2-1: View Repository Commit History - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-4-2-2",
+      "name": "REQ-4-2-2: Inspect Commit and Revision Differences - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('src/search.ts', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('src/search.ts', { exact: true }).first()\n\n\n  90 |   await expect(\n  91 |     page.getByText('src/search.ts', { exact: true }).first()\n> 92 |   ).toBeVisible();\n     |     ^\n  93 |   await expect(page.getByText('Changed files', { exact: true }).first()).toBeVisible();\n  94 |   await expect(\n  95 |     page.getByText(/(\\+\\d+|\\d+\\s+addition)/i).first()\n    at ~/projects/arcbench-campaign/evidence/2026-10-02-s70/v5-suite-on-controlled73/su",
+      "source": "test('REQ-4-2-2: REQ-4-2-2: Inspect Commit and Revision Differences - Scenario 1', async ({\n  page,\n}) => {\n  await openRepository(page, 'acme-docs');\n  await page.getByRole('link', { name: 'Commits', exact: true }).click();\n  await page\n    .getByRole('link', { name: 'Document search flow', exact: true })\n    .first()\n    .click();\n\n  await expect(\n    page.getByText('src/search.ts', { exact: true }).first()\n  ).toBeVisible();\n  await expect(page.getByText('Changed files', { exact: true }).first()).toBeVisible();\n  await expect(\n    page.getByText(/(\\+\\d+|\\d+\\s+addition)/i).first()\n  ).toBeVisible();\n  await expect(\n    page.getByText(/(-\\d+|\\d+\\s+deletion)/i).first()\n  ).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - link \"Sign up\" [ref=e12] [cursor=pointer]:\n        - /url: \"#/signup\"\n      - link \"Sign in\" [ref=e13] [cursor=pointer]:\n        - /url: \"#/signin\"\n      - link \"Forgot password\" [ref=e14] [cursor=pointer]:\n        - /url: \"#/forgot\"\n  - generic [ref=e15]:\n    - main [ref=e16]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e17]\n      - paragraph [ref=e18]:\n        - text: \"Owner:\"\n        - link \"Acme Demo\" [ref=e19] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - paragraph [ref=e20]: \"Public Documentation and search for Acme. Default branch: main\"\n      - navigation \"Repository\" [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/settings\"\n      - heading \"Document search flow\" [level=1] [ref=e26]\n      - paragraph [ref=e27]: alice-dev 2213 days ago\n      - heading \"Changed files\" [level=2] [ref=e28]\n      - paragraph [ref=e29]: 1 changed files +12 -3\n      - list [ref=e30]:\n        - listitem [ref=e31]: src/search.ts +12 -3\n    - complementary [ref=e32]:\n      - button \"Home\" [ref=e33] [cursor=pointer]\n      - button \"Explore\" [ref=e34] [cursor=pointer]\n      - button \"Trending\" [ref=e35] [cursor=pointer]\n  - contentinfo [ref=e36]: Footer Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:92",
+      "seconds": 5.1
+    },
+    {
+      "id": "REQ-4-2-3",
+      "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('search flow', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('search flow', { exact: true }).first()\n\n\n  111 |   await page.getByRole('link', { name: 'README.md', exact: true }).first().click();\n  112 |\n> 113 |   await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n      |                                                                        ^\n  114 | });\n  115 |\n  116 | test('REQ-4-2-3#2: REQ-4-2-3: Search Code Within a Repository - Scenario 2', async ({\n    at ~/pr",
+      "source": "test('REQ-4-2-3: REQ-4-2-3: Search Code Within a Repository - Scenario 1', async ({\n  page,\n}) => {\n  await openRepository(page, 'acme-docs');\n\n  const search = repoSearchBox(page);\n  await search.fill('search flow');\n  await search.press('Enter');\n  await page.getByRole('link', { name: 'Code', exact: true }).first().click();\n  await page.getByRole('link', { name: 'README.md', exact: true }).first().click();\n\n  await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - link \"Sign up\" [ref=e12] [cursor=pointer]:\n        - /url: \"#/signup\"\n      - link \"Sign in\" [ref=e13] [cursor=pointer]:\n        - /url: \"#/signin\"\n      - link \"Forgot password\" [ref=e14] [cursor=pointer]:\n        - /url: \"#/forgot\"\n  - generic [ref=e15]:\n    - main [ref=e16]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e17]\n      - paragraph [ref=e18]:\n        - text: \"Owner:\"\n        - link \"Acme Demo\" [ref=e19] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - paragraph [ref=e20]: \"Public Documentation and search for Acme. Default branch: main\"\n      - navigation \"Repository\" [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/settings\"\n      - generic [ref=e26]:\n        - button \"Branch main\" [ref=e28] [cursor=pointer]\n        - button \"Code\n... page content omitted ...\n[ref=e30] [cursor=pointer]\n      - generic [ref=e31]:\n        - generic [ref=e32]: Search\n        - searchbox \"Search\" [ref=e33]\n      - paragraph [ref=e34]:\n        - link \"src\" [ref=e35] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/blob/src\"\n        - text: /\n        - link \"README.md\" [ref=e36] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/blob/src%2FREADME.md\"\n      - paragraph [ref=e37]:\n        - link \"Commits\" [ref=e38] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/commits\"\n      - heading \"README.md\" [level=2] [ref=e39]\n      - generic [ref=e40]: Document search flow\n    - complementary [ref=e41]:\n      - button \"Home\" [ref=e42] [cursor=pointer]\n      - button \"Explore\" [ref=e43] [cursor=pointer]\n      - button \"Trending\" [ref=e44] [cursor=pointer]\n  - contentinfo [ref=e45]: Footer Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:113",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-4-2-3#2",
+      "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-3#3",
+      "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 3",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('search flow', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('search flow', { exact: true }).first()\n\n\n  139 |   await page.getByRole('link', { name: 'README.md', exact: true }).first().click();\n  140 |\n> 141 |   await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n      |                                                                        ^\n  142 |\n  143 |   await page.reload();\n  144 |   await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n  ",
+      "source": "test('REQ-4-2-3#3: REQ-4-2-3: Search Code Within a Repository - Scenario 3', async ({\n  page,\n}) => {\n  await openRepository(page, 'acme-docs');\n\n  const search = repoSearchBox(page);\n  await search.fill('search flow');\n  await search.press('Enter');\n  await page.getByRole('link', { name: 'Code', exact: true }).first().click();\n  await page.getByRole('link', { name: 'README.md', exact: true }).first().click();\n\n  await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n  await expect(\n    page.getByRole('link', { name: 'README.md', exact: true }).first()\n  ).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - link \"Sign up\" [ref=e12] [cursor=pointer]:\n        - /url: \"#/signup\"\n      - link \"Sign in\" [ref=e13] [cursor=pointer]:\n        - /url: \"#/signin\"\n      - link \"Forgot password\" [ref=e14] [cursor=pointer]:\n        - /url: \"#/forgot\"\n  - generic [ref=e15]:\n    - main [ref=e16]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e17]\n      - paragraph [ref=e18]:\n        - text: \"Owner:\"\n        - link \"Acme Demo\" [ref=e19] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - paragraph [ref=e20]: \"Public Documentation and search for Acme. Default branch: main\"\n      - navigation \"Repository\" [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/settings\"\n      - generic [ref=e26]:\n        - button \"Branch main\" [ref=e28] [cursor=pointer]\n        - button \"Code\n... page content omitted ...\n[ref=e30] [cursor=pointer]\n      - generic [ref=e31]:\n        - generic [ref=e32]: Search\n        - searchbox \"Search\" [ref=e33]\n      - paragraph [ref=e34]:\n        - link \"src\" [ref=e35] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/blob/src\"\n        - text: /\n        - link \"README.md\" [ref=e36] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/blob/src%2FREADME.md\"\n      - paragraph [ref=e37]:\n        - link \"Commits\" [ref=e38] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/commits\"\n      - heading \"README.md\" [level=2] [ref=e39]\n      - generic [ref=e40]: Document search flow\n    - complementary [ref=e41]:\n      - button \"Home\" [ref=e42] [cursor=pointer]\n      - button \"Explore\" [ref=e43] [cursor=pointer]\n      - button \"Trending\" [ref=e44] [cursor=pointer]\n  - contentinfo [ref=e45]: Footer Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:141",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-4-2-3#4",
+      "name": "REQ-4-2-3: Search Code Within a Repository - Scenario 4",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-1",
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-1#2",
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-4-3-2",
+      "name": "REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-2#2",
+      "name": "REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-3-3",
+      "name": "REQ-4-3-3: Change the Repository Default Branch - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-3-3#2",
+      "name": "REQ-4-3-3: Change the Repository Default Branch - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-4",
+      "name": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 1",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-4#2",
+      "name": "REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 2",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-1-1",
+      "name": "REQ-5-1-1: List and Filter Repository Issues - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-1-1#2",
+      "name": "REQ-5-1-1: List and Filter Repository Issues - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2",
+      "name": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2#2",
+      "name": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2#3",
+      "name": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 3",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  13 | async function openRepository(page, name) {\n  14 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 15 |   await search.fill(name);\n     |                ^\n  16 |   await search.press('Enter');\n  17 |   await page.getByRole('link', { name, exact: true }).click();\n  18 | }\n    at openRepository (~/projects/arcbench-campaign/evidence/2026-10-02-s70/v5-suite-on-controlled73/suite/t05-REQ-5.spec.cjs:15:16)\n    at ~/projects/arcbench-campaign/evidence/2026-10-02-s70/v5-suite-on-controlled73/suite/t05-REQ",
+      "source": "test('REQ-5-1-2#3: REQ-5-1-2: View an Issue and Its Discussion - Scenario 3', async ({ page }) => {\n  await page.goto('/');\n  await openRepository(page, 'acme-docs');\n  await page.getByRole('link', { name: 'Issues', exact: true }).click();\n  await page.getByRole('link', { name: 'Improve onboarding', exact: true }).click();\n\n  await openRepository(page, 'acme-docs');\n  await page.getByRole('link', { name: 'Issues', exact: true }).click();\n  await page.getByRole('link', { name: 'Improve onboarding', exact: true }).click();\n\n  await expect(page.getByRole('heading', { name: 'Improve onboarding', exact: true })).toBeVisible();\n  await expect(page.getByText('Open', { exact: true }).first()).toBeVisible();\n});\n\n// ---------------------------------------------------------------- REQ-5-2-1",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - link \"Sign up\" [ref=e12] [cursor=pointer]:\n        - /url: \"#/signup\"\n      - link \"Sign in\" [ref=e13] [cursor=pointer]:\n        - /url: \"#/signin\"\n      - link \"Forgot password\" [ref=e14] [cursor=pointer]:\n        - /url: \"#/forgot\"\n  - generic [ref=e15]:\n    - main [ref=e16]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e17]\n      - paragraph [ref=e18]:\n        - text: \"Owner:\"\n        - link \"Acme Demo\" [ref=e19] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - paragraph [ref=e20]: \"Public Documentation and search for Acme. Default branch: main\"\n      - navigation \"Repository\" [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/settings\"\n      - heading \"Improve onboarding\" [level=1] [ref=e26]\n      - paragraph [ref=e27]:\n        - generic [re\n... page content omitted ...\n]: Open\n        - text: \"#1 alice-dev\"\n      - generic [ref=e29]:\n        - button \"Assignees\" [disabled] [ref=e31] [cursor=pointer]\n        - button \"Labels\" [disabled] [ref=e33] [cursor=pointer]\n        - button \"Milestone\" [disabled] [ref=e35] [cursor=pointer]\n      - generic [ref=e36]: Describe the onboarding improvement.\n      - heading \"Comments\" [level=2] [ref=e37]\n      - article [ref=e39]:\n        - text: alice-dev\n        - paragraph [ref=e40]: This matters for new contributors.\n      - heading \"Activity\" [level=2] [ref=e41]\n      - list [ref=e42]:\n        - listitem [ref=e43]: alice-dev opened this issue 2229 days ago\n    - complementary [ref=e44]:\n      - button \"Home\" [ref=e45] [cursor=pointer]\n      - button \"Explore\" [ref=e46] [cursor=pointer]\n      - button \"Trending\" [ref=e47] [cursor=pointer]\n  - contentinfo [ref=e48]: Footer Header · Sidebar · Main content · Footer\n```",
+      "at": "t05-REQ-5.spec.cjs:15",
+      "seconds": 5.2
+    },
+    {
+      "id": "REQ-5-2-1",
+      "name": "REQ-5-2-1: Create a Repository Issue - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-2-1#2",
+      "name": "REQ-5-2-1: Create a Repository Issue - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-2-2",
+      "name": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-2-2#2",
+      "name": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-2-3",
+      "name": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-2-3#2",
+      "name": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-3-1",
+      "name": "REQ-5-3-1: Assign or Unassign Issue Participants - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-3-2",
+      "name": "REQ-5-3-2: Apply Labels to an Issue - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-3-3",
+      "name": "REQ-5-3-3: Assign Issues and Pull Requests to a Milestone - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-4",
+      "name": "REQ-5-4: Close or Reopen an Issue - Scenario 1",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-5-4#2",
+      "name": "REQ-5-4: Close or Reopen an Issue - Scenario 2",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-1",
+      "name": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-1#2",
+      "name": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-1#3",
+      "name": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-1",
+      "name": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-1#2",
+      "name": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-1#3",
+      "name": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-2",
+      "name": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-2#2",
+      "name": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-3",
+      "name": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-3#2",
+      "name": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-4",
+      "name": "REQ-6-2-4: Create a Draft Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-4#2",
+      "name": "REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-3-1",
+      "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-1#2",
+      "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-1#3",
+      "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-3-2",
+      "name": "REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-3",
+      "name": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-3-3#2",
+      "name": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-3-4",
+      "name": "REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Approved', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Approved', { exact: true }).first()\n\n\n  388 |   await page.getByRole('button', { name: 'Submit review', exact: true }).click();\n  389 |\n> 390 |   await expect(page.getByText('Approved', { exact: true }).first()).toBeVisible();\n      |                                                                     ^\n  391 | });\n  392 |\n  393 | test('REQ-6-3-4#2: REQ-6-3-4: Submit a Pull Request Review - Scenario 2', async ({ page }) => {\n    at ~/projec",
+      "source": "test('REQ-6-3-4: REQ-6-3-4: Submit a Pull Request Review - Scenario 1', async ({ page }) => {\n  await signIn(page, 'pr-reviewer');\n  await openFilesChanged(page, 'acme-docs', 'Reviewable onboarding PR');\n\n  await clickLinkOrButton(page, 'Review changes');\n  await page.getByRole('radio', { name: 'Approve', exact: true }).check();\n  await page.getByRole('button', { name: 'Submit review', exact: true }).click();\n\n  await expect(page.getByText('Approved', { exact: true }).first()).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - generic [ref=e12]: pr-reviewer\n      - button \"Account menu\" [ref=e14] [cursor=pointer]\n  - generic [ref=e15]:\n    - main [ref=e16]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e17]\n      - paragraph [ref=e18]:\n        - text: \"Owner:\"\n        - link \"Acme Demo\" [ref=e19] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - paragraph [ref=e20]: \"Public Documentation and search for Acme. Default branch: main\"\n      - navigation \"Repository\" [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repo/acme-demo/acme-docs/settings\"\n      - heading \"Reviewable onboarding PR\" [level=1] [ref=e26]\n      - paragraph [ref=e27]:\n        - generic [ref=e28]: Open\n        - text: main ← feature-search\n      - navigation \"Pull request\" [ref=e29]:\n        - link \"Conversation\" [ref=e30] [cur\n... page content omitted ...\n{\"\n          - button \"Add comment\" [ref=e40] [cursor=pointer]\n        - generic [ref=e41]:\n          - generic [ref=e42]: + return query.trim();\n          - button \"Add comment\" [ref=e43] [cursor=pointer]\n        - generic [ref=e44]:\n          - generic [ref=e45]: \"+ };\"\n          - button \"Add comment\" [ref=e46] [cursor=pointer]\n      - heading \"Comments\" [level=2] [ref=e47]\n      - article [ref=e49]:\n        - text: pr-reviewer\n        - paragraph [ref=e50]: pw review comment muqrjvzve0d4\n      - paragraph [ref=e51]:\n        - button \"Review changes\" [ref=e52] [cursor=pointer]\n      - paragraph [ref=e53]: pr-reviewer Approved\n    - complementary [ref=e54]:\n      - button \"Home\" [ref=e55] [cursor=pointer]\n      - button \"Explore\" [ref=e56] [cursor=pointer]\n      - button \"Trending\" [ref=e57] [cursor=pointer]\n  - contentinfo [ref=e58]: Footer Header · Sidebar · Main content · Footer\n```",
+      "at": "t06-REQ-6.spec.cjs:390",
+      "seconds": 5.3
+    },
+    {
+      "id": "REQ-6-3-4#2",
+      "name": "REQ-6-3-4: Submit a Pull Request Review - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "The test used the name 'Summary', which the requirements never give: Error: expect(locator).toBeVisible() failed",
+      "source": "",
+      "at": "t06-REQ-6.spec.cjs:403",
+      "seconds": 5.3
+    },
+    {
+      "id": "REQ-6-4",
+      "name": "REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-5",
+      "name": "REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-5#2",
+      "name": "REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-6",
+      "name": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-6#2",
+      "name": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 100,
+    "parsed": 99
+  },
+  "seconds": 67.0
+}

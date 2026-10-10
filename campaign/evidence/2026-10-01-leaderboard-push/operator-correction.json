@@ -1,0 +1,11 @@
+{
+  "requirement": "REQ-1-2-1",
+  "confirmed_contract": "New blank workbook opens a creation page; the Create button submits it. No mandatory workbook-name input is stated.",
+  "confirmed_test_code": "All five Kimi-generated spec files call New blank workbook and then Create in their creation helpers.",
+  "confirmed_application_defect": "The initial create-workbook action rejected an empty name. First accepted repair uses Untitled workbook when the name is empty.",
+  "withdrawn_operator_claims": [
+    "The creation page itself was an unwanted extra step.",
+    "The generated test helpers omitted Create."
+  ],
+  "consequence": "No helper-mending change was made and no test assertions were relaxed. The live repair uses the unchanged generated suite. Root-cause claims require checking both original requirements and actual test code."
+}

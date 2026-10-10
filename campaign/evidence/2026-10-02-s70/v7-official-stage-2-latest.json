@@ -1,0 +1,39 @@
+{
+  "run_id": "c71b18944cdb",
+  "status": "FAILED",
+  "passed": 0,
+  "failed": 0,
+  "pass_rate": 0.0,
+  "tokens": 0,
+  "duration_seconds": 0,
+  "failure_reason": "Command '['python3', '/workspace/submission/main.py', '/tmp/arcbench/requirements-source', '--output-dir', '/workspace/template']' returned non-zero exit status 1.",
+  "submission_id": "12e3bab723fd",
+  "requirement_id": "hackathon--github-stage-2",
+  "finished_at": "2026-10-03T02:31:36.067808",
+  "display_name": "volo-v7-selected-content-20261002",
+  "model_name": "deepseek-v4-flash-vision-exp",
+  "feature_implemented_count": 0,
+  "feature_total_count": 0,
+  "cost": {
+    "amount": 0.0,
+    "currency": "CNY"
+  },
+  "steps": [
+    {
+      "key": "deploy_agent",
+      "status": "completed",
+      "description": "Done"
+    },
+    {
+      "key": "start_agent",
+      "status": "failed",
+      "description": "Command '['python3', '/workspace/submission/main.py', '/tmp/arcbench/requirements-source', '--output-dir', '/workspace/template']' returned non-zero exit status 1."
+    },
+    {
+      "key": "run_tests",
+      "status": "pending",
+      "description": "Evaluation pending"
+    }
+  ],
+  "failed_tests": []
+}

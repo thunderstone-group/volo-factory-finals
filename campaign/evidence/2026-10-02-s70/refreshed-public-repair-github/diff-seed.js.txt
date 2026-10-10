@@ -1,0 +1,495 @@
+--- before/seed.js
++++ after/seed.js
+@@ -6,9 +6,42 @@
+ 
+   users: [
+     { id: 'u1', username: 'alice-dev', email: 'alice.dev@example.test', password: 'Valid-password-123!' },
+-    { id: 'u2', username: 'bob-reviewer', email: 'bob.reviewer@example.test', password: 'Valid-password-123!' },
++    { id: 'u2', username: 'bob-reviewer', email: 'bob-reviewer@example.test', password: 'Valid-password-123!' },
+     { id: 'u3', username: 'carol-member', email: 'carol.member@example.test', password: 'Valid-password-123!' },
+-    { id: 'u4', username: 'dave-reader', email: 'dave.reader@example.test', password: 'Valid-password-123!' }
++    { id: 'u4', username: 'dave-reader', email: 'dave.reader@example.test', password: 'Valid-password-123!' },
++    { id: 'u5', username: 'recovery-visibility', email: 'recovery-visibility@example.test', password: 'Valid-password-123!' },
++    { id: 'u6', username: 'recovery-invalid-code', email: 'recovery-invalid-code@example.test', password: 'Valid-password-123!' },
++    { id: 'u7', username: 'recovery-success', email: 'recovery-success@example.test', password: 'Valid-password-123!' },
++    { id: 'u8', username: 'password-change-success', email: 'password-change-success@example.test', password: 'Valid-password-123!' },
++    { id: 'u9', username: 'password-change-invalid', email: 'password-change-invalid@example.test', password: 'Valid-password-123!' },
++    { id: 'u10', username: 'password-change-required', email: 'password-change-required@example.test', password: 'Valid-password-123!' },
++    { id: 'u11', username: 'org-owner', email: 'org-owner@example.test', password: 'Valid-password-123!' },
++    { id: 'u12', username: 'team-maintainer', email: 'team-maintainer@example.test', password: 'Valid-password-123!' },
++    { id: 'u13', username: 'new-member', email: 'new-member@example.test', password: 'Valid-password-123!' },
++    { id: 'u14', username: 'existing-member', email: 'existing-member@example.test', password: 'Valid-password-123!' },
++    { id: 'u15', username: 'org-member', email: 'org-member@example.test', password: 'Valid-password-123!' },
++    { id: 'u16', username: 'protected-member', email: 'protected-member@example.test', password: 'Valid-password-123!' },
++    { id: 'u17', username: 'repo-admin', email: 'repo-admin@example.test', password: 'Valid-password-123!' },
++    { id: 'u18', username: 'repo-owner', email: 'repo-owner@example.test', password: 'Valid-password-123!' },
++    { id: 'u19', username: 'fork-user', email: 'fork-user@example.test', password: 'Valid-password-123!' },
++    { id: 'u20', username: 'visibility-admin', email: 'visibility-admin@example.test', password: 'Valid-password-123!' },
++    { id: 'u21', username: 'collaborator', email: 'collaborator@example.test', password: 'Valid-password-123!' },
++    { id: 'u22', username: 'branch-contributor', email: 'branch-contributor@example.test', password: 'Valid-password-123!' },
++    { id: 'u23', username: 'default-branch-admin', email: 'default-branch-admin@example.test', password: 'Valid-password-123!' },
++    { id: 'u24', username: 'default-branch-viewer', email: 'default-branch-viewer@example.test', password: 'Valid-password-123!' },
++    { id: 'u25', username: 'issue-author', email: 'issue-author@example.test', password: 'Valid-password-123!' },
++    { id: 'u26', username: 'issue-editor', email: 'issue-editor@example.test', password: 'Valid-password-123!' },
++    { id: 'u27', username: 'issue-commenter', email: 'issue-commenter@example.test', password: 'Valid-password-123!' },
++    { id: 'u28', username: 'issue-viewer', email: 'issue-viewer@example.test', password: 'Valid-password-123!' },
++    { id: 'u29', username: 'file-contributor', email: 'file-contributor@example.test', password: 'Valid-password-123!' },
++    { id: 'u30', username: 'draft-author', email: 'draft-author@example.test', password: 'Valid-password-123!' },
++    { id: 'u31', username: 'pr-author', email: 'pr-author@example.test', password: 'Valid-password-123!' },
++    { id: 'u32', username: 'pr-reviewer', email: 'pr-reviewer@example.test', password: 'Valid-password-123!' },
++    { id: 'u33', username: 'pr-contributor', email: 'pr-contributor@example.test', password: 'Valid-password-123!' },
++    { id: 'u34', username: 'pr-maintainer', email: 'pr-maintainer@example.test', password: 'Valid-password-123!' },
++    { id: 'u35', username: 'pr-viewer', email: 'pr-viewer@example.test', password: 'Valid-password-123!' },
++    { id: 'u36', username: 'protection-admin', email: 'protection-admin@example.test', password: 'Valid-password-123!' },
++    { id: 'u37', username: 'protection-viewer', email: 'protection-viewer@example.test', password: 'Valid-password-123!' }
+   ],
+ 
+   organizations: [
+@@ -18,13 +51,19 @@
+   orgMembers: [
+     { id: 'om1', orgId: 'o1', userId: 'u1', role: 'Owner', createdAt: '2024-01-05T09:00:00.000Z' },
+     { id: 'om2', orgId: 'o1', userId: 'u2', role: 'Member', createdAt: '2024-01-06T09:00:00.000Z' },
+-    { id: 'om3', orgId: 'o1', userId: 'u3', role: 'Member', createdAt: '2024-01-07T09:00:00.000Z' }
++    { id: 'om3', orgId: 'o1', userId: 'u3', role: 'Member', createdAt: '2024-01-07T09:00:00.000Z' },
++    { id: 'om4', orgId: 'o1', userId: 'u11', role: 'Owner', createdAt: '2024-01-08T09:00:00.000Z' },
++    { id: 'om5', orgId: 'o1', userId: 'u12', role: 'Owner', createdAt: '2024-01-08T09:00:00.000Z' },
++    { id: 'om6', orgId: 'o1', userId: 'u14', role: 'Member', createdAt: '2024-01-08T09:00:00.000Z' },
++    { id: 'om7', orgId: 'o1', userId: 'u15', role: 'Member', createdAt: '2024-01-08T09:00:00.000Z' },
++    { id: 'om8', orgId: 'o1', userId: 'u16', role: 'Member', createdAt: '2024-01-08T09:00:00.000Z' }
+   ],
+ 
+   teams: [
+-    { id: 't1', orgId: 'o1', name: 'frontend-team', parentId: null, description: '' },
++    { id: 't1', orgId: 'o1', name: 'frontend-team', parentId: 't2', description: '' },
+     { id: 't2', orgId: 'o1', name: 'platform-team', parentId: null, description: '' },
+-    { id: 't3', orgId: 'o1', name: 'frontend-child', parentId: 't2', description: '' }
++    { id: 't3', orgId: 'o1', name: 'frontend-child', parentId: 't1', description: '' },
++    { id: 't4', orgId: 'o1', name: 'access-role-team', parentId: null, description: '' }
+   ],
+ 
+   teamMembers: [
+@@ -43,12 +82,12 @@
+       defaultBranch: 'main', sourceId: null, createdAt: '2024-01-11T09:00:00.000Z'
+     },
+     {
+-      id: 'r3', ownerType: 'user', ownerId: 'u1', owner: 'alice-dev', ownerSlug: 'alice-dev',
++      id: 'r3', ownerType: 'org', ownerId: 'o1', owner: 'Acme Demo', ownerSlug: 'acme-demo',
+       name: 'secret-research', description: 'Private research repository', visibility: 'Private',
+       defaultBranch: 'main', sourceId: null, createdAt: '2024-01-12T09:00:00.000Z'
+     },
+     {
+-      id: 'r4', ownerType: 'user', ownerId: 'u1', owner: 'alice-dev', ownerSlug: 'alice-dev',
++      id: 'r4', ownerType: 'user', ownerId: 'u19', owner: 'fork-user', ownerSlug: 'fork-user',
+       name: 'acme-docs-fork', description: 'Fork of acme-docs', visibility: 'Public',
+       defaultBranch: 'main', sourceId: 'r1', createdAt: '2024-01-13T09:00:00.000Z'
+     },
+@@ -56,6 +95,36 @@
+       id: 'r5', ownerType: 'user', ownerId: 'u2', owner: 'bob-reviewer', ownerSlug: 'bob-reviewer',
+       name: 'bob-notes', description: 'Personal notes', visibility: 'Private',
+       defaultBranch: 'main', sourceId: null, createdAt: '2024-01-14T09:00:00.000Z'
++    },
++    {
++      id: 'r6', ownerType: 'org', ownerId: 'o1', owner: 'Acme Demo', ownerSlug: 'acme-demo',
++      name: 'branch-switch-demo', description: 'Branch browsing demo.', visibility: 'Public',
++      defaultBranch: 'main', sourceId: null, createdAt: '2024-01-15T09:00:00.000Z'
++    },
++    {
++      id: 'r7', ownerType: 'org', ownerId: 'o1', owner: 'Acme Demo', ownerSlug: 'acme-demo',
++      name: 'default-branch-demo', description: 'Default branch settings demo.', visibility: 'Public',
++      defaultBranch: 'main', sourceId: null, createdAt: '2024-01-16T09:00:00.000Z'
++    },
++    {
++      id: 'r8', ownerType: 'org', ownerId: 'o1', owner: 'Acme Demo', ownerSlug: 'acme-demo',
++      name: 'file-management-demo', description: 'File editing demo.', visibility: 'Public',
++      defaultBranch: 'main', sourceId: null, createdAt: '2024-01-17T09:00:00.000Z'
++    },
++    {
++      id: 'r9', ownerType: 'org', ownerId: 'o1', owner: 'Acme Demo', ownerSlug: 'acme-demo',
++      name: 'visibility-demo', description: 'Visibility demo repository.', visibility: 'Private',
++      defaultBranch: 'main', sourceId: null, createdAt: '2024-01-18T09:00:00.000Z'
++    },
++    {
++      id: 'r10', ownerType: 'org', ownerId: 'o1', owner: 'Acme Demo', ownerSlug: 'acme-demo',
++      name: 'branch-protection-demo', description: 'Branch protection demo.', visibility: 'Public',
++      defaultBranch: 'main', sourceId: null, createdAt: '2024-01-19T09:00:00.000Z'
++    },
++    {
++      id: 'r11', ownerType: 'user', ownerId: 'u18', owner: 'repo-owner', ownerSlug: 'repo-owner',
++      name: 'acme-docs', description: 'Personal scratch copy.', visibility: 'Private',
++      defaultBranch: 'main', sourceId: null, createdAt: '2024-01-20T09:00:00.000Z'
+     }
+   ],
+ 
+@@ -65,8 +134,27 @@
+     { id: 'g3', repoId: 'r1', kind: 'user', subjectId: 'u4', name: 'dave-reader', role: 'Read', createdAt: '2024-01-10T09:00:00.000Z' },
+     { id: 'g4', repoId: 'r2', kind: 'user', subjectId: 'u1', name: 'alice-dev', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
+     { id: 'g5', repoId: 'r3', kind: 'user', subjectId: 'u1', name: 'alice-dev', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
+-    { id: 'g6', repoId: 'r4', kind: 'user', subjectId: 'u1', name: 'alice-dev', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
+-    { id: 'g7', repoId: 'r5', kind: 'user', subjectId: 'u2', name: 'bob-reviewer', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' }
++    { id: 'g6', repoId: 'r4', kind: 'user', subjectId: 'u19', name: 'fork-user', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g7', repoId: 'r5', kind: 'user', subjectId: 'u2', name: 'bob-reviewer', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g8', repoId: 'r1', kind: 'user', subjectId: 'u17', name: 'repo-admin', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g9', repoId: 'r1', kind: 'team', subjectId: 't4', name: 'access-role-team', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g10', repoId: 'r1', kind: 'user', subjectId: 'u25', name: 'issue-author', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g11', repoId: 'r1', kind: 'user', subjectId: 'u26', name: 'issue-editor', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g12', repoId: 'r1', kind: 'user', subjectId: 'u27', name: 'issue-commenter', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g13', repoId: 'r1', kind: 'user', subjectId: 'u28', name: 'issue-viewer', role: 'Read', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g14', repoId: 'r1', kind: 'user', subjectId: 'u31', name: 'pr-author', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g15', repoId: 'r1', kind: 'user', subjectId: 'u32', name: 'pr-reviewer', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g16', repoId: 'r1', kind: 'user', subjectId: 'u33', name: 'pr-contributor', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g17', repoId: 'r1', kind: 'user', subjectId: 'u34', name: 'pr-maintainer', role: 'Maintain', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g18', repoId: 'r1', kind: 'user', subjectId: 'u35', name: 'pr-viewer', role: 'Read', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g19', repoId: 'r6', kind: 'user', subjectId: 'u22', name: 'branch-contributor', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g20', repoId: 'r7', kind: 'user', subjectId: 'u23', name: 'default-branch-admin', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g21', repoId: 'r7', kind: 'user', subjectId: 'u24', name: 'default-branch-viewer', role: 'Read', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g22', repoId: 'r8', kind: 'user', subjectId: 'u29', name: 'file-contributor', role: 'Write', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g23', repoId: 'r9', kind: 'user', subjectId: 'u20', name: 'visibility-admin', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g24', repoId: 'r9', kind: 'user', subjectId: 'u21', name: 'collaborator', role: 'Read', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g25', repoId: 'r10', kind: 'user', subjectId: 'u36', name: 'protection-admin', role: 'Admin', createdAt: '2024-01-10T09:00:00.000Z' },
++    { id: 'g26', repoId: 'r10', kind: 'user', subjectId: 'u37', name: 'protection-viewer', role: 'Read', createdAt: '2024-01-10T09:00:00.000Z' }
+   ],
+ 
+   branches: [
+@@ -74,10 +162,19 @@
+     { id: 'b2', repoId: 'r1', name: 'feature-search', commitId: 'c2' },
+     { id: 'b3', repoId: 'r1', name: 'release', commitId: 'c1' },
+     { id: 'b4', repoId: 'r1', name: 'draft-feature', commitId: 'c1' },
+-    { id: 'b5', repoId: 'r3', name: 'main', commitId: 'c3' },
+-    { id: 'b6', repoId: 'r2', name: 'main', commitId: 'c3' },
++    { id: 'b5', repoId: 'r2', name: 'main', commitId: 'c3' },
++    { id: 'b6', repoId: 'r3', name: 'main', commitId: 'c3' },
+     { id: 'b7', repoId: 'r4', name: 'main', commitId: 'c1' },
+-    { id: 'b8', repoId: 'r5', name: 'main', commitId: 'c3' }
++    { id: 'b8', repoId: 'r5', name: 'main', commitId: 'c3' },
++    { id: 'b9', repoId: 'r6', name: 'main', commitId: 'c4' },
++    { id: 'b10', repoId: 'r6', name: 'feature-search', commitId: 'c5' },
++    { id: 'b11', repoId: 'r7', name: 'main', commitId: 'c6' },
++    { id: 'b12', repoId: 'r7', name: 'release', commitId: 'c6' },
++    { id: 'b13', repoId: 'r8', name: 'main', commitId: 'c7' },
++    { id: 'b14', repoId: 'r9', name: 'main', commitId: 'c8' },
++    { id: 'b15', repoId: 'r10', name: 'main', commitId: 'c9' },
++    { id: 'b16', repoId: 'r11', name: 'main', commitId: 'c10' },
++    { id: 'b17', repoId: 'r10', name: 'protection-feature', commitId: 'c11' }
+   ],
+ 
+   commits: [
+@@ -109,48 +206,133 @@
+       id: 'c3', repoId: 'r3', sha: 'd4e5f6a', message: 'Initial commit', author: 'alice-dev',
+       date: '2024-01-15T09:00:00.000Z', parent: null,
+       files: [{ path: 'README.md', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'c4', repoId: 'r6', sha: 'e5f6a7b', message: 'Initial commit', author: 'alice-dev',
++      date: '2024-01-16T09:00:00.000Z', parent: null,
++      files: [{ path: 'README.md', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'c5', repoId: 'r6', sha: 'f6a7b8c', message: 'Add branch demo file', author: 'alice-dev',
++      date: '2024-01-17T09:00:00.000Z', parent: 'c4',
++      files: [{ path: 'main-only.md', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'c6', repoId: 'r7', sha: 'a7b8c9d', message: 'Initial commit', author: 'alice-dev',
++      date: '2024-01-18T09:00:00.000Z', parent: null,
++      files: [{ path: 'README.md', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'c7', repoId: 'r8', sha: 'b8c9d0e', message: 'Initial commit', author: 'alice-dev',
++      date: '2024-01-19T09:00:00.000Z', parent: null,
++      files: [{ path: 'README.md', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'c8', repoId: 'r9', sha: 'c9d0e1f', message: 'Initial commit', author: 'alice-dev',
++      date: '2024-01-20T09:00:00.000Z', parent: null,
++      files: [{ path: 'README.md', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'c9', repoId: 'r10', sha: 'd0e1f2a', message: 'Initial commit', author: 'alice-dev',
++      date: '2024-01-21T09:00:00.000Z', parent: null,
++      files: [{ path: 'README.md', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'c10', repoId: 'r11', sha: 'e1f2a3b', message: 'Initial commit', author: 'repo-owner',
++      date: '2024-01-22T09:00:00.000Z', parent: null,
++      files: [{ path: 'README.md', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'c11', repoId: 'r10', sha: 'f2a3b4c', message: 'Add protection target file', author: 'protection-admin',
++      date: '2024-01-23T09:00:00.000Z', parent: 'c9',
++      files: [{ path: 'src/protection.ts', additions: 1, deletions: 0 }]
+     }
+   ],
+ 
+   files: [
+     {
+       id: 'f1', repoId: 'r1', branch: 'main', path: 'README.md',
+-      content: '# acme-docs\n\nDocumentation for Acme.\n\nThis document describes the search flow used by the project.\n'
++      content: '# acme-docs\n\nDocumentation for Acme.\n'
+     },
+     {
+       id: 'f2', repoId: 'r1', branch: 'main', path: 'src/search.ts',
+-      content: '// Implements the search flow for acme-docs.\nexport function runSearch(query: string) {\n  return query.trim();\n}\n'
++      content: '// Search implementation for acme-docs.\nexport function runSearch(query: string) {\n  return query.trim();\n}\n'
+     },
+     {
+       id: 'f3', repoId: 'r1', branch: 'main', path: 'src/index.ts',
+       content: "export const name = 'acme-docs';\n"
+     },
+     {
+-      id: 'f4', repoId: 'r1', branch: 'feature-search', path: 'README.md',
+-      content: '# acme-docs\n\nDocumentation for Acme on the feature-search branch.\n\nThis document describes the search flow used by the project.\n'
+-    },
+-    {
+-      id: 'f5', repoId: 'r1', branch: 'feature-search', path: 'src/search.ts',
+-      content: '// Implements the search flow for acme-docs (feature-search).\nexport function runSearch(query: string) {\n  return query.trim().toLowerCase();\n}\n'
+-    },
+-    {
+-      id: 'f6', repoId: 'r1', branch: 'feature-search', path: 'src/index.ts',
++      id: 'f4', repoId: 'r1', branch: 'main', path: 'src/README.md',
++      content: 'Document search flow\n'
++    },
++    {
++      id: 'f5', repoId: 'r1', branch: 'feature-search', path: 'README.md',
++      content: '# acme-docs\n\nDocumentation for Acme on the feature-search branch.\n'
++    },
++    {
++      id: 'f6', repoId: 'r1', branch: 'feature-search', path: 'src/search.ts',
++      content: '// Search implementation for acme-docs (feature-search).\nexport function runSearch(query: string) {\n  return query.trim().toLowerCase();\n}\n'
++    },
++    {
++      id: 'f7', repoId: 'r1', branch: 'feature-search', path: 'src/index.ts',
+       content: "export const name = 'acme-docs';\n"
+     },
+     {
+-      id: 'f7', repoId: 'r1', branch: 'feature-search', path: 'main-only.md',
++      id: 'f8', repoId: 'r1', branch: 'feature-search', path: 'main-only.md',
+       content: '# main-only\n\nThis file exists only on the feature-search branch.\n'
+     },
+     {
+-      id: 'f8', repoId: 'r1', branch: 'feature-search', path: 'docs/onboarding.md',
+-      content: '# Onboarding\n\nWelcome to the updated onboarding search flow.\n'
+-    },
+-    {
+-      id: 'f9', repoId: 'r3', branch: 'main', path: 'README.md',
++      id: 'f9', repoId: 'r1', branch: 'feature-search', path: 'docs/onboarding.md',
++      content: '# Onboarding\n\nWelcome to the updated onboarding flow.\n'
++    },
++    {
++      id: 'f11', repoId: 'r2', branch: 'main', path: 'README.md',
++      content: '# acme-internal\n\nInternal Acme notes.\n'
++    },
++    {
++      id: 'f12', repoId: 'r3', branch: 'main', path: 'README.md',
+       content: '# secret-research\n\nPrivate research notes.\n'
+     },
+     {
+-      id: 'f10', repoId: 'r0', branch: 'main', path: 'README.md', content: '# README\n'
++      id: 'f13', repoId: 'r4', branch: 'main', path: 'README.md',
++      content: '# acme-docs-fork\n\nA fork of acme-docs.\n'
++    },
++    {
++      id: 'f14', repoId: 'r5', branch: 'main', path: 'README.md',
++      content: '# bob-notes\n\nPersonal notes.\n'
++    },
++    {
++      id: 'f15', repoId: 'r6', branch: 'main', path: 'README.md',
++      content: '# branch-switch-demo\n\nBrowse branches here.\n'
++    },
++    {
++      id: 'f16', repoId: 'r6', branch: 'feature-search', path: 'README.md',
++      content: '# branch-switch-demo\n\nfeature branch readme.\n'
++    },
++    {
++      id: 'f17', repoId: 'r6', branch: 'feature-search', path: 'main-only.md',
++      content: '# main-only\n\nThis file exists only on the feature-search branch.\n'
++    },
++    {
++      id: 'f18', repoId: 'r7', branch: 'main', path: 'README.md',
++      content: '# default-branch-demo\n\nDefault branch settings demo.\n'
++    },
++    {
++      id: 'f19', repoId: 'r8', branch: 'main', path: 'README.md',
++      content: '# file-management-demo\n\nCreate files through the web interface.\n'
++    },
++    {
++      id: 'f20', repoId: 'r9', branch: 'main', path: 'README.md',
++      content: '# visibility-demo\n\nVisibility change demo.\n'
++    },
++    {
++      id: 'f21', repoId: 'r10', branch: 'main', path: 'README.md',
++      content: '# branch-protection-demo\n\nBranch protection demo.\n'
++    },
++    {
++      id: 'f22', repoId: 'r11', branch: 'main', path: 'README.md',
++      content: '# acme-docs\n\nPersonal scratch copy.\n'
+     }
+   ],
+ 
+@@ -182,6 +364,54 @@
+       body: 'An issue used for edit validation.', state: 'Open', author: 'alice-dev',
+       labels: [], assignees: [], milestone: '',
+       createdAt: '2024-01-26T09:00:00.000Z'
++    },
++    {
++      id: 'i4', repoId: 'r1', number: 4, title: 'Editable onboarding issue',
++      body: 'An issue used for successful editing.', state: 'Open', author: 'alice-dev',
++      labels: [], assignees: [], milestone: '',
++      createdAt: '2024-01-25T09:00:00.000Z'
++    },
++    {
++      id: 'i5', repoId: 'r1', number: 5, title: 'Commentable onboarding issue',
++      body: 'An issue used for comment creation.', state: 'Open', author: 'alice-dev',
++      labels: [], assignees: [], milestone: '',
++      createdAt: '2024-01-24T09:00:00.000Z'
++    },
++    {
++      id: 'i6', repoId: 'r1', number: 6, title: 'Comment validation issue',
++      body: 'An issue used for comment validation.', state: 'Open', author: 'alice-dev',
++      labels: [], assignees: [], milestone: '',
++      createdAt: '2024-01-23T09:00:00.000Z'
++    },
++    {
++      id: 'i7', repoId: 'r1', number: 7, title: 'Assignable onboarding issue',
++      body: 'An issue used for assignee management.', state: 'Open', author: 'alice-dev',
++      labels: [], assignees: [], milestone: '',
++      createdAt: '2024-01-22T09:00:00.000Z'
++    },
++    {
++      id: 'i8', repoId: 'r1', number: 8, title: 'Labelable onboarding issue',
++      body: 'An issue used for label management.', state: 'Open', author: 'alice-dev',
++      labels: [], assignees: [], milestone: '',
++      createdAt: '2024-01-21T09:00:00.000Z'
++    },
++    {
++      id: 'i9', repoId: 'r1', number: 9, title: 'Milestone onboarding issue',
++      body: 'An issue used for milestone management.', state: 'Open', author: 'alice-dev',
++      labels: [], assignees: [], milestone: '',
++      createdAt: '2024-01-20T09:00:00.000Z'
++    },
++    {
++      id: 'i10', repoId: 'r1', number: 10, title: 'Closable onboarding issue',
++      body: 'An issue used for close and reopen.', state: 'Open', author: 'alice-dev',
++      labels: [], assignees: [], milestone: '',
++      createdAt: '2024-01-19T09:00:00.000Z'
++    },
++    {
++      id: 'i11', repoId: 'r1', number: 11, title: 'Protected onboarding issue',
++      body: 'An issue readable by a Read-only viewer.', state: 'Open', author: 'alice-dev',
++      labels: [], assignees: [], milestone: '',
++      createdAt: '2024-01-18T09:00:00.000Z'
+     }
+   ],
+ 
+@@ -218,11 +448,88 @@
+       changedFiles: []
+     },
+     {
+-      id: 'p3', repoId: 'r1', number: 3, title: 'Draft onboarding update', author: 'alice-dev',
++      id: 'p3', repoId: 'r1', number: 3, title: 'Draft onboarding update', author: 'draft-author',
+       base: 'main', compare: 'draft-feature', state: 'Draft',
+       body: 'Work in progress.',
+       createdAt: '2024-02-02T09:00:00.000Z',
+       changedFiles: []
++    },
++    {
++      id: 'p4', repoId: 'r1', number: 4, title: 'Overview onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'Overview and commits of an onboarding change.',
++      createdAt: '2024-02-04T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 1, deletions: 1 }]
++    },
++    {
++      id: 'p5', repoId: 'r1', number: 5, title: 'Public onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'A public pull request with changed files.',
++      createdAt: '2024-02-05T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 2, deletions: 1 }]
++    },
++    {
++      id: 'p6', repoId: 'r1', number: 6, title: 'Reviewable onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'A reviewable pull request.',
++      createdAt: '2024-02-06T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'p7', repoId: 'r1', number: 7, title: 'Pending review onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'A pull request without a pending review.',
++      createdAt: '2024-02-07T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'p8', repoId: 'r1', number: 8, title: 'Change request onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'A pull request for a change request review.',
++      createdAt: '2024-02-08T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 3, deletions: 1 }]
++    },
++    {
++      id: 'p9', repoId: 'r1', number: 9, title: 'Reviewer request onboarding PR', author: 'pr-author',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'A pull request without a requested reviewer.',
++      createdAt: '2024-02-09T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'p10', repoId: 'r1', number: 10, title: 'Mergeable onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'release', state: 'Open',
++      body: 'A pull request that satisfies branch protection.',
++      createdAt: '2024-02-10T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'p11', repoId: 'r1', number: 11, title: 'Blocked onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'A pull request missing the required approval.',
++      createdAt: '2024-02-11T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'p12', repoId: 'r1', number: 12, title: 'Closable onboarding PR', author: 'pr-author',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'A pull request used for close and reopen.',
++      createdAt: '2024-02-12T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'p13', repoId: 'r1', number: 13, title: 'Protected onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'feature-search', state: 'Open',
++      body: 'A pull request readable by a Read-only viewer.',
++      createdAt: '2024-02-13T09:00:00.000Z',
++      changedFiles: [{ path: 'src/search.ts', additions: 1, deletions: 0 }]
++    },
++    {
++      id: 'p14', repoId: 'r10', number: 1, title: 'Protection status onboarding PR', author: 'alice-dev',
++      base: 'main', compare: 'protection-feature', state: 'Open',
++      body: 'A pull request whose test check is pending.',
++      createdAt: '2024-02-14T09:00:00.000Z',
++      changedFiles: [{ path: 'src/protection.ts', additions: 1, deletions: 0 }]
+     }
+   ],
+ 
+@@ -230,6 +537,10 @@
+     {
+       id: 'rv1', prId: 'p1', reviewer: 'bob-reviewer', state: 'Approved', body: 'Looks good.',
+       commitId: 'c2', createdAt: '2024-02-03T09:00:00.000Z'
++    },
++    {
++      id: 'rv2', prId: 'p10', reviewer: 'bob-reviewer', state: 'Approved', body: 'Approved for merge.',
++      commitId: 'c1', createdAt: '2024-02-10T10:00:00.000Z'
+     }
+   ],
+ 
+@@ -240,7 +551,10 @@
+   checks: [
+     { id: 'ch1', prId: 'p1', name: 'test', status: 'success', setter: 'bob-reviewer', time: '2024-02-03T10:00:00.000Z' },
+     { id: 'ch2', prId: 'p2', name: 'test', status: 'pending', setter: '', time: '' },
+-    { id: 'ch3', prId: 'p3', name: 'test', status: 'pending', setter: '', time: '' }
++    { id: 'ch3', prId: 'p3', name: 'test', status: 'pending', setter: '', time: '' },
++    { id: 'ch4', prId: 'p10', name: 'test', status: 'success', setter: 'protection-admin', time: '2024-02-10T10:10:00.000Z' },
++    { id: 'ch5', prId: 'p11', name: 'test', status: 'pending', setter: '', time: '' },
++    { id: 'ch6', prId: 'p14', name: 'test', status: 'pending', setter: '', time: '' }
+   ],
+ 
+   protectionRules: [

@@ -1,0 +1,7 @@
+{
+  "task": "github",
+  "model": "glm-5.3-flash",
+  "package_sha256": "2a88e7983e364f41ae8d3e6a7523c42404c3e063912afb65608bdd8595c4fb65",
+  "exit": -2,
+  "seconds": 441.5
+}

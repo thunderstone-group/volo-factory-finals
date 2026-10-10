@@ -1,0 +1,20 @@
+{
+  "captured_response_from": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/recover-github-flash/trace.json",
+  "new_model_calls": 0,
+  "recovered": 7,
+  "records": [
+    {
+      "file": "t06-REQ-6.spec.cjs",
+      "recovered_ids": [
+        "REQ-6-1#2",
+        "REQ-6-3-3",
+        "REQ-6-3-3#2",
+        "REQ-6-3-4",
+        "REQ-6-3-4#2",
+        "REQ-6-5",
+        "REQ-6-6#2"
+      ],
+      "error": null
+    }
+  ]
+}

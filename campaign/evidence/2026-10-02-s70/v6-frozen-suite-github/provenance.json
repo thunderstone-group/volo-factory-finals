@@ -1,0 +1,15 @@
+{
+  "source": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-tests-39jgnka_",
+  "sha256_by_file": {
+    "t03-REQ-3.spec.cjs": "b50e7923f561980dfb6391d7f749d29fdb367a71820c46d14be1775424a71940",
+    "t02-REQ-2.spec.cjs": "87bcab63e1cb86924bf99663d39a55ad0e347e5143f4cc05b4771bc1bdd508e6",
+    "t00-initial-entries.spec.cjs": "e28034bb42026b67a98de98a454671a649110d8f05da24d85e6bd041acb2c349",
+    "t05-REQ-5.spec.cjs": "6cc2d298235b11cb6079535e5c727f1a78757d92eded0ffa919e0aaef0483f4d",
+    "t04-REQ-4.spec.cjs": "e2d10bbf62a6c67f474dea15ffc0c806d99c3b1127b0c3e0ee22dd69a44c5cd0",
+    "suite.json": "a532d6ab0679a2d0464c2758140ff41d016afedbb1a33913a615a2f1a629f83a",
+    "t06-REQ-6.spec.cjs": "e95f0b9653b6af886ab744539651b2ef2ef3b1c964e3db21753a2299eb5420fe",
+    "t01-REQ-1.spec.cjs": "a8fd020bd0c225e508d7073119775507b85d36c2124fe0e77f86a180b19ef8e8"
+  },
+  "origin": "model-written from public requirements without application access",
+  "official_tests": false
+}

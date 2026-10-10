@@ -1,0 +1,179 @@
+{
+ "tests": [
+  {
+   "id": "REQ-4-1-1",
+   "n": 1,
+   "title": "Enter arithmetic formula =(A1+B1)*2-4/2 in C1; grid displays 8, formula bar shows original formula, and state persists after refresh",
+   "checks": [
+    "C1 grid value becomes 8",
+    "formula bar displays '=(A1+B1)*2-4/2'",
+    "after refresh/reopen C1 still shows 8 and the formula bar still shows the original formula"
+   ]
+  },
+  {
+   "id": "REQ-4-1-1",
+   "n": 2,
+   "title": "Enter =SUM(A1:B1) in C2; grid shows 5, formula bar shows original SUM expression, persists after refresh",
+   "checks": [
+    "C2 grid value becomes 5",
+    "formula bar displays '=SUM(A1:B1)'",
+    "after refresh/reopen C2 still shows 5 and the formula bar is unchanged"
+   ]
+  },
+  {
+   "id": "REQ-4-1-1",
+   "n": 3,
+   "title": "Enter lowercase =sum(A1:B1) in C3; case-insensitive function returns 5 and submitted expression is preserved in formula bar",
+   "checks": [
+    "C3 grid value becomes 5",
+    "formula bar displays '=sum(A1:B1)' with the original casing",
+    "function name case does not affect the calculation",
+    "after refresh the value and formula persist"
+   ]
+  },
+  {
+   "id": "REQ-4-1-1",
+   "n": 4,
+   "title": "Enter =COUNT(A1:A4) over 2, blank, text, 4; COUNT returns 2 numeric cells only and persists after refresh",
+   "checks": [
+    "range contains A1=2, A2 blank, A3='text', A4=4",
+    "COUNT formula returns 2",
+    "formula bar displays '=COUNT(A1:A4)'",
+    "after refresh COUNT result remains 2"
+   ]
+  },
+  {
+   "id": "REQ-4-1-1",
+   "n": 5,
+   "title": "Enter =AVERAGE/MIN/MAX/SUM over 2, blank, text, 4; all aggregate functions use numeric cells only, ignore blanks/text, and persist after refresh",
+   "checks": [
+    "AVERAGE returns 3, MIN returns 2, MAX returns 4, SUM returns 6",
+    "blank and text cells are ignored; blanks are not treated as zero",
+    "formula bars display the original formulas",
+    "after refresh all aggregate results remain unchanged"
+   ]
+  },
+  {
+   "id": "REQ-4-1-2",
+   "n": 1,
+   "title": "Copy relative/absolute formula =A1+$B$1 from C1 to D2; target formula bar shows =B2+$B$1, target result recalculates, source unchanged, persists after refresh",
+   "checks": [
+    "C1 initially displays 5 and formula bar shows '=A1+$B$1'",
+    "after copy to D2, D2 formula bar displays '=B2+$B$1'",
+    "D2 grid value is computed from B2 and $B$1, e.g. 13 when B2=10",
+    "source C1 formula and result remain unchanged",
+    "D2 and C1 states persist after refresh"
+   ]
+  },
+  {
+   "id": "REQ-4-1-2",
+   "n": 2,
+   "title": "Copy =A1 from D1 to C1; relative reference moves outside sheet bounds, target formula bar and grid show #REF!, source D1 unchanged, persists after refresh",
+   "checks": [
+    "D1 formula '=A1' displays 2",
+    "after copy to C1, C1 formula bar displays '=#REF!'",
+    "C1 grid displays #REF!",
+    "source D1 still shows formula '=A1' and result 2",
+    "after refresh #REF! persists"
+   ]
+  },
+  {
+   "id": "REQ-4-2-1",
+   "n": 1,
+   "title": "Edit source A1 from 2 to 10; direct C1 =A1+B1 and indirect D1 =C1*2 recalculate to 13 and 26, formula bars show original formulas, persist after refresh",
+   "checks": [
+    "C1 grid updates from 5 to 13",
+    "D1 grid updates from 10 to 26 in dependency order",
+    "formula bars for C1 and D1 still display '=A1+B1' and '=C1*2'",
+    "after refresh C1=13 and D1=26 remain consistent",
+    "formula in another worksheet not referencing these source cells remains unchanged"
+   ]
+  },
+  {
+   "id": "REQ-4-2-1",
+   "n": 2,
+   "title": "Bulk paste 10 and 20 into A1:B1; dependent C1 =A1+B1 and D1 =C1*2 recalculate to 30 and 60, formula bars original, persist after refresh",
+   "checks": [
+    "paste rectangle A1:B1 contains 10 and 20",
+    "C1 grid becomes 30",
+    "D1 grid becomes 60",
+    "formula bars still display '=A1+B1' and '=C1*2'",
+    "after refresh results persist; no partial paste state"
+   ]
+  },
+  {
+   "id": "REQ-4-2-1",
+   "n": 3,
+   "title": "Insert a row above row 1; formula =A1+B1 shifts to row 2 and adjusts to =A2+B2, result remains 5, unrelated worksheet formula unchanged, persists after refresh",
+   "checks": [
+    "row inserted above row 1 moves old row content to row 2",
+    "formula cell formula bar displays adjusted formula '=A2+B2'",
+    "grid result remains 5 using shifted A2=2 and B2=3",
+    "formula in another worksheet not referencing shifted cells remains unchanged",
+    "row structure and adjusted formula persist after refresh"
+   ]
+  },
+  {
+   "id": "REQ-4-2-2",
+   "n": 1,
+   "title": "Enter =1/0; grid shows #DIV/0!, formula bar shows original =1/0, error persists after refresh and other cells still calculate",
+   "checks": [
+    "target grid displays #DIV/0!",
+    "formula bar displays '=1/0'",
+    "after refresh #DIV/0! and formula persist",
+    "unrelated cell formula such as =1+1 still displays 2"
+   ]
+  },
+  {
+   "id": "REQ-4-2-2",
+   "n": 2,
+   "title": "Cause an invalid reference such as deleting a referenced column; grid shows #REF!, formula bar shows adjusted original formula, error persists after refresh",
+   "checks": [
+    "grid displays #REF!",
+    "formula bar displays the stored formula containing #REF!, e.g. =A1+#REF!",
+    "after refresh #REF! persists",
+    "other unaffected formulas still calculate"
+   ]
+  },
+  {
+   "id": "REQ-4-2-2",
+   "n": 3,
+   "title": "Enter unsupported function =UNKNOWN(A1); grid shows #NAME!, then edit to =A1+B1; grid shows 5, formula bar new formula, dependents update, error gone after refresh",
+   "checks": [
+    "initial grid displays #NAME!",
+    "formula bar displays '=UNKNOWN(A1)'",
+    "after editing to '=A1+B1', grid shows 5 and formula bar shows '=A1+B1'",
+    "related dependent results update",
+    "after refresh #NAME! no longer appears"
+   ]
+  },
+  {
+   "id": "REQ-4-2-2",
+   "n": 4,
+   "title": "Enter malformed expression =1+; grid shows #ERROR!, formula bar shows original =1+, error persists after refresh",
+   "checks": [
+    "grid displays #ERROR!",
+    "formula bar displays '=1+'",
+    "after refresh #ERROR! and formula persist",
+    "other cells are not blocked from viewing or calculating"
+   ]
+  },
+  {
+   "id": "REQ-4-2-2",
+   "n": 5,
+   "title": "Enter direct circular reference =A1+1 in A1; grid shows #REF!, formula bar original, persists after refresh and other cells unaffected",
+   "checks": [
+    "A1 grid displays #REF!",
+    "formula bar displays '=A1+1'",
+    "after refresh #REF! persists",
+    "an independent cell still calculates normally"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 44478,
+  "completion_tokens": 20034
+ },
+ "cost_cny": 0.1853,
+ "finish": "stop"
+}

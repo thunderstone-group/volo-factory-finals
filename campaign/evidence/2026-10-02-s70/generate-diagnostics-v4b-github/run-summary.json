@@ -1,0 +1,727 @@
+{
+  "usage": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 7,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 7
+    },
+    "completed_calls": 7,
+    "completion_tokens": 299602,
+    "draft_call_limit": 4,
+    "estimated_cost_cny": 2.272263,
+    "estimated_repair_cost_cny": 1.009932,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 299602,
+    "known_prompt_tokens": 833112,
+    "prompt_tokens": 833112,
+    "refused_calls": 0,
+    "repair_call_limit": 24,
+    "repair_cny_limit": 10.0,
+    "side_calls": 8,
+    "unknown_usage_calls": []
+  },
+  "smoke": {
+    "executed": true,
+    "problems": [
+      "8 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"activity timeline\", \"merge code changes from the compare branch into the base branch\", \"at least 1 valid Approve from someone other than the PR author\", \"required check `test` is success\", \"test: success\", \"<addition count> additions, <deletion count> deletions\", \"reviewer request\", \"PR-reviewer request\""
+    ],
+    "vocabulary_missing": 8,
+    "scenarios": {
+      "counts": {
+        "pass": 89,
+        "error": 12,
+        "fail": 3
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 89
+      },
+      "seconds": 26.9,
+      "source_contracts": {
+        "fail": 3,
+        "error": 1
+      },
+      "failing": [
+        {
+          "id": "REQ-6-1",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-1#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-1#3",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-2-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-5",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-5#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-6#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-2-2-4#contract-1",
+          "observation": "removing the last Owner must be rejected and the Owner membership must remain"
+        },
+        {
+          "id": "REQ-6-1#contract-1",
+          "observation": "carol-writer's superseded Request changes must not keep blocking the merge: her latest decision on the current compare commit is Approve, a valid non-author approval and test: success are still present, so no valid Request changes remains\n\nfalse !== true\n"
+        },
+        {
+          "id": "REQ-5-3-1#contract-1",
+          "observation": "dan-viewer holds no Triage permission on r-acme-docs, so he must not be offered as an assignable member in the Assignees results\n\ntrue !== false\n"
+        },
+        {
+          "id": "REQ-5-3-2#contract-1",
+          "observation": "control: the reader can open the public issue detail page and read its saved description"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "repair": {
+      "accepted": true,
+      "reason": "3 more scenario(s) pass",
+      "files": [
+        "frontend/public/seed.js",
+        "frontend/public/app.js"
+      ]
+    },
+    "browser_before": [
+      {
+        "executed": true,
+        "diagnostic_only": true,
+        "errors": [],
+        "page_errors": [],
+        "actions": [
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Home",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Your organizations",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Agree to the terms",
+            "action": ""
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Acme Hub",
+            "action": "arc:nav"
+          }
+        ],
+        "screens": [
+          "#/",
+          "#/login",
+          "#/new",
+          "#/register",
+          "#/forgot",
+          "#/o/Acme%20Demo",
+          "#/r/Acme%20Demo/acme-docs",
+          "#/orgs",
+          "#/o/Acme%20Demo/repositories",
+          "#/o/Acme%20Demo/people",
+          "#/o/Acme%20Demo/teams",
+          "#/r/Acme%20Demo/acme-docs/code/main"
+        ],
+        "browser": "143.0.7499.4",
+        "playwright": "1.57.0"
+      }
+    ],
+    "tests": {
+      "seconds": 789.4,
+      "calls": 6,
+      "cost_cny": 0.814199,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 14
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 16
+        },
+        {
+          "file": "t06-REQ-6.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 25
+        }
+      ],
+      "mended": {
+        "broken": 10,
+        "files": [
+          "t03-REQ-3.spec.cjs",
+          "t04-REQ-4.spec.cjs"
+        ],
+        "calls": 2,
+        "cost_cny": 0.06478,
+        "counts_before": {
+          "pass": 49,
+          "fail": 26,
+          "error": 27
+        },
+        "broken_after": 0,
+        "counts_after": {
+          "pass": 56,
+          "fail": 29,
+          "error": 17
+        },
+        "seconds": 256.6
+      },
+      "source_contracts": 4,
+      "used": true
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-2-4#contract-1",
+          "REQ-6-1#contract-1",
+          "REQ-5-3-1#contract-1"
+        ],
+        "passing_before": 89,
+        "accepted": true,
+        "gained": [
+          "REQ-2-2-4#contract-1",
+          "REQ-5-3-1#contract-1",
+          "REQ-6-1#contract-1"
+        ],
+        "reason": "3 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 92,
+            "error": 12
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 89
+          },
+          "seconds": 25.4,
+          "source_contracts": {
+            "pass": 3,
+            "error": 1
+          },
+          "failing": [
+            {
+              "id": "REQ-6-1",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-1#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-1#3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-2-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-6#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-5-3-2#contract-1",
+              "observation": "control: the reader can open the public issue detail page and read its saved description"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Home",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Your organizations",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Acme Hub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/login",
+              "#/new",
+              "#/register",
+              "#/forgot",
+              "#/o/Acme%20Demo",
+              "#/r/Acme%20Demo/acme-docs",
+              "#/orgs",
+              "#/o/Acme%20Demo/repositories",
+              "#/o/Acme%20Demo/people",
+              "#/o/Acme%20Demo/teams",
+              "#/r/Acme%20Demo/acme-docs/code/main"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/seed.js",
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 138.3,
+        "cost_cny": 0.150866
+      }
+    ],
+    "problems_after": [],
+    "scenarios_after": {
+      "counts": {
+        "pass": 92,
+        "error": 12
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 89
+      },
+      "seconds": 25.4,
+      "source_contracts": {
+        "pass": 3,
+        "error": 1
+      },
+      "failing": [
+        {
+          "id": "REQ-6-1",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-1#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-1#3",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-2-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-5",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-5#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-6#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-5-3-2#contract-1",
+          "observation": "control: the reader can open the public issue detail page and read its saved description"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "before_source_review": {
+      "stopped": null,
+      "scenarios_after": {
+        "counts": {
+          "pass": 89,
+          "error": 11
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 89
+        },
+        "seconds": 25.6,
+        "source_contracts": {},
+        "failing": [
+          {
+            "id": "REQ-6-1",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-1#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-1#3",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-2-4#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-3-3",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-3-3#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-3-4",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-3-4#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-5",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-5#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          },
+          {
+            "id": "REQ-6-6#2",
+            "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "tests": {
+        "seconds": 789.4,
+        "calls": 6,
+        "cost_cny": 0.814199,
+        "scenarios": 100,
+        "tests": 100,
+        "audit_checks": 0,
+        "audit_errors": 0,
+        "files": [
+          {
+            "file": "t01-REQ-1.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t02-REQ-2.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t03-REQ-3.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 14
+          },
+          {
+            "file": "t04-REQ-4.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t05-REQ-5.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 16
+          },
+          {
+            "file": "t06-REQ-6.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 25
+          }
+        ],
+        "used": true
+      },
+      "rounds": 3
+    },
+    "source_review": {
+      "proposed": 4,
+      "probes": 4,
+      "results": [
+        {
+          "id": "REQ-2-2-4#contract-1",
+          "status": "fail",
+          "calls": {
+            "removeMember": 1
+          },
+          "assertions": 1,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "removing the last Owner must be rejected and the Owner membership must remain",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: removing the last Owner must be rejected and the Owner membership must remain\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:4:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-github/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+        },
+        {
+          "id": "REQ-6-1#contract-1",
+          "status": "fail",
+          "calls": {
+            "canMergeNow": 1
+          },
+          "assertions": 2,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "carol-writer's superseded Request changes must not keep blocking the merge: her latest decision on the current compare commit is Approve, a valid non-author approval and test: success are still present, so no valid Request changes remains\n\nfalse !== true\n",
+          "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: carol-writer's superseded Request changes must not keep blocking the merge: her latest decision on the current compare commit is Approve, a valid non-author approval and test: success are still present, so no valid Request changes remains\n\nfalse !== true\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:7:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-github/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+        },
+        {
+          "id": "REQ-5-3-1#contract-1",
+          "status": "fail",
+          "calls": {
+            "canTriageForUser": 1,
+            "isOrgOwner": 1,
+            "cur": 1,
+            "membershipOf": 1
+          },
+          "assertions": 1,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "dan-viewer holds no Triage permission on r-acme-docs, so he must not be offered as an assignable member in the Assignees results\n\ntrue !== false\n",
+          "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: dan-viewer holds no Triage permission on r-acme-docs, so he must not be offered as an assignable member in the Assignees results\n\ntrue !== false\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-github/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+        },
+        {
+          "id": "REQ-5-3-2#contract-1",
+          "status": "error",
+          "calls": {
+            "screen": 1,
+            "esc": 1
+          },
+          "assertions": 9,
+          "phase": "precondition",
+          "error_name": "AssertionError",
+          "message": "control: the reader can open the public issue detail page and read its saved description",
+          "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: control: the reader can open the public issue detail page and read its saved description\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-github/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:12:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-diagnostics-v4b-github/agent/contract_runner.cjs:75:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+        }
+      ],
+      "skipped": null,
+      "seconds": 444.0,
+      "calls": 3,
+      "cost_cny": 0.433135
+    }
+  }
+}

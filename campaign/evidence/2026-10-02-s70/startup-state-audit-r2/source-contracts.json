@@ -1,0 +1,333 @@
+{
+ "proposed": [
+  {
+   "id": "REQ-6-3-4#contract-1",
+   "requirement": "REQ-6-3-4",
+   "explanation": "REQ-6-3-4 says a Request changes decision blocks merging only until that reviewer re-decides for the current compare commit, or the compare branch gains a new commit that makes the old decision stale; REQ-6-5 consequently allows merging an unprotected PR that has no *valid* Request changes. The real merge gate `mergeBlocked` delegates to `hasRequestChanges`, which keeps the last decision per reviewer without ever comparing `commitId` to the current compare head, so a Request changes recorded on the previous compare commit keeps blocking forever. Fixture: seeded Open PR p1 (repo r1, base main, compare feature-search) whose compare branch head is commit c2, reviewed by bob-reviewer (seeded Write grant g2 on r1, non-author); the fixture uses an unprotected target so the only possible blocker is the invalid stale decision, and a control with the same decision pinned to c2 proves the predicate really is live.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "mergeBlocked",
+     "kind": "function",
+     "alias": "mergeBlocked"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "mergeBlocked",
+   "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'repo', params: [] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };\nARC.state.protectionRules = [];\nARC.state.reviews = [{ id: 'rv-stale', prId: 'p1', reviewer: 'bob-reviewer', state: 'Changes requested', body: 'needs work', commitId: 'c1', createdAt: '2024-02-02T11:00:00.000Z' }];",
+   "precondition": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nassert.ok(repo);\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p1'; })[0];\nassert.ok(pr);\nassert.strictEqual(pr.state, 'Open');\nassert.strictEqual(pr.base, 'main');\nassert.strictEqual(pr.compare, 'feature-search');\nvar head = ARC.state.branches.filter(function (b) { return b.repoId === 'r1' && b.name === 'feature-search'; })[0];\nassert.strictEqual(head.commitId, 'c2');\nassert.strictEqual(ARC.state.protectionRules.filter(function (r) { return r.repoId === 'r1' && r.branch === 'main'; }).length, 0);\nassert.ok(ARC.state.grants.some(function (g) { return g.repoId === 'r1' && g.subjectId === 'u2' && g.role === 'Write'; }));\nassert.strictEqual(ARC.state.reviews.length, 1);\nassert.strictEqual(ARC.state.reviews[0].state, 'Changes requested');\nassert.strictEqual(ARC.state.reviews[0].commitId, 'c1');",
+   "check": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p1'; })[0];\nvar head = ARC.state.branches.filter(function (b) { return b.repoId === 'r1' && b.name === 'feature-search'; })[0].commitId;\nARC.state.reviews = [{ id: 'rv-now', prId: 'p1', reviewer: 'bob-reviewer', state: 'Changes requested', body: 'needs work', commitId: head, createdAt: '2024-02-03T11:00:00.000Z' }];\nassert.notStrictEqual(mergeBlocked(pr, repo), null, 'control: a Request changes on the current compare commit must block merging');\nARC.state.reviews = [{ id: 'rv-stale', prId: 'p1', reviewer: 'bob-reviewer', state: 'Changes requested', body: 'needs work', commitId: 'c1', createdAt: '2024-02-02T11:00:00.000Z' }];\nassert.strictEqual(mergeBlocked(pr, repo), null, 'a stale Request changes from an earlier compare commit must not block merging');",
+   "requirement_text": "From the Files changed link, the reviewer activates the Review changes button to open one review form with an optional Summary field, radio controls named Comment, Approve, and Request changes, and a Submit review button. Selecting Approve and submitting without a summary is valid and displays Approved. Selecting Request changes with a summary displays Changes requested and that exact summary; the decision remains visible after reload. Seed data supplies a non-author Write reviewer and separate Open PRs for approval and request-changes submission, with no initial effective decision by that reviewer. A user who is not the PR author and has Write, Maintain, or Admin may submit Comment, Approve, or Request changes on an Open PR; the author and Draft PRs cannot submit reviews. The system stores the review decision, reviewer, current compare commit, optional explanation, and time; a new decision by the same reviewer replaces that reviewer's effective decision for the current commit while preserving the old record. Approve is valid only when the reviewer is not the author and the compare commit is still the same; Request changes blocks merging until that reviewer submits a new Comment or Approve for the current compare commit, or the compare branch receives a new commit that makes the old decision stale. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-1 (View Pull Request Overview and Commits) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-6-2-2#contract-1",
+   "requirement": "REQ-6-2-2",
+   "explanation": "REQ-6-2-2 requires the creation entry to be disabled when base and compare are the same branch *or* when there is no difference (no comparable commits), and REQ-6-2-3 forbids creating a PR in that case. The real comparison observer `compareScreen` only disables creation when the two branch *names* are equal, so two distinct seeded branches that point at the same commit (r1 'release' and r1 'draft-feature', both at c1) render an enabled 'Create pull request' entry, and the real creation handler `createPull` then persists an Open PR with an empty changed-file set for that pair. Fixture: seeded contributor bob-reviewer (Write grant g2 on public repo r1), pair release→draft-feature has no existing Open/Draft PR, and the control pair main→feature-search does have real differences.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "compareScreen",
+     "kind": "function",
+     "alias": "compareScreen"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "changedBetween",
+     "kind": "function",
+     "alias": "changedBetween"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "createPull",
+     "kind": "function",
+     "alias": "createPull"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "compareScreen",
+   "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'repo', params: [] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };\nARC.state.session = 'u2';\nARC.state.ui = ARC.state.ui || {};\nARC.state.ui['compare:r1'] = { base: 'release', compare: 'draft-feature' };",
+   "precondition": "assert.strictEqual(ARC.state.session, 'u2');\nassert.ok(ARC.state.grants.some(function (g) { return g.repoId === 'r1' && g.subjectId === 'u2' && g.role === 'Write'; }));\nvar b = function (n) { return (ARC.state.branches.filter(function (x) { return x.repoId === 'r1' && x.name === n; })[0] || {}).commitId; };\nassert.strictEqual(b('release'), 'c1');\nassert.strictEqual(b('draft-feature'), 'c1');\nassert.strictEqual(ARC.state.ui['compare:r1'].base, 'release');\nassert.strictEqual(ARC.state.ui['compare:r1'].compare, 'draft-feature');\nassert.strictEqual(ARC.state.pulls.filter(function (p) { return p.base === 'release' && p.compare === 'draft-feature'; }).length, 0);",
+   "check": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nassert.ok(changedBetween(repo, 'main', 'feature-search').length > 0, 'control: main vs feature-search has real differences');\nassert.strictEqual(changedBetween(repo, 'release', 'draft-feature').length, 0, 'fixture: release vs draft-feature have no comparable difference');\nvar html = compareScreen(repo);\nassert.ok(!/<button[^>]*data-action=\"open-create-pr\"/.test(html), 'a comparison with no difference must not offer an enabled Create pull request entry');\nvar before = ARC.state.pulls.filter(function (p) { return p.base === 'release' && p.compare === 'draft-feature'; }).length;\ncreatePull({ el: { dataset: { id: 'r1', base: 'release', compare: 'draft-feature' } }, form: { title: 'pw-no-diff-pr', body: '' } }, 'Open');\nassert.strictEqual(ARC.state.pulls.filter(function (p) { return p.base === 'release' && p.compare === 'draft-feature'; }).length, before, 'no PR record may be created from a comparison with no difference');",
+   "requirement_text": "The PR comparison page is a read-only page shown before creation: base is the target branch that receives the merge result, and compare is the source branch that provides the changes to merge. A user with Write, Maintain, Admin, or organization Owner status clicks “New pull request” on the “Pull requests” page and selects the two branches; the system calculates comparable commits, changed files, and a diff summary based on the commits they currently point to. If the branches are the same or there is no difference, the creation entry is disabled; comparison does not save a PR, commit, or branch change. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-3-1 (List and Switch Repository Branches) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes. Only signed-in users with Write, Maintain, Admin, or organization Owner status may compare branches on the repository pull-request page; Read and Triage may view existing PRs but cannot enter the creation-comparison flow. The system validates the role and rejects unauthorized requests. New pull request is a link. The comparison page has native select controls with combobox roles named base and compare; each option's visible label is its exact branch name. Compare changes is a button. For a valid selection it displays the known changed file path verbatim, a Commit summary with the comparable commit count, and an enabled Create pull request button. Selecting the same branch in both fields immediately displays No changes and disables the creation button, without requiring Compare changes to be clicked first. Clicking Compare changes retains that result. Seed data supplies a contributor with Write permission, a public repository PR-list page entry, a base branch, a distinct compare branch ahead by at least one commit, and a known changed file. Separate valid comparison page entrys open the same usable creation flow with the branches already selected; these pairs have no existing Open or Draft PR at the start of each creation scenario.\n\nThe seeded changed-file path for comparison is `src/search.ts`.\n\nScreenshot reference:\n![image](reference/github-compare-branches.png)"
+  },
+  {
+   "id": "REQ-2-2-4#contract-1",
+   "requirement": "REQ-2-2-4",
+   "explanation": "REQ-2-2-4 (and REQ-2-2) require that removing a member who is the organization's last Owner is rejected and leaves all relationships unchanged. The seeded organization o1 has exactly one Owner membership (om1, user alice-dev) plus two ordinary Member memberships, so removing om1 must be refused. The real removal handler APP.actions['remove-org-member'] deletes the membership, the account's team memberships and its direct repository grants with no owner-count check, leaving the organization ownerless. Control: the same handler does remove the ordinary member om2, proving the fixture, binding and state mutation are live.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.actions['remove-org-member']",
+     "kind": "method",
+     "alias": "removeOrgMember"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "removeOrgMember",
+   "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'org', params: ['o1', 'people'] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };",
+   "precondition": "var owners = ARC.state.orgMembers.filter(function (m) { return m.orgId === 'o1' && m.role === 'Owner'; });\nassert.strictEqual(owners.length, 1);\nassert.strictEqual(owners[0].id, 'om1');\nassert.strictEqual(owners[0].userId, 'u1');\nassert.ok(ARC.state.orgMembers.some(function (m) { return m.id === 'om2' && m.orgId === 'o1' && m.role === 'Member'; }));\nassert.ok(ARC.state.orgMembers.some(function (m) { return m.id === 'om3' && m.orgId === 'o1' && m.role === 'Member'; }));",
+   "check": "removeOrgMember({ id: 'om2', el: { dataset: { id: 'om2' } } });\nassert.ok(!ARC.state.orgMembers.some(function (m) { return m.id === 'om2'; }), 'control: an ordinary Member can be removed');\nremoveOrgMember({ id: 'om1', el: { dataset: { id: 'om1' } } });\nassert.ok(ARC.state.orgMembers.some(function (m) { return m.orgId === 'o1' && m.userId === 'u1' && m.role === 'Owner'; }), 'the last Owner must not be removed from the organization');",
+   "requirement_text": "Open the organization's “People” link to read member usernames. Each removable member has a button named “Member menu <username>”; it opens the menuitem “Remove from organization”, followed by the confirmation button “Remove”. Successful removal makes the complete username absent from People immediately and after reload. A non-Owner viewing the same member has no member-menu button and no Remove from organization menuitem, rather than merely a disabled control. Each independent scenario starts with that member present; the non-Owner is an ordinary organization member. On the “People” page, an organization Owner locates a member, clicks “Remove from organization” in that member's action menu, and clicks “Remove” in the confirmation dialog. The system atomically deletes that member's organization-membership relationship, all of the account's memberships in teams of that organization, and all direct grants to that account on repositories of the organization; if the account still obtains repository permission through another organization Owner status or an undeleted team grant, effective permission is recalculated according to the valid permission rules, otherwise access is denied. The system must not delete the personal account, personal repositories, relationships with other organizations, teams themselves, or team grants; the last Owner must not be removed. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-2-1-2 (Create an Organization After Authentication); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-6-5#contract-2",
+   "requirement": "REQ-6-5",
+   "explanation": "REQ-6-5 states the startup state must supply an eligible Open pull request (targeting protected main, non-author approval, test success) *and a separate Open pull request for the refusal scenario* whose disabled Merge button is explained by 'Review required by branch protection'. This is a startup-coverage claim: the seeded repository r1 has only one Open pull request (p1), and the real merge gate mergeBlocked reports p1 as mergeable, so no distinct blocked Open pull request exists to be restored for the refusal scenario (the only rule-matching but blocked PR, p2, is Closed). The probe reads the real startup data with the real predicate and does not create, grant or change anything.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "mergeBlocked",
+     "kind": "function",
+     "alias": "mergeBlocked"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "mergeBlocked",
+   "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'repo', params: [] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };",
+   "precondition": "assert.strictEqual(ARC.state.session, null);\nassert.ok(ARC.state.repositories.some(function (r) { return r.id === 'r1'; }));\nassert.ok(ARC.state.protectionRules.some(function (r) { return r.repoId === 'r1' && r.branch === 'main' && r.requireApproval && r.requireCheck; }));\nassert.ok(ARC.state.pulls.some(function (p) { return p.id === 'p1' && p.state === 'Open'; }));",
+   "check": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nvar open = ARC.state.pulls.filter(function (p) { return p.repoId === 'r1' && p.state === 'Open'; });\nvar eligible = open.filter(function (p) { return mergeBlocked(p, repo) === null; });\nvar blocked = open.filter(function (p) { return mergeBlocked(p, repo) === 'Review required by branch protection'; });\nassert.ok(eligible.length >= 1, 'seed must provide the mergeable Open PR for the success scenario');\nassert.ok(blocked.length >= 1, 'seed must provide a separate Open PR blocked by branch protection for the refusal scenario');",
+   "requirement_text": "On an eligible PR, Merge pull request and then Confirm merge are buttons; confirming displays Merged, and that state remains after reload. A blocked PR keeps a visible disabled Merge pull request button and explains its unmet review or protection condition before any click. Seed data supplies a Maintain account and separate Open PRs for success and refusal. The eligible PR targets protected main, has a current non-author approval and test: success, and has no conflicts. The blocked PR targets a protected branch and lacks the required valid approval; its disabled button is accompanied by Review required by branch protection. Each seed state is restored independently before reuse. “Merge” is the only write operation that writes the current compare commit's changes from an Open PR into the base branch; it is not simply marking the PR as complete. Only Maintain, Admin, or organization Owner may merge from the PR detail page using the sole supported “Create a merge commit” method; the merge confirmation area should display satisfied and unsatisfied conditions. Before confirmation, the system rereads the target branch head, current compare commit, merge-conflict state, and protection rules — there must be no valid Request changes; if the target is protected, each enabled rule requirement is enforced independently, requiring 1 valid non-author Approve for the current compare commit when Require 1 approval is enabled and requiring `test` success when Require status check test is enabled. An unprotected target has no additional approval-count or check-success requirement, but merging still requires no merge conflicts and no valid Request changes review. After validation succeeds, the system atomically creates a merge commit whose parents are the target-branch head at merge time and the current compare commit, updates the target-branch head, sets the PR to Merged, and stores the merger, time, and resulting commit identifier. If any condition is unsatisfied or persistence fails, the page explains the applicable reason and neither the target branch nor PR changes; a missing required approval displays “Review required by branch protection”. Merged is terminal. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-4 (Submit a Pull Request Review) and REQ-6-1 (Protect Branches with Review and Status-Check Requirements); it must reuse that context and keep pages and data consistent after the context changes."
+  }
+ ],
+ "first_execution": [
+  {
+   "id": "REQ-6-3-4#contract-1",
+   "status": "fail",
+   "calls": {
+    "mergeBlocked": 2,
+    "protectionFor": 2,
+    "st": 4,
+    "hasRequestChanges": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a stale Request changes from an earlier compare commit must not block merging\n+ actual - expected\n\n+ 'Changes requested'\n- null\n",
+   "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: a stale Request changes from an earlier compare commit must not block merging\n+ actual - expected\n\n+ 'Changes requested'\n- null\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:9:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-6-2-2#contract-1",
+   "status": "fail",
+   "calls": {
+    "compareScreen": 1,
+    "changedBetween": 3,
+    "createPull": 0,
+    "commitChain": 6,
+    "branchHead": 6,
+    "st": 24,
+    "byId": 14,
+    "UI": 1,
+    "branchNames": 1,
+    "atLeast": 1,
+    "roleFor": 1,
+    "orgFor": 1,
+    "orgMemberOf": 1,
+    "directRole": 1,
+    "teamIdsFor": 1,
+    "esc": 22,
+    "repoLabel": 1,
+    "repoNav": 1,
+    "repoUrl": 1
+   },
+   "assertions": 3,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a comparison with no difference must not offer an enabled Create pull request entry",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: a comparison with no difference must not offer an enabled Create pull request entry\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:7:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-6-5#contract-2",
+   "status": "fail",
+   "calls": {
+    "mergeBlocked": 2,
+    "protectionFor": 2,
+    "st": 10,
+    "hasRequestChanges": 2,
+    "approvalCount": 2,
+    "branchHead": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "seed must provide a separate Open PR blocked by branch protection for the refusal scenario",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: seed must provide a separate Open PR blocked by branch protection for the refusal scenario\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:8:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-2-2-4#contract-1",
+   "status": "error",
+   "message": "Expected one exact source binding: APP.actions['remove-org-member'], found 0"
+  }
+ ],
+ "probes": [
+  {
+   "id": "REQ-6-3-4#contract-1",
+   "requirement": "REQ-6-3-4",
+   "explanation": "REQ-6-3-4 states that when the compare branch gains a new commit every earlier decision becomes stale and a new review is required, and REQ-6-5 says a Request changes blocks merging only while it is valid for the current compare commit. The real merge gate mergeBlocked delegates to hasRequestChanges, which keeps each reviewer's last decision without ever comparing decision.commitId to the current compare head, so a Request changes recorded on a superseded compare commit keeps blocking forever. Fixture: seeded Open PR p1 (repo r1, base main, compare feature-search) whose compare head is commit c2, with a seeded Write reviewer bob-reviewer (non-author, grant g2); the seeded protection rule for main is cleared and the target is therefore unprotected, which isolates the staleness rule so the only possible blocker is the decision itself. Controls show the predicate is live: a Request changes pinned to the current head c2 must block, and a fresh/stale boundary is meaningful because the branch head is genuinely c2.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "mergeBlocked",
+     "kind": "function",
+     "alias": "mergeBlocked"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "mergeBlocked",
+   "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'repo', params: [] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };\n// Unprotected target so the only possible merge blocker is the review decision itself.\nARC.state.protectionRules = [];",
+   "precondition": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nassert.ok(repo);\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p1'; })[0];\nassert.ok(pr);\nassert.strictEqual(pr.state, 'Open');\nassert.strictEqual(pr.base, 'main');\nassert.strictEqual(pr.compare, 'feature-search');\nvar head = ARC.state.branches.filter(function (b) { return b.repoId === 'r1' && b.name === 'feature-search'; })[0];\nassert.strictEqual(head.commitId, 'c2');\nassert.strictEqual(ARC.state.protectionRules.filter(function (r) { return r.repoId === 'r1' && r.branch === 'main'; }).length, 0);\nassert.ok(ARC.state.grants.some(function (g) { return g.repoId === 'r1' && g.subjectId === 'u2' && g.role === 'Write'; }));\nassert.ok(ARC.state.commits.some(function (c) { return c.id === 'c1'; }));",
+   "check": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nvar pr = ARC.state.pulls.filter(function (p) { return p.id === 'p1'; })[0];\nvar head = ARC.state.branches.filter(function (b) { return b.repoId === 'r1' && b.name === 'feature-search'; })[0].commitId;\nARC.state.reviews = [{ id: 'rv-now', prId: 'p1', reviewer: 'bob-reviewer', state: 'Changes requested', body: 'needs work', commitId: head, createdAt: '2024-02-03T11:00:00.000Z' }];\nassert.notStrictEqual(mergeBlocked(pr, repo), null, 'control: a Request changes on the current compare commit must block merging');\nARC.state.reviews = [{ id: 'rv-stale', prId: 'p1', reviewer: 'bob-reviewer', state: 'Changes requested', body: 'needs work', commitId: 'c1', createdAt: '2024-02-02T11:00:00.000Z' }];\nassert.strictEqual(mergeBlocked(pr, repo), null, 'a Request changes made on a superseded compare commit is stale and must not block merging');",
+   "requirement_text": "From the Files changed link, the reviewer activates the Review changes button to open one review form with an optional Summary field, radio controls named Comment, Approve, and Request changes, and a Submit review button. Selecting Approve and submitting without a summary is valid and displays Approved. Selecting Request changes with a summary displays Changes requested and that exact summary; the decision remains visible after reload. Seed data supplies a non-author Write reviewer and separate Open PRs for approval and request-changes submission, with no initial effective decision by that reviewer. A user who is not the PR author and has Write, Maintain, or Admin may submit Comment, Approve, or Request changes on an Open PR; the author and Draft PRs cannot submit reviews. The system stores the review decision, reviewer, current compare commit, optional explanation, and time; a new decision by the same reviewer replaces that reviewer's effective decision for the current commit while preserving the old record. Approve is valid only when the reviewer is not the author and the compare commit is still the same; Request changes blocks merging until that reviewer submits a new Comment or Approve for the current compare commit, or the compare branch receives a new commit that makes the old decision stale. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-1 (View Pull Request Overview and Commits) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-6-2-2#contract-1",
+   "requirement": "REQ-6-2-2",
+   "explanation": "REQ-6-2-2 requires the creation entry to be disabled when base and compare are the same branch or when there is no difference between them (no comparable commits), and REQ-6-2-3 forbids persisting a PR in that case. Correction from the previous probe: the unreachable createPull half (it could never run after the failing assertion and belongs to REQ-6-2-3) was dropped, and a same-branch control was added so the check demonstrates the predicate the application does implement before asserting the missing no-difference case. The real observer compareScreen disables creation only when the two branch *names* are equal; the seeded branches r1 'release' and r1 'draft-feature' are distinct names that both point at commit c1, so the comparison renders an enabled Create pull request entry for a pair with zero changed files. Fixture: seeded contributor bob-reviewer (Write grant g2 on public repo r1) and a pair with no pre-existing Open/Draft PR; control pair main→feature-search has real differences.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "compareScreen",
+     "kind": "function",
+     "alias": "compareScreen"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "changedBetween",
+     "kind": "function",
+     "alias": "changedBetween"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "compareScreen",
+   "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'repo', params: [] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };\nARC.state.session = 'u2';\nARC.state.ui = ARC.state.ui || {};\nARC.state.ui['compare:r1'] = { base: 'release', compare: 'draft-feature' };",
+   "precondition": "assert.strictEqual(ARC.state.session, 'u2');\nassert.ok(ARC.state.grants.some(function (g) { return g.repoId === 'r1' && g.subjectId === 'u2' && g.role === 'Write'; }));\nvar b = function (n) { return (ARC.state.branches.filter(function (x) { return x.repoId === 'r1' && x.name === n; })[0] || {}).commitId; };\nassert.strictEqual(b('release'), 'c1');\nassert.strictEqual(b('draft-feature'), 'c1');\nassert.strictEqual(ARC.state.ui['compare:r1'].base, 'release');\nassert.strictEqual(ARC.state.ui['compare:r1'].compare, 'draft-feature');\nassert.strictEqual(ARC.state.pulls.filter(function (p) { return p.base === 'release' && p.compare === 'draft-feature'; }).length, 0);",
+   "check": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nARC.state.ui['compare:r1'] = { base: 'main', compare: 'main' };\nassert.ok(!/data-action=\"open-create-pr\"/.test(compareScreen(repo)), 'control: a same-branch comparison must not offer an enabled Create pull request entry');\nassert.ok(changedBetween(repo, 'main', 'feature-search').length > 0, 'control: main vs feature-search has real differences');\nassert.strictEqual(changedBetween(repo, 'release', 'draft-feature').length, 0, 'fixture: release vs draft-feature have no comparable difference');\nARC.state.ui['compare:r1'] = { base: 'release', compare: 'draft-feature' };\nassert.ok(!/data-action=\"open-create-pr\"/.test(compareScreen(repo)), 'two distinct branches with no comparable difference must not offer an enabled Create pull request entry');",
+   "requirement_text": "The PR comparison page is a read-only page shown before creation: base is the target branch that receives the merge result, and compare is the source branch that provides the changes to merge. A user with Write, Maintain, Admin, or organization Owner status clicks “New pull request” on the “Pull requests” page and selects the two branches; the system calculates comparable commits, changed files, and a diff summary based on the commits they currently point to. If the branches are the same or there is no difference, the creation entry is disabled; comparison does not save a PR, commit, or branch change. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-3-1 (List and Switch Repository Branches) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes. Only signed-in users with Write, Maintain, Admin, or organization Owner status may compare branches on the repository pull-request page; Read and Triage may view existing PRs but cannot enter the creation-comparison flow. The system validates the role and rejects unauthorized requests. New pull request is a link. The comparison page has native select controls with combobox roles named base and compare; each option's visible label is its exact branch name. Compare changes is a button. For a valid selection it displays the known changed file path verbatim, a Commit summary with the comparable commit count, and an enabled Create pull request button. Selecting the same branch in both fields immediately displays No changes and disables the creation button, without requiring Compare changes to be clicked first. Clicking Compare changes retains that result. Seed data supplies a contributor with Write permission, a public repository PR-list page entry, a base branch, a distinct compare branch ahead by at least one commit, and a known changed file. Separate valid comparison page entrys open the same usable creation flow with the branches already selected; these pairs have no existing Open or Draft PR at the start of each creation scenario.\n\nThe seeded changed-file path for comparison is `src/search.ts`.\n\nScreenshot reference:\n![image](reference/github-compare-branches.png)"
+  },
+  {
+   "id": "REQ-6-5#contract-2",
+   "requirement": "REQ-6-5",
+   "explanation": "REQ-6-5 explicitly requires seed data to supply separate Open PRs for the success and refusal scenarios: the eligible PR targets protected main with a current non-author approval and test success, and the blocked PR targets a protected branch, lacks the required valid approval, and shows the disabled button with 'Review required by branch protection'. This is a startup-coverage claim evaluated only with the real initializer and the real non-mutating predicate: in the seeded repository r1 the only Open PR is p1, which mergeBlocked reports as mergeable, while the only PR that the seeded rule would block (p2, base main, no valid approval) is seeded Closed; no distinct Open PR is therefore available for the refusal scenario. The check also verifies the success scenario still exists, so the failure isolates the missing distinct blocked record rather than a broken predicate. Nothing is created or granted in setup.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "mergeBlocked",
+     "kind": "function",
+     "alias": "mergeBlocked"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "mergeBlocked",
+   "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'repo', params: [] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };",
+   "precondition": "assert.strictEqual(ARC.state.session, null);\nassert.ok(ARC.state.repositories.some(function (r) { return r.id === 'r1'; }));\nassert.ok(ARC.state.protectionRules.some(function (r) { return r.repoId === 'r1' && r.branch === 'main' && r.requireApproval && r.requireCheck; }));\nassert.strictEqual(ARC.state.pulls.filter(function (p) { return p.repoId === 'r1'; }).length, 3);",
+   "check": "var repo = ARC.state.repositories.filter(function (r) { return r.id === 'r1'; })[0];\nvar open = ARC.state.pulls.filter(function (p) { return p.repoId === 'r1' && p.state === 'Open'; });\nvar eligible = open.filter(function (p) { return mergeBlocked(p, repo) === null; });\nvar blocked = open.filter(function (p) { return mergeBlocked(p, repo) === 'Review required by branch protection'; });\nassert.ok(eligible.length >= 1, 'seed must provide the mergeable Open PR for the success scenario');\nassert.ok(blocked.length >= 1, 'seed must provide a separate Open PR blocked with Review required by branch protection for the refusal scenario');",
+   "requirement_text": "On an eligible PR, Merge pull request and then Confirm merge are buttons; confirming displays Merged, and that state remains after reload. A blocked PR keeps a visible disabled Merge pull request button and explains its unmet review or protection condition before any click. Seed data supplies a Maintain account and separate Open PRs for success and refusal. The eligible PR targets protected main, has a current non-author approval and test: success, and has no conflicts. The blocked PR targets a protected branch and lacks the required valid approval; its disabled button is accompanied by Review required by branch protection. Each seed state is restored independently before reuse. “Merge” is the only write operation that writes the current compare commit's changes from an Open PR into the base branch; it is not simply marking the PR as complete. Only Maintain, Admin, or organization Owner may merge from the PR detail page using the sole supported “Create a merge commit” method; the merge confirmation area should display satisfied and unsatisfied conditions. Before confirmation, the system rereads the target branch head, current compare commit, merge-conflict state, and protection rules — there must be no valid Request changes; if the target is protected, each enabled rule requirement is enforced independently, requiring 1 valid non-author Approve for the current compare commit when Require 1 approval is enabled and requiring `test` success when Require status check test is enabled. An unprotected target has no additional approval-count or check-success requirement, but merging still requires no merge conflicts and no valid Request changes review. After validation succeeds, the system atomically creates a merge commit whose parents are the target-branch head at merge time and the current compare commit, updates the target-branch head, sets the PR to Merged, and stores the merger, time, and resulting commit identifier. If any condition is unsatisfied or persistence fails, the page explains the applicable reason and neither the target branch nor PR changes; a missing required approval displays “Review required by branch protection”. Merged is terminal. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-3-4 (Submit a Pull Request Review) and REQ-6-1 (Protect Branches with Review and Status-Check Requirements); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-2-2-4#contract-1",
+   "requirement": "REQ-2-2-4",
+   "explanation": "Correction: the previous binding path APP.actions['remove-org-member'] was not extracted by the runner (0 bindings), so the qualified name is given as APP.actions.remove-org-member. REQ-2-2-4 (with REQ-2-2) requires that removing a member who would leave the organization with no Owner is rejected and keeps every relationship unchanged. The seeded organization o1 has exactly one Owner membership (om1, alice-dev) plus two ordinary Member memberships, so removing om1 must be refused. The real removal handler deletes the organization membership, the account's team memberships in that organization, and its direct repository grants with no Owner-count check, so the organization is left ownerless. The control removes an ordinary Member (om2) first, proving the handler, state mutation and binding are live before the last-Owner attempt.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.actions.remove-org-member",
+     "kind": "method",
+     "alias": "removeOrgMember"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "removeOrgMember",
+   "setup": "window.ARC = window.ARC || {};\nARC.state = window.SEED;\nARC.esc = function (s) { return String(s == null ? '' : s); };\nARC.uid = function (p) { return p + '-' + Math.random().toString(36).slice(2, 8); };\nARC.save = function () {};\nARC.render = function () {};\nARC.navigate = function () {};\nARC.notify = function () {};\nARC.openDialog = function () {};\nARC.closeDialog = function () {};\nARC.openPopover = function () {};\nARC.closePopover = function () {};\nARC.combobox = function () { return ''; };\nARC.route = function () { return { name: 'org', params: ['o1', 'people'] }; };\nARC.currentUser = function () { var s = window.SEED.session; return (window.SEED.users || []).filter(function (u) { return u.id === s; })[0] || null; };",
+   "precondition": "var owners = ARC.state.orgMembers.filter(function (m) { return m.orgId === 'o1' && m.role === 'Owner'; });\nassert.strictEqual(owners.length, 1);\nassert.strictEqual(owners[0].id, 'om1');\nassert.strictEqual(owners[0].userId, 'u1');\nassert.ok(ARC.state.orgMembers.some(function (m) { return m.id === 'om2' && m.orgId === 'o1' && m.role === 'Member'; }));\nassert.ok(ARC.state.orgMembers.some(function (m) { return m.id === 'om3' && m.orgId === 'o1' && m.role === 'Member'; }));",
+   "check": "removeOrgMember({ id: 'om2' });\nassert.ok(!ARC.state.orgMembers.some(function (m) { return m.id === 'om2'; }), 'control: an ordinary Member can be removed');\nremoveOrgMember({ id: 'om1' });\nassert.ok(ARC.state.orgMembers.some(function (m) { return m.orgId === 'o1' && m.userId === 'u1' && m.role === 'Owner'; }), 'the last Owner must not be removed from the organization');",
+   "requirement_text": "Open the organization's “People” link to read member usernames. Each removable member has a button named “Member menu <username>”; it opens the menuitem “Remove from organization”, followed by the confirmation button “Remove”. Successful removal makes the complete username absent from People immediately and after reload. A non-Owner viewing the same member has no member-menu button and no Remove from organization menuitem, rather than merely a disabled control. Each independent scenario starts with that member present; the non-Owner is an ordinary organization member. On the “People” page, an organization Owner locates a member, clicks “Remove from organization” in that member's action menu, and clicks “Remove” in the confirmation dialog. The system atomically deletes that member's organization-membership relationship, all of the account's memberships in teams of that organization, and all direct grants to that account on repositories of the organization; if the account still obtains repository permission through another organization Owner status or an undeleted team grant, effective permission is recalculated according to the valid permission rules, otherwise access is denied. The system must not delete the personal account, personal repositories, relationships with other organizations, teams themselves, or team grants; the last Owner must not be removed. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-2-1-2 (Create an Organization After Authentication); it must reuse that context and keep pages and data consistent after the context changes."
+  }
+ ],
+ "source_hashes": {
+  "frontend/public/app.js": "992f7f0031cc5b7cb23acfdd6ba708f247dc6057b2efc9e0bea84a6f225c9f88",
+  "frontend/public/seed.js": "e6ebae97ed56de2bf92edf061c72f84b4d07b0e4db739b72f6bd3d6918dbda7e"
+ },
+ "validation": [
+  {
+   "id": "REQ-6-3-4#contract-1",
+   "status": "fail",
+   "calls": {
+    "mergeBlocked": 2,
+    "protectionFor": 2,
+    "st": 4,
+    "hasRequestChanges": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a Request changes made on a superseded compare commit is stale and must not block merging\n+ actual - expected\n\n+ 'Changes requested'\n- null\n",
+   "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: a Request changes made on a superseded compare commit is stale and must not block merging\n+ actual - expected\n\n+ 'Changes requested'\n- null\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:9:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-6-2-2#contract-1",
+   "status": "fail",
+   "calls": {
+    "compareScreen": 2,
+    "changedBetween": 3,
+    "UI": 2,
+    "branchNames": 2,
+    "st": 29,
+    "atLeast": 2,
+    "roleFor": 2,
+    "orgFor": 2,
+    "byId": 15,
+    "orgMemberOf": 2,
+    "directRole": 2,
+    "teamIdsFor": 2,
+    "esc": 42,
+    "repoLabel": 2,
+    "repoNav": 2,
+    "repoUrl": 2,
+    "commitChain": 6,
+    "branchHead": 6
+   },
+   "assertions": 4,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "two distinct branches with no comparable difference must not offer an enabled Create pull request entry",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: two distinct branches with no comparable difference must not offer an enabled Create pull request entry\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:9:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-6-5#contract-2",
+   "status": "fail",
+   "calls": {
+    "mergeBlocked": 2,
+    "protectionFor": 2,
+    "st": 10,
+    "hasRequestChanges": 2,
+    "approvalCount": 2,
+    "branchHead": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "seed must provide a separate Open PR blocked with Review required by branch protection for the refusal scenario",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: seed must provide a separate Open PR blocked with Review required by branch protection for the refusal scenario\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:8:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-2-2-4#contract-1",
+   "status": "error",
+   "message": "Expected one exact source binding: APP.actions.remove-org-member, found 0"
+  }
+ ]
+}

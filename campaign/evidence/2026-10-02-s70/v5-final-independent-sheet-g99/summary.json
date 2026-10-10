@@ -1,0 +1,19 @@
+{
+  "suite": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/judges/native-field-reader-official-sheet-g99/suite",
+  "suite_hashes": {
+    "t03-REQ-3.spec.cjs": "1bc6c64f194a02cd060d19c6542443bbd7978072fe9cd7f35458d84325afb061",
+    "t02-REQ-2.spec.cjs": "dd5952b6ea3ee15d9956e48cebf9d9fb4f30c204867af475c42754247802decd",
+    "t05-REQ-5.spec.cjs": "d05c15df49e8b25ab86e9bcaafa4987903b8e5cc613cfb6f568d79f8bb49e137",
+    "t04-REQ-4.spec.cjs": "02b047dac46441af124e191e93914535d9de5712052a43eaf194485cbc7772cf",
+    "suite.json": "ca534b12d5aa31ef043e4f70aa203430a6da6276a1f7712182d863f6c43a66db",
+    "t01-REQ-1.spec.cjs": "b57281e5d50d45728f97b541cae7929b93cd5ad06c3ae20aaa4e2358621aa655"
+  },
+  "candidate": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-sheet/application",
+  "counts": {
+    "pass": 82,
+    "fail": 16,
+    "error": 3
+  },
+  "seconds": 124.3,
+  "model_api_calls": 0
+}

@@ -1,0 +1,20 @@
+{
+  "image": "gyataro/arcbench-runner:local-base",
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "platform": "linux/amd64",
+  "source_path_in_image": "/opt/arcbench/run_submission.py",
+  "source_sha256": "025ede6378697205fdc380655a36c3d44b7062292242b154a23ac4914c63fa46",
+  "verified_settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout": 10000,
+    "expect_timeout": 10000,
+    "baseURL": "http://127.0.0.1:3000",
+    "channel": "chromium",
+    "trace": "off",
+    "screenshot": "off",
+    "package": "@playwright/test@1.57.0",
+    "single_backend": true
+  },
+  "method": "Read immutable local image runner; run tests using its preinstalled package and browser. No agent-generation or network-gateway stage."
+}

@@ -1,0 +1,2 @@
+{"app": "generate-controls-v3-sheet", "judge": "cov99n-arm", "counts": {"pass": 96, "fail": 4}, "seconds": 61.0, "coverage": {"total": 100, "parsed": 100}}
+{"app": "generate-controls-v3-sheet", "judge": "g99", "counts": {"pass": 92, "fail": 8}, "seconds": 65.8, "coverage": {"total": 100, "parsed": 100}}

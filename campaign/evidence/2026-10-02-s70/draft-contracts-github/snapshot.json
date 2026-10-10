@@ -1,0 +1,15 @@
+{
+  "source": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-github/.oneshot-qckzspd4/app",
+  "phase": "first draft before UI repair",
+  "files": {
+    "README.md": "6879b0ce3a4fff03895c75e0c5ebe25c1bf99967209a7ac75c5707b2caa7e08f",
+    "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+    "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+    "frontend/public/styles.css": "3b3dc3f3521b1c3028c8a9c990eb721c321ba7c6200fec9e9d0da18848574e38",
+    "frontend/public/seed.js": "ba07cbc3dae3756e1f807fb3b615580be1389dfb5b2b5759e6938cb4feae261f",
+    "frontend/public/app.js": "b0bccd36da084f28c9648968c18d9be0f761b8749f1498b1a14811a31b665153",
+    "frontend/public/lib/arc.js": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14",
+    "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9",
+    "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+  }
+}

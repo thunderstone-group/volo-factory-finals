@@ -1,0 +1,16 @@
+{
+  "archive": "v7-stage1-delivery.zip",
+  "sha256": "f9ca26aca8ff3fdcf09880ae5bacd51e64066c1c45279f92d671ba62b23f9d43",
+  "files": [
+    "backend/package-lock.json",
+    "backend/package.json",
+    "backend/server.js",
+    "frontend/package-lock.json",
+    "frontend/package.json",
+    "frontend/public/app.js",
+    "frontend/public/index.html",
+    "frontend/public/lib/arc.js",
+    "frontend/public/seed.js",
+    "frontend/public/styles.css"
+  ]
+}

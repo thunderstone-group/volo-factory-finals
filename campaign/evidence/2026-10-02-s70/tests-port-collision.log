@@ -1,0 +1,7 @@
+test_a_real_port_collision_is_retried_without_a_model_repair (tests_oneshot.test_smoke.SmokeCase) ... ok
+test_port_collision_retries_are_bounded_and_other_startup_errors_are_not_retried (tests_oneshot.test_smoke.SmokeCase) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 18.111s
+
+OK

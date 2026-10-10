@@ -1,0 +1,2 @@
+{"app": "diagnostic-recovery-repair-github", "judge": "gh99", "counts": {"error": 15, "pass": 70, "fail": 16}, "seconds": 165.1, "coverage": {"total": 100, "parsed": 86}}
+{"app": "diagnostic-recovery-repair-github", "judge": "gh8", "counts": {"pass": 65, "error": 13, "fail": 24}, "seconds": 167.3, "coverage": {"total": 100, "parsed": 89}}

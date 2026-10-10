@@ -1,0 +1,13 @@
+{
+  "source": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-tests-vd_rq82p",
+  "sha256_by_file": {
+    "t03-REQ-3.spec.cjs": "33c93c94c0c4aaa0d147d63d9085ee97486fc5b191bea8b35b022f81e4e69211",
+    "t02-REQ-2.spec.cjs": "31998096a696afcedd8b6e70a958a07a8cfc32d14119ec2dd4040bdadab15e64",
+    "t05-REQ-5.spec.cjs": "7bd60af20876ae85f18f95f4d1f03ac3de7c07085e61bc37e6c906b7547b386f",
+    "t04-REQ-4.spec.cjs": "8aee052deb32998e6d5d7f56474a214a50897cce68d879a56f5cf52734d21636",
+    "suite.json": "5333ad18d799e1f9da3b36fa923299eeb36a07077d14a0256febb96f67d42a8a",
+    "t01-REQ-1.spec.cjs": "dab89b1ab63d27e45724364156471fcf14401c3ca5a53263dee3f90e4fa30391"
+  },
+  "origin": "model-written from public requirements without application access",
+  "official_tests": false
+}

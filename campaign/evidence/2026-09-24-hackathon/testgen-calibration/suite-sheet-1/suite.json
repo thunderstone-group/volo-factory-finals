@@ -1,0 +1,171 @@
+{
+ "files": [
+  {
+   "file": "t01-REQ-1.spec.cjs",
+   "scenarios": [
+    "REQ-1-1-1",
+    "REQ-1-2-1",
+    "REQ-1-2-2",
+    "REQ-1-2-2#2",
+    "REQ-1-3-1",
+    "REQ-1-3-1#2",
+    "REQ-1-3-2"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-1-1-1: Open a workbook",
+    "REQ-1-2-1: Create and reopen a blank workbook",
+    "REQ-1-2-2: Save a valid new name",
+    "REQ-1-2-2#2: Reject an empty name",
+    "REQ-1-3-1: Import a valid CSV",
+    "REQ-1-3-1#2: Reject an unparseable CSV",
+    "REQ-1-3-2: Export a worksheet containing formulas"
+   ]
+  },
+  {
+   "file": "t02-REQ-2.spec.cjs",
+   "scenarios": [
+    "REQ-2-1-1",
+    "REQ-2-1-2",
+    "REQ-2-1-2#2",
+    "REQ-2-1-3",
+    "REQ-2-1-3#2",
+    "REQ-2-1-3#3"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-2-1-1: Add a worksheet and preserve it after refresh",
+    "REQ-2-1-2: Keep worksheet data independent when switching",
+    "REQ-2-1-2#2: Keep Filter and Validation Entry Points Isolated When Switching",
+    "REQ-2-1-3: Save a unique worksheet name",
+    "REQ-2-1-3#2: Reject a duplicate name",
+    "REQ-2-1-3#3: Reject an empty worksheet name"
+   ]
+  },
+  {
+   "file": "t03-REQ-2.spec.cjs",
+   "scenarios": [
+    "REQ-2-1-4",
+    "REQ-2-1-4#2",
+    "REQ-2-1-4#3",
+    "REQ-2-2-1",
+    "REQ-2-2-1#2",
+    "REQ-2-2-2",
+    "REQ-2-2-2#2"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-2-1-4: Delete one of multiple worksheets",
+    "REQ-2-1-4#2: Preserve the last worksheet",
+    "REQ-2-1-4#3: Reject deletion of a pivot table source worksheet",
+    "REQ-2-2-1: Insert a row into existing data",
+    "REQ-2-2-1#2: Delete a row and reopen",
+    "REQ-2-2-2: Insert a column beside existing data",
+    "REQ-2-2-2#2: Delete a column referenced by a formula"
+   ]
+  },
+  {
+   "file": "t04-REQ-3.spec.cjs",
+   "scenarios": [
+    "REQ-3-1-1",
+    "REQ-3-1-1#2",
+    "REQ-3-1-2",
+    "REQ-3-1-3",
+    "REQ-3-2-1",
+    "REQ-3-2-1#2"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-3-1-1: Edit a cell and preserve it after refresh",
+    "REQ-3-1-1#2: Cancel an uncommitted edit",
+    "REQ-3-1-2: Paste multi-row, multi-column data",
+    "REQ-3-1-3: Select an exact rectangular range",
+    "REQ-3-2-1: Copy a range to a new location",
+    "REQ-3-2-1#2: Cut and move a range"
+   ]
+  },
+  {
+   "file": "t05-REQ-3.spec.cjs",
+   "scenarios": [
+    "REQ-3-2-2",
+    "REQ-3-2-2#2",
+    "REQ-3-2-2#3",
+    "REQ-3-2-2#4"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-3-2-2: Undo and redo one modification",
+    "REQ-3-2-2#2: A new modification clears the redo branch",
+    "REQ-3-2-2#3: Undo and redo a source-value edit with dependent formulas",
+    "REQ-3-2-2#4: Undo and redo row/column changes with validation"
+   ]
+  },
+  {
+   "file": "t06-REQ-4.spec.cjs",
+   "scenarios": [
+    "REQ-4-1-1",
+    "REQ-4-1-1#2",
+    "REQ-4-1-2",
+    "REQ-4-2-1",
+    "REQ-4-2-1#2",
+    "REQ-4-2-2",
+    "REQ-4-2-2#2"
+   ],
+   "calls": 1,
+   "error": "RuntimeError: global model failure limit reached (5)"
+  },
+  {
+   "file": "t07-REQ-5.spec.cjs",
+   "scenarios": [
+    "REQ-5-1-1",
+    "REQ-5-1-1#2",
+    "REQ-5-1-1#3",
+    "REQ-5-1-2",
+    "REQ-5-2-1",
+    "REQ-5-2-1#2",
+    "REQ-5-2-1#3"
+   ],
+   "calls": 1,
+   "error": "RuntimeError: global model failure limit reached (5)"
+  },
+  {
+   "file": "t08-REQ-5.spec.cjs",
+   "scenarios": [
+    "REQ-5-3-1",
+    "REQ-5-3-1#2",
+    "REQ-5-3-1#3",
+    "REQ-5-3-1#4"
+   ],
+   "calls": 1,
+   "error": "RuntimeError: global model failure limit reached (5)"
+  }
+ ],
+ "scenarios": 48,
+ "tests": 30,
+ "seconds": 596.5,
+ "cost_cny": 2.2239,
+ "usage": {
+  "calls": 5,
+  "draft_call_limit": 64,
+  "repair_call_limit": 6,
+  "completed_calls": 5,
+  "failed_calls": 0,
+  "failure_limit": 5,
+  "known_prompt_tokens": 86747,
+  "prompt_tokens": 86747,
+  "known_completion_tokens": 218184,
+  "completion_tokens": 218184,
+  "unknown_usage_calls": [],
+  "estimated_cost_cny": 2.223897,
+  "estimated_repair_cost_cny": 0,
+  "repair_cny_limit": 3.0,
+  "side_calls": 0,
+  "fallback_model": null,
+  "billing_status": "tokens_reported_cost_not_estimated"
+ }
+}

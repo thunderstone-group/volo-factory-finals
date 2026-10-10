@@ -1,0 +1,623 @@
+test_candidate_cannot_supply_its_own_authority_directory (test_acceptance.AcceptanceTests) ... ok
+test_cross_requirement_cases_activate_only_when_the_full_scope_exists (test_acceptance.AcceptanceTests) ... ok
+test_deleted_and_changed_authoritative_files_fail_closed (test_acceptance.AcceptanceTests) ... ok
+test_empty_contract_and_wrong_requirements_are_rejected (test_acceptance.AcceptanceTests) ... ok
+test_incremental_scope_does_not_execute_unimplemented_future_cases (test_acceptance.AcceptanceTests) ... ok
+test_manifest_change_cannot_redefine_case_to_match_empty_file (test_acceptance.AcceptanceTests) ... ok
+test_missing_authoritative_case_stops_without_more_model_calls (test_acceptance.AcceptanceTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+ok
+test_named_assertion_positive_control_and_failing_control (test_acceptance.AcceptanceTests) ... ok
+test_no_contract_means_no_independent_verification_claim (test_acceptance.AcceptanceTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_real_agent_repairs_product_without_changing_pinned_suite (test_acceptance.AcceptanceTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: Independent acceptance did not pass
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=True
+ok
+test_real_browser_suite_checks_external_app_without_candidate_test_code (test_acceptance.AcceptanceTests) ... skipped 'Installed Playwright and Chromium required'
+test_real_wrong_app_remains_rejected_when_self_checks_are_weakened (test_acceptance.AcceptanceTests) ... ok
+test_resumed_self_check_cannot_bypass_new_contract_in_same_workspace (test_acceptance.AcceptanceTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_skips_todos_and_duplicates_do_not_count_as_passes (test_acceptance.AcceptanceTests) ... ok
+test_snapshot_tampering_during_test_is_detected (test_acceptance.AcceptanceTests) ... ok
+test_symlinks_and_traversal_in_pinned_files_are_rejected (test_acceptance.AcceptanceTests) ... ok
+test_timeout_cannot_pass (test_acceptance.AcceptanceTests) ... ok
+test_uncovered_requirement_is_not_implicitly_verified (test_acceptance.AcceptanceTests) ... ok
+test_worker_neutral_cli_scores_real_http_without_model_credentials (test_acceptance.AcceptanceTests) ... ok
+test_zero_assertion_file_and_printed_success_cannot_forge_named_test (test_acceptance.AcceptanceTests) ... ok
+test_cli_writes_inconclusive_report_for_missing_evidence_without_network (test_acceptance_probe.AcceptanceTests) ... ok
+test_default_cli_inspection_never_starts_browser_or_model (test_acceptance_probe.AcceptanceTests) ... ok
+test_failed_browser_assertion_is_not_success (test_acceptance_probe.AcceptanceTests) ... ok
+test_failure_verdict_requires_matching_failure_evidence (test_acceptance_probe.AcceptanceTests) ... ok
+test_incomplete_or_mismatched_pass_evidence_is_rejected (test_acceptance_probe.AcceptanceTests) ... ok
+test_late_browser_result_is_not_success (test_acceptance_probe.AcceptanceTests) ... ok
+test_malformed_plan_does_not_execute_checks (test_acceptance_probe.AcceptanceTests) ... ok
+test_missing_check_for_same_requirement_is_not_success (test_acceptance_probe.AcceptanceTests) ... ok
+test_missing_coverage_and_blocked_actions_are_inconclusive (test_acceptance_probe.AcceptanceTests) ... ok
+test_one_attempt_transport_does_not_retry_429 (test_acceptance_probe.AcceptanceTests) ... ok
+test_one_call_original_requirements_and_actual_browser_results (test_acceptance_probe.AcceptanceTests) ... ok
+test_overlarge_inputs_and_expired_time_do_not_call_model (test_acceptance_probe.AcceptanceTests) ... ok
+test_plan_rejects_unsupported_actions_unknown_ids_and_extra_fields (test_acceptance_probe.AcceptanceTests) ... ok
+test_plan_validates_assertion_types_and_navigation (test_acceptance_probe.AcceptanceTests) ... ok
+test_real_browser_input_click_reload_assertions_and_redirect_guard (test_acceptance_probe.AcceptanceTests) ... skipped 'Installed browser configuration required'
+test_truncated_plan_does_not_execute_checks (test_acceptance_probe.AcceptanceTests) ... ok
+test_unknown_browser_status_is_inconclusive (test_acceptance_probe.AcceptanceTests) ... ok
+test_a_crashed_browser_is_relaunched_rather_than_failing_every_later_check (test_browser_lifecycle.BrowserLifecycleTests) ... ok
+test_a_failing_check_still_releases_its_context_and_the_browser (test_browser_lifecycle.BrowserLifecycleTests) ... ok
+test_an_installed_chromium_is_launched_once_for_three_checks (test_browser_lifecycle.BrowserLifecycleTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_missing_playwright_still_fails_the_check_rather_than_the_module_load (test_browser_lifecycle.BrowserLifecycleTests) ... ok
+test_the_shared_browser_is_closed_once_after_the_last_check (test_browser_lifecycle.BrowserLifecycleTests) ... ok
+test_three_checks_share_one_browser_and_get_their_own_context (test_browser_lifecycle.BrowserLifecycleTests) ... ok
+test_ambiguity_is_reported_after_scoping_and_the_requirement_assertions_decide (test_captured_self_checks.CapturedSelfCheckTests)
+A capture is evidence. It survives a rewrite of the live check, and it never ... skipped 'Installed Chrome/Playwright required'
+test_deepseek_thinking_omits_forcing_and_preserves_reasoning_with_empty_content (test_captured_self_checks.CapturedSelfCheckTests) ... ok
+test_non_ambiguity_failure_is_not_frozen (test_captured_self_checks.CapturedSelfCheckTests) ... ok
+test_syntax_error_is_not_frozen_as_a_product_contract (test_captured_self_checks.CapturedSelfCheckTests) ... ok
+test_authored_test_bundle_runs_before_another_model_call (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+ok
+test_bounded_failure_opens_narrow_repairs_and_keeps_both_log_ends (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: ...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+# LATE_FAILURE
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-c8hk4wmc/application/checks/requirements.cjs:4:8
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 74.417959
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-c8hk4wmc/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 78.519417
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_bounded_feature_uses_full_tools_with_low_reasoning (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] deliver passed=True
+ok
+test_bounded_new_app_uses_runtime_for_routes_and_stateful_api (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=True
+ok
+test_compact_context_omits_only_byte_identical_known_runtime (test_context.ContextRepairTests) ... ok
+test_real_failed_check_survives_context_pressure_and_repairs (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] finish passed=False
+[volo] verification detail: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'hello' !== 'wrong'
+
+    at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-r6986axn/application/checks/greeting.cjs:1:86
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'hello',
+  expected: 'wrong',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_small_existing_source_supports_one_verified_edit_without_exposing_state (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_successful_read_survives_an_oversized_reasoning_exchange (test_context.ContextRepairTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] deliver passed=True
+ok
+test_below_limit_keeps_exact_existing_prompt (test_context.ContextTests) ... ok
+test_checkpoint_retains_complete_real_protocol_exchanges_and_reasoning (test_context.ContextTests) ... ok
+test_invalid_pairs_are_rejected_without_fabricating_results (test_context.ContextTests) ... ok
+test_only_old_tool_output_is_pruned_and_history_is_unchanged (test_context.ContextTests) ... ok
+test_oversized_checkpoint_fails_before_sending_an_over_limit_request (test_context.ContextTests) ... ok
+test_oversized_latest_exchange_is_omitted_whole (test_context.ContextTests) ... ok
+test_browser_failure_retains_visible_state_and_pending_request (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_browser_rejects_primary_route_aliases_but_allows_home_and_hidden_links (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_browser_rejects_unnamed_meter_even_when_authored_check_passes (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_captured_real_gateway_response_preserves_reasoning_and_usage (test_core.ExecutionTests) ... ok
+test_final_budget_does_not_rerun_unchanged_failed_source (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-7ygi3mpy/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 76.561917
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-7ygi3mpy/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 80.762541
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_final_budget_verification_does_not_accept_a_bad_repair (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-h1_mw2pf/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 73.580875
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-h1_mw2pf/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 77.743208
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_final_call_budget_edit_is_verified_without_another_model_call (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-mx_k_1dd/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 81.860833
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-mx_k_1dd/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 86.427417
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_final_token_budget_edit_is_verified_without_another_model_call (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-et1ptshv/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 74.404041
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-et1ptshv/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 78.424458
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_kimi_uses_low_effort_without_claiming_thinking_can_be_disabled (test_core.ExecutionTests) ... ok
+test_missing_usage_stays_unknown (test_core.ExecutionTests) ... ok
+test_model_tool_loop_repairs_failure_then_resumes_without_model_call (test_core.ExecutionTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+# 'wrong' !== 'hello'
+#     at /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-1h5l5gtb/application/checks/requirements.cjs:1:86
+#     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+#   generatedMessage: true,
+#   code: 'ERR_ASSERTION',
+#   actual: 'wrong',
+#   expected: 'hello',
+#   operator: 'strictEqual',
+#   diff: 'simple'
+# }
+# Subtest: checks/requirements.cjs
+not ok 1 - checks/requirements.cjs
+  ---
+  duration_ms: 74.557166
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-1h5l5gtb/application/checks/requirements.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 78.429042
+
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=True
+ok
+test_prepared_browser_routes_and_reports_missing_controls (test_core.ExecutionTests) ... skipped 'Provide an installed Playwright module and Chromium for real browser checks'
+test_qwen_uses_provider_thinking_switch (test_core.ExecutionTests) ... ok
+test_real_build_http_check_and_process_cleanup (test_core.ExecutionTests) ... ok
+test_real_empty_optional_api_does_not_break_the_application_server (test_core.ExecutionTests) ... ok
+test_thinking_effort_and_actual_truncated_usage (test_core.ExecutionTests) ... ok
+test_unselected_browser_check_still_blocks_acceptance_and_can_be_repaired (test_core.ExecutionTests) ... ok
+test_archive_is_reproducible_and_excludes_development_state (test_core.PackagingTests) ... ok
+test_ancestor_reference_keeps_context_without_creating_a_self_cycle (test_core.RequirementsTests) ... ok
+test_cycles_and_unknown_dependencies_fail_before_generation (test_core.RequirementsTests) ... ok
+test_dependency_order_not_yaml_order (test_core.RequirementsTests) ... ok
+test_folder_dependencies_expand_to_atomic_nodes (test_core.RequirementsTests) ... ok
+test_parent_folder_constraints_reach_the_model (test_core.RequirementsTests) ... ok
+test_reference_content_changes_fingerprint (test_core.RequirementsTests) ... ok
+test_batch_validated_before_any_file_is_written (test_core.WorkspaceTests) ... ok
+test_browser_discovery_uses_existing_compatible_module (test_core.WorkspaceTests) ... ok
+test_browser_gc_cannot_be_enabled_by_inherited_or_extra_environment (test_core.WorkspaceTests) ... ok
+test_exact_edit_rejects_ambiguous_context (test_core.WorkspaceTests) ... ok
+test_guarded_paths_and_symlink_escape (test_core.WorkspaceTests) ... ok
+test_large_source_is_read_in_complete_unicode_chunks (test_core.WorkspaceTests) ... ok
+test_subprocess_has_no_model_secret_and_timeout_is_real (test_core.WorkspaceTests) ... ok
+test_trace_redacts_known_secret (test_core.WorkspaceTests) ... ok
+test_a_span_anchor_is_not_offered (test_edit_protocol.AnchoredEditTests) ... ok
+test_exact_unique_anchor_is_replaced_once (test_edit_protocol.AnchoredEditTests) ... ok
+test_insert_after_adds_text_without_repeating_the_anchor (test_edit_protocol.AnchoredEditTests) ... ok
+test_insert_after_rejects_a_missing_or_repeated_anchor (test_edit_protocol.AnchoredEditTests) ... ok
+test_missing_anchor_is_rejected_without_changing_text (test_edit_protocol.AnchoredEditTests) ... ok
+test_one_anchor_kind_is_required (test_edit_protocol.AnchoredEditTests) ... ok
+test_only_an_empty_file_takes_new_without_an_anchor (test_edit_protocol.AnchoredEditTests) ... ok
+test_repeated_anchor_is_rejected_and_names_its_count (test_edit_protocol.AnchoredEditTests) ... ok
+test_several_edits_to_one_file_compose_in_order (test_edit_protocol.AnchoredEditTests) ... ok
+test_edits_apply_in_file_order_not_call_order (test_edit_protocol.MultipleEditTests) ... ok
+test_every_anchor_resolves_against_the_text_the_model_was_shown (test_edit_protocol.MultipleEditTests) ... ok
+test_overlapping_edits_are_refused_before_anything_is_written (test_edit_protocol.MultipleEditTests) ... ok
+test_a_derivation_without_literals_still_executes_a_real_page_check (test_edit_protocol.PreparedCheckDerivationTests) ... ok
+test_derived_source_is_valid_javascript_with_escaped_names (test_edit_protocol.PreparedCheckDerivationTests) ... ok
+test_quoted_test_ids_and_button_names_become_assertions (test_edit_protocol.PreparedCheckDerivationTests) ... ok
+test_repeated_names_are_asserted_once_and_unknown_phrasing_is_ignored (test_edit_protocol.PreparedCheckDerivationTests) ... ok
+test_a_partial_batch_keeps_the_full_requirement_index (test_edit_protocol.PreparedModeTests) ... ok
+test_an_edit_batch_touching_only_prepared_checks_is_refused (test_edit_protocol.PreparedModeTests) ... ok
+test_compact_serialization_keeps_every_requirement_and_drops_empty_sections (test_edit_protocol.PreparedModeTests) ... ok
+test_edits_to_prepared_checks_are_reported_and_product_edits_still_apply (test_edit_protocol.PreparedModeTests) ... ok
+test_one_shot_small_batch_prepares_its_own_interface_check (test_edit_protocol.PreparedModeTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: TAP version 13
+# Subtest: prepared interface check
+not ok 1 - prepared interface check
+  ---
+  duration_ms: 0.686292
+  type: 'test'
+  location: '/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-wovnk2_5/application/checks/browser.cjs:16:12'
+  failureType: 'testCodeFailure'
+  error: 'Provided Playwright is unavailable'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    sharedBrowser (/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-wovnk2_5/application/checks/browser.cjs:6:52)
+    TestContext.<anonymous> (/private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/volo-test-wovnk2_5/application/checks/browser.cjs:17:32)
+    Test.runInAsyncScope (node:async_hooks:226:14)
+    Test.run (node:internal/test_runner/test:1118:25)
+    Test.start (node:internal/test_runner/test:1015:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17)
+  ...
+# Subtest: checks/requirements.cjs
+ok 2 - checks/requirements.cjs
+  ---
+  duration_ms: 44.266959
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 67.471542
+
+ok
+test_prepared_mode_keeps_authored_behavior_and_drops_the_check_command (test_edit_protocol.PreparedModeTests) ... ok
+test_prepared_snapshot_hides_harness_owned_checks (test_edit_protocol.PreparedModeTests) ... ok
+test_hanging_module_load_is_bounded_with_real_process (test_environment.DiscoveryTests) ... ok
+test_invalid_budget_is_rejected_before_spawning (test_environment.DiscoveryTests) ... ok
+test_local_module_is_used_before_host_scan (test_environment.DiscoveryTests) ... ok
+test_probe_does_not_receive_credentials_or_node_preload (test_environment.DiscoveryTests) ... ok
+test_candidate_mutation_invalidates_result (test_external_gate.ExternalGateTests) ... ok
+test_changed_pinned_checks_rejected_before_execution (test_external_gate.ExternalGateTests) ... ok
+test_changed_requirements_rejected_before_execution (test_external_gate.ExternalGateTests) ... ok
+test_cli_writes_evidence_outside_inputs (test_external_gate.ExternalGateTests) ... ok
+test_duplicate_json_keys_and_missing_evidence_are_rejected (test_external_gate.ExternalGateTests) ... ok
+test_empty_contract_uncovered_requirement_and_symlink_rejected (test_external_gate.ExternalGateTests) ... ok
+test_every_declared_case_must_run (test_external_gate.ExternalGateTests) ... ok
+test_interpreter_invocation_preserves_virtual_environment (test_external_gate.ExternalGateTests) ... ok
+test_missing_duplicate_unknown_and_unsupported_results_rejected (test_external_gate.ExternalGateTests) ... ok
+test_model_credentials_and_process_injection_settings_are_not_inherited (test_external_gate.ExternalGateTests) ... ok
+test_nonzero_exit_does_not_override_all_pass_report (test_external_gate.ExternalGateTests) ... ok
+test_noop_and_empty_results_cannot_pass (test_external_gate.ExternalGateTests) ... ok
+test_real_correct_app_accepted_wrong_app_rejected_even_with_weakened_self_checks (test_external_gate.ExternalGateTests) ... ok
+test_skipped_and_error_are_incomplete_not_passed (test_external_gate.ExternalGateTests) ... ok
+test_suite_inside_candidate_is_rejected (test_external_gate.ExternalGateTests) ... ok
+test_suite_mutation_during_execution_invalidates_result (test_external_gate.ExternalGateTests) ... ok
+test_timeout_and_oversized_output_are_bounded_failures (test_external_gate.ExternalGateTests) ... ok
+test_contract_rejects_empty_cases_and_unbound_requirements (test_external_verifier.EvidenceTests) ... ok
+test_exit_zero_without_executed_cases_cannot_pass (test_external_verifier.EvidenceTests) ... ok
+test_missing_duplicate_unknown_cases_are_rejected (test_external_verifier.EvidenceTests) ... ok
+test_modified_requirements_are_rejected_before_any_container_starts (test_external_verifier.EvidenceTests) ... ok
+test_pass_fail_skip_and_process_error_are_distinct (test_external_verifier.EvidenceTests) ... ok
+test_snapshot_is_content_bound_and_rejects_symlinks (test_external_verifier.EvidenceTests) ... ok
+test_correct_product_passes_outside_its_own_test_files (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'
+test_empty_grader_is_an_error_not_a_pass (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'
+test_timeout_is_an_error_and_containers_are_removed (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'
+test_weakening_self_tests_does_not_repair_wrong_product (test_external_verifier.IsolatedVerifierTests) ... skipped 'Set HARNESS_TEST_IMAGE to a local Node/Python image'
+test_new_fixed_contract_blocks_stale_success_repairs_app_and_rejects_tampering (test_fixed_checks.FixedCheckTests) ... ok
+test_both_entrypoints_share_state_and_stop_with_the_launcher (test_launcher.LauncherTests) ... ok
+test_install_is_idempotent_and_refuses_external_manifest_symlinks (test_launcher.LauncherTests) ... ok
+test_probe_is_disabled_without_factory_directory (test_launcher.LauncherTests) ... ok
+test_probe_records_resources_without_changing_app_or_shutdown (test_launcher.LauncherTests) ... ok
+test_reserved_port_conflict_fails_and_does_not_leave_the_child_running (test_launcher.LauncherTests) ... ok
+test_synthetic_v1_and_v2_readings_and_natural_child_exit (test_launcher.ProbeLinuxFixtureTests) ... ok
+test_three_consecutive_truncations_stop_without_spending_remaining_calls (test_output_recovery.OutputRecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+ok
+test_truncation_leaves_compact_edit_mode_without_losing_source (test_output_recovery.OutputRecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_truncation_unlocks_incremental_tools_and_repairs_real_app (test_output_recovery.OutputRecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] deliver passed=True
+ok
+test_foreign_gateway_is_rejected_before_launch (test_pi_adapter.PiAdapterTests) ... ok
+test_fresh_config_no_secret_on_disk_and_no_inherited_provider_auth (test_pi_adapter.PiAdapterTests) ... ok
+test_only_terminal_assistant_usage_is_counted (test_pi_adapter.PiAdapterTests) ... ok
+test_missing_fields_and_partial_line_are_tolerated (test_probe_summary.ProbeSummaryTests) ... ok
+test_v2_window_deltas_peak_and_processes (test_probe_summary.ProbeSummaryTests) ... ok
+test_changed_public_file_is_rejected (test_public_specs.PublicSpecsTests) ... ok
+test_exact_input_binding_and_unmodified_public_source (test_public_specs.PublicSpecsTests) ... ok
+test_public_input_survives_bounded_context_and_checkpoint (test_public_specs.PublicSpecsTests) ... ok
+test_compact_edit_truncation_releases_forcing_without_discarding_source (test_recovery.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_repeated_truncation_stops_at_three_not_entire_call_budget (test_recovery.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+ok
+test_truncation_opens_incremental_tools_and_finishes_real_http_check (test_recovery.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_unadvertised_tool_does_not_execute_after_fallback (test_recovery.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] build_app passed=False
+[volo] verification detail: build_app did not run: Tool was not offered in this execution mode: build_app
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] finish passed=True
+ok
+test_completed_response_resets_consecutive_truncation_counter (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=length
+[volo] model calls=4 reported_tokens=600 finish=length
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+[volo] finish passed=True
+ok
+test_noop_self_check_is_never_authoritative_requirement_evidence (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] patch_and_verify passed=True
+ok
+test_three_consecutive_truncations_stop_before_call_budget (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=length
+[volo] model calls=3 reported_tokens=450 finish=length
+ok
+test_truncated_bundle_opens_file_tools_and_finishes_real_http_app (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] finish passed=True
+ok
+test_truncated_compact_patch_preserves_existing_files_and_opens_tools (test_recovery_external.RecoveryTests) ... [volo] implementing REQ-1
+[volo] model calls=1 reported_tokens=150 finish=length
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] finish passed=True
+ok
+test_configured_observer_is_still_asked_for_the_active_images (test_references.ObservationDisabledTests) ... ok
+test_disabled_observer_reports_uninspected_images_without_a_request (test_references.ObservationDisabledTests) ... ok
+test_active_and_inherited_images_only_without_duplicates (test_references.ReferenceTests) ... ok
+test_encoded_payload_byte_budget_splits_even_three_images (test_references.ReferenceTests) ... ok
+test_large_raster_is_resized_but_small_text_reference_stays_exact (test_references.ReferenceTests) ... ok
+test_real_response_routing_usage_cache_invalidation_and_context (test_references.ReferenceTests) ... ok
+test_remote_missing_and_symlink_inputs_are_never_read (test_references.ReferenceTests) ... ok
+test_truncated_observation_is_not_cached_or_called_complete (test_references.ReferenceTests) ... ok
+test_any_other_value_names_the_observation_model_verbatim (test_references.VisionSwitchTests) ... ok
+test_empty_and_off_values_disable_the_observation (test_references.VisionSwitchTests) ... ok
+test_process_environment_is_read_when_no_mapping_is_supplied (test_references.VisionSwitchTests) ... ok
+test_the_expensive_observation_model_is_one_variable_away (test_references.VisionSwitchTests) ... ok
+test_unset_variable_reads_the_images_on_the_cheap_model (test_references.VisionSwitchTests) ... ok
+test_a_failing_capture_reports_but_does_not_block_the_requirement_assertions (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_a_filtered_capture_is_reported_incomplete_rather_than_failing_the_run (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_an_operator_supplied_required_check_keeps_its_authority (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_independent_acceptance_decides_over_a_failing_capture (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_repairing_the_product_makes_the_capture_pass_and_it_is_still_not_a_verdict (test_repair_loop.CapturedCheckAuthorityTests) ... ok
+test_a_call_that_writes_or_verifies_resets_the_bound (test_repair_loop.DiagnosisStallTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+ok
+test_running_a_test_bundle_counts_as_acting_and_grep_does_not (test_repair_loop.DiagnosisStallTests) ... ok
+test_the_call_after_two_stalls_receives_the_complete_source_it_has_been_reading (test_repair_loop.DiagnosisStallTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+[volo] model calls=5 reported_tokens=750 finish=tool_calls
+ok
+test_the_third_stalled_call_switches_to_the_bounded_repair_path (test_repair_loop.DiagnosisStallTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+[volo] model calls=3 reported_tokens=450 finish=tool_calls
+[volo] model calls=4 reported_tokens=600 finish=tool_calls
+ok
+test_a_missing_key_in_the_real_payload_names_the_edit_and_the_key (test_repair_loop.EditAnchorTests) ... ok
+test_a_whitespace_only_difference_is_named_as_such (test_repair_loop.EditAnchorTests) ... ok
+test_an_absent_anchor_reports_where_it_stops_matching_and_the_real_text (test_repair_loop.EditAnchorTests)
+Call 7 guessed a different anchor instead of being told what the file holds. ... ok
+test_an_ambiguous_anchor_reports_its_count_and_line_numbers (test_repair_loop.EditAnchorTests)
+Calls 3 and 5 of run 8abb7f040604 were rejected with only a file name. ... ok
+test_the_real_failing_payload_is_rejected_with_a_usable_message_and_writes_nothing (test_repair_loop.EditAnchorTests) ... ok
+test_a_file_error_names_the_application_path_not_the_host_path (test_repair_loop.ToolFailureTests) ... ok
+test_a_missing_key_never_reaches_the_model_as_a_bare_exception_string (test_repair_loop.ToolFailureTests)
+Calls 4 and 7 of run 8abb7f040604 were rejected with the message "'path'". ... ok
+test_every_tool_exception_is_named_actionable_and_free_of_host_paths (test_repair_loop.ToolFailureTests) ... ok
+test_the_loop_formats_an_escaping_exception_instead_of_repeating_it (test_repair_loop.ToolFailureTests) ... [volo] model calls=1 reported_tokens=150 finish=tool_calls
+[volo] write_files error: write_files did not run: Tool was not offered in this execution mode: write_files
+[volo] model calls=2 reported_tokens=300 finish=tool_calls
+ok
+test_write_files_rejects_a_malformed_entry_by_name (test_repair_loop.ToolFailureTests) ... ok
+test_authored_product_source_is_rejected_before_any_build (test_self_navigation.SelfNavigationGuardTests) ... ok
+test_generated_checks_and_files_this_run_did_not_write_are_not_scanned (test_self_navigation.SelfNavigationGuardTests) ... ok
+test_in_place_rerender_passes_the_guard (test_self_navigation.SelfNavigationGuardTests) ... ok
+test_every_navigating_form_is_reported_with_its_line (test_self_navigation.SelfNavigationPatternTests) ... ok
+test_findings_are_bounded_and_one_per_line (test_self_navigation.SelfNavigationPatternTests) ... ok
+test_route_reads_history_calls_and_similar_names_are_not_reported (test_self_navigation.SelfNavigationPatternTests) ... ok
+test_the_gate_refuses_a_generation_that_recorded_nothing (test_selfcheck_deadend.BrowserAvailabilityTests) ... ok
+test_the_gate_refuses_a_generation_without_a_browser (test_selfcheck_deadend.BrowserAvailabilityTests) ... ok
+test_the_gate_still_refuses_self_navigation_when_a_browser_was_present (test_selfcheck_deadend.BrowserAvailabilityTests) ... ok
+test_verification_and_checkpoint_record_the_browser_environment (test_selfcheck_deadend.BrowserAvailabilityTests) ... ok
+test_assertion_library_misuse_is_recognized_in_both_report_formats (test_selfcheck_deadend.DefectDetectionTests) ... ok
+test_missing_module_and_undefined_symbol_are_check_defects (test_selfcheck_deadend.DefectDetectionTests) ... ok
+test_product_javascript_errors_and_page_text_are_not_check_defects (test_selfcheck_deadend.DefectDetectionTests) ... ok
+test_signature_ignores_ports_ids_and_durations_but_not_the_failure (test_selfcheck_deadend.DefectDetectionTests) ... ok
+test_an_edit_missing_a_key_reports_what_it_needs (test_selfcheck_deadend.MalformedEditTests)
+Run 8abb spent two of fifteen calls on a KeyError reported to the model as "'path'". ... ok
+test_a_capture_survives_repair_that_does_not_change_the_product (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_a_defective_check_is_never_frozen_and_is_handed_back (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_a_frozen_check_that_becomes_defective_is_released_on_its_first_failure (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_clear_prepared_check_guards_restores_capture_for_a_new_batch (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+test_two_identical_failures_over_changed_source_release_the_capture (test_selfcheck_deadend.RepairLoopBoundTests) ... ok
+
+----------------------------------------------------------------------
+Ran 226 tests in 86.756s
+
+OK (skipped=12)

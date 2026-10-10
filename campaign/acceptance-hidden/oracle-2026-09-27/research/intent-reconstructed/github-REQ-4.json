@@ -1,0 +1,184 @@
+{
+ "tests": [
+  {
+   "id": "REQ-4-1",
+   "n": 1,
+   "title": "Click nested directory then text file, verify path/content/reload and hide file on branch without it",
+   "checks": [
+    "Directory listing shows the seeded nested directory and text file as links with exact accessible names",
+    "File page displays current branch, full-path breadcrumbs, and the saved text content as a complete visible value",
+    "Reloading the file page retains the same branch, path, and text content",
+    "Switching to feature-search, which lacks the file, removes the file link and content from the Code view",
+    "No write operation or commit is created while browsing files"
+   ]
+  },
+  {
+   "id": "REQ-4-2-1",
+   "n": 1,
+   "title": "Open repository Commits history and file-scoped history; verify newest-first rows, commit detail, and reload stability",
+   "checks": [
+    "Clicking Commits shows branch history with newest commits first",
+    "Each row displays short hash, commit message 'Document search flow', author, and relative time containing 'ago'",
+    "File-scoped history shows only commits that modified that file and excludes unrelated commits",
+    "Clicking a commit opens its detail page showing parent revision and changed files",
+    "Refreshing the history page preserves commit order, messages, and changed-file information"
+   ]
+  },
+  {
+   "id": "REQ-4-2-2",
+   "n": 1,
+   "title": "Open commit diff from history or Compare; verify src/search.ts, changed-files summary, line counts, and no modifications",
+   "checks": [
+    "Clicking the commit short hash or selecting base/compare and clicking Compare opens the diff page",
+    "Diff page displays base and compare identifiers and 'Changed files' summary",
+    "Changed-file path 'src/search.ts' appears as exact text with added/deleted lines for the file",
+    "Unchanged files do not appear in the changed-files list",
+    "Refreshing or returning to history does not modify commits, branches, or files; unauthorized revisions are not displayed"
+   ]
+  },
+  {
+   "id": "REQ-4-2-3",
+   "n": 1,
+   "title": "Search code term, filter by src path, open matching file, and confirm no private-repository leakage",
+   "checks": [
+    "Repository Search box accepts the query and pressing Enter exposes a unique Code results link",
+    "Path filter 'src/' restricts results to matching files in the current repository under that path",
+    "Results show snippet, file path, and branch/revision context; file links have exact accessible names",
+    "Clicking a result opens the matching file near the match with the query text visible",
+    "No content from unauthorized private repositories appears; search writes no commits or files"
+   ]
+  },
+  {
+   "id": "REQ-4-2-3",
+   "n": 2,
+   "title": "Search absent query 'no-such-token' shows 'No code results' and retains exact query and filters",
+   "checks": [
+    "Entering 'no-such-token' and opening Code results shows the empty state 'No code results'",
+    "Search box retains the exact query 'no-such-token'",
+    "Repository scope and path/language filters remain unchanged",
+    "No file is opened and no stale result appears"
+   ]
+  },
+  {
+   "id": "REQ-4-2-3",
+   "n": 3,
+   "title": "Signed-in authorized search opens README.md match and persists file context/text after reload",
+   "checks": [
+    "Signing in as alice-dev and opening repository acme-docs allows searching with 'search flow'",
+    "Result link has accessible name exactly 'README.md' and opens the matching file",
+    "File page displays 'search flow' as complete visible text",
+    "Reloading the file page preserves branch, path, and text, and the exact file link remains available",
+    "Search does not create commits or modify files"
+   ]
+  },
+  {
+   "id": "REQ-4-2-3",
+   "n": 4,
+   "title": "Repeat absent code search after returning to repository shows same empty state without stale matches",
+   "checks": [
+    "Searching 'no-such-token' first shows 'No code results' and retains the query",
+    "Returning to the repository and repeating the same search again shows 'No code results'",
+    "No stale match from the previous search is displayed",
+    "The repository scope and exact query remain unchanged; no file is opened"
+   ]
+  },
+  {
+   "id": "REQ-4-3-1",
+   "n": 1,
+   "title": "Switch from main to feature-search via Branch selector, verify file-list/content change and branch heads unchanged",
+   "checks": [
+    "Branch selector button accessible name is 'Branch main'; Find branch textbox filters options as typed",
+    "Selecting option 'feature-search' changes selector to 'Branch feature-search' and displays branch-only file link 'main-only.md'",
+    "Selector lists both 'main' and 'feature-search' and marks the current branch",
+    "Selecting 'main' again restores main's file content",
+    "No commit is created and neither branch head is changed by switching"
+   ]
+  },
+  {
+   "id": "REQ-4-3-1",
+   "n": 2,
+   "title": "Enter unmatched branch query in selector shows no-matching state and preserves active branch after close/reload",
+   "checks": [
+    "Opening selector and typing unknown branch term displays empty/no-matching branch state",
+    "Closing with Escape does not change the original active branch shown on the selector",
+    "Reloading the Code page retains the original active branch",
+    "No branch is created or selected as current"
+   ]
+  },
+  {
+   "id": "REQ-4-3-2",
+   "n": 1,
+   "title": "Create branch feature/api-v2 from main head via selector, switch to it, and persist after reload",
+   "checks": [
+    "Typing 'feature/api-v2' in Find branch exposes option 'Create branch: feature/api-v2' without Enter",
+    "Selecting that option creates the branch at the current main branch-head commit and switches the selector/page to it",
+    "Branch detail/base commit equals the original main head; main history and files are not rewritten",
+    "Refreshing the branch selector and page keeps 'feature/api-v2' selected and listed",
+    "Empty, invalid, duplicate, or permission-denied names show an error and create no branch"
+   ]
+  },
+  {
+   "id": "REQ-4-3-2",
+   "n": 2,
+   "title": "Enter invalid..branch in branch selector immediately shows 'Invalid branch' and creates no branch",
+   "checks": [
+    "Typing 'invalid..branch' immediately displays the visible error 'Invalid branch'",
+    "No 'Create branch: invalid..branch' option is displayed",
+    "Current branch remains the original branch after closing and reloading",
+    "No new branch reference is created; branch list and commit history are unchanged"
+   ]
+  },
+  {
+   "id": "REQ-4-3-3",
+   "n": 1,
+   "title": "Admin changes default branch from main to release in Settings → Branches, confirms, and new default persists after reload",
+   "checks": [
+    "Settings → Branches renders native 'Default branch' select with options 'main' and 'release'",
+    "Selecting 'release', clicking Update, and confirming saves release as default",
+    "Opening repository without a branch shows 'Branch release'; selector still offers 'main'",
+    "Refreshing settings shows default branch still 'release'",
+    "'main' branch and its commit history remain available and unchanged"
+   ]
+  },
+  {
+   "id": "REQ-4-3-3",
+   "n": 2,
+   "title": "Non-Admin sees no default-branch selector/update control or rejection leaves default unchanged",
+   "checks": [
+    "Signed-in non-admin opening Branches page has no 'Default branch' combobox or update button rendered",
+    "Attempting to submit a default-branch change is rejected by the server",
+    "Saved default branch remains 'main' after reload",
+    "Existing branches and commits are unchanged"
+   ]
+  },
+  {
+   "id": "REQ-4-4",
+   "n": 1,
+   "title": "Add docs/guide.md via Add file, commit with non-empty message, verify new commit/content persist and branch head moves",
+   "checks": [
+    "Clicking Add file → Create new file opens fields File name, File contents, Commit message and button Commit changes",
+    "Submitting path 'docs/guide.md' with content and a 1-72 character message creates a commit whose parent is original branch head",
+    "Branch head updates to the new commit; file page displays the exact saved content and commit history shows the exact message",
+    "Refreshing file page and history preserves the new file and commit",
+    "Invalid/conflicting path, empty message, protected branch, or persistence failure leaves file, branch head, and history unchanged"
+   ]
+  },
+  {
+   "id": "REQ-4-4",
+   "n": 2,
+   "title": "Submit ../invalid.md with content and no commit message shows invalid path/required message and changes nothing",
+   "checks": [
+    "Entering path '../invalid.md', content 'must not be saved', and empty commit message then clicking Commit changes displays 'Invalid file path' and/or 'Commit message is required'",
+    "No commit is created for the invalid submission",
+    "File '../invalid.md' does not appear in the repository after reload",
+    "Branch head and existing commit history remain unchanged"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 62986,
+  "completion_tokens": 10229
+ },
+ "cost_cny": 0.281,
+ "finish": "stop"
+}

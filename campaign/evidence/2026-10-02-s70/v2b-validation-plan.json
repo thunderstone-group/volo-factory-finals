@@ -1,0 +1,13 @@
+{
+  "v2b_sha256": "b106172445872686fc6e4d349576cc3a5f5ce58b31f48e58a4b4b47642e28cfd",
+  "changed_from_v2": [
+    "source_contracts.py"
+  ],
+  "fix": "Reconstruct a referenced namespace constant collection when resolving its root; otherwise absent constants could generate false application failures. Namespace initializer aliases must preserve the source name.",
+  "verification": {
+    "reproduced_failing_synthetic_control_before_fix": true,
+    "source_contract_tests_after_fix": 13
+  },
+  "generation_and_ui_phase_files_identical_to_v2": true,
+  "fresh_v2_prefix_checkpoints": "capture_ui_checkpoint.py is running; do not change the live v2 run or claim a full v2b generation yet."
+}

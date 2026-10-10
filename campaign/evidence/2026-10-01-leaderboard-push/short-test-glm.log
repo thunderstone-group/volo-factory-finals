@@ -1,0 +1,1 @@
+{"status": "completed", "finish": "stop", "usage": {"prompt_tokens": 1220, "completion_tokens": 2185}, "response_chars": 4024, "model": "glm-5.3-flash", "max_tokens": 16384, "seconds": 46.5, "prompt_chars": 6011, "estimated_cost_cny": 0.007094}

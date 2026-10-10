@@ -1,0 +1,28 @@
+{
+  "error": "ValueError: Incomplete or out-of-scope repair",
+  "seconds": 250.1,
+  "usage": {
+    "calls": 1,
+    "draft_call_limit": 1,
+    "repair_call_limit": 0,
+    "completed_calls": 1,
+    "failed_calls": 0,
+    "failure_limit": 1,
+    "refused_calls": 0,
+    "known_prompt_tokens": 89954,
+    "prompt_tokens": 89954,
+    "known_completion_tokens": 70171,
+    "completion_tokens": 70171,
+    "unknown_usage_calls": [],
+    "estimated_cost_cny": 0.370638,
+    "estimated_repair_cost_cny": 0,
+    "repair_cny_limit": 10.0,
+    "side_calls": 0,
+    "fallback_model": null,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 1
+    },
+    "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  "scope": "Controlled app repair from new complete public requirements and organizer feedback; not an official agent submission or proof of generalization."
+}

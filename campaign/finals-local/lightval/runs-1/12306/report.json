@@ -1,0 +1,77 @@
+{
+ "kind": "testgen",
+ "scenarios": [
+  {
+   "id": "EV-1.1",
+   "name": "Search only high-speed trains from home",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "EV-1.2",
+   "name": "View public service-hours notice",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.1
+  },
+  {
+   "id": "EV-2.1",
+   "name": "Switch public site language",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "EV-2.2",
+   "name": "Open public contact information",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.1
+  },
+  {
+   "id": "EV-3.1",
+   "name": "Expand train stop details from results",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "EV-3.2",
+   "name": "Navigate to later months in the date picker",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  }
+ ],
+ "invariants": [],
+ "coverage": {
+  "total": 6,
+  "parsed": 6
+ },
+ "seconds": 2.8
+}

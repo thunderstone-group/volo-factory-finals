@@ -1,0 +1,307 @@
+{
+  "task": "github",
+  "app_dir": "~/projects/arcbench-campaign/finals-local/runs/github-cand-a64cd91e-s1/workspace",
+  "app_sha256": "c597ec2e4071918e87191172cf5e754a19fe7615f109d18128d32ecf9761417c",
+  "frozen_manifest_sha256": "569f6719e9eed44a28365ef64c036c75d0405df2010cdb1e34f8f0093a92e83b",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "EV-1.1: Filter issues with combined qualifiers",
+      "file": "01-EV-1.1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2095,
+      "error": null
+    },
+    {
+      "name": "EV-1.2: Sort the filtered issue list",
+      "file": "02-EV-1.2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1684,
+      "error": null
+    },
+    {
+      "name": "EV-1.3: Filter draft pull requests by author",
+      "file": "03-EV-1.3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1554,
+      "error": null
+    },
+    {
+      "name": "EV-1.4: Close an issue as not planned",
+      "file": "04-EV-1.4.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1938,
+      "error": null
+    },
+    {
+      "name": "EV-1.5: Preview a Markdown issue comment",
+      "file": "05-EV-1.5.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1939,
+      "error": null
+    },
+    {
+      "name": "EV-1.6: Preview a Markdown file before committing",
+      "file": "06-EV-1.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1930,
+      "error": null
+    },
+    {
+      "name": "EV-1.7: Convert an open pull request to draft",
+      "file": "07-EV-1.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1853,
+      "error": null
+    },
+    {
+      "name": "EV-1.8: Switch the pull request diff layout",
+      "file": "08-EV-1.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1779,
+      "error": null
+    },
+    {
+      "name": "EV-1.9: Search labels before applying one",
+      "file": "09-EV-1.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1868,
+      "error": null
+    },
+    {
+      "name": "EV-1.10: Swap comparison branches",
+      "file": "10-EV-1.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1962,
+      "error": null
+    },
+    {
+      "name": "EV-2.1: Star and unstar a repository",
+      "file": "11-EV-2.1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1754,
+      "error": null
+    },
+    {
+      "name": "EV-2.2: Keep stars specific to each account",
+      "file": "12-EV-2.2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2617,
+      "error": null
+    },
+    {
+      "name": "EV-2.3: Edit repository topics",
+      "file": "13-EV-2.3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1835,
+      "error": null
+    },
+    {
+      "name": "EV-2.4: Restrict topic editing to administrators",
+      "file": "14-EV-2.4.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1625,
+      "error": null
+    },
+    {
+      "name": "EV-2.5: Archive a repository",
+      "file": "15-EV-2.5.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1921,
+      "error": null
+    },
+    {
+      "name": "EV-2.6: Read an archived repository as a visitor",
+      "file": "16-EV-2.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1579,
+      "error": null
+    },
+    {
+      "name": "EV-2.7: Create a repository label",
+      "file": "17-EV-2.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2139,
+      "error": null
+    },
+    {
+      "name": "EV-2.8: Rename an applied repository label",
+      "file": "18-EV-2.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1994,
+      "error": null
+    },
+    {
+      "name": "EV-2.9: Create a milestone with a due date",
+      "file": "19-EV-2.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2177,
+      "error": null
+    },
+    {
+      "name": "EV-2.10: Close and reopen a milestone",
+      "file": "20-EV-2.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1892,
+      "error": null
+    },
+    {
+      "name": "EV-3.1: Lock an issue conversation",
+      "file": "21-EV-3.1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2444,
+      "error": null
+    },
+    {
+      "name": "EV-3.2: Deny issue locking to a read user",
+      "file": "22-EV-3.2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1751,
+      "error": null
+    },
+    {
+      "name": "EV-3.3: Pin an issue to the repository list",
+      "file": "23-EV-3.3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1955,
+      "error": null
+    },
+    {
+      "name": "EV-3.4: Unpin an issue without deleting it",
+      "file": "24-EV-3.4.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10034,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toBeVisible() failed\n\nLocator:  getByRole('region', { name: 'Pinned issues', exact: true }).getByRole('list', { name: 'Pinned issue titles', exact: true })\nExpected: visible\nReceived: hidden\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 10000ms\n  - waiting for getByRole('region', { name: 'Pinned issues', exact: true }).getByRole('list', { name: 'Pinned issue titles', exact: true })\n    12 × locator resolved to <ul class=\"pinned-titles\" aria-label=\"Pinned issue titles\"></ul>\n       - unexpected value \"hidden\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                                                               ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github/tests/helpers.ts:5:111)\n    at order (/proxy/github/tests/helpers.ts:27:126)\n    at /proxy/github/tests/24-EV-3.4.spec.ts:44:3"
+    },
+    {
+      "name": "EV-3.5: Toggle a thumbs-up reaction",
+      "file": "25-EV-3.5.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2390,
+      "error": null
+    },
+    {
+      "name": "EV-3.6: Create and use a saved reply",
+      "file": "26-EV-3.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2231,
+      "error": null
+    },
+    {
+      "name": "EV-3.7: Edit an authored issue comment",
+      "file": "27-EV-3.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1847,
+      "error": null
+    },
+    {
+      "name": "EV-3.8: Confirm deletion of an authored comment",
+      "file": "28-EV-3.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1988,
+      "error": null
+    },
+    {
+      "name": "EV-3.9: Complete an issue task-list item",
+      "file": "29-EV-3.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1875,
+      "error": null
+    },
+    {
+      "name": "EV-3.10: Resolve and reopen a review thread",
+      "file": "30-EV-3.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1933,
+      "error": null
+    }
+  ],
+  "requirements_file": "github/requirements/requirements.yaml",
+  "requirements_sha256": "3c3037d50c80592d5ffd57046335208861ef8dbb6f382a3bec442fbe0a9678c9",
+  "test_task": "github",
+  "test_source_manifest_sha256": "569f6719e9eed44a28365ef64c036c75d0405df2010cdb1e34f8f0093a92e83b",
+  "test_files_sha256": {
+    "tests/01-EV-1.1.spec.ts": "9c8720f4a8b68d47630047b4bf9f9d669813364a9c727e2c662d05ea5371da34",
+    "tests/02-EV-1.2.spec.ts": "76b536312275d24464a2ef12435973ad3734a43dde901d06b954503b9058f94d",
+    "tests/03-EV-1.3.spec.ts": "ba0b6885ed6f8653cc66ee37fe39d0bd37a61623e2e838f9d56731580800b367",
+    "tests/04-EV-1.4.spec.ts": "f04b1f6985a988a47da6638889ea3113519479f625db4043f2bf60245fa42a50",
+    "tests/05-EV-1.5.spec.ts": "e8383574b3dabd7915f868ce504c263b0e9bbf83359e4449b779613ab36ea079",
+    "tests/06-EV-1.6.spec.ts": "99cafa153b0d0f0425be64a008781bb2d00e70e3cc2ea883a0cc4033592b356f",
+    "tests/07-EV-1.7.spec.ts": "2026c706d16583a7dacc0e3d5ef48740bec6f5afd659c7c95b56065083b2a214",
+    "tests/08-EV-1.8.spec.ts": "14982e8e3428c302925eb192bc2aeaf08ae21e986bb57b6b72d1e6c88f8a5c88",
+    "tests/09-EV-1.9.spec.ts": "7b2f0d163d0f7b2fc32a0634720dfe89fa747bb8d3d044437a0ec702b550f555",
+    "tests/10-EV-1.10.spec.ts": "776c1fce7e2c3509fda7c9fea4bcfaeb32467e4720b42893c2164998073d18b4",
+    "tests/11-EV-2.1.spec.ts": "031fb2e83a2db555e06002dd6d5dda3f4d9ddf9a8e927ce3453ba57565f7c145",
+    "tests/12-EV-2.2.spec.ts": "89a732c7d25fc856dc2de34bd63a23fa06b5cabef6e247f5a8f1432756de2dc0",
+    "tests/13-EV-2.3.spec.ts": "aa7407354f6ea5c293ee4ddbfbdd38ea38b561430e6d4a45981ce7c639c15948",
+    "tests/14-EV-2.4.spec.ts": "9fbaf4d2d84dff320b9809118ac0793c3cc947ecdbe6f8130bfef626b1caf010",
+    "tests/15-EV-2.5.spec.ts": "a472d5f2a1cee825a0bdd65ebf33eb7ed99c86987e785a7dd2f92bc49c9505f3",
+    "tests/16-EV-2.6.spec.ts": "47089595571bb42e42b0a67e9f17ca34d4f4ae32661b1eb9769d578be5bd30e0",
+    "tests/17-EV-2.7.spec.ts": "9480ea2b682afd76cd24528b4bd9d5f2c3ccaa2755d72061bca1bd4db43de3d4",
+    "tests/18-EV-2.8.spec.ts": "866152b302dc4621778331eb8b58501918ddbb050fa716edc5a226c91efbf9d3",
+    "tests/19-EV-2.9.spec.ts": "182547452b13c5e82641126814fe504c7dc0dcbbc735f5b9ccab6f597528eb91",
+    "tests/20-EV-2.10.spec.ts": "10331f180cae4aeae47f1b602892af074e1b31040599358ff8165d34cfbc429d",
+    "tests/21-EV-3.1.spec.ts": "9dadcfd03988ba738e5f729d602066a46c77d78a1e20ea368a01c533aaed50a7",
+    "tests/22-EV-3.2.spec.ts": "ea0caf3fc09f398eaa2774de33843cc757fc7f18a97b29f68d66ecd06d7797d8",
+    "tests/23-EV-3.3.spec.ts": "cd03b720eab35abe0e756484495bc70f7fb5e24069ecb05e7aff1ae44a564aeb",
+    "tests/24-EV-3.4.spec.ts": "5693c35b7cc391cf8f6212db441faba819d39de4af7410b2bbe584efb5b56eee",
+    "tests/25-EV-3.5.spec.ts": "2f1e4edda56302dc61b5c8c80d68348a5feebc24134e967121d8cb7b1966d908",
+    "tests/26-EV-3.6.spec.ts": "3ed583465a502a2df06cfa5b77e0c8f371d832fa047627a74c7c311058d9e435",
+    "tests/27-EV-3.7.spec.ts": "62dd2ebf4b5c9f0fd2c7b07af3d68471942f95b70a294f286ee88640823e6c22",
+    "tests/28-EV-3.8.spec.ts": "8e61beefcd244c1dc392e610b7352099369f0222af2c4ec42060fbc28317bb6c",
+    "tests/29-EV-3.9.spec.ts": "03bc81f2a5ec5ab44b7e94e36072b7dbe732b4972a988385d84e369c89964810",
+    "tests/30-EV-3.10.spec.ts": "db7e0a72d3774cba895d1f000084b551c71f4e56ffa98eecef4e282ba78f5677",
+    "tests/helpers.ts": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3"
+  },
+  "test_suite_sha256": "ae3d83d8a98ca2aa56a3a15130983bcb8ae83ab9a295aa69a3bb14b68f8f9ba6",
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 70.868,
+  "container_exit_code": 1,
+  "passed": 29,
+  "failed": 1,
+  "total": 30,
+  "wall_seconds": 74.388
+}

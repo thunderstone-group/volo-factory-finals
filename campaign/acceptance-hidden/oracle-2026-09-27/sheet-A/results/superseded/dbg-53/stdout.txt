@@ -1,0 +1,355 @@
+
+Running 48 tests using 1 worker
+
+[1A[2K[1/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/10-REQ-1-1-1.spec.cjs:267:1 › REQ-1-1-1 S1: 从首页打开已保存工作簿，并通过稳定 URL 恢复状态
+[1A[2K[2/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/10-REQ-1-1-1.spec.cjs:298:1 › REQ-1-1-1 S2: 从首页打开指定工作簿时不会带入其他工作簿数据
+[1A[2K[3/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/11-REQ-1-2-1.spec.cjs:258:1 › REQ-1-2-1 S1: 创建空白工作簿，并在刷新后保留 Sheet1 与 A1 选中状态
+[1A[2K[4/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/12-REQ-1-2-2.spec.cjs:258:1 › REQ-1-2-2 S1: 保存有效工作簿名，并在首页和重新打开后保持一致
+[1A[2K[5/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/12-REQ-1-2-2.spec.cjs:286:1 › REQ-1-2-2 S2: 纯空格名称被拒绝，重新打开后仍保留原名称
+[1A[2K[6/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/13-REQ-1-3-1.spec.cjs:259:1 › REQ-1-3-1 S1: 导入 UTF-8 CSV，并在刷新后保持原始行列与特殊字段
+[1A[2K[7/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/13-REQ-1-3-1.spec.cjs:283:1 › REQ-1-3-1 S2: （推断）未闭合引号的无效 CSV 被拒绝，首页不出现该工作簿且不显示部分结果
+[1A[2K[8/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/13-REQ-1-3-1.spec.cjs:294:1 › REQ-1-3-1 S3: （推断）多点号文件名只去掉末尾 .csv，首行保持普通数据，重新打开后行列不变
+[1A[2K[9/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/13-REQ-1-3-1.spec.cjs:308:1 › REQ-1-3-1 S4: （推断）CRLF 行尾、字段内换行和整行空字段的 CSV 导入后行列对齐，重新打开后保持
+[1A[2K[10/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/14-REQ-1-3-2.spec.cjs:258:1 › REQ-1-3-2 S1: 导出活动工作表的计算结果与特殊文本，且刷新后原数据不变
+[1A[2K[11/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/14-REQ-1-3-2.spec.cjs:288:1 › REQ-1-3-2 S2: 导出公式结果不会改写原公式或活动工作表
+[1A[2K[12/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/14-REQ-1-3-2.spec.cjs:306:1 › REQ-1-3-2 S3: 导出当前活动的第二个工作表内容
+[1A[2K[13/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/14-REQ-1-3-2.spec.cjs:323:1 › REQ-1-3-2 S4: 切回 Sheet1 后导出仍只包含当前工作表内容
+[1A[2K[14/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/15-REQ-2-1-1.spec.cjs:258:1 › REQ-2-1-1 S1: 新增并持久化 Sheet2，且不修改现有工作表数据
+[1A[2K[15/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/15-REQ-2-1-1.spec.cjs:281:1 › REQ-2-1-1 S2: 新增工作表使用第一个未占用的 SheetN 名称
+[1A[2K[16/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:258:1 › REQ-2-1-2 S1: 切换工作表时恢复各自数据、选中单元格和公式栏
+[1A[2K[17/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:293:1 › REQ-2-1-2 S2: 切换工作表时恢复公式原文并隔离普通值
+[1A[2K[18/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:321:1 › REQ-2-1-2 S3: 切换工作表时筛选与校验入口保持隔离
+[1A[2K  1) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:321:1 › REQ-2-1-2 S3: 切换工作表时筛选与校验入口保持隔离 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('button', { name: 'Open dropdown for C2', exact: true })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('button', { name: 'Open dropdown for C2', exact: true })[22m
+
+
+      333 |   await addDropdownRule(page, 'C2', 'C3', 'Open, Closed');
+      334 |   const dropdownC2 = btn(page, 'Open dropdown for C2');
+    > 335 |   await expect(dropdownC2).toBeVisible();
+          |                            ^
+      336 |
+      337 |   await addWorksheet(page, 'Sheet2');
+      338 |   await setCell(page, 'A1', 'Notes');
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:335:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/16-REQ-2-1-2-REQ-2-1-2-S3-切换工作表时筛选与校验入口保持隔离/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/16-REQ-2-1-2-REQ-2-1-2-S3-切换工作表时筛选与校验入口保持隔离/error-context.md
+
+
+[1A[2K[19/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:360:1 › REQ-2-1-2 S4: 在三张工作表之间切换时分别恢复各自选中单元格
+[1A[2K[20/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:390:1 › REQ-2-1-2 S5: 切换工作表时保持各自公式栏原文与计算结果
+[1A[2K[21/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/17-REQ-2-1-3.spec.cjs:258:1 › REQ-2-1-3 S1: 保存唯一工作表名称，并在刷新后保持
+[1A[2K[22/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/17-REQ-2-1-3.spec.cjs:280:1 › REQ-2-1-3 S2: 重复工作表名称被拒绝，原名称保持不变
+[1A[2K[23/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/17-REQ-2-1-3.spec.cjs:296:1 › REQ-2-1-3 S3: 空工作表名称被拒绝，刷新后仍保留原名称
+[1A[2K[24/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:281:1 › REQ-2-1-4 S1: 删除多工作表中的当前工作表，并在刷新后保持删除状态
+[1A[2K[25/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:303:1 › REQ-2-1-4 S2: 最后一个工作表不能删除，刷新后仍然存在
+[1A[2K[26/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:319:1 › REQ-2-1-4 S3: 透视表源工作表不能删除，源数据和透视结果均保持
+[1A[2K  2) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:319:1 › REQ-2-1-4 S3: 透视表源工作表不能删除，源数据和透视结果均保持 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+    Expected: [32m"Region"[39m
+    Received: [31m""[39m
+
+    Call log:
+    [2m  - Expect "toHaveText" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('gridcell', { name: 'A1', exact: true })[22m
+    [2m    13 × locator resolved to <div tabindex="-1" role="gridcell" aria-label="A1" data-coord="A1" aria-selected="true" data-sheet="s_wd2n9cn" data-action="select-cell" class="grid-cell selected"></div>[22m
+    [2m       - unexpected value ""[22m
+
+
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+      71 |
+      72 | async function expectFormula(page, ref, value) {
+        at expectCells (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:69:86)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:324:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/18-REQ-2-1-4-REQ-2-1-4-S3-透视表源工作表不能删除，源数据和透视结果均保持/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/18-REQ-2-1-4-REQ-2-1-4-S3-透视表源工作表不能删除，源数据和透视结果均保持/error-context.md
+
+
+[1A[2K[27/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:344:1 › REQ-2-1-4 S4: 删除透视结果工作表会移除配置并允许随后删除原源表
+[1A[2K  3) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:344:1 › REQ-2-1-4 S4: 删除透视结果工作表会移除配置并允许随后删除原源表 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  getByRole('gridcell', { name: 'B4', exact: true })
+    Expected: [32m"2000"[39m
+    Received: [31m""[39m
+
+    Call log:
+    [2m  - Expect "toHaveText" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('gridcell', { name: 'B4', exact: true })[22m
+    [2m    13 × locator resolved to <div tabindex="-1" role="gridcell" aria-label="B4" data-coord="B4" class="grid-cell" aria-selected="false" data-sheet="s_ob3a04r" data-action="select-cell"></div>[22m
+    [2m       - unexpected value ""[22m
+
+
+      351 |   await switchTo(page, 'Sheet1');
+      352 |   await createPivot(page, 'A1', 'B3', { rows: 'Region', values: 'Sales', summarize: 'SUM' });
+    > 353 |   await expect(cell(page, 'B4')).toHaveText('2000');
+          |                                  ^
+      354 |
+      355 |   const pivotDialog = await deleteSheetConfirmed(page, 'Pivot1');
+      356 |   await expect(pivotDialog).toBeHidden();
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:353:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/18-REQ-2-1-4-REQ-2-1-4-S4-删除透视结果工作表会移除配置并允许随后删除原源表/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/18-REQ-2-1-4-REQ-2-1-4-S4-删除透视结果工作表会移除配置并允许随后删除原源表/error-context.md
+
+
+[1A[2K[28/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:269:1 › REQ-2-2-1 S1: 在第 3 行上方插入空白行，整行数据下移且刷新后保持
+[1A[2K[29/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:281:1 › REQ-2-2-1 S2: 删除第 3 行后后续数据上移，重新打开后顺序保持
+[1A[2K[30/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:297:1 › REQ-2-2-1 S3: 在目标行下方插入空白行并保持其他数据
+[1A[2K[31/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:309:1 › REQ-2-2-1 S4: 插入行后调整公式引用并保持计算结果
+[1A[2K[32/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:323:1 › REQ-2-2-1 S5: 插入行时校验规则随原单元格下移
+[1A[2K  4) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:323:1 › REQ-2-2-1 S5: 插入行时校验规则随原单元格下移 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for getByText('Please enter a number from 0 to 100', { exact: true })[22m
+
+
+      334 |   await expect(cell(page, 'B2')).toHaveText('101');
+      335 |   await setCell(page, 'B3', '101');
+    > 336 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      337 |   await expect(cell(page, 'B3')).toHaveText('50');
+      338 |
+      339 |   await page.reload();
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:336:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/19-REQ-2-2-1-REQ-2-2-1-S5-插入行时校验规则随原单元格下移/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/19-REQ-2-2-1-REQ-2-2-1-S5-插入行时校验规则随原单元格下移/error-context.md
+
+
+[1A[2K[33/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:263:1 › REQ-2-2-2 S1: 在 B 列左侧插入空白列，整列数据右移且刷新后保持
+[1A[2K[34/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:275:1 › REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持
+[1A[2K  5) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:275:1 › REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  getByRole('gridcell', { name: 'B2', exact: true })
+    Expected: [32m"#[7mREF[27m!"[39m
+    Received: [31m"#[7mERROR[27m!"[39m
+
+    Call log:
+    [2m  - Expect "toHaveText" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('gridcell', { name: 'B2', exact: true })[22m
+    [2m    13 × locator resolved to <div tabindex="-1" role="gridcell" aria-label="B2" data-coord="B2" data-sheet="bs1" class="grid-cell" aria-selected="false" data-action="select-cell">#ERROR!</div>[22m
+    [2m       - unexpected value "#ERROR!"[22m
+
+
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+      71 |
+      72 | async function expectFormula(page, ref, value) {
+        at expectCells (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:69:86)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:283:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/20-REQ-2-2-2-REQ-2-2-2-S2-删除公式直接引用的-B-列后显示引用错误，重新打开后保持/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/20-REQ-2-2-2-REQ-2-2-2-S2-删除公式直接引用的-B-列后显示引用错误，重新打开后保持/error-context.md
+
+
+[1A[2K[35/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:289:1 › REQ-2-2-2 S3: 在目标列右侧插入空白列并保持其他数据
+[1A[2K[36/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:301:1 › REQ-2-2-2 S4: 插入列后调整公式引用并保持计算结果
+[1A[2K[37/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:315:1 › REQ-2-2-2 S5: 插入列时校验规则随原单元格右移
+[1A[2K  6) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:315:1 › REQ-2-2-2 S5: 插入列时校验规则随原单元格右移 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for getByText('Please enter a number from 0 to 100', { exact: true })[22m
+
+
+      326 |   await expect(cell(page, 'B2')).toHaveText('101');
+      327 |   await setCell(page, 'C2', '101');
+    > 328 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      329 |   await expect(cell(page, 'C2')).toHaveText('50');
+      330 |
+      331 |   await page.reload();
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:328:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/20-REQ-2-2-2-REQ-2-2-2-S5-插入列时校验规则随原单元格右移/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/20-REQ-2-2-2-REQ-2-2-2-S5-插入列时校验规则随原单元格右移/error-context.md
+
+
+[1A[2K[38/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:258:1 › REQ-3-1-1 S1: 通过公式栏提交单元格值，依赖公式重算并持久化
+[1A[2K[39/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:278:1 › REQ-3-1-1 S2: Escape 取消网格内未提交编辑，刷新后保留原值
+[1A[2K[40/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:299:1 › REQ-3-1-1 S3: 通过网格提交文本、数字、布尔值、日期文本和公式
+[1A[2K  7) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:299:1 › REQ-3-1-1 S3: 通过网格提交文本、数字、布尔值、日期文本和公式 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeHidden[2m([22m[2m)[22m failed
+
+    Locator:  getByRole('textbox', { name: 'Edit A1', exact: true })
+    Expected: hidden
+    Received: visible
+
+    Call log:
+    [2m  - Expect "toBeHidden" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('textbox', { name: 'Edit A1', exact: true })[22m
+    [2m    14 × locator resolved to <input type="text" class="cell-editor" aria-label="Edit A1"/>[22m
+    [2m       - unexpected value "visible"[22m
+
+
+      63 |   await editor.fill(value);
+      64 |   await editor.press('Enter');
+    > 65 |   await expect(editor).toBeHidden();
+         |                        ^
+      66 | }
+      67 |
+      68 | async function expectCells(page, expected) {
+        at editInGrid (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:65:24)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:301:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/21-REQ-3-1-1-REQ-3-1-1-S3-通过网格提交文本、数字、布尔值、日期文本和公式/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/21-REQ-3-1-1-REQ-3-1-1-S3-通过网格提交文本、数字、布尔值、日期文本和公式/error-context.md
+
+
+[1A[2K[41/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:321:1 › REQ-3-1-1 S4: 在更深的单元格位置提交公式并在刷新后保持
+[1A[2K  8) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:321:1 › REQ-3-1-1 S4: 在更深的单元格位置提交公式并在刷新后保持 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeHidden[2m([22m[2m)[22m failed
+
+    Locator:  getByRole('textbox', { name: 'Edit F12', exact: true })
+    Expected: hidden
+    Received: visible
+
+    Call log:
+    [2m  - Expect "toBeHidden" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('textbox', { name: 'Edit F12', exact: true })[22m
+    [2m    13 × locator resolved to <input type="text" class="cell-editor" aria-label="Edit F12"/>[22m
+    [2m       - unexpected value "visible"[22m
+
+
+      63 |   await editor.fill(value);
+      64 |   await editor.press('Enter');
+    > 65 |   await expect(editor).toBeHidden();
+         |                        ^
+      66 | }
+      67 |
+      68 | async function expectCells(page, expected) {
+        at editInGrid (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:65:24)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:325:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/21-REQ-3-1-1-REQ-3-1-1-S4-在更深的单元格位置提交公式并在刷新后保持/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/21-REQ-3-1-1-REQ-3-1-1-S4-在更深的单元格位置提交公式并在刷新后保持/error-context.md
+
+
+[1A[2K[42/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:258:1 › REQ-3-1-2 S1: 从 B2 原子粘贴二维表格，保留空字段和矩形外数据
+[1A[2K[43/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:277:1 › REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态
+[1A[2K  9) ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:277:1 › REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态 
+
+    [31mTest timeout of 10000ms exceeded.[39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for getByText('Please enter a number from 0 to 100', { exact: true })[22m
+
+
+      286 |   await pressCtrlV(page);
+      287 |
+    > 288 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      289 |   const original = { B2: 'Ann', C2: '10', B3: 'Bob', C3: '20' };
+      290 |   await expectCells(page, original);
+      291 |   await page.reload();
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:288:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/22-REQ-3-1-2-REQ-3-1-2-S2-粘贴中任一值违反校验时整批拒绝且不留下部分状态/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/results/dbg-53/artifacts/22-REQ-3-1-2-REQ-3-1-2-S2-粘贴中任一值违反校验时整批拒绝且不留下部分状态/error-context.md
+
+
+[1A[2K[44/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:296:1 › REQ-3-1-2 S3: 右键粘贴替换目标公式并重算依赖项
+[1A[2K[45/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:314:1 › REQ-3-1-2 S4: 从 A1 粘贴单行表格并保持外部单元格不变
+[1A[2K[46/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:329:1 › REQ-3-1-2 S5: 从 C3 粘贴两行两列表格并保留源外内容
+[1A[2K[47/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/23-REQ-3-1-3.spec.cjs:258:1 › REQ-3-1-3 S1: 拖拽选择精确的矩形区域
+[1A[2K[48/48] ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/23-REQ-3-1-3.spec.cjs:279:1 › REQ-3-1-3 S2: 刷新后恢复完整选区，新的单元格选择会替换该选区
+[1A[2K  9 failed
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/16-REQ-2-1-2.spec.cjs:321:1 › REQ-2-1-2 S3: 切换工作表时筛选与校验入口保持隔离 
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:319:1 › REQ-2-1-4 S3: 透视表源工作表不能删除，源数据和透视结果均保持 
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/18-REQ-2-1-4.spec.cjs:344:1 › REQ-2-1-4 S4: 删除透视结果工作表会移除配置并允许随后删除原源表 
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:323:1 › REQ-2-2-1 S5: 插入行时校验规则随原单元格下移 
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:275:1 › REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持 
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:315:1 › REQ-2-2-2 S5: 插入列时校验规则随原单元格右移 
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:299:1 › REQ-3-1-1 S3: 通过网格提交文本、数字、布尔值、日期文本和公式 
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:321:1 › REQ-3-1-1 S4: 在更深的单元格位置提交公式并在刷新后保持 
+    ../../../../../../tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:277:1 › REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态 
+  39 passed (1.8m)

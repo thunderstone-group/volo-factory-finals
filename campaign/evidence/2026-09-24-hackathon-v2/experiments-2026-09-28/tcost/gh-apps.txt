@@ -1,0 +1,6 @@
+95ec 24 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/github-7-95ec6880ee7f/template
+5450 29 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/github-13-5450c3c63fe0/template
+e53e 30 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/github-16-e53edcaca334/template
+3f31 64 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/github-20-3f31a036e933/template
+b956 73 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/github-23-b95608a40de6/template
+4310 75 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/github-25-4310823c83f3/template

@@ -1,0 +1,1023 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-1-1-1",
+      "name": "REQ-1-1-1 -the requested workflow,the requested workflow page entry the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-1-1#2",
+      "name": "REQ-1-1-1 -the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-2-1",
+      "name": "REQ-1-2-1 -the requested workflow,the requested workflow Sheet1 the requested workflow A1 the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-2-2",
+      "name": "REQ-1-2-2 -the requested workflow,the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-2-2#2",
+      "name": "REQ-1-2-2 -the requested workflow,the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-3-1",
+      "name": "REQ-1-3-1 -the requested workflow UTF-8 CSV,the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-3-1#2",
+      "name": "REQ-1-3-1 -the requested workflow CSV the requested workflow,the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-1-3-1#3",
+      "name": "REQ-1-3-1 -the requested workflow CSV,the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-3-1#4",
+      "name": "REQ-1-3-1 -the requested workflow CSV,the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-3-2",
+      "name": "REQ-1-3-2 -the requested workflow,the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-3-2#2",
+      "name": "REQ-1-3-2 -the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-1-3-2#3",
+      "name": "REQ-1-3-2 -the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-1-3-2#4",
+      "name": "REQ-1-3-2 -the requested workflow Sheet1 the requested workflow",
+      "file": "t01-REQ-1.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-1",
+      "name": "REQ-2-1-1 -the requested workflow Sheet2,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-1#2",
+      "name": "REQ-2-1-1 -the requested workflow SheetN the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-2",
+      "name": "REQ-2-1-2 -the requested workflow, the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-1-2#2",
+      "name": "REQ-2-1-2 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-2#3",
+      "name": "REQ-2-1-2 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-2#4",
+      "name": "REQ-2-1-2 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-2#5",
+      "name": "REQ-2-1-2 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-3",
+      "name": "REQ-2-1-3 -the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-3#2",
+      "name": "REQ-2-1-3 -the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-3#3",
+      "name": "REQ-2-1-3 -the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-1-4",
+      "name": "REQ-2-1-4 -the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-1-4#2",
+      "name": "REQ-2-1-4 -the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-2-1-4#3",
+      "name": "REQ-2-1-4 -the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-2-1-4#4",
+      "name": "REQ-2-1-4 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-2-2-1",
+      "name": "REQ-2-2-1 -the requested workflow 3 the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-2-1#2",
+      "name": "REQ-2-2-1 -the requested workflow 3 the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-1#3",
+      "name": "REQ-2-2-1 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-2-2-1#4",
+      "name": "REQ-2-2-1 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-2-1#5",
+      "name": "REQ-2-2-1 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-2-2-2",
+      "name": "REQ-2-2-2 -the requested workflow B the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-2-2#2",
+      "name": "REQ-2-2-2 -the requested workflow B the requested workflow,the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-2-2#3",
+      "name": "REQ-2-2-2 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-2-2#4",
+      "name": "REQ-2-2-2 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-2-2-2#5",
+      "name": "REQ-2-2-2 -the requested workflow",
+      "file": "t02-REQ-2.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-3-1-1",
+      "name": "REQ-3-1-1 -the requested workflow,the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-1-1#2",
+      "name": "REQ-3-1-1 -Escape the requested workflow,the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-1-1#3",
+      "name": "REQ-3-1-1 -the requested workflow, the requested workflow, the requested workflow, the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'C1', exact: true })\nExpected: \"5\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'C1', exact: true })\n    9 × locator resolved to <div role=\"gridcell\" aria-label=\"C1\" data-coord=\"C1\" class=\"gridcell\" aria-selected=\"false\">…</div>\n      - unexpected value \"\"\n\n\n  121 |   await formulaBar(page).fill('=A1+B1');\n  122 |   await cell(page, 'D1').click();\n> 123 |   await expect(cell(page, 'C1')).toHaveText('5",
+      "source": "test('REQ-3-1-1#3: REQ-3-1-1 -the requested workflow, the requested workflow, the requested workflow, the requested workflow', async ({ page }) => {\n  await createBlankWorkbook(page);\n  await setCellViaFormulaBar(page, 'A1', '2');\n  await setCellViaFormulaBar(page, 'B1', '3');\n\n  await cell(page, 'C1').click();\n  await formulaBar(page).fill('=A1+B1');\n  await cell(page, 'D1').click();\n  await expect(cell(page, 'C1')).toHaveText('5');\n  await cell(page, 'C1').click();\n  await expect(formulaBar(page)).toHaveValue('=A1+B1');\n\n  await cell(page, 'D1').click();\n  await formulaBar(page).fill('=C1*2');\n  await formulaBar(page).press('Enter');\n  await expect(cell(page, 'D1')).toHaveText('10');\n\n  await cell(page, 'A1').dblclick();\n  const editA1 = page.getByRole('textbox', { name: 'Edit A1', exact: true });\n  await editA1.fill('10');\n  await editA1.press('Enter');\n  await expect(cell(page, 'C1')).toHaveText('13');\n  await expect(cell(page, 'D1')).toHaveText('26');\n\n  await page.reload();\n  await expect(cell(page, 'C1')).toHaveText('13');\n  await expect(cell(page, 'D1')).toHaveText('26');\n  await cell(page, 'C1').click();\n  await expect(formulaBar(page)).toHaveValue('=A1+B1');\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"Sheets\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"Sheets\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n  - generic [ref=e11]:\n    - main [ref=e12]:\n      - generic [ref=e13]:\n        - generic [ref=e14]:\n          - heading \"Untitled workbook\" [level=1] [ref=e15]\n          - button \"Rename workbook\" [ref=e16] [cursor=pointer]\n          - generic [ref=e17]: \"Last updated: 2026-10-03 20:47\"\n        - generic [ref=e18]:\n          - button \"Undo\" [ref=e19] [cursor=pointer]\n          - button \"Redo\" [disabled] [ref=e20]\n          - button \"Export CSV\" [ref=e21] [cursor=pointer]\n          - button \"Data\" [ref=e23] [cursor=pointer]\n        - generic [ref=e24]:\n          - generic [ref=e25]: Formula bar\n          - textbox \"Formula bar\" [ref=e26]: =A1+B1\n        - generic [ref=e27]:\n          - tablist \"Worksheets\" [ref=e28]:\n            - generic [ref=e29]:\n              - tab \"Sheet1\" [selected] [ref=e30] [cursor=pointer]\n              - button \"Worksheet options for Sheet1\" [ref=e31] [cursor=pointer]: ⋯\n          - button \"Add worksheet\" [ref=e32] [cursor=pointer]\n        - grid \"Worksheet grid\" [ref=e33]:\n          - row \"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\" [ref=e34]:\n            - columnheader \"A\" [ref=e36]\n            - columnheader \"B\" [ref=e37]\n     \n... page content omitted ...\n03]\n            - gridcell \"I20\" [ref=e604]\n            - gridcell \"J20\" [ref=e605]\n            - gridcell \"K20\" [ref=e606]\n            - gridcell \"L20\" [ref=e607]\n            - gridcell \"M20\" [ref=e608]\n            - gridcell \"N20\" [ref=e609]\n            - gridcell \"O20\" [ref=e610]\n            - gridcell \"P20\" [ref=e611]\n            - gridcell \"Q20\" [ref=e612]\n            - gridcell \"R20\" [ref=e613]\n            - gridcell \"S20\" [ref=e614]\n            - gridcell \"T20\" [ref=e615]\n            - gridcell \"U20\" [ref=e616]\n            - gridcell \"V20\" [ref=e617]\n            - gridcell \"W20\" [ref=e618]\n            - gridcell \"X20\" [ref=e619]\n            - gridcell \"Y20\" [ref=e620]\n            - gridcell \"Z20\" [ref=e621]\n    - complementary [ref=e622]:\n      - button \"Workbooks\" [ref=e623] [cursor=pointer]\n  - contentinfo [ref=e624]: Sheets workspace Header · Sidebar · Main content · Footer\n```",
+      "at": "t03-REQ-3.spec.cjs:123",
+      "seconds": 5.3
+    },
+    {
+      "id": "REQ-3-1-1#4",
+      "name": "REQ-3-1-1 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-1-2",
+      "name": "REQ-3-1-2 -the requested workflow B2 the requested workflow,the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-3-1-2#2",
+      "name": "REQ-3-1-2 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-1-2#3",
+      "name": "REQ-3-1-2 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-3-1-2#4",
+      "name": "REQ-3-1-2 -the requested workflow A1 the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-1-2#5",
+      "name": "REQ-3-1-2 -the requested workflow C3 the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-3-1-3",
+      "name": "REQ-3-1-3 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-1-3#2",
+      "name": "REQ-3-1-3 -the requested workflow,the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-2-1",
+      "name": "REQ-3-2-1 -the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow, the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-3-2-1#2",
+      "name": "REQ-3-2-1 -the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-3-2-1#3",
+      "name": "REQ-3-2-1 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-3-2-1#4",
+      "name": "REQ-3-2-1 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-3-2-2",
+      "name": "REQ-3-2-2 -the requested workflow,the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-3-2-2#2",
+      "name": "REQ-3-2-2 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-2-2#3",
+      "name": "REQ-3-2-2 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-2-2#4",
+      "name": "REQ-3-2-2 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-2-2#5",
+      "name": "REQ-3-2-2 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-3-2-2#6",
+      "name": "REQ-3-2-2 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-3-2-2#7",
+      "name": "REQ-3-2-2 -the requested workflow",
+      "file": "t03-REQ-3.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-1-1",
+      "name": "REQ-4-1-1 -the requested workflow,the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-1-1#2",
+      "name": "REQ-4-1-1 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-4-1-1#3",
+      "name": "REQ-4-1-1 -the requested workflow, the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-1-1#4",
+      "name": "REQ-4-1-1 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-1-1#5",
+      "name": "REQ-4-1-1 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-1-2",
+      "name": "REQ-4-1-2 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-4-1-2#2",
+      "name": "REQ-4-1-2 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-2-1",
+      "name": "REQ-4-2-1 -the requested workflow,the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-2-1#2",
+      "name": "REQ-4-2-1 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'G1', exact: true })\nExpected: \"7\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'G1', exact: true })\n    9 × locator resolved to <div role=\"gridcell\" aria-label=\"G1\" data-coord=\"G1\" class=\"gridcell\" aria-selected=\"false\">…</div>\n      - unexpected value \"\"\n\n\n  249 |\n  250 |   await expect(cell(page, 'F1')).toHaveText('5');\n> 251 |   await expect(cell(page, 'G1')).toHaveText('7');\n      |              ",
+      "source": "test('REQ-4-2-1#2: REQ-4-2-1 -the requested workflow', async ({ page }) => {\n  await setupDependentState(page);\n\n  await pasteExternal(page, 'A1', '5\\t7\\n6\\t8');\n\n  await expect(cell(page, 'A1')).toHaveText('5');\n  await expect(cell(page, 'B1')).toHaveText('7');\n  await expect(cell(page, 'C1')).toHaveText('12');\n  await expect(cell(page, 'D1')).toHaveText('24');\n\n  await selectCell(page, 'A1');\n  await page.keyboard.press('Shift+ArrowRight');\n  await page.keyboard.press('ControlOrMeta+x');\n  await selectCell(page, 'F1');\n  await page.keyboard.press('ControlOrMeta+v');\n\n  await expect(cell(page, 'F1')).toHaveText('5');\n  await expect(cell(page, 'G1')).toHaveText('7');\n  await expect(cell(page, 'C1')).toHaveText('12');\n  await expect(cell(page, 'D1')).toHaveText('24');\n  await selectCell(page, 'C1');\n  await expect(formulaBar(page)).toHaveValue('=F1+G1');\n\n  await page.reload();\n  await expect(grid(page)).toBeVisible();\n  await expect(cell(page, 'C1')).toHaveText('12');\n  await selectCell(page, 'C1');\n  await expect(formulaBar(page)).toHaveValue('=F1+G1');\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"Sheets\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"Sheets\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n  - generic [ref=e11]:\n    - main [ref=e12]:\n      - generic [ref=e13]:\n        - generic [ref=e14]:\n          - heading \"Q3 Sales\" [level=1] [ref=e15]\n          - button \"Rename workbook\" [ref=e16] [cursor=pointer]\n          - generic [ref=e17]: \"Last updated: 2024-05-01 10:00\"\n        - generic [ref=e18]:\n          - button \"Undo\" [ref=e19] [cursor=pointer]\n          - button \"Redo\" [disabled] [ref=e20]\n          - button \"Export CSV\" [ref=e21] [cursor=pointer]\n          - button \"Data\" [ref=e23] [cursor=pointer]\n        - generic [ref=e24]:\n          - generic [ref=e25]: Formula bar\n          - textbox \"Formula bar\" [ref=e26]: \"5\"\n        - generic [ref=e27]:\n          - tablist \"Worksheets\" [ref=e28]:\n            - generic [ref=e29]:\n              - tab \"Sheet1\" [selected] [ref=e30] [cursor=pointer]\n              - button \"Worksheet options for Sheet1\" [ref=e31] [cursor=pointer]: ⋯\n            - generic [ref=e32]:\n              - tab \"Sheet2\" [ref=e33] [cursor=pointer]\n              - button \"Worksheet options for Sheet2\" [ref=e34] [cursor=pointer]: ⋯\n          - button \"Add worksheet\" [ref=e35] [cursor=pointer]\n        - grid \"Worksheet grid\" [ref=e36]:\n       \n... page content omitted ...\n06]\n            - gridcell \"I20\" [ref=e607]\n            - gridcell \"J20\" [ref=e608]\n            - gridcell \"K20\" [ref=e609]\n            - gridcell \"L20\" [ref=e610]\n            - gridcell \"M20\" [ref=e611]\n            - gridcell \"N20\" [ref=e612]\n            - gridcell \"O20\" [ref=e613]\n            - gridcell \"P20\" [ref=e614]\n            - gridcell \"Q20\" [ref=e615]\n            - gridcell \"R20\" [ref=e616]\n            - gridcell \"S20\" [ref=e617]\n            - gridcell \"T20\" [ref=e618]\n            - gridcell \"U20\" [ref=e619]\n            - gridcell \"V20\" [ref=e620]\n            - gridcell \"W20\" [ref=e621]\n            - gridcell \"X20\" [ref=e622]\n            - gridcell \"Y20\" [ref=e623]\n            - gridcell \"Z20\" [ref=e624]\n    - complementary [ref=e625]:\n      - button \"Workbooks\" [ref=e626] [cursor=pointer]\n  - contentinfo [ref=e627]: Sheets workspace Header · Sidebar · Main content · Footer\n```",
+      "at": "t04-REQ-4.spec.cjs:251",
+      "seconds": 5.4
+    },
+    {
+      "id": "REQ-4-2-1#3",
+      "name": "REQ-4-2-1 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-4-2-2",
+      "name": "REQ-4-2-2 -the requested workflow,the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-2-2#2",
+      "name": "REQ-4-2-2 -the requested workflow,the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-2#3",
+      "name": "REQ-4-2-2 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-2#4",
+      "name": "REQ-4-2-2 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-4-2-2#5",
+      "name": "REQ-4-2-2 -the requested workflow",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-1-1",
+      "name": "REQ-5-1-1 -the requested workflow Sales the requested workflow,the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-5-1-1#2",
+      "name": "REQ-5-1-1 -the requested workflow ISO the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-5-1-1#3",
+      "name": "REQ-5-1-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-5-1-1#4",
+      "name": "REQ-5-1-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"East\"\nReceived: \"0\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div role=\"gridcell\" aria-label=\"D1\" data-coord=\"D1\" class=\"gridcell\" aria-selected=\"false\">…</div>\n      - unexpected value \"0\"\n\n\n  221 |   await expect(cell('A3')).toHaveText('North');\n  222 |   await expect(cell('A4')).toHaveText('South');\n> 223 |   await expect(cell('D1')).toHaveText('East');\n      |                            ^\n  224 |   await cell('D1').click();\n  225 |   await ex",
+      "source": "test('REQ-5-1-1#4: REQ-5-1-1 -the requested workflow', async ({ page }) => {\n  await importWorkbook(page, BASE_CSV);\n  await enterCell(page, 'D1', '=A2');\n  await enterCell(page, 'D4', 'outside');\n  await selectRange('A1', 'C4');\n  await sortRange(page, { sortBy: 'Sales', order: 'Descending', hasHeader: true });\n  await expect(cell('A2')).toHaveText('East');\n  await expect(cell('A3')).toHaveText('North');\n  await expect(cell('A4')).toHaveText('South');\n  await expect(cell('D1')).toHaveText('East');\n  await cell('D1').click();\n  await expect(page.getByLabel('Formula bar', { exact: true })).toHaveValue('=A2');\n  await expect(cell('D4')).toHaveText('outside');\n  await page.reload();\n  await expect(page.getByRole('grid', { name: 'Worksheet grid', exact: true })).toBeVisible();\n  await cell('D1').click();\n  await expect(page.getByLabel('Formula bar', { exact: true })).toHaveValue('=A2');\n  await expect(cell('D4')).toHaveText('outside');\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"Sheets\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"Sheets\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n  - generic [ref=e11]:\n    - main [ref=e12]:\n      - generic [ref=e13]:\n        - generic [ref=e14]:\n          - heading \"wbmuse12v2e3g9\" [level=1] [ref=e15]\n          - button \"Rename workbook\" [ref=e16] [cursor=pointer]\n          - generic [ref=e17]: \"Last updated: 2026-10-03 20:48\"\n        - generic [ref=e18]:\n          - button \"Undo\" [ref=e19] [cursor=pointer]\n          - button \"Redo\" [disabled] [ref=e20]\n          - button \"Export CSV\" [ref=e21] [cursor=pointer]\n          - button \"Data\" [ref=e23] [cursor=pointer]\n        - generic [ref=e24]:\n          - generic [ref=e25]: Formula bar\n          - textbox \"Formula bar\" [ref=e26]: Region\n        - generic [ref=e27]:\n          - tablist \"Worksheets\" [ref=e28]:\n            - generic [ref=e29]:\n              - tab \"Sheet1\" [selected] [ref=e30] [cursor=pointer]\n              - button \"Worksheet options for Sheet1\" [ref=e31] [cursor=pointer]: ⋯\n          - button \"Add worksheet\" [ref=e32] [cursor=pointer]\n        - grid \"Worksheet grid\" [ref=e33]:\n          - row \"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\" [ref=e34]:\n            - columnheader \"A\" [ref=e36]\n            - columnheader \"B\" [ref=e37]\n        \n... page content omitted ...\n03]\n            - gridcell \"I20\" [ref=e604]\n            - gridcell \"J20\" [ref=e605]\n            - gridcell \"K20\" [ref=e606]\n            - gridcell \"L20\" [ref=e607]\n            - gridcell \"M20\" [ref=e608]\n            - gridcell \"N20\" [ref=e609]\n            - gridcell \"O20\" [ref=e610]\n            - gridcell \"P20\" [ref=e611]\n            - gridcell \"Q20\" [ref=e612]\n            - gridcell \"R20\" [ref=e613]\n            - gridcell \"S20\" [ref=e614]\n            - gridcell \"T20\" [ref=e615]\n            - gridcell \"U20\" [ref=e616]\n            - gridcell \"V20\" [ref=e617]\n            - gridcell \"W20\" [ref=e618]\n            - gridcell \"X20\" [ref=e619]\n            - gridcell \"Y20\" [ref=e620]\n            - gridcell \"Z20\" [ref=e621]\n    - complementary [ref=e622]:\n      - button \"Workbooks\" [ref=e623] [cursor=pointer]\n  - contentinfo [ref=e624]: Sheets workspace Header · Sidebar · Main content · Footer\n```",
+      "at": "t05-REQ-5.spec.cjs:223",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-5-1-1#5",
+      "name": "REQ-5-1-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-1-1#6",
+      "name": "REQ-5-1-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-1-2",
+      "name": "REQ-5-1-2 -the requested workflow Region the requested workflow Sales the requested workflow,the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-1-2#2",
+      "name": "REQ-5-1-2 -the requested workflow, the requested workflow,the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-1-2#3",
+      "name": "REQ-5-1-2 -CSV the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-5-1-2#4",
+      "name": "REQ-5-1-2 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-1-2#5",
+      "name": "REQ-5-1-2 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-2-1",
+      "name": "REQ-5-2-1 -the requested workflow A1:A2 the requested workflow,the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"East\"\nReceived: \"East▾\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div role=\"gridcell\" aria-label=\"A2\" data-coord=\"A2\" aria-selected=\"true\" class=\"gridcell selected\">…</div>\n      - unexpected value \"East▾\"\n\n\n  364 |   await enterCell(page, 'A2', 'West');\n  365 |   await expect(page.getByText('Please select one of the following values: East, North, South', { exact: true })).toBeVisible();\n> 366 |   await expect(cell('A2')).toHaveText('East');\n    ",
+      "source": "test('REQ-5-2-1: REQ-5-2-1 -the requested workflow A1:A2 the requested workflow,the requested workflow', async ({ page }) => {\n  await importWorkbook(page, BASE_CSV);\n  await selectRange('A1', 'A2');\n  await setDropdownValidation(page, 'East, North, South');\n  await enterCell(page, 'A2', 'West');\n  await expect(page.getByText('Please select one of the following values: East, North, South', { exact: true })).toBeVisible();\n  await expect(cell('A2')).toHaveText('East');\n  await page.reload();\n  await expect(page.getByRole('grid', { name: 'Worksheet grid', exact: true })).toBeVisible();\n  await expect(cell('A2')).toHaveText('East');\n  await page.getByRole('button', { name: 'Open dropdown for A2', exact: true }).click();\n  await expect(page.getByRole('option', { name: 'East', exact: true })).toBeVisible();\n  await expect(page.getByRole('option', { name: 'North', exact: true })).toBeVisible();\n  await expect(page.getByRole('option', { name: 'South', exact: true })).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [active] [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button \"Sheets\" [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link \"Sheets\" [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n      - navigation \"Main navigation\" [ref=e9]:\n        - link \"Home\" [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n    - generic [ref=e11]:\n      - main [ref=e12]:\n        - generic [ref=e13]:\n          - generic [ref=e14]:\n            - heading \"wbmuse1ajhaub7\" [level=1] [ref=e15]\n            - button \"Rename workbook\" [ref=e16] [cursor=pointer]\n            - generic [ref=e17]: \"Last updated: 2026-10-03 20:48\"\n          - generic [ref=e18]:\n            - button \"Undo\" [ref=e19] [cursor=pointer]\n            - button \"Redo\" [disabled] [ref=e20]\n            - button \"Export CSV\" [ref=e21] [cursor=pointer]\n            - button \"Data\" [ref=e23] [cursor=pointer]\n          - generic [ref=e24]:\n            - generic [ref=e25]: Formula bar\n            - textbox \"Formula bar\" [ref=e26]: East\n          - generic [ref=e27]:\n            - tablist \"Worksheets\" [ref=e28]:\n              - generic [ref=e29]:\n                - tab \"Sheet1\" [selected] [ref=e30] [cursor=pointer]\n                - button \"Worksheet options for Sheet1\" [ref=e31] [cursor=pointer]: ⋯\n            - button \"Add worksheet\" [ref=e32] [cursor=pointer]\n          - grid \"Worksheet grid\" [ref=e33]:\n            - row \"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\" [ref=e34]:\n... page content omitted ...\n\"L20\" [ref=e609]\n              - gridcell \"M20\" [ref=e610]\n              - gridcell \"N20\" [ref=e611]\n              - gridcell \"O20\" [ref=e612]\n              - gridcell \"P20\" [ref=e613]\n              - gridcell \"Q20\" [ref=e614]\n              - gridcell \"R20\" [ref=e615]\n              - gridcell \"S20\" [ref=e616]\n              - gridcell \"T20\" [ref=e617]\n              - gridcell \"U20\" [ref=e618]\n              - gridcell \"V20\" [ref=e619]\n              - gridcell \"W20\" [ref=e620]\n              - gridcell \"X20\" [ref=e621]\n              - gridcell \"Y20\" [ref=e622]\n              - gridcell \"Z20\" [ref=e623]\n      - complementary [ref=e624]:\n        - button \"Workbooks\" [ref=e625] [cursor=pointer]\n    - contentinfo [ref=e626]: Sheets workspace Header · Sidebar · Main content · Footer\n  - status [ref=e628]:\n    - generic [ref=e629]: \"Please select one of the following values: East, North, South\"\n```",
+      "at": "t05-REQ-5.spec.cjs:366",
+      "seconds": 5.4
+    },
+    {
+      "id": "REQ-5-2-1#2",
+      "name": "REQ-5-2-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-2-1#3",
+      "name": "REQ-5-2-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeEmpty() failed\n\nLocator:  getByRole('gridcell', { name: 'C2', exact: true })\nExpected: empty\nReceived: notEmpty\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEmpty\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'C2', exact: true })\n    9 × locator resolved to <div role=\"gridcell\" aria-label=\"C2\" data-coord=\"C2\" class=\"gridcell\" aria-selected=\"false\">…</div>\n      - unexpected value \"notEmpty\"\n\n\n  400 |   await expect(cell('B3')).toHaveText('800');\n  401 |   await expect(cell('B4')).toHaveText('700');\n> 402 |   await expect(cell('C2')).toBeEmpty();\n      |                            ^\n  403 |   await expect(cell('C3')).toBeEmpty();\n  404 | });\n  40",
+      "source": "test('REQ-5-2-1#3: REQ-5-2-1 -the requested workflow', async ({ page }) => {\n  await importWorkbook(page, BASE_CSV);\n  await selectRange('B2', 'B4');\n  await setNumberValidation(page, 0, 100);\n  const pasteText = '50\\t60\\n150\\t160';\n  await page.evaluate((t) => navigator.clipboard.writeText(t), pasteText);\n  await cell('B2').click();\n  await page.keyboard.press('Control+V');\n  await expect(page.getByText('Please enter a number from 0 to 100', { exact: true })).toBeVisible();\n  await expect(cell('B2')).toHaveText('1200');\n  await expect(cell('B3')).toHaveText('800');\n  await expect(cell('B4')).toHaveText('700');\n  await expect(cell('C2')).toBeEmpty();\n  await expect(cell('C3')).toBeEmpty();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [active] [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button \"Sheets\" [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link \"Sheets\" [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n      - navigation \"Main navigation\" [ref=e9]:\n        - link \"Home\" [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n    - generic [ref=e11]:\n      - main [ref=e12]:\n        - generic [ref=e13]:\n          - generic [ref=e14]:\n            - heading \"wbmuse1fgbs6cn\" [level=1] [ref=e15]\n            - button \"Rename workbook\" [ref=e16] [cursor=pointer]\n            - generic [ref=e17]: \"Last updated: 2026-10-03 20:48\"\n          - generic [ref=e18]:\n            - button \"Undo\" [ref=e19] [cursor=pointer]\n            - button \"Redo\" [disabled] [ref=e20]\n            - button \"Export CSV\" [ref=e21] [cursor=pointer]\n            - button \"Data\" [ref=e23] [cursor=pointer]\n          - generic [ref=e24]:\n            - generic [ref=e25]: Formula bar\n            - textbox \"Formula bar\" [ref=e26]: \"1200\"\n          - generic [ref=e27]:\n            - tablist \"Worksheets\" [ref=e28]:\n              - generic [ref=e29]:\n                - tab \"Sheet1\" [selected] [ref=e30] [cursor=pointer]\n                - button \"Worksheet options for Sheet1\" [ref=e31] [cursor=pointer]: ⋯\n            - button \"Add worksheet\" [ref=e32] [cursor=pointer]\n          - grid \"Worksheet grid\" [ref=e33]:\n            - row \"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\" [ref=e34\n... page content omitted ...\n6]\n              - gridcell \"L20\" [ref=e607]\n              - gridcell \"M20\" [ref=e608]\n              - gridcell \"N20\" [ref=e609]\n              - gridcell \"O20\" [ref=e610]\n              - gridcell \"P20\" [ref=e611]\n              - gridcell \"Q20\" [ref=e612]\n              - gridcell \"R20\" [ref=e613]\n              - gridcell \"S20\" [ref=e614]\n              - gridcell \"T20\" [ref=e615]\n              - gridcell \"U20\" [ref=e616]\n              - gridcell \"V20\" [ref=e617]\n              - gridcell \"W20\" [ref=e618]\n              - gridcell \"X20\" [ref=e619]\n              - gridcell \"Y20\" [ref=e620]\n              - gridcell \"Z20\" [ref=e621]\n      - complementary [ref=e622]:\n        - button \"Workbooks\" [ref=e623] [cursor=pointer]\n    - contentinfo [ref=e624]: Sheets workspace Header · Sidebar · Main content · Footer\n  - status [ref=e626]:\n    - generic [ref=e627]: Please enter a number from 0 to 100\n```",
+      "at": "t05-REQ-5.spec.cjs:402",
+      "seconds": 5.6
+    },
+    {
+      "id": "REQ-5-2-1#4",
+      "name": "REQ-5-2-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-2-1#5",
+      "name": "REQ-5-2-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-2-1#6",
+      "name": "REQ-5-2-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-3-1",
+      "name": "REQ-5-3-1 -the requested workflow Pivot1 the requested workflow Region the requested workflow Sales,the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-3-1#2",
+      "name": "REQ-5-3-1 -the requested workflow,the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toBeEmpty() failed\n\nLocator:  getByRole('gridcell', { name: 'C2', exact: true })\nExpected: empty\nReceived: notEmpty\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEmpty\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'C2', exact: true })\n    9 × locator resolved to <div role=\"gridcell\" aria-label=\"C2\" data-coord=\"C2\" class=\"gridcell\" aria-selected=\"false\">…</div>\n      - unexpected value \"notEmpty\"\n\n\n  478 |   await expect(cell('A2')).toHaveText('East');\n  479 |   await expect(cell('B2')).toHaveText('1200');\n> 480 |   await expect(cell('C2')).toBeEmpty();\n      |                            ^\n  481 |   await expect(cell('D2')).toHaveText('1200');\n  482 |",
+      "source": "test('REQ-5-3-1#2: REQ-5-3-1 -the requested workflow,the requested workflow', async ({ page }) => {\n  await importWorkbook(page, BASE_CSV);\n  await createPivot(page, { rows: 'Region', columns: 'Status', values: 'Sales', summarizeBy: 'SUM' });\n  await expect(cell('A1')).toHaveText('Region');\n  await expect(cell('B1')).toHaveText('Open');\n  await expect(cell('C1')).toHaveText('Closed');\n  await expect(cell('D1')).toHaveText('Grand Total');\n  await expect(cell('A2')).toHaveText('East');\n  await expect(cell('B2')).toHaveText('1200');\n  await expect(cell('C2')).toBeEmpty();\n  await expect(cell('D2')).toHaveText('1200');\n  await expect(cell('A3')).toHaveText('North');\n  await expect(cell('B3')).toBeEmpty();\n  await expect(cell('C3')).toHaveText('800');\n  await expect(cell('D3')).toHaveText('800');\n  await expect(cell('A4')).toHaveText('South');\n  await expect(cell('B4')).toHaveText('700');\n  await expect(cell('C4')).toBeEmpty();\n  await expect(cell('D4')).toHaveText('700');\n  await expect(cell('A5')).toHaveText('Grand Total');\n  await expect(cell('B5')).toHaveText('1900');\n  await expect(cell('C5')).toHaveText('800');\n  await expect(cell('D5')).toHaveText('2700');\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"Sheets\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"Sheets\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n  - generic [ref=e11]:\n    - main [ref=e12]:\n      - generic [ref=e13]:\n        - generic [ref=e14]:\n          - heading \"wbmuse1lpskkgs\" [level=1] [ref=e15]\n          - button \"Rename workbook\" [ref=e16] [cursor=pointer]\n          - generic [ref=e17]: \"Last updated: 2026-10-03 20:48\"\n        - generic [ref=e18]:\n          - button \"Undo\" [ref=e19] [cursor=pointer]\n          - button \"Redo\" [disabled] [ref=e20]\n          - button \"Export CSV\" [ref=e21] [cursor=pointer]\n          - button \"Data\" [ref=e23] [cursor=pointer]\n        - generic [ref=e24]:\n          - generic [ref=e25]: Formula bar\n          - textbox \"Formula bar\" [ref=e26]: Region\n        - generic [ref=e27]:\n          - tablist \"Worksheets\" [ref=e28]:\n            - generic [ref=e29]:\n              - tab \"Sheet1\" [ref=e30] [cursor=pointer]\n              - button \"Worksheet options for Sheet1\" [ref=e31] [cursor=pointer]: ⋯\n            - generic [ref=e32]:\n              - tab \"Pivot1\" [selected] [ref=e33] [cursor=pointer]\n              - button \"Worksheet options for Pivot1\" [ref=e34] [cursor=pointer]: ⋯\n          - button \"Add worksheet\" [ref=e35] [cursor=pointer]\n        - region \"Pivot table editor\" [re\n... page content omitted ...\n28]\n            - gridcell \"I20\" [ref=e629]\n            - gridcell \"J20\" [ref=e630]\n            - gridcell \"K20\" [ref=e631]\n            - gridcell \"L20\" [ref=e632]\n            - gridcell \"M20\" [ref=e633]\n            - gridcell \"N20\" [ref=e634]\n            - gridcell \"O20\" [ref=e635]\n            - gridcell \"P20\" [ref=e636]\n            - gridcell \"Q20\" [ref=e637]\n            - gridcell \"R20\" [ref=e638]\n            - gridcell \"S20\" [ref=e639]\n            - gridcell \"T20\" [ref=e640]\n            - gridcell \"U20\" [ref=e641]\n            - gridcell \"V20\" [ref=e642]\n            - gridcell \"W20\" [ref=e643]\n            - gridcell \"X20\" [ref=e644]\n            - gridcell \"Y20\" [ref=e645]\n            - gridcell \"Z20\" [ref=e646]\n    - complementary [ref=e647]:\n      - button \"Workbooks\" [ref=e648] [cursor=pointer]\n  - contentinfo [ref=e649]: Sheets workspace Header · Sidebar · Main content · Footer\n```",
+      "at": "t05-REQ-5.spec.cjs:480",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-5-3-1#3",
+      "name": "REQ-5-3-1 -the requested workflow COUNT the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-3-1#4",
+      "name": "REQ-5-3-1 -AVERAGE the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-3-1#5",
+      "name": "REQ-5-3-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-3-1#6",
+      "name": "REQ-5-3-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-3-1#7",
+      "name": "REQ-5-3-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-3-1#8",
+      "name": "REQ-5-3-1 -the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-5-3-1#9",
+      "name": "REQ-5-3-1 -the requested workflow COUNT the requested workflow",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  },
+  "seconds": 73.4
+}

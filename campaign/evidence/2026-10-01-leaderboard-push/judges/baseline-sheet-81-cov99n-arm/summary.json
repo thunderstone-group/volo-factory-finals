@@ -1,0 +1,13 @@
+{
+  "app": "baseline-sheet-81",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 88,
+    "fail": 12
+  },
+  "seconds": 90.4,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

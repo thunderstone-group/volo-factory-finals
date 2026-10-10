@@ -1,0 +1,16 @@
+{
+  "source": "/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/oneshot-tests-715y51k8",
+  "candidate": "e4a76b801595686de7c93d25cb2a8b45f4c9b39b8ae312dcb0df59379bf204a4",
+  "task": "github",
+  "file_hashes": {
+    "suite.json": "0b0d5145ffbf916ed0a1252ecedd2047a46407d0dd4482ebc4c4d33c4775b09e",
+    "t01-REQ-1.spec.cjs": "1aab7df16951650f79334f2285cce0e5dc9e14af52d888e05bf0beb921b0e155",
+    "t02-REQ-2.spec.cjs": "38e5d91b8e6995ac52b812f92c7adab83db67d232e175b9612ee1e3ad5fcc7d2",
+    "t03-REQ-3.spec.cjs": "24ed5d86df5980fcfe1f9e0a929e06d4c6e753addd27aed5bc22ba55bd8db4a6",
+    "t04-REQ-4.spec.cjs": "34ec4d47ab37d9a885435cacb9834b5a86011192ba88cc2509c643874ac25a76",
+    "t05-REQ-5.spec.cjs": "50f144ea7383df0c2d6f9393b117c863ff90643d8b773aefd683f74ab6bb5cb3",
+    "t06-REQ-6.spec.cjs": "ffc89df4417c5d6c39aa7981fa559b7eec22b7addd908c4556bd316a2653b365"
+  },
+  "source_unchanged_during_copy": true,
+  "contains_organizer_tests": false
+}

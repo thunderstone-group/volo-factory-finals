@@ -1,0 +1,1 @@
+{"results": [["REQ-1", true, "stop", []], ["REQ-2", true, "stop", []], ["REQ-3", true, "stop", []], ["REQ-4", true, "stop", []], ["REQ-5", true, "stop", []]], "checks": {"REQ-1.spec.cjs": true, "REQ-2.spec.cjs": true, "REQ-3.spec.cjs": true, "REQ-4.spec.cjs": true, "REQ-5.spec.cjs": true, "fixtures.cjs": true}, "cost_cny": 2.4057, "tests": 48, "scenarios": 48}

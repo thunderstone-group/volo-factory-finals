@@ -1,0 +1,645 @@
+--- v1/github-real/tests/evolution-navigation.ts
++++ v2/github-real/tests/evolution-navigation.ts
+@@ -0,0 +1,11 @@
++import { type Page } from '@playwright/test';
++import { named, visible } from './helpers';
++
++// Visible official support/evolution-e2e.ts:105-110 (github-real-F04).
++export async function openEvolutionRepository(page: Page, name: string) {
++  if (await page.getByRole('banner').count() === 0) await page.goto('/');
++  const search = page.getByRole('banner').getByRole('searchbox', { name: 'Search', exact: true });
++  await visible(search); await search.fill(name); await search.press('Enter');
++  const result = page.getByRole('main').getByRole('link', { name, exact: true });
++  await visible(result); await result.click();
++}
+--- v1/github-real/tests/01-REQ-1-1-1-scenario-1.spec.ts
++++ v2/github-real/tests/01-REQ-1-1-1-scenario-1.spec.ts
+@@ -7,8 +7,8 @@
+ test("REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 1", async ({ page, browser, baseURL }) => {
+   // GIVEN: The visitor starts at the application home page in a fresh unauthenticated browser session and opens the account-access page. The visitor clicks the visible link “Sign in” and then the visible link “Create an account”. The registration page displays visibly labeled Username, Email, Password, and Confirm password fields, a checkbox named “Agree to the terms”, and a button named “Create account”. The username `evo_user_01` and email `evo.register.s1@evolution.test` are not registered.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
+-  await visible(named(page, 'link', 'Create an account')); await named(page, 'link', 'Create an account').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Create an account')); await named(page.getByRole('main'), 'link', 'Create an account').click();
+   for (const name of ['Username', 'Email', 'Password', 'Confirm password']) await visible(field(page, name));
+   await visible(named(page, 'checkbox', 'Agree to the terms'));
+   await expect(named(page, 'checkbox', 'Agree to the terms')).not.toBeChecked();
+--- v1/github-real/tests/02-REQ-1-1-1-scenario-2.spec.ts
++++ v2/github-real/tests/02-REQ-1-1-1-scenario-2.spec.ts
+@@ -7,8 +7,8 @@
+ test("REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 2", async ({ page, browser, baseURL }) => {
+   // GIVEN: The visitor starts at the application home page in a fresh unauthenticated browser session and opens the account-access page. The visitor opens the registration page through the visible “Sign in” and “Create an account” links. The registration page displays visibly labeled Username, Email, Password, and Confirm password fields, a checkbox named “Agree to the terms”, and a button named “Create account”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
+-  await visible(named(page, 'link', 'Create an account')); await named(page, 'link', 'Create an account').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Create an account')); await named(page.getByRole('main'), 'link', 'Create an account').click();
+   for (const name of ['Username', 'Email', 'Password', 'Confirm password']) await visible(field(page, name));
+   await visible(named(page, 'checkbox', 'Agree to the terms'));
+   await expect(named(page, 'checkbox', 'Agree to the terms')).not.toBeChecked();
+--- v1/github-real/tests/03-REQ-1-1-1-scenario-3.spec.ts
++++ v2/github-real/tests/03-REQ-1-1-1-scenario-3.spec.ts
+@@ -7,8 +7,8 @@
+ test("REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 3", async ({ page, browser, baseURL }) => {
+   // GIVEN: The visitor starts at the application home page in a fresh unauthenticated browser session and opens the account-access page. The visitor opens the registration page through the visible “Sign in” and “Create an account” links. The registration page displays visibly labeled Username, Email, Password, and Confirm password fields, a checkbox named “Agree to the terms”, and a button named “Create account”. The system has pre-provisioned the verified and available account `evo-register-existing` with email `evo.register.existing@evolution.test` and password `Evo-Password-987!`; `evo.register.s3@evolution.test` is unused.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
+-  await visible(named(page, 'link', 'Create an account')); await named(page, 'link', 'Create an account').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Create an account')); await named(page.getByRole('main'), 'link', 'Create an account').click();
+   for (const name of ['Username', 'Email', 'Password', 'Confirm password']) await visible(field(page, name));
+   await visible(named(page, 'checkbox', 'Agree to the terms'));
+   await expect(named(page, 'checkbox', 'Agree to the terms')).not.toBeChecked();
+--- v1/github-real/tests/04-REQ-1-1-2-scenario-1.spec.ts
++++ v2/github-real/tests/04-REQ-1-1-2-scenario-1.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The visitor opens the application home page, locates the visible link named “Sign in” in the main content, and clicks it. On the sign-in page, the visitor enters `evo-login-case` in the visibly labeled “Username or email” field, enters `Evo-Password-987!` in the visibly labeled “Password” field, and clicks the button named “Sign in”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-login-case"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   // THEN: The system enters the workspace and visibly displays the exact username `evo-login-case`.
+--- v1/github-real/tests/05-REQ-1-1-2-scenario-2.spec.ts
++++ v2/github-real/tests/05-REQ-1-1-2-scenario-2.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The visitor opens the application home page, clicks the visible link named “Sign in”, enters `EVO.LOGIN.CASE@EVOLUTION.TEST` in the visibly labeled “Username or email” field, enters `Evo-Password-987!` in the visibly labeled “Password” field, and clicks the button named “Sign in”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "EVO.LOGIN.CASE@EVOLUTION.TEST"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   // THEN: The system enters the workspace and visibly displays the username `evo-login-case`.
+--- v1/github-real/tests/06-REQ-1-1-2-scenario-3.spec.ts
++++ v2/github-real/tests/06-REQ-1-1-2-scenario-3.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The visitor opens the application home page, clicks the visible link named “Sign in”, enters `evo.login.case@evolution.test` in the visibly labeled “Username or email” field, enters `Evo-Password-987!-incorrect` in the visibly labeled “Password” field, and clicks the button named “Sign in”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo.login.case@evolution.test"); await fill(page, 'Password', "Evo-Password-987!-incorrect");
+   await button(page, 'Sign in');
+   // THEN: The sign-in page visibly displays the generic message “Invalid credentials”.
+--- v1/github-real/tests/07-REQ-1-4-scenario-1.spec.ts
++++ v2/github-real/tests/07-REQ-1-4-scenario-1.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The visitor signs in as `evo-session-owner`, opens “Account menu”, clicks “Settings”, and opens “Active sessions”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-session-owner"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await button(page, 'Account menu'); await activate(page, 'Settings'); await activate(page, 'Active sessions');
+--- v1/github-real/tests/08-REQ-1-4-scenario-2.spec.ts
++++ v2/github-real/tests/08-REQ-1-4-scenario-2.spec.ts
+@@ -9,11 +9,11 @@
+   const otherContext = await browser.newContext({baseURL, storageState: {cookies:[], origins:[]}});
+   const other = await otherContext.newPage();
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-session-owner-s2"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await other.goto('/');
+-  await visible(named(other, 'link', 'Sign in')); await named(other, 'link', 'Sign in').click();
++  await visible(named(other.getByRole('main'), 'link', 'Sign in')); await named(other.getByRole('main'), 'link', 'Sign in').click();
+   await fill(other, 'Username or email', "evo-session-owner-s2"); await fill(other, 'Password', "Evo-Password-987!");
+   await button(other, 'Sign in');
+   await text(other, 'evo-session-owner-s2');
+--- v1/github-real/tests/09-REQ-1-4-scenario-3.spec.ts
++++ v2/github-real/tests/09-REQ-1-4-scenario-3.spec.ts
+@@ -9,11 +9,11 @@
+   const otherContext = await browser.newContext({baseURL, storageState: {cookies:[], origins:[]}});
+   const other = await otherContext.newPage();
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-session-owner-s3"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await other.goto('/');
+-  await visible(named(other, 'link', 'Sign in')); await named(other, 'link', 'Sign in').click();
++  await visible(named(other.getByRole('main'), 'link', 'Sign in')); await named(other.getByRole('main'), 'link', 'Sign in').click();
+   await fill(other, 'Username or email', "evo-session-owner-s3"); await fill(other, 'Password', "Evo-Password-987!");
+   await button(other, 'Sign in');
+   await text(other, 'evo-session-owner-s3');
+--- v1/github-real/tests/10-REQ-2-1-2-scenario-1.spec.ts
++++ v2/github-real/tests/10-REQ-2-1-2-scenario-1.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The visitor signs in as `evo-org-owner`, opens the “Account menu”, clicks “Your organizations”, clicks “New organization”, enters `Evo-Lab-01` in the visibly labeled “Organization name” field, enters `Evo Lab One` in “Display name”, and clicks “Create organization”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-org-owner"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await button(page, 'Account menu'); await activate(page, 'Your organizations'); await activate(page, 'New organization');
+--- v1/github-real/tests/11-REQ-2-1-2-scenario-2.spec.ts
++++ v2/github-real/tests/11-REQ-2-1-2-scenario-2.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The visitor signs in as `evo-org-owner`, opens the “Account menu”, clicks “Your organizations”, clicks “New organization”, enters the existing identifier `EVO-LAB-02` in the visibly labeled “Organization name” field, enters `Evo Lab Duplicate` in the “Display name” field, and clicks “Create organization”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-org-owner"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await button(page, 'Account menu'); await activate(page, 'Your organizations'); await activate(page, 'New organization');
+--- v1/github-real/tests/12-REQ-2-1-2-scenario-3.spec.ts
++++ v2/github-real/tests/12-REQ-2-1-2-scenario-3.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The visitor signs in as `evo-org-owner`, opens the “Account menu”, clicks “Your organizations”, clicks “New organization”, enters `-invalid-organization` in the visibly labeled “Organization name” field, enters three spaces in “Display name”, and clicks “Create organization”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-org-owner"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await button(page, 'Account menu'); await activate(page, 'Your organizations'); await activate(page, 'New organization');
+--- v1/github-real/tests/13-REQ-2-4-scenario-1.spec.ts
++++ v2/github-real/tests/13-REQ-2-4-scenario-1.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The Owner signs in, opens `evo-audit-org`, and clicks “Audit log”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-audit-owner"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await button(page, 'Account menu'); await activate(page, 'Your organizations'); await activate(page, 'evo-audit-org'); await activate(page, 'Audit log');
+--- v1/github-real/tests/14-REQ-2-4-scenario-2.spec.ts
++++ v2/github-real/tests/14-REQ-2-4-scenario-2.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The Owner opens “Audit log”, selects “Member added” in the “Filter action” combobox, and reloads the page.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-audit-owner"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await button(page, 'Account menu'); await activate(page, 'Your organizations'); await activate(page, 'evo-audit-org'); await activate(page, 'Audit log'); await choose(page, 'Filter action', 'Member added'); await page.reload();
+--- v1/github-real/tests/15-REQ-2-4-scenario-3.spec.ts
++++ v2/github-real/tests/15-REQ-2-4-scenario-3.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The Member signs in and opens `evo-audit-org`.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-audit-viewer"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await button(page, 'Account menu'); await activate(page, 'Your organizations'); await activate(page, 'evo-audit-org');
+--- v1/github-real/tests/19-REQ-3-5-scenario-1.spec.ts
++++ v2/github-real/tests/19-REQ-3-5-scenario-1.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -9,17 +10,13 @@
+ 
+   // WHEN: The Admin signs in, opens the repository, opens “Settings”, activates “Archive repository”, and confirms the archive dialog.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-archive-admin"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-archive-repository-s1"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-archive-repository-s1")); await named(page, "link", "evo-archive-repository-s1").click();
++  await openEvolutionRepository(page, "evo-archive-repository-s1");
+   await activate(page, 'Settings'); await button(page, 'Archive repository');
+   const dialog = named(page, 'dialog', 'Archive repository'); await visible(dialog); await button(dialog, 'Confirm archive');
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-archive-repository-s1"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-archive-repository-s1")); await named(page, "link", "evo-archive-repository-s1").click();
++  await openEvolutionRepository(page, "evo-archive-repository-s1");
+   // THEN: The repository overview displays the exact “Archived” marker and retains it after reload.
+   await text(page, 'Archived'); await page.reload(); await text(page, 'Archived');
+ });
+--- v1/github-real/tests/20-REQ-3-5-scenario-2.spec.ts
++++ v2/github-real/tests/20-REQ-3-5-scenario-2.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -9,12 +10,10 @@
+ 
+   // WHEN: The Member signs in and opens the archived repository.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-archive-viewer"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-archive-repository-s2"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-archive-repository-s2")); await named(page, "link", "evo-archive-repository-s2").click();
++  await openEvolutionRepository(page, "evo-archive-repository-s2");
+   // THEN: The repository remains readable and displays “Archived”, while file-edit, issue-create, and pull-request-create controls are not actionable.
+   await text(page, 'Archived'); await visible(named(page, 'link', 'README.md'));
+   await unavailable(named(page, 'button', 'Add file'));
+--- v1/github-real/tests/21-REQ-3-5-scenario-3.spec.ts
++++ v2/github-real/tests/21-REQ-3-5-scenario-3.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -9,17 +10,13 @@
+ 
+   // WHEN: The Admin opens Settings, activates “Restore repository”, confirms the dialog, and reloads the repository overview.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-archive-admin"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-archive-repository-s3"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-archive-repository-s3")); await named(page, "link", "evo-archive-repository-s3").click();
++  await openEvolutionRepository(page, "evo-archive-repository-s3");
+   await activate(page, 'Settings'); await button(page, 'Restore repository');
+   const dialog = named(page, 'dialog', 'Restore repository'); await visible(dialog); await button(dialog, 'Confirm restore');
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-archive-repository-s3"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-archive-repository-s3")); await named(page, "link", "evo-archive-repository-s3").click();
++  await openEvolutionRepository(page, "evo-archive-repository-s3");
+   await page.reload();
+   // THEN: The Archived marker is gone, the repository is Active, and its existing content remains visible.
+   await expect(page.getByText('Archived', {exact:true})).toHaveCount(0); await visible(named(page, 'link', 'README.md')); await visible(page.getByRole('heading').filter({hasText:'evo-archive-repository-s3'}));
+--- v1/github-real/tests/22-REQ-4-3-1-scenario-1.spec.ts
++++ v2/github-real/tests/22-REQ-4-3-1-scenario-1.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -8,9 +9,7 @@
+   // GIVEN: The visitor starts at the application home page in a fresh unauthenticated browser session. The system pre-provisions public repository `evo-branch-switch-s1` with active branch `evo-main-s1`, target branch `evo-feature-s1`, and file `evo-target-s1.md` available only on the target branch; the visitor can open the repository without signing in.
+   await page.goto('/');
+   // WHEN: The visitor opens the branch selector, enters `evo-feature-s1` in the `Find branch` textbox, and clicks the exact `evo-feature-s1` option.
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-branch-switch-s1"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-branch-switch-s1")); await named(page, "link", "evo-branch-switch-s1").click();
++  await openEvolutionRepository(page, "evo-branch-switch-s1");
+   const initialAddress = page.url(); await button(page, 'Branch evo-main-s1'); await fill(page, 'Find branch', 'evo-feature-s1');
+   await visible(named(page, "option", "evo-feature-s1")); await named(page, "option", "evo-feature-s1").click();
+   // THEN: The branch selector displays `evo-feature-s1`, the page exposes the exact `evo-target-s1.md` file link, and the page address identifies `evo-feature-s1`.
+--- v1/github-real/tests/23-REQ-4-3-1-scenario-2.spec.ts
++++ v2/github-real/tests/23-REQ-4-3-1-scenario-2.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -8,9 +9,7 @@
+   // GIVEN: The system pre-provisions public repository `evo-branch-switch-s2` with active branch `evo-main-s2` and an available `evo-feature-s2` branch. The visitor starts at the application home page in a fresh unauthenticated browser session and can open the repository without signing in.
+   await page.goto('/');
+   // WHEN: The visitor opens the branch selector, enters `evo-missing-s2` in the `Find branch` textbox, observes the no-matching-branch state, and presses Escape.
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-branch-switch-s2"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-branch-switch-s2")); await named(page, "link", "evo-branch-switch-s2").click();
++  await openEvolutionRepository(page, "evo-branch-switch-s2");
+   const initialAddress = page.url(); await button(page, 'Branch evo-main-s2'); await fill(page, 'Find branch', 'evo-missing-s2');
+   await text(page, 'No matching branch'); await field(page, 'Find branch').press('Escape');
+   // THEN: The selector remains on `evo-main-s2`; after reload, the active branch button still displays `evo-main-s2`, and the address still identifies `evo-main-s2`.
+--- v1/github-real/tests/24-REQ-4-3-1-scenario-3.spec.ts
++++ v2/github-real/tests/24-REQ-4-3-1-scenario-3.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -8,9 +9,7 @@
+   // GIVEN: The system pre-provisions public repository `evo-branch-switch-s3` with active branch `evo-main-s3`, target branch `evo-feature-s3`, and target-only file `evo-target-s3.md`. The visitor can open the repository without signing in.
+   await page.goto('/');
+   // WHEN: The visitor switches to `evo-feature-s3` through the “Find branch” textbox, then reloads the repository page.
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-branch-switch-s3"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-branch-switch-s3")); await named(page, "link", "evo-branch-switch-s3").click();
++  await openEvolutionRepository(page, "evo-branch-switch-s3");
+   const initialAddress = page.url(); await button(page, 'Branch evo-main-s3'); await fill(page, 'Find branch', 'evo-feature-s3');
+   await visible(named(page, "option", "evo-feature-s3")); await named(page, "option", "evo-feature-s3").click();
+   await page.reload();
+--- v1/github-real/tests/25-REQ-4-5-scenario-1.spec.ts
++++ v2/github-real/tests/25-REQ-4-5-scenario-1.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -9,12 +10,10 @@
+ 
+   // WHEN: The Owner opens “Releases”, clicks “New release”, enters tag `evo-v0-1-s1`, title `Evolution Preview`, description `Evolution release description`, selects target branch `evo-main-s1`, and clicks “Publish release”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-release-owner"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-release-repository-s1"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-release-repository-s1")); await named(page, "link", "evo-release-repository-s1").click();
++  await openEvolutionRepository(page, "evo-release-repository-s1");
+   await activate(page, 'Releases'); await activate(page, 'New release');
+   await fill(page, 'Tag name', 'evo-v0-1-s1'); await fill(page, 'Release title', 'Evolution Preview'); await fill(page, 'Description', 'Evolution release description'); await choose(page, 'Target branch', 'evo-main-s1'); await button(page, 'Publish release');
+   // THEN: The release detail displays `evo-v0-1-s1`, `Evolution Preview`, `Evolution release description`, and target branch `evo-main-s1`; the same release detail remains visible after reload.
+--- v1/github-real/tests/26-REQ-4-5-scenario-2.spec.ts
++++ v2/github-real/tests/26-REQ-4-5-scenario-2.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -8,9 +9,7 @@
+   // GIVEN: The system pre-provisions public repository `evo-release-repository-s2` with published tag `evo-v0-1-s2` targeting branch `evo-main-s2`, title `Existing Evolution Release`, and its release description. The visitor is unauthenticated.
+   await page.goto('/');
+   // WHEN: The visitor opens “Releases” and opens the exact `evo-v0-1-s2` release.
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-release-repository-s2"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-release-repository-s2")); await named(page, "link", "evo-release-repository-s2").click();
++  await openEvolutionRepository(page, "evo-release-repository-s2");
+   await activate(page, 'Releases'); await activate(page, 'evo-v0-1-s2');
+   // THEN: The release detail displays the exact tag, title, description, and target branch information.
+   for (const value of ['evo-v0-1-s2','Existing Evolution Release','evo-main-s2']) await text(page, value);
+--- v1/github-real/tests/27-REQ-4-5-scenario-3.spec.ts
++++ v2/github-real/tests/27-REQ-4-5-scenario-3.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -9,12 +10,10 @@
+ 
+   // WHEN: The Owner opens “New release”, enters the existing tag `evo-v0-1-s3`, a new title, and a description, then clicks “Publish release”.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-release-owner"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-release-repository-s3"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-release-repository-s3")); await named(page, "link", "evo-release-repository-s3").click();
++  await openEvolutionRepository(page, "evo-release-repository-s3");
+   await activate(page, 'Releases'); await activate(page, 'New release'); await fill(page, 'Tag name', 'evo-v0-1-s3'); await fill(page, 'Release title', 'A second release'); await fill(page, 'Description', 'This duplicate must not be published.'); await button(page, 'Publish release');
+   // THEN: The form displays “Tag already exists” and no duplicate release is created.
+   await text(page, 'Tag already exists'); await visible(field(page, 'Tag name')); await expect(field(page, 'Tag name')).toHaveValue('evo-v0-1-s3');
+--- v1/github-real/tests/28-REQ-5-5-scenario-1.spec.ts
++++ v2/github-real/tests/28-REQ-5-5-scenario-1.spec.ts
+@@ -1,4 +1,5 @@
+ import { test, expect } from '@playwright/test';
++import { openEvolutionRepository } from './evolution-navigation';
+ import { named, field, visible, activate, button, fill, choose, checked, text, order, selected } from './helpers';
+ import { command, unavailable, rectangle, dismissDialogs, savedView, reactionCount, issueContent, openPublicIssue } from './interactions';
+ 
+@@ -9,12 +10,10 @@
+ 
+   // WHEN: The user signs in, opens `Evo reaction issue s1`, activates “Add reaction”, chooses “+1”, and reloads the issue.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-reaction-author"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+-  await visible(named(page, 'searchbox', 'Search'));
+-  await named(page, 'searchbox', 'Search').fill("evo-reaction-repository-s1"); await named(page, 'searchbox', 'Search').press('Enter');
+-  await visible(named(page, "link", "evo-reaction-repository-s1")); await named(page, "link", "evo-reaction-repository-s1").click();
++  await openEvolutionRepository(page, "evo-reaction-repository-s1");
+   await activate(page, 'Issues'); await activate(page, 'Evo reaction issue s1');
+   const before = await reactionCount(page);
+   await button(page, 'Add reaction'); const reactionMenu = page.getByRole('menu'); await visible(reactionMenu); await visible(named(reactionMenu, 'menuitem', '+1')); await named(reactionMenu, 'menuitem', '+1').click(); await visible(named(page, 'button', 'Remove +1 reaction'));
+--- v1/github-real/tests/29-REQ-5-5-scenario-2.spec.ts
++++ v2/github-real/tests/29-REQ-5-5-scenario-2.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The user signs in, adds the “+1” reaction, and activates that same reaction again.
+   await page.goto('/');
+-  await visible(named(page, 'link', 'Sign in')); await named(page, 'link', 'Sign in').click();
++  await visible(named(page.getByRole('main'), 'link', 'Sign in')); await named(page.getByRole('main'), 'link', 'Sign in').click();
+   await fill(page, 'Username or email', "evo-reaction-user"); await fill(page, 'Password', "Evo-Password-987!");
+   await button(page, 'Sign in');
+   await openPublicIssue(page, 'Evo reaction issue s2'); const before = await issueContent(page); expect(await reactionCount(page)).toBe(0);
+--- v1/github-real/tests/interactions.ts
++++ v2/github-real/tests/interactions.ts
+@@ -30,17 +30,18 @@
+   return (await main.innerText()).replace(/Add reaction|Remove \+1 reaction|\+1\s+\d+/g,'').replace(/\s+/g,' ').trim();
+ }
+ export async function openPublicIssue(page: Page, title: string) {
+-  // These two published seeds omit their repository name. Discover real links,
+-  // never guess a route, read storage, or send a private request.
+-  await page.goto('/');
+-  const direct=named(page,'link',title);
+-  if(await direct.count()) { await visible(direct); await direct.click(); await visible(page.getByRole('heading').filter({hasText:title})); return; }
+-  const search=named(page,'searchbox','Search'); await visible(search);
+-  await search.fill(''); await search.press('Enter');
++  // The frames reveal the banner-search entry, but not the repository argument
++  // used for these two unnamed issue seeds. Retain public-link discovery.
++  if (await page.getByRole('banner').count() === 0) await page.goto('/');
++  const search=page.getByRole('banner').getByRole('searchbox',{name:'Search',exact:true});
++  await visible(search); await search.fill(''); await search.press('Enter');
+   const main=page.getByRole('main'); await visible(main);
++  const resultsAddress=page.url();
+   const links=await main.getByRole('link').evaluateAll(elements => elements.map(e=>({name:(e.getAttribute('aria-label') || e.textContent || '').trim(),href:(e as HTMLAnchorElement).href})).filter(e=>e.name));
+   for(const link of links) {
+-    await page.goto(link.href);
++    if(page.url()!==resultsAddress) await page.goto(resultsAddress);
++    const result=page.getByRole('main').getByRole('link',{name:link.name,exact:true});
++    await visible(result); await result.click();
+     const issues=named(page,'link','Issues').or(named(page,'button','Issues'));
+     if(await issues.count()!==1) continue;
+     await issues.click();
+--- v1/sheet-real/tests/10-REQ-5-1-2-scenario-1.spec.ts
++++ v2/sheet-real/tests/10-REQ-5-1-2-scenario-1.spec.ts
+@@ -9,11 +9,14 @@
+ 
+   // WHEN: The visitor opens `EVO-M04-FILTER-SAVE`, creates a filter for D3:F7, applies `Text contains` value `Atlas` to "Filter Workstream", applies `Greater than` value `20` to "Filter Load", opens "Save filter view", enters `Atlas active load` in "Filter view name", and clicks "Save view".
+   await page.goto('/'); await activate(page, "EVO-M04-FILTER-SAVE");
+-  await rectangle(page, 'D3', 'F7');
+-  await command(page, "Data"); await command(page, "Create filter");
+-  await button(page, 'Filter Workstream'); let filter = named(page, 'dialog', 'Filter Workstream'); await visible(filter);
++  // Visible official applyCondition entry: sheet-real-F01, lines 7-10.
++  await button(page, 'Create filter');
++  let filter = named(page, 'dialog', 'Filter'); await visible(filter);
++  await fill(filter, 'Range', 'D3:F7'); await fill(filter, 'Column', 'D');
+   await choose(filter, 'Condition', 'Text contains'); await fill(filter, 'Value', 'Atlas'); await button(filter, 'Apply');
+-  await button(page, 'Filter Load'); filter = named(page, 'dialog', 'Filter Load'); await visible(filter);
++  await button(page, 'Create filter');
++  filter = named(page, 'dialog', 'Filter'); await visible(filter);
++  await fill(filter, 'Range', 'D3:F7'); await fill(filter, 'Column', 'F');
+   await choose(filter, 'Condition', 'Greater than'); await fill(filter, 'Value', '20'); await button(filter, 'Apply');
+   await command(page, "Data"); await command(page, "Save filter view");
+   await fill(page, 'Filter view name', 'Atlas active load'); await button(page, 'Save view');
+--- v1/sheet-real/tests/10-REQ-5-1-2-scenario-1.spec.ts
++++ v2/sheet-real/tests/10-REQ-5-1-2-scenario-1.spec.ts
+@@ -26,7 +26,7 @@
+   await visible(named(page, 'gridcell', "E5")); await expect(named(page, 'gridcell', "E5")).toHaveText("Active");
+   await visible(named(page, 'gridcell', "F5")); await expect(named(page, 'gridcell', "F5")).toHaveText("31");
+   await page.reload();
+-  await command(page, "Data"); await command(page, "Filter views");
++  await command(page, "Data"); await visible(named(page, 'menuitem', 'Filter views')); await named(page, 'menuitem', 'Filter views').click();
+   await visible(named(page,'button','Atlas active load').or(named(page,'option','Atlas active load')));
+   for (const r of [4,6,7]) await expect(named(page, 'gridcell', 'D'+r)).toBeHidden();
+   await visible(named(page, 'gridcell', "D5")); await expect(named(page, 'gridcell', "D5")).toHaveText("Atlas");
+--- v1/sheet-real/tests/11-REQ-5-1-2-scenario-2.spec.ts
++++ v2/sheet-real/tests/11-REQ-5-1-2-scenario-2.spec.ts
+@@ -9,7 +9,7 @@
+ 
+   // WHEN: The visitor opens `EVO-M04-FILTER-APPLY`, opens "Filter views" in the "Data" menu, and clicks `Queued lanes`.
+   await page.goto('/'); await activate(page, "EVO-M04-FILTER-APPLY");
+-  await command(page, "Data"); await command(page, "Filter views");
++  await command(page, "Data"); await visible(named(page, 'menuitem', 'Filter views')); await named(page, 'menuitem', 'Filter views').click();
+   await savedView(page, 'Queued lanes');
+   // THEN: Rows containing `Atlas/Queued/17`, `Beacon/Queued/22`, and `Cirrus/Queued/9` are visible while the `Atlas/Active/31` row is hidden; the same state remains after refresh.
+   for (const [r,values] of [[4,['Atlas','Queued','17']],[6,['Beacon','Queued','22']],[7,['Cirrus','Queued','9']]] as const) {
+--- v1/sheet-real/tests/12-REQ-5-1-2-scenario-3.spec.ts
++++ v2/sheet-real/tests/12-REQ-5-1-2-scenario-3.spec.ts
+@@ -14,8 +14,10 @@
+   await command(page, "Data"); await command(page, "Save filter view");
+   await fill(page, 'Filter view name', ' queued lanes '); await button(page, 'Save view');
+   // The published THEN refers to this intermediate rejected save, before the deletion.
+-  await text(page, 'Filter view name already exists'); await visible(field(page, 'Filter view name')); await dismissDialogs(page);
+-  await command(page, "Data"); await command(page, "Filter views");
++  await expect(page.getByRole('alert')).toContainText('Filter view name already exists');
++  const saveDialog = page.getByRole('dialog').filter({ has: page.getByLabel('Filter view name', { exact: true }) });
++  await button(saveDialog, 'Close');
++  await command(page, "Data"); await visible(named(page, 'menuitem', 'Filter views')); await named(page, 'menuitem', 'Filter views').click();
+   await savedView(page, 'Queued lanes'); await button(page, 'Delete filter view');
+   // THEN: The exact message "Filter view name already exists" is visible after the first save attempt; after deletion "Filter views" no longer contains `Queued lanes`, all source rows remain visible, and the deletion persists after refresh.
+   await expect(named(page,'button','Queued lanes').or(named(page,'option','Queued lanes'))).toHaveCount(0);
+@@ -23,7 +25,7 @@
+     for (const [i,c] of ['D','E','F'].entries()) { await visible(named(page,'gridcell',c+r)); await expect(named(page,'gridcell',c+r)).toHaveText(values[i]); }
+   }
+   await page.reload();
+-  await command(page, "Data"); await command(page, "Filter views");
++  await command(page, "Data"); await visible(named(page, 'menuitem', 'Filter views')); await named(page, 'menuitem', 'Filter views').click();
+   await expect(named(page,'button','Queued lanes').or(named(page,'option','Queued lanes'))).toHaveCount(0);
+   for (const [r,values] of [[4,['Atlas','Queued','17']],[5,['Atlas','Active','31']],[6,['Beacon','Queued','22']],[7,['Cirrus','Queued','9']]] as const) {
+     for (const [i,c] of ['D','E','F'].entries()) { await visible(named(page,'gridcell',c+r)); await expect(named(page,'gridcell',c+r)).toHaveText(values[i]); }
+--- v1/sheet-real/tests/13-REQ-5-2-1-scenario-1.spec.ts
++++ v2/sheet-real/tests/13-REQ-5-2-1-scenario-1.spec.ts
+@@ -12,11 +12,11 @@
+   await visible(named(page, "gridcell", "J6")); await named(page, "gridcell", "J6").click();
+   await fill(page, 'Formula bar', "88"); await field(page, 'Formula bar').press('Enter');
+   // THEN: The exact message "Capacity must be from 25 to 75" is visible, J6 remains `37`, and the same result occurs after refresh when entering `88` through "Formula bar".
+-  await text(page, 'Capacity must be from 25 to 75');
++  await expect(page.getByRole('alert')).toContainText('Capacity must be from 25 to 75');
+   await visible(named(page, 'gridcell', "J6")); await expect(named(page, 'gridcell', "J6")).toHaveText("37");
+   await page.reload();
+   await visible(named(page, "gridcell", "J6")); await named(page, "gridcell", "J6").click();
+   await fill(page, 'Formula bar', "88"); await field(page, 'Formula bar').press('Enter');
+-  await text(page, 'Capacity must be from 25 to 75');
++  await expect(page.getByRole('alert')).toContainText('Capacity must be from 25 to 75');
+   await visible(named(page, 'gridcell', "J6")); await expect(named(page, 'gridcell', "J6")).toHaveText("37");
+ });
+--- v1/sheet-real/tests/14-REQ-5-2-1-scenario-2.spec.ts
++++ v2/sheet-real/tests/14-REQ-5-2-1-scenario-2.spec.ts
+@@ -9,12 +9,12 @@
+ 
+   // WHEN: The visitor opens `EVO-M05-VALIDATION-GRID`, edits K8 through its grid editor, enters `Paused`, and presses Enter.
+   await page.goto('/'); await activate(page, "EVO-M05-VALIDATION-GRID");
+-  await visible(named(page, 'gridcell', 'K8')); await named(page, 'gridcell', 'K8').dblclick(); await page.keyboard.press('ControlOrMeta+A'); await page.keyboard.type('Paused'); await page.keyboard.press('Enter');
++  await visible(named(page, 'gridcell', 'K8')); await named(page, 'gridcell', 'K8').dblclick(); await page.locator(':focus').fill('Paused'); await page.locator(':focus').press('Enter');
+   // THEN: The exact message "Choose a queue state" is visible; K8 remains `Ready`, and after refresh the same invalid grid entry is rejected with the same message.
+-  await text(page, 'Choose a queue state');
+-  await visible(named(page, 'gridcell', "K8")); await expect(named(page, 'gridcell', "K8")).toHaveText("Ready");
++  await expect(page.getByRole('alert')).toContainText('Choose a queue state');
++  await visible(named(page, 'gridcell', "K8")); await expect(named(page, 'gridcell', "K8")).toContainText("Ready");
+   await page.reload();
+-  await visible(named(page, 'gridcell', 'K8')); await named(page, 'gridcell', 'K8').dblclick(); await page.keyboard.press('ControlOrMeta+A'); await page.keyboard.type('Paused'); await page.keyboard.press('Enter');
+-  await text(page, 'Choose a queue state');
+-  await visible(named(page, 'gridcell', "K8")); await expect(named(page, 'gridcell', "K8")).toHaveText("Ready");
++  await visible(named(page, 'gridcell', 'K8')); await named(page, 'gridcell', 'K8').dblclick(); await page.locator(':focus').fill('Paused'); await page.locator(':focus').press('Enter');
++  await expect(page.getByRole('alert')).toContainText('Choose a queue state');
++  await visible(named(page, 'gridcell', "K8")); await expect(named(page, 'gridcell', "K8")).toContainText("Ready");
+ });
+--- v1/sheet-real/tests/15-REQ-5-2-1-scenario-3.spec.ts
++++ v2/sheet-real/tests/15-REQ-5-2-1-scenario-3.spec.ts
+@@ -15,7 +15,7 @@
+   await visible(named(page, "gridcell", "L4")); await named(page, "gridcell", "L4").click();
+   await fill(page, 'Formula bar', "24"); await field(page, 'Formula bar').press('Enter');
+   // THEN: The exact message "Allocate between 25 and 75" is visible, L4 remains `42`, and reopening "Data validation" after refresh shows the same "Error message" value.
+-  await text(page,'Allocate between 25 and 75');
++  await expect(page.getByRole('alert')).toContainText('Allocate between 25 and 75');
+   await visible(named(page, 'gridcell', "L4")); await expect(named(page, 'gridcell', "L4")).toHaveText("42");
+   await page.reload();
+   await visible(named(page, "gridcell", "L4")); await named(page, "gridcell", "L4").click();
+--- v1/sheet-real/tests/22-REQ-7-1-1-scenario-1.spec.ts
++++ v2/sheet-real/tests/22-REQ-7-1-1-scenario-1.spec.ts
+@@ -11,13 +11,16 @@
+   await page.goto('/'); await activate(page, "EVO-N03-NAMED-CREATE");
+   await command(page, "Data"); await command(page, "Named ranges");
+   const dialog=named(page,'dialog','Named ranges'); await visible(dialog);
+-  await button(page,'Add named range'); await fill(page,'Name','CapacityPlan'); await fill(page,'Range','ForecastModel!J3:J5'); await button(page,'Save'); await dismissDialogs(page);
++  await button(page,'Add named range'); await fill(page,'Name','CapacityPlan'); await fill(page,'Range','ForecastModel!J3:J5'); await button(page,'Save');
++  // F06:22 ends an unseen conditional; retain reopening when Save closes the panel.
++  if (!await dialog.isVisible()) { await command(page, 'Data'); await command(page, 'Named ranges'); }
++  await expect(page.getByRole('dialog', { name: 'Named ranges', exact: true })).toContainText('CapacityPlan');
++  await button(page.getByRole('dialog', { name: 'Named ranges', exact: true }), 'Close');
+   await visible(named(page, "gridcell", "L3")); await named(page, "gridcell", "L3").click();
+   await fill(page, 'Formula bar', "=SUM(CapacityPlan)"); await field(page, 'Formula bar').press('Enter');
+   // THEN: The "Named ranges" dialog lists `CapacityPlan`, L3 displays `73`, and after refresh the formula bar for L3 contains `=SUM(CapacityPlan)`.
+   await visible(named(page, 'gridcell', "L3")); await expect(named(page, 'gridcell', "L3")).toHaveText("73");
+-  await command(page, "Data"); await command(page, "Named ranges");
+-  await visible(dialog); await text(dialog,'CapacityPlan'); await page.reload();
++  await page.reload();
+   await visible(named(page, "gridcell", "L3")); await named(page, "gridcell", "L3").click();
+   await expect(field(page,'Formula bar')).toHaveValue('=SUM(CapacityPlan)');
+ });
+--- v1/sheet-real/tests/28-REQ-8-1-1-scenario-1.spec.ts
++++ v2/sheet-real/tests/28-REQ-8-1-1-scenario-1.spec.ts
+@@ -14,8 +14,8 @@
+   const dialog=named(page,'dialog','Note for D8'); await visible(dialog); await fill(dialog,'Note',"Confirm the harbor reference before release"); await button(dialog,'Save note');
+   // THEN: D8 still displays `Manifest R41`, "Open note for D8" is visible, and opening it displays exactly `Confirm the harbor reference before release`, including after refresh.
+   await visible(named(page, 'gridcell', "D8")); await expect(named(page, 'gridcell', "D8")).toHaveText("Manifest R41");
+-  await dismissDialogs(page); await button(page,'Open note for D8'); await visible(dialog); await text(dialog,"Confirm the harbor reference before release");
++  await button(page.getByRole('gridcell', {name:'D8',exact:true}), 'Open note for D8'); await visible(dialog); await expect(page.getByLabel('Note', {exact:true})).toHaveValue("Confirm the harbor reference before release");
+   await page.reload();
+   await visible(named(page, 'gridcell', "D8")); await expect(named(page, 'gridcell', "D8")).toHaveText("Manifest R41");
+-  await dismissDialogs(page); await button(page,'Open note for D8'); await visible(dialog); await text(dialog,"Confirm the harbor reference before release");
++  await button(page.getByRole('gridcell', {name:'D8',exact:true}), 'Open note for D8'); await visible(dialog); await expect(page.getByLabel('Note', {exact:true})).toHaveValue("Confirm the harbor reference before release");
+ });
+--- v1/sheet-real/tests/29-REQ-8-1-1-scenario-2.spec.ts
++++ v2/sheet-real/tests/29-REQ-8-1-1-scenario-2.spec.ts
+@@ -9,11 +9,11 @@
+ 
+   // WHEN: The visitor opens `EVO-N05-NOTE-EDIT`, clicks "Open note for F6", clicks "Edit note", replaces "Note" with `Controller signed at 14:20`, and clicks "Save note".
+   await page.goto('/'); await activate(page, "EVO-N05-NOTE-EDIT");
+-  await button(page,'Open note for F6'); const dialog=named(page,'dialog','Note for F6'); await visible(dialog); await button(dialog,'Edit note'); await fill(dialog,'Note',"Controller signed at 14:20"); await button(dialog,'Save note');
++  await button(page.getByRole('gridcell', {name:'F6',exact:true}), 'Open note for F6'); const dialog=named(page,'dialog','Note for F6'); await visible(dialog); await button(page,'Edit note'); await fill(dialog,'Note',"Controller signed at 14:20"); await button(dialog,'Save note');
+   // THEN: Opening "Open note for F6" displays exactly `Controller signed at 14:20`, F6 still displays `Gate Rho`, and the updated note remains after refresh.
+   await visible(named(page, 'gridcell', "F6")); await expect(named(page, 'gridcell', "F6")).toHaveText("Gate Rho");
+-  await dismissDialogs(page); await button(page,'Open note for F6'); await visible(dialog); await text(dialog,"Controller signed at 14:20");
++  await button(page.getByRole('gridcell', {name:'F6',exact:true}), 'Open note for F6'); await visible(dialog); await expect(page.getByLabel('Note', {exact:true})).toHaveValue("Controller signed at 14:20");
+   await page.reload();
+   await visible(named(page, 'gridcell', "F6")); await expect(named(page, 'gridcell', "F6")).toHaveText("Gate Rho");
+-  await dismissDialogs(page); await button(page,'Open note for F6'); await visible(dialog); await text(dialog,"Controller signed at 14:20");
++  await button(page.getByRole('gridcell', {name:'F6',exact:true}), 'Open note for F6'); await visible(dialog); await expect(page.getByLabel('Note', {exact:true})).toHaveValue("Controller signed at 14:20");
+ });
+--- v1/sheet-real/tests/30-REQ-8-1-1-scenario-3.spec.ts
++++ v2/sheet-real/tests/30-REQ-8-1-1-scenario-3.spec.ts
+@@ -9,11 +9,11 @@
+ 
+   // WHEN: The visitor opens `EVO-N05-NOTE-DELETE`, clicks "Open note for J3", and clicks "Delete note".
+   await page.goto('/'); await activate(page, "EVO-N05-NOTE-DELETE");
+-  await button(page,'Open note for J3'); const dialog=named(page,'dialog','Note for J3'); await visible(dialog); await button(dialog,'Delete note');
++  await button(page.getByRole('gridcell', {name:'J3',exact:true}), 'Open note for J3'); const dialog=named(page,'dialog','Note for J3'); await visible(dialog); await button(page,'Delete note');
+   // THEN: "Open note for J3" is not visible, J3 still displays `Route Zeta`, and both results remain after refresh.
+-  await expect(named(page,'button','Open note for J3')).toBeHidden();
++  await expect(named(page,'button','Open note for J3')).toHaveCount(0);
+   await visible(named(page, 'gridcell', "J3")); await expect(named(page, 'gridcell', "J3")).toHaveText("Route Zeta");
+   await page.reload();
+-  await expect(named(page,'button','Open note for J3')).toBeHidden();
++  await expect(named(page,'button','Open note for J3')).toHaveCount(0);
+   await visible(named(page, 'gridcell', "J3")); await expect(named(page, 'gridcell', "J3")).toHaveText("Route Zeta");
+ });

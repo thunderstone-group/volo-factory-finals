@@ -1,0 +1,8 @@
+{
+  "browser": "143.0.7499.4",
+  "purpose": "Native customizable select interaction contract, outside candidate code",
+  "css_supported": true,
+  "closed_options": 4,
+  "open_options": 4,
+  "error": "locator.click: Error: strict mode violation: getByRole('option', { name: 'Beta', exact: true }) resolved to 2 elements:\n    1) <option value=\"b\">Beta</option> aka getByLabel('RowsAlphaBeta')\n    2) <option value=\"b\">Beta</option> aka getByLabel('ColumnsAlphaBeta')\n\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Beta', exact: true })\u001b[22m\n"
+}

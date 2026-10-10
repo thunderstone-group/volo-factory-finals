@@ -1,0 +1,20 @@
+[
+  {
+    "stage": 1,
+    "atomic": 12,
+    "scenario_groups_equal_to_full": 11,
+    "descriptions_equal_to_full": 12
+  },
+  {
+    "stage": 2,
+    "atomic": 14,
+    "scenario_groups_equal_to_full": 14,
+    "descriptions_equal_to_full": 14
+  },
+  {
+    "stage": 3,
+    "atomic": 21,
+    "scenario_groups_equal_to_full": 21,
+    "descriptions_equal_to_full": 21
+  }
+]

@@ -1,0 +1,163 @@
+{
+  "run_id": "47d482ac1890",
+  "official_passed": 27,
+  "official_failed": 73,
+  "files": [
+    {
+      "path": "backend/package-lock.json",
+      "sha256": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b"
+    },
+    {
+      "path": "backend/package.json",
+      "sha256": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+    },
+    {
+      "path": "backend/server.js",
+      "sha256": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "sha256": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92"
+    },
+    {
+      "path": "frontend/package.json",
+      "sha256": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978"
+    },
+    {
+      "path": "frontend/public/app.js",
+      "sha256": "421df4ddba2ebe01ae85670a47b00b7ee10ad3271949303d9fa0964f6de73f35"
+    },
+    {
+      "path": "frontend/public/index.html",
+      "sha256": "c98ad63055e8fb5878a671244710f69702d856a9542b4775e60c30f0809cf612"
+    },
+    {
+      "path": "frontend/public/lib/arc.js",
+      "sha256": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14"
+    },
+    {
+      "path": "frontend/public/seed.js",
+      "sha256": "cf030ff4dc022f9c872128dd96dcd3e4113b951028f3db18c7045490eaa75635"
+    },
+    {
+      "path": "frontend/public/styles.css",
+      "sha256": "3d36823e7256775fb6e4ed83d0397adf58c6b8b304f12832ac5560f99c0686e2"
+    },
+    {
+      "path": "requirements/prerequisites.md",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "requirements/reference/github-account-menu-sign-out.png",
+      "sha256": "a03a8f5042598f47f8852fec6d12e755bf757ede6c5ddb7ba321d7c6fe39a0e2"
+    },
+    {
+      "path": "requirements/reference/github-branch-protection.png",
+      "sha256": "2bc28c3cf6c9f57234959314337bda402ede84591337bafab4483d09c7628661"
+    },
+    {
+      "path": "requirements/reference/github-branch-selector.png",
+      "sha256": "1a3efef9c071cc63c96c2f0fc35601b3ad751a8d6f609299da5b2405ffc108d4"
+    },
+    {
+      "path": "requirements/reference/github-code-clone-menu.png",
+      "sha256": "49cbe8068eec958f26e7af5843635b1afaf9d49183d2ff7803028c869b29fd9d"
+    },
+    {
+      "path": "requirements/reference/github-code-file-browser.png",
+      "sha256": "5e16a5c19c66c63440589845361fc09cdfc2432bfcec970d982294bc222bdc81"
+    },
+    {
+      "path": "requirements/reference/github-commit-diff.png",
+      "sha256": "e54853186484a20a1e873c4c3d531e6d087344d2c8899b042e9315c34f00bbda"
+    },
+    {
+      "path": "requirements/reference/github-commit-history.png",
+      "sha256": "2d1072d6d7f603bfa357d6fca1a77d653e182a05155c4be4b81a2eb1d4d14e05"
+    },
+    {
+      "path": "requirements/reference/github-compare-branches.png",
+      "sha256": "d32ada95102266c7dd95614c24ea62f498e4d8a032dd2c331c6fc9e0da4b61d0"
+    },
+    {
+      "path": "requirements/reference/github-create-branch.png",
+      "sha256": "ff90b14424ac4415e03ce5cb98f4edabffcadbf3d4db27ac1e908c51746fce98"
+    },
+    {
+      "path": "requirements/reference/github-create-repository.png",
+      "sha256": "bf8692c488f17aae684f517f9811673b83e5894d0d08a016daa0708d57bd0f2d"
+    },
+    {
+      "path": "requirements/reference/github-default-branch-settings.png",
+      "sha256": "2bc28c3cf6c9f57234959314337bda402ede84591337bafab4483d09c7628661"
+    },
+    {
+      "path": "requirements/reference/github-fork-repository.png",
+      "sha256": "282fcbbb369c6ee0e59ccc6733800e31c7f2d88622de205e373689a8ebfc8700"
+    },
+    {
+      "path": "requirements/reference/github-issues-list.png",
+      "sha256": "bbf74980792147a38dad0887cc8b48b6be8fe405ea26f2fc2560c955d8bc7746"
+    },
+    {
+      "path": "requirements/reference/github-milestones.png",
+      "sha256": "36ab801f568209083b6e1a581868f1c9431a5fb9ac430d247dd42f2363459773"
+    },
+    {
+      "path": "requirements/reference/github-new-issue.png",
+      "sha256": "aec255c6ba34fb77256ddc1d0a32170961fedca997c1d25ac912d9a57445e136"
+    },
+    {
+      "path": "requirements/reference/github-organization-repositories.png",
+      "sha256": "05ab15d831ef307b66e1d30c12e5ceb0a55ffd6f45942048bc0842e6aabd4a68"
+    },
+    {
+      "path": "requirements/reference/github-password-reset-1.png",
+      "sha256": "e6bcba673c145e7615805c29f07e42df9de7d711587cce088e06ee75fe56d5f8"
+    },
+    {
+      "path": "requirements/reference/github-password-reset.png",
+      "sha256": "0d877e3c73972986b7d5428792b1f24cbbf361443b37302eb8c9d2c80456541f"
+    },
+    {
+      "path": "requirements/reference/github-password-settings.png",
+      "sha256": "20a9c1a439934bdfeed1e45a51fcf27b0c6cd83ee437059c7fe29331b22db88d"
+    },
+    {
+      "path": "requirements/reference/github-pull-requests-list.png",
+      "sha256": "df4e88cadf1e4e9bad1d62b8ed0f10b6319d36e3c41c734d5ed2629ffb8b3dc0"
+    },
+    {
+      "path": "requirements/reference/github-repository-code-search.png",
+      "sha256": "ec1932eee0a3ab95b38921f340c45ab98af7b81a456a43a3427e831c42f77b59"
+    },
+    {
+      "path": "requirements/reference/github-repository-overview.png",
+      "sha256": "5e16a5c19c66c63440589845361fc09cdfc2432bfcec970d982294bc222bdc81"
+    },
+    {
+      "path": "requirements/reference/github-repository-search-results.png",
+      "sha256": "59935293b44e01839b55b099489acf618ddf25a40f133f9d2470c1ad9161a891"
+    },
+    {
+      "path": "requirements/reference/github-repository-visibility-settings.png",
+      "sha256": "36d3d663d8bf4ec3ee2f3fcb421dddb7641f105e4eef82d56a6c545a0be858d9"
+    },
+    {
+      "path": "requirements/reference/github-sign-in.png",
+      "sha256": "9a99407eddbf4161c0243393deb066bc2be59123a12f09f991e2966c70e5b42f"
+    },
+    {
+      "path": "requirements/reference/github-sign-up.png",
+      "sha256": "85687655e0bec8f95f174c9fdb061e147134b930f557f515d08e9fb0fd5b0ffe"
+    },
+    {
+      "path": "requirements/reference/github-web-file-editor.png",
+      "sha256": "c81a617730dfccbb32892a598a86c8b7a472755bdfc54de0df4d7b1de1a25a5d"
+    },
+    {
+      "path": "requirements/requirements.yaml",
+      "sha256": "bdc17d23265a6b1948aec150e69d0b2accfa37db4c569305c97be7ff7f3b0b8f"
+    }
+  ]
+}

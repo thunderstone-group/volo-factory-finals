@@ -1,0 +1,17 @@
+{
+  "source_files": 10,
+  "source_bytes": 83293,
+  "paths": [
+    "backend/package-lock.json",
+    "backend/package.json",
+    "backend/server.js",
+    "frontend/package-lock.json",
+    "frontend/package.json",
+    "frontend/public/app.js",
+    "frontend/public/index.html",
+    "frontend/public/lib/arc.js",
+    "frontend/public/seed.js",
+    "frontend/public/styles.css"
+  ],
+  "ignored_input_bytes": 3721202
+}

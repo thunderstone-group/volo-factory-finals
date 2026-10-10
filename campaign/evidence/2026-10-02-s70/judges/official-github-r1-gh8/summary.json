@@ -1,0 +1,14 @@
+{
+  "app": "official-github-r1",
+  "judge": "gh8",
+  "counts": {
+    "pass": 64,
+    "error": 13,
+    "fail": 25
+  },
+  "seconds": 162.3,
+  "coverage": {
+    "total": 100,
+    "parsed": 89
+  }
+}

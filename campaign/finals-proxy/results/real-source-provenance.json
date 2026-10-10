@@ -1,0 +1,14 @@
+{
+  "github": {
+    "copied_files": 28,
+    "requirements_sha256": "f1f73b4190831cef37669f9e919edde50cd0bc7ad02b888e6dab617094921754",
+    "helper_sha256": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+    "all_official_files_match": true
+  },
+  "sheet": {
+    "copied_files": 10,
+    "requirements_sha256": "7a2ee0a9d81317bcc3f92fd627effae0c510412b891ab6c79896c4517b139962",
+    "helper_sha256": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+    "all_official_files_match": true
+  }
+}

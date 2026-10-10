@@ -1,0 +1,15 @@
+{"event": "started", "round": 1, "submission": "259ce02ed3bc", "runs": ["e53edcaca334", "538e10fe0724"], "budget_before": 436.194162, "package": "~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/official/packages/pkg-f08f3fdf.zip", "at": "2026-09-25T20:23:50"}
+Traceback (most recent call last):
+  File "~/projects/volo-factory/scripts/submission_chain.py", line 114, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "~/projects/volo-factory/scripts/submission_chain.py", line 99, in main
+    record = status(run_id)
+             ^^^^^^^^^^^^^^
+  File "~/projects/volo-factory/scripts/submission_chain.py", line 48, in status
+    data = arc_json("status", run_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "~/projects/volo-factory/scripts/submission_chain.py", line 35, in arc_json
+    return json.loads(text[text.index("[") if text.lstrip().startswith("[") else text.index("{"):])
+                                                                                 ^^^^^^^^^^^^^^^
+ValueError: substring not found

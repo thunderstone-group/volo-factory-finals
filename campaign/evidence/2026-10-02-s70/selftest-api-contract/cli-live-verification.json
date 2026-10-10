@@ -1,0 +1,37 @@
+{
+  "session_migrated": true,
+  "profile_directory": "Profile 1",
+  "cookie_value_not_emitted": true,
+  "env_permissions": "0600",
+  "tasks_http": "passed",
+  "history_http": "passed",
+  "status_http": "passed",
+  "verified_existing_submission": "d210ad11-cc2e-440e-8fb2-637e0163e830",
+  "result": {
+    "passed": 10,
+    "total": 30
+  },
+  "screenshot_http": {
+    "bytes": 42531,
+    "sha256": "25ed983483f4033e8ab450189e79e9463c91ad2dbbc0c5da805c61cd7977c5ef",
+    "png_signature_valid": true
+  },
+  "quota_field_present": false,
+  "upload_e2e": {
+    "allocate": "passed",
+    "object_put": "passed",
+    "submit": "passed",
+    "poll_existing_id": "passed",
+    "new_submission_id": "ccbfc0ee-db33-470e-9565-41511f4ca476",
+    "terminal": {
+      "status": "failed",
+      "passed": 19,
+      "total": 30,
+      "previous_passed": 10,
+      "regressed_cases": 0
+    }
+  },
+  "installed_default_command_verified": true,
+  "installed_from": "~/projects/arcbench-cli-worktrees/selftest-api-20261002",
+  "source_commit": "e1c7dae"
+}

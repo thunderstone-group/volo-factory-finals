@@ -1,0 +1,146 @@
+/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 32: 41142 Terminated: 15          ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 39/48
+--- timedOut: REQ-2-1-2 S3: 切换工作表时筛选与校验入口保持隔离
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByRole('button', { name: 'Open dropdown for C2', exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('button', { name: 'Open dropdown for C2', exact: true })
+      333 |   await addDropdownRule(page, 'C2', 'C3', 'Open, Closed');
+      334 |   const dropdownC2 = btn(page, 'Open dropdown for C2');
+    > 335 |   await expect(dropdownC2).toBeVisible();
+          |                            ^
+      336 |
+      337 |   await addWorksheet(page, 'Sheet2');
+      338 |   await setCell(page, 'A1', 'Notes');
+--- timedOut: REQ-2-1-4 S3: 透视表源工作表不能删除，源数据和透视结果均保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+    Expected: "Region"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+        13 × locator resolved to <div tabindex="-1" role="gridcell" aria-label="A1" data-coord="A1" aria-selected="true" data-sheet="s_ppz4z26" data-action="select-cell" class="grid-cell selected"></div>
+           - unexpected value ""
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-2-1-4 S4: 删除透视结果工作表会移除配置并允许随后删除原源表
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'B4', exact: true })
+    Expected: "2000"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'B4', exact: true })
+        13 × locator resolved to <div tabindex="-1" role="gridcell" aria-label="B4" data-coord="B4" class="grid-cell" aria-selected="false" data-sheet="s_tvqngyi" data-action="select-cell"></div>
+           - unexpected value ""
+      351 |   await switchTo(page, 'Sheet1');
+      352 |   await createPivot(page, 'A1', 'B3', { rows: 'Region', values: 'Sales', summarize: 'SUM' });
+    > 353 |   await expect(cell(page, 'B4')).toHaveText('2000');
+          |                                  ^
+      354 |
+--- timedOut: REQ-2-2-1 S5: 插入行时校验规则随原单元格下移
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Please enter a number from 0 to 100', { exact: true })
+      334 |   await expect(cell(page, 'B2')).toHaveText('101');
+      335 |   await setCell(page, 'B3', '101');
+    > 336 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      337 |   await expect(cell(page, 'B3')).toHaveText('50');
+      338 |
+      339 |   await page.reload();
+--- timedOut: REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'B2', exact: true })
+    Expected: "#REF!"
+    Received: "#ERROR!"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'B2', exact: true })
+        13 × locator resolved to <div tabindex="-1" role="gridcell" aria-label="B2" data-coord="B2" data-sheet="bs1" class="grid-cell" aria-selected="false" data-action="select-cell">#ERROR!</div>
+           - unexpected value "#ERROR!"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-2-2-2 S5: 插入列时校验规则随原单元格右移
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Please enter a number from 0 to 100', { exact: true })
+      326 |   await expect(cell(page, 'B2')).toHaveText('101');
+      327 |   await setCell(page, 'C2', '101');
+    > 328 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      329 |   await expect(cell(page, 'C2')).toHaveText('50');
+      330 |
+      331 |   await page.reload();
+--- timedOut: REQ-3-1-1 S3: 通过网格提交文本、数字、布尔值、日期文本和公式
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeHidden() failed
+    Locator:  getByRole('textbox', { name: 'Edit A1', exact: true })
+    Expected: hidden
+    Received: visible
+    Call log:
+      - Expect "toBeHidden" with timeout 10000ms
+      - waiting for getByRole('textbox', { name: 'Edit A1', exact: true })
+        13 × locator resolved to <input type="text" class="cell-editor" aria-label="Edit A1"/>
+           - unexpected value "visible"
+      63 |   await editor.fill(value);
+      64 |   await editor.press('Enter');
+    > 65 |   await expect(editor).toBeHidden();
+         |                        ^
+      66 | }
+--- timedOut: REQ-3-1-1 S4: 在更深的单元格位置提交公式并在刷新后保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeHidden() failed
+    Locator:  getByRole('textbox', { name: 'Edit F12', exact: true })
+    Expected: hidden
+    Received: visible
+    Call log:
+      - Expect "toBeHidden" with timeout 10000ms
+      - waiting for getByRole('textbox', { name: 'Edit F12', exact: true })
+        13 × locator resolved to <input type="text" class="cell-editor" aria-label="Edit F12"/>
+           - unexpected value "visible"
+      63 |   await editor.fill(value);
+      64 |   await editor.press('Enter');
+    > 65 |   await expect(editor).toBeHidden();
+         |                        ^
+      66 | }
+--- timedOut: REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Please enter a number from 0 to 100', { exact: true })
+      286 |   await pressCtrlV(page);
+      287 |
+    > 288 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      289 |   const original = { B2: 'Ann', C2: '10', B3: 'Bob', C3: '20' };
+      290 |   await expectCells(page, original);
+      291 |   await page.reload();

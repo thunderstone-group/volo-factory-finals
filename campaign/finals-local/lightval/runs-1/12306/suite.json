@@ -1,0 +1,29 @@
+{
+ "files": [
+  {
+   "file": "t00-light.spec.cjs",
+   "scenarios": [
+    "EV-1.1",
+    "EV-1.2",
+    "EV-2.1",
+    "EV-2.2",
+    "EV-3.1",
+    "EV-3.2"
+   ],
+   "calls": 0,
+   "tests": [
+    "EV-1.1: Search only high-speed trains from home",
+    "EV-1.2: View public service-hours notice",
+    "EV-2.1: Switch public site language",
+    "EV-2.2: Open public contact information",
+    "EV-3.1: Expand train stop details from results",
+    "EV-3.2: Navigate to later months in the date picker"
+   ],
+   "compiler": "light"
+  }
+ ],
+ "scenarios": 6,
+ "tests": 6,
+ "seconds": 0,
+ "prerequisites": ""
+}

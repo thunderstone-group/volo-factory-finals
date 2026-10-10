@@ -1,0 +1,166 @@
+test_cbc_chains_across_blocks (test_aes.AesTests.test_cbc_chains_across_blocks) ... ok
+test_fips197_appendix_b_vector (test_aes.AesTests.test_fips197_appendix_b_vector) ... ok
+test_fips197_c1_vector (test_aes.AesTests.test_fips197_c1_vector) ... ok
+test_rejects_wrong_sizes (test_aes.AesTests.test_rejects_wrong_sizes) ... ok
+test_rfc3602_cbc_vector (test_aes.AesTests.test_rfc3602_cbc_vector) ... ok
+test_sbox_matches_the_published_table (test_aes.AesTests.test_sbox_matches_the_published_table) ... ok
+test_strip_pkcs7_only_removes_plausible_padding (test_aes.AesTests.test_strip_pkcs7_only_removes_plausible_padding) ... ok
+test_every_documented_command_is_reachable (test_cli.CliParserTests.test_every_documented_command_is_reachable) ... ok
+test_fetch_accepts_output_root (test_cli.CliParserTests.test_fetch_accepts_output_root) ... ok
+test_package_takes_a_source_directory_not_a_lab_checkout (test_cli.CliParserTests.test_package_takes_a_source_directory_not_a_lab_checkout) ... ok
+test_run_and_submit_take_repeated_tasks_or_all_tasks (test_cli.CliParserTests.test_run_and_submit_take_repeated_tasks_or_all_tasks) ... ok
+test_run_id_is_accepted_positionally_or_by_flag (test_cli.CliParserTests.test_run_id_is_accepted_positionally_or_by_flag) ... ok
+test_start_without_a_run_id_fails_before_any_request (test_cli.CliParserTests.test_start_without_a_run_id_fails_before_any_request) ... [arcbench] {"error": "start needs a run id, as a positional argument or --run-id", "error_kind": "local", "exception_type": "CliError", "exit_code": 1}
+ok
+test_submit_and_start_accept_queue_timeout (test_cli.CliParserTests.test_submit_and_start_accept_queue_timeout) ... ok
+test_submit_requires_package_competition_and_task (test_cli.CliParserTests.test_submit_requires_package_competition_and_task) ... ok
+test_tasks_takes_an_optional_competition (test_cli.CliParserTests.test_tasks_takes_an_optional_competition) ... ok
+test_doctor_parser_accepts_no_arguments (test_cli.DoctorCommandTests.test_doctor_parser_accepts_no_arguments) ... ok
+test_doctor_reports_missing_env_file (test_cli.DoctorCommandTests.test_doctor_reports_missing_env_file) ... doctor: ok=False
+  env_file: MISSING
+  cookie: MISSING
+  whoami: skipped (no cookie)
+  gateway_key: MISSING
+ok
+test_extract_marked_block_removes_runner_prefixes (test_cli.MarkedBlockTests.test_extract_marked_block_removes_runner_prefixes) ... ok
+test_missing_markers_return_none (test_cli.MarkedBlockTests.test_missing_markers_return_none) ... ok
+test_official_evaluation_refuses_a_personal_key (test_cli.OfficialEvaluationParserTests.test_official_evaluation_refuses_a_personal_key) ... ok
+test_registration_and_requirements_parse (test_cli.OfficialEvaluationParserTests.test_registration_and_requirements_parse) ... ok
+test_upload_accepts_official_evaluation_and_visual_model (test_cli.OfficialEvaluationParserTests.test_upload_accepts_official_evaluation_and_visual_model) ... ok
+test_upload_defaults_to_self_funded (test_cli.OfficialEvaluationParserTests.test_upload_defaults_to_self_funded) ... ok
+test_package_builds_a_valid_archive_from_a_directory (test_cli.PackageTests.test_package_builds_a_valid_archive_from_a_directory) ... ok
+test_package_refuses_a_directory_without_an_entrypoint (test_cli.PackageTests.test_package_refuses_a_directory_without_an_entrypoint) ... ok
+test_package_refuses_to_overwrite_an_existing_archive (test_cli.PackageTests.test_package_refuses_to_overwrite_an_existing_archive) ... ok
+test_dry_run_contacts_nothing_that_writes (test_cli.SubmitFlowTests.test_dry_run_contacts_nothing_that_writes) ... [arcbench] login: {"logged_in": true}
+[arcbench] package sha256=b14a91582f8f... bytes=127
+[arcbench] competition=smoke tasks=smoke--counter model=deepseek-v4-flash name=candidate
+[arcbench] dry-run: nothing submitted
+ok
+test_submit_uploads_once_creates_one_run_and_starts_it_once (test_cli.SubmitFlowTests.test_submit_uploads_once_creates_one_run_and_starts_it_once) ... [arcbench] login: {"logged_in": true}
+[arcbench] package sha256=b14a91582f8f... bytes=127
+[arcbench] competition=smoke tasks=smoke--counter model=deepseek-v4-flash name=candidate
+[arcbench] submission created: submission-1 archive_verified=True
+[arcbench] run created: run-1  task=smoke--counter  status=PENDING
+[arcbench] run started: run-1  https://arc-bench.com/runs/run-1
+[arcbench] result: {"run_id": "run-1", "status": "PASSED", "passed": null, "failed": null, "pass_rate": null, "tokens": 123, "duration_seconds": null, "failure_reason": null, "submission_id": null, "requirement_id": null, "finished_at": null}
+[arcbench] record: /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/tmp6n_fdyba/20261002T105301Z-smoke-smoke--counter.json
+ok
+test_submit_writes_a_redacted_record (test_cli.SubmitFlowTests.test_submit_writes_a_redacted_record) ... [arcbench] login: {"logged_in": true}
+[arcbench] package sha256=b14a91582f8f... bytes=127
+[arcbench] competition=smoke tasks=smoke--counter model=deepseek-v4-flash name=candidate
+[arcbench] submission created: submission-1 archive_verified=True
+[arcbench] run created: run-1  task=smoke--counter  status=PENDING
+[arcbench] run started: run-1  https://arc-bench.com/runs/run-1
+[arcbench] result: {"run_id": "run-1", "status": "PASSED", "passed": null, "failed": null, "pass_rate": null, "tokens": 123, "duration_seconds": null, "failure_reason": null, "submission_id": null, "requirement_id": null, "finished_at": null}
+[arcbench] record: /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/tmpd5xjz294/20261002T105301Z-smoke-smoke--counter.json
+ok
+test_a_cut_archive_stream_is_resumed_with_range (test_client.BinaryResumeTests.test_a_cut_archive_stream_is_resumed_with_range) ... ok
+test_a_json_body_is_not_an_archive (test_client.BinaryResumeTests.test_a_json_body_is_not_an_archive) ... ok
+test_a_stream_that_keeps_cutting_fails_as_a_transport_error (test_client.BinaryResumeTests.test_a_stream_that_keeps_cutting_fails_as_a_transport_error) ... ok
+test_build_multipart_contains_file (test_client.ClientTests.test_build_multipart_contains_file) ... ok
+test_config_defaults_are_safe (test_client.ClientTests.test_config_defaults_are_safe) ... ok
+test_create_run_only_persists_pending_run (test_client.ClientTests.test_create_run_only_persists_pending_run) ... ok
+test_load_env_prefers_process_environment (test_client.ClientTests.test_load_env_prefers_process_environment) ... ok
+test_sanitize_removes_credentials (test_client.ClientTests.test_sanitize_removes_credentials) ... ok
+test_summarize_run_keeps_metric_triple (test_client.ClientTests.test_summarize_run_keeps_metric_triple) ... ok
+test_validate_package_accepts_python_entrypoint (test_client.ClientTests.test_validate_package_accepts_python_entrypoint) ... ok
+test_validate_package_rejects_missing_entrypoint (test_client.ClientTests.test_validate_package_rejects_missing_entrypoint) ... ok
+test_write_record_keeps_token_metrics (test_client.ClientTests.test_write_record_keeps_token_metrics) ... ok
+test_api_error_details_describe_certainty (test_client.MergedHelperTests.test_api_error_details_describe_certainty) ... ok
+test_client_refuses_a_non_http_base_url (test_client.MergedHelperTests.test_client_refuses_a_non_http_base_url) ... ok
+test_client_seeds_the_configured_cookie_into_its_jar (test_client.MergedHelperTests.test_client_seeds_the_configured_cookie_into_its_jar) ... ok
+test_cookie_header_is_parsed_into_pairs (test_client.MergedHelperTests.test_cookie_header_is_parsed_into_pairs) ... ok
+test_poll_run_rejects_a_non_positive_interval (test_client.MergedHelperTests.test_poll_run_rejects_a_non_positive_interval) ... ok
+test_sanitize_masks_a_meter_baseline_identifier (test_client.MergedHelperTests.test_sanitize_masks_a_meter_baseline_identifier) ... ok
+test_sanitize_replaces_known_secret_values_in_free_text (test_client.MergedHelperTests.test_sanitize_replaces_known_secret_values_in_free_text) ... ok
+test_summarize_run_reports_cost_with_its_declared_currency (test_client.MergedHelperTests.test_summarize_run_reports_cost_with_its_declared_currency) ... ok
+test_task_filter_uses_the_id_suffix_like_the_website (test_client.MergedHelperTests.test_task_filter_uses_the_id_suffix_like_the_website) ... ok
+test_non_429_is_not_retried (test_client.QueueWaitTests.test_non_429_is_not_retried) ... ok
+test_parse_retry_after_seconds_and_default (test_client.QueueWaitTests.test_parse_retry_after_seconds_and_default) ... ok
+test_retries_429_then_succeeds (test_client.QueueWaitTests.test_retries_429_then_succeeds) ... ok
+test_timeout_reports_run_id_and_recovery (test_client.QueueWaitTests.test_timeout_reports_run_id_and_recovery) ... ok
+test_default_is_self_funded_with_the_account_key (test_client.SubmissionCredentialTests.test_default_is_self_funded_with_the_account_key) ... ok
+test_official_evaluation_sends_mode_and_no_key (test_client.SubmissionCredentialTests.test_official_evaluation_sends_mode_and_no_key) ... ok
+test_http_authentication_failure_is_attributed_to_meter_login (test_diagnostics.DiagnosticTests.test_http_authentication_failure_is_attributed_to_meter_login) ... ok
+test_http_error_body_read_failure_stays_structured (test_diagnostics.DiagnosticTests.test_http_error_body_read_failure_stays_structured) ... ok
+test_http_error_payload_and_free_text_credentials_are_redacted (test_diagnostics.DiagnosticTests.test_http_error_payload_and_free_text_credentials_are_redacted) ... ok
+test_invalid_balance_payload_is_an_error_instead_of_null_balance (test_diagnostics.DiagnosticTests.test_invalid_balance_payload_is_an_error_instead_of_null_balance) ... ok
+test_log_flag_works_before_or_after_command (test_diagnostics.DiagnosticTests.test_log_flag_works_before_or_after_command) ... ok
+test_log_open_error_prevents_request_and_stays_stderr_json (test_diagnostics.DiagnosticTests.test_log_open_error_prevents_request_and_stays_stderr_json) ... ok
+test_log_rejects_symlink (test_diagnostics.DiagnosticTests.test_log_rejects_symlink) ... ok
+test_log_write_failure_does_not_change_command_exit (test_diagnostics.DiagnosticTests.test_log_write_failure_does_not_change_command_exit) ... ok
+test_missing_credentials_emit_json_on_stderr_with_original_exit_code (test_diagnostics.DiagnosticTests.test_missing_credentials_emit_json_on_stderr_with_original_exit_code) ... ok
+test_progress_goes_to_stderr (test_diagnostics.DiagnosticTests.test_progress_goes_to_stderr) ... ok
+test_real_socket_balance_keeps_stdout_json_and_writes_private_metadata (test_diagnostics.DiagnosticTests.test_real_socket_balance_keeps_stdout_json_and_writes_private_metadata) ... ok
+test_transport_failures_keep_kind_cause_and_uncertain_write_without_retry (test_diagnostics.DiagnosticTests.test_transport_failures_keep_kind_cause_and_uncertain_write_without_retry) ... ok
+test_all_tasks_on_an_unknown_submission_starts_nothing (test_platform.PlatformTests.test_all_tasks_on_an_unknown_submission_starts_nothing) ... {"error": "submission submission-404 is not in this account's submissions", "http_status": null, "method": "GET", "path": "/submissions", "outcome_uncertain": false, "transport_failure": false, "error_kind": "api", "exit_code": 1}
+ok
+test_all_tasks_resolves_the_competition_from_the_submission (test_platform.PlatformTests.test_all_tasks_resolves_the_competition_from_the_submission) ... ok
+test_cancel_error_can_follow_a_state_change_without_retry (test_platform.PlatformTests.test_cancel_error_can_follow_a_state_change_without_retry) ... ok
+test_create_failure_is_not_retried_or_started (test_platform.PlatformTests.test_create_failure_is_not_retried_or_started) ... ok
+test_downloaded_archive_must_match_uploaded_bytes (test_platform.PlatformTests.test_downloaded_archive_must_match_uploaded_bytes) ... ok
+test_incomplete_mutation_response_is_uncertain_and_never_retried (test_platform.PlatformTests.test_incomplete_mutation_response_is_uncertain_and_never_retried) ... ok
+test_leaderboard_matches_task_suffix_and_keeps_server_order (test_platform.PlatformTests.test_leaderboard_matches_task_suffix_and_keeps_server_order) ... ok
+test_logs_redact_the_account_key_in_free_text (test_platform.PlatformTests.test_logs_redact_the_account_key_in_free_text) ... ok
+test_meter_cookie_still_overrides_the_key_login (test_platform.PlatformTests.test_meter_cookie_still_overrides_the_key_login) ... ok
+test_meter_falls_back_to_the_account_key_when_none_is_configured (test_platform.PlatformTests.test_meter_falls_back_to_the_account_key_when_none_is_configured) ... ok
+test_meter_identifier_is_not_printed_in_full (test_platform.PlatformTests.test_meter_identifier_is_not_printed_in_full) ... ok
+test_meter_login_failure_reports_without_echoing_the_key (test_platform.PlatformTests.test_meter_login_failure_reports_without_echoing_the_key) ... {"error": "{\"error\": \"invalid access key\", \"ok\": false}", "http_status": 401, "method": "POST", "path": "/user/login", "outcome_uncertain": false, "transport_failure": false, "error_kind": "authentication", "request_id": "6de7e028398e456e8d6f7b47ecf4c201", "origin": "http://127.0.0.1:59403", "timeout_seconds": 60, "elapsed_ms": 0.82, "exit_code": 1}
+ok
+test_meter_logs_in_with_the_access_key_and_holds_the_cookie (test_platform.PlatformTests.test_meter_logs_in_with_the_access_key_and_holds_the_cookie) ... ok
+test_models_prints_the_gateway_price_table (test_platform.PlatformTests.test_models_prints_the_gateway_price_table) ... ok
+test_one_failed_start_does_not_stop_the_remaining_tasks (test_platform.PlatformTests.test_one_failed_start_does_not_stop_the_remaining_tasks) ... ok
+test_redirect_to_another_origin_is_refused (test_platform.PlatformTests.test_redirect_to_another_origin_is_refused) ... ok
+test_request_summary_renders_epoch_seconds_as_utc (test_platform.PlatformTests.test_request_summary_renders_epoch_seconds_as_utc) ... ok
+test_requests_returns_the_newest_entries_first (test_platform.PlatformTests.test_requests_returns_the_newest_entries_first) ... ok
+test_run_starts_one_run_per_task_and_reports_each (test_platform.PlatformTests.test_run_starts_one_run_per_task_and_reports_each) ... ok
+test_run_without_a_task_selection_starts_nothing (test_platform.PlatformTests.test_run_without_a_task_selection_starts_nothing) ... {"error": "choose what to run: --task TASK (repeatable) or --all-tasks", "error_kind": "local", "exception_type": "CliError", "exit_code": 1}
+ok
+test_saved_submission_id_survives_a_missing_archive (test_platform.PlatformTests.test_saved_submission_id_survives_a_missing_archive) ... ok
+test_source_reads_one_file_and_saves_it_redacted_and_private (test_platform.PlatformTests.test_source_reads_one_file_and_saves_it_redacted_and_private) ... ok
+test_start_failure_retains_created_id_without_creating_another_run (test_platform.PlatformTests.test_start_failure_retains_created_id_without_creating_another_run) ... ok
+test_status_full_response_is_redacted (test_platform.PlatformTests.test_status_full_response_is_redacted) ... ok
+test_status_reads_several_runs_one_record_each (test_platform.PlatformTests.test_status_reads_several_runs_one_record_each) ... ok
+test_unauthenticated_session_reports_without_submitting (test_platform.PlatformTests.test_unauthenticated_session_reports_without_submitting) ... ok
+test_upload_hash_run_sequence_and_cookie_affinity (test_platform.PlatformTests.test_upload_hash_run_sequence_and_cookie_affinity) ... ok
+test_upload_uses_account_key_without_exposing_it (test_platform.PlatformTests.test_upload_uses_account_key_without_exposing_it) ... ok
+test_usage_day_merges_hour_buckets_the_service_will_not (test_platform.PlatformTests.test_usage_day_merges_hour_buckets_the_service_will_not) ... ok
+test_usage_keeps_the_server_row_shape_and_totals_in_decimal (test_platform.PlatformTests.test_usage_keeps_the_server_row_shape_and_totals_in_decimal) ... ok
+test_usage_since_and_model_select_client_side (test_platform.PlatformTests.test_usage_since_and_model_select_client_side) ... ok
+test_wait_gives_up_after_the_tolerated_failures (test_platform.PlatformTests.test_wait_gives_up_after_the_tolerated_failures) ... ok
+test_wait_on_several_runs_reports_a_non_passing_one (test_platform.PlatformTests.test_wait_on_several_runs_reports_a_non_passing_one) ... ok
+test_wait_on_several_runs_reports_the_deadline_per_run (test_platform.PlatformTests.test_wait_on_several_runs_reports_the_deadline_per_run) ... ok
+test_wait_polls_several_runs_round_robin_until_all_finish (test_platform.PlatformTests.test_wait_polls_several_runs_round_robin_until_all_finish) ... ok
+test_wait_polls_through_queued_without_starting_another_run (test_platform.PlatformTests.test_wait_polls_through_queued_without_starting_another_run) ... ok
+test_wait_recovers_one_incomplete_read_without_mutating_the_run (test_platform.PlatformTests.test_wait_recovers_one_incomplete_read_without_mutating_the_run) ... ok
+test_wait_reports_a_local_deadline_without_cancelling (test_platform.PlatformTests.test_wait_reports_a_local_deadline_without_cancelling) ... ok
+test_log_tail_preserves_the_cursor_without_duplicate_streams (test_platform.SummaryTests.test_log_tail_preserves_the_cursor_without_duplicate_streams) ... ok
+test_real_status_fields_preserve_explicit_currency_and_test_counts (test_platform.SummaryTests.test_real_status_fields_preserve_explicit_currency_and_test_counts) ... ok
+test_cli_json_status_uses_real_response_and_saves_result (test_selftest.SelftestTests.test_cli_json_status_uses_real_response_and_saves_result) ... ok
+test_failed_object_upload_does_not_submit_or_retry (test_selftest.SelftestTests.test_failed_object_upload_does_not_submit_or_retry) ... ok
+test_parser_flags_work_at_all_supported_levels (test_selftest.SelftestTests.test_parser_flags_work_at_all_supported_levels) ... ok
+test_read_failure_at_deadline_remains_a_local_timeout (test_selftest.SelftestTests.test_read_failure_at_deadline_remains_a_local_timeout) ... ok
+test_read_tls_failure_is_retried_without_another_upload (test_selftest.SelftestTests.test_read_tls_failure_is_retried_without_another_upload) ... ok
+test_real_failed_response_preserves_diagnostics (test_selftest.SelftestTests.test_real_failed_response_preserves_diagnostics) ... ok
+test_repeated_read_failure_is_bounded_and_auth_failure_is_not_retried (test_selftest.SelftestTests.test_repeated_read_failure_is_bounded_and_auth_failure_is_not_retried) ... ok
+test_selftest_cookie_capture_is_exact_domain_and_session_only (test_selftest.SelftestTests.test_selftest_cookie_capture_is_exact_domain_and_session_only) ... ok
+test_separate_service_never_receives_competition_credentials (test_selftest.SelftestTests.test_separate_service_never_receives_competition_credentials) ... ok
+test_status_cannot_be_misattributed (test_selftest.SelftestTests.test_status_cannot_be_misattributed) ... ok
+test_upload_follows_live_web_protocol_without_forwarding_cookies (test_selftest.SelftestTests.test_upload_follows_live_web_protocol_without_forwarding_cookies) ... ok
+test_wait_reads_same_submission_until_real_terminal (test_selftest.SelftestTests.test_wait_reads_same_submission_until_real_terminal) ... ok
+test_wait_timeout_does_not_create_a_run_or_quality_failure (test_selftest.SelftestTests.test_wait_timeout_does_not_create_a_run_or_quality_failure) ... ok
+test_zip_rejected_before_allocating_quota (test_selftest.SelftestTests.test_zip_rejected_before_allocating_quota) ... ok
+test_legacy_layout_keeps_a_printable_plaintext (test_session.CookieLayoutTests.test_legacy_layout_keeps_a_printable_plaintext) ... ok
+test_modern_layout_drops_the_domain_bound_hash (test_session.CookieLayoutTests.test_modern_layout_drops_the_domain_bound_hash) ... ok
+test_undecodable_plaintext_is_reported_not_guessed (test_session.CookieLayoutTests.test_undecodable_plaintext_is_reported_not_guessed) ... ok
+test_header_pairs_session_and_affinity_cookies (test_session.EnvWritingTests.test_header_pairs_session_and_affinity_cookies) ... ok
+test_write_creates_a_missing_env_file (test_session.EnvWritingTests.test_write_creates_a_missing_env_file) ... ok
+test_write_replaces_one_line_and_keeps_the_file_private (test_session.EnvWritingTests.test_write_replaces_one_line_and_keeps_the_file_private) ... ok
+test_keychain_refusal_is_actionable (test_session.PlatformGuardTests.test_keychain_refusal_is_actionable) ... ok
+test_missing_cookie_store_names_the_path (test_session.PlatformGuardTests.test_missing_cookie_store_names_the_path) ... ok
+test_non_macos_is_told_to_set_the_variable_by_hand (test_session.PlatformGuardTests.test_non_macos_is_told_to_set_the_variable_by_hand) ... ok
+
+----------------------------------------------------------------------
+Ran 132 tests in 19.319s
+
+OK

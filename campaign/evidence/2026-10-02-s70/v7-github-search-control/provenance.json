@@ -1,0 +1,12 @@
+{
+  "source_run": "c5e4493bad81",
+  "previous_control": "v7-github-navigation-control",
+  "scope": "Diagnostic application only",
+  "changes": [
+    "Code category preserves active search; Back to files explicitly clears it",
+    "Search includes nested repository files",
+    "Show active query alongside results",
+    "Highlight a real query match in the opened file; preserve original stored content"
+  ],
+  "package_sha256": "7da5904b70def93ad063febca01146d0d1da6a011a9be0d37293a0c681b21ec6"
+}

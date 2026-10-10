@@ -1,0 +1,13 @@
+{
+  "app": "generate-diagnostics-v4b-sheet",
+  "judge": "g99",
+  "counts": {
+    "pass": 88,
+    "fail": 12
+  },
+  "seconds": 85.1,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

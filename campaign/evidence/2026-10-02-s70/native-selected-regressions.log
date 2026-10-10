@@ -1,0 +1,5 @@
+{"app": "github", "judge": "v6", "counts": {"pass": 109, "fail": 2}, "seconds": 46.8, "model_api_calls": 0, "unavailable": null}
+{"app": "old-sheet", "judge": "g99", "counts": {"pass": 87, "fail": 13}, "seconds": 93.7, "model_api_calls": 0, "unavailable": null}
+{"app": "old-sheet", "judge": "cov99n-arm", "counts": {"pass": 93, "fail": 7}, "seconds": 77.8, "model_api_calls": 0, "unavailable": null}
+{"app": "new-sheet", "judge": "g99", "counts": {"pass": 90, "fail": 10}, "seconds": 81.2, "model_api_calls": 0, "unavailable": null}
+{"app": "new-sheet", "judge": "cov99n-arm", "counts": {"pass": 95, "fail": 5}, "seconds": 70.3, "model_api_calls": 0, "unavailable": null}

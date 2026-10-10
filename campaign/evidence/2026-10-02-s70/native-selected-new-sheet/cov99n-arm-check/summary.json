@@ -1,0 +1,11 @@
+{
+  "app": "new-sheet",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 95,
+    "fail": 5
+  },
+  "seconds": 70.3,
+  "model_api_calls": 0,
+  "unavailable": null
+}

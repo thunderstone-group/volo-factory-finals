@@ -1,0 +1,55 @@
+{
+ "files": [
+  {
+   "file": "t00-initial-entries.spec.cjs",
+   "tests": [
+    "REQ-3-3#entry-1: Initial visible entry acme-docs",
+    "REQ-4-2-1#entry-1: Initial visible entry acme-docs",
+    "REQ-5-1-2#entry-1: Initial visible entry Improve onboarding",
+    "REQ-5-1-2#entry-2: Initial visible entry Improve onboarding",
+    "REQ-5-1-2#entry-3: Initial visible entry Improve onboarding"
+   ],
+   "calls": 0,
+   "deterministic": "initial_entries"
+  }
+ ],
+ "scenarios": 5,
+ "tests": 5,
+ "initial_entry_checks": [
+  {
+   "id": "REQ-3-3#entry-1",
+   "name": "acme-docs",
+   "scenario_id": "REQ-3-3",
+   "given": "The visitor starts at the application home page in a fresh unauthenticated browser session. The system pre-provisions public repository `acme-docs` in organization `Acme Demo`; the visitor can open its overview without signing in.",
+   "when": "The visitor opens the visible `acme-docs` repository entry."
+  },
+  {
+   "id": "REQ-4-2-1#entry-1",
+   "name": "acme-docs",
+   "scenario_id": "REQ-4-2-1",
+   "given": "The visitor starts at the application home page in a fresh unauthenticated browser session. The system pre-provisions public repository `acme-docs` with commit message `Document search flow` authored by `alice-dev`; the visitor can open the repository without signing in.",
+   "when": "The visitor opens `acme-docs` and clicks the “Commits” link."
+  },
+  {
+   "id": "REQ-5-1-2#entry-1",
+   "name": "Improve onboarding",
+   "scenario_id": "REQ-5-1-2",
+   "given": "The visitor starts at the application home page in a fresh unauthenticated browser session. The system pre-provisions public repository `acme-docs` with Open issue `Improve onboarding` and description `Describe the onboarding improvement.`; the visitor can open the issue without signing in.",
+   "when": "The visitor opens the visible `Improve onboarding` issue entry."
+  },
+  {
+   "id": "REQ-5-1-2#entry-2",
+   "name": "Improve onboarding",
+   "scenario_id": "REQ-5-1-2#2",
+   "given": "The system pre-provisions public repository `acme-docs` with Open issue `Improve onboarding` and description `Describe the onboarding improvement.`. The visitor starts from the application home page in a fresh unauthenticated browser session and can open the issue without signing in.",
+   "when": "The visitor opens the `Improve onboarding` issue entry and reloads the issue detail page."
+  },
+  {
+   "id": "REQ-5-1-2#entry-3",
+   "name": "Improve onboarding",
+   "scenario_id": "REQ-5-1-2#3",
+   "given": "The system pre-provisions public repository `acme-docs` with Open issue `Improve onboarding`. The visitor starts from the application home page in a fresh unauthenticated browser session and can open the issue without signing in.",
+   "when": "The visitor opens the `Improve onboarding` issue entry, returns to the application home page, and opens the same issue entry again."
+  }
+ ]
+}

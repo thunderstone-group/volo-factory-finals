@@ -1,0 +1,10 @@
+{
+  "application": "official-github-refreshed",
+  "official_full_score": 46,
+  "counts": {
+    "pass": 85,
+    "fail": 10,
+    "error": 6
+  },
+  "seconds": 79.5
+}

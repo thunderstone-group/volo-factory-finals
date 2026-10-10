@@ -1,0 +1,295 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-6-1",
+      "name": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'success', exact: true })\n    - locator resolved to <option value=\"success\">success</option>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    10 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n\n\n  161 |   await openPullRequest(page, P",
+      "source": "test('REQ-6-1: REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1', async ({ page }) => {\n  await signIn(page);\n  await openRepository(page);\n  await page.getByRole('link', { name: 'Settings', exact: true }).click();\n  await page.getByRole('link', { name: 'Branches', exact: true }).click();\n\n  await page.getByRole('button', { name: 'Add branch protection rule', exact: true }).click();\n  await page.getByLabel('Branch name pattern', { exact: true }).fill(MAIN);\n  await page.getByRole('checkbox', { name: 'Require 1 approval', exact: true }).check();\n  await page.getByRole('checkbox', { name: 'Require status check test', exact: true }).check();\n  await page.getByRole('button', { name: 'Create', exact: true }).click();\n\n  await expect(page.getByText(MAIN, { exact: true }).first()).toBeVisible();\n  await expect(page.getByText('1 approval', { exact: true })).toBeVisible();\n  await expect(page.getByText('Require status check test', { exact: true })).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('1 approval', { exact: true })).toBeVisible();\n  await expect(page.getByText('Require status check test', { exact: true })).toBeVisible();\n\n  // the Admin updates the required check on the Open PR targeting main\n  await openPullRequest(page, PUBLIC_PR);\n  await page.getByRole('combobox', { name: 'test status', exact: true }).click();\n  await page.getByRole('option', { name: 'success', exact: true }).click();\n  await page.getByRole('button', { name: 'Save', exact: true }).click();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - searchbox \"Search\" [ref=e13]: acme-docs\n      - button \"Account menu\" [ref=e14] [cursor=pointer]\n      - generic [ref=e15]: alice-dev\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]: Public\n      - paragraph [ref=e20]: Documentation and search flow for the Acme platform\n      - navigation [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/code/feature-search\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/settings\"\n      - paragraph [ref=e26]:\n        - button \"Code\" [ref=e27] [cursor=pointer]\n        - button \"Branch feature-search\" [ref=e29] [cursor=pointer]\n        - button \"Add file\" [ref=e30] [cursor=pointer]\n      - heading \"Improve onboarding\" [level=1] [ref=e31]\n      - paragraph [ref=e32]: \"#1 · Open\"\n      - paragraph\n... page content omitted ...\n61] [cursor=pointer]\n      - paragraph [ref=e62]: Updates the onboarding flow.\n      - heading \"Conversation\" [level=2] [ref=e63]\n      - article [ref=e64]:\n        - heading \"bob-reviewer\" [level=3] [ref=e65]\n        - paragraph [ref=e66]: Should we also update the welcome text?\n        - paragraph [ref=e67]: 2 years ago\n      - heading \"Reviews\" [level=2] [ref=e68]\n      - article [ref=e69]:\n        - heading \"bob-reviewer\" [level=3] [ref=e70]\n        - paragraph [ref=e71]: Approved\n        - paragraph [ref=e72]: Looks good to me.\n        - paragraph [ref=e73]: 2 years ago\n    - complementary [ref=e74]:\n      - button \"Dashboard\" [ref=e75] [cursor=pointer]\n      - button \"Explore repositories\" [ref=e76] [cursor=pointer]\n      - button \"Organizations\" [ref=e77] [cursor=pointer]\n  - contentinfo [ref=e78]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t06-REQ-6.spec.cjs:163",
+      "seconds": 5.4
+    },
+    {
+      "id": "REQ-6-1#2",
+      "name": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:113 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-1#2: REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2', async ({ page }) => {\n  // a non-Admin collaborator: created here with the Write repository role\n  const writer = await provisionWriter(page);\n  await signIn(page, writer.username, writer.password);\n\n  await openRepository(page);\n  await page.getByRole('link', { name: 'Settings', exact: true }).click();\n  await page.getByRole('link', { name: 'Branches', exact: true }).click();\n\n  await expect(page.getByRole('button', { name: 'Add branch protection rule', exact: true })).toHaveCount(0);\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n        - text: GitHub\n      - navigation [ref=e9]:\n        - link [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n          - text: Home\n      - generic [ref=e11]:\n        - searchbox [ref=e13]: acme-docs\n        - button [ref=e14] [cursor=pointer]: Account menu\n        - generic [ref=e15]: alice-dev\n    - generic [ref=e16]:\n      - main [ref=e17]:\n        - heading [level=1] [ref=e18]: Acme Demo/acme-docs\n        - paragraph [ref=e19]:\n          - link [ref=e20] [cursor=pointer]:\n            - /url: \"#/repos/acme-demo/acme-docs/settings\"\n            - text: Settings\n        - heading [level=2] [ref=e21]: Manage access\n        - paragraph [ref=e22]:\n          - button [ref=e23] [cursor=pointer]: Add people or teams\n        - article [ref=e24]:\n          - heading [level=3] [ref=e25]: bob-reviewer\n          - paragraph [ref=e26]:\n            - generic [ref=e27]: Role\n            - combobox [ref=e28]\n          - paragraph [ref=e29]:\n            - button [ref=e30] [cursor=pointer]: Save\n        - article [ref=e31]:\n          - heading [level=3] [ref=e32]: carol-reader\n          - paragraph [ref=e33]: Read\n        - article [ref=e34]:\n          - heading [level=3] [ref=e35]: frontend-team\n          - paragraph [ref=e36]: Write\n      - complementary [ref=e37]:\n    \n... page content omitted ...\nDashboard\n        - button [ref=e39] [cursor=pointer]: Explore repositories\n        - button [ref=e40] [cursor=pointer]: Organizations\n    - contentinfo [ref=e41]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n  - dialog \"Add people or teams\" [ref=e43]:\n    - generic [ref=e44]:\n      - paragraph [ref=e45]:\n        - textbox \"Search\" [ref=e46]: pw-writer-muq9qxgegiuw\n      - option \"pw-writer-muq9qxgegiuw\" [selected] [ref=e48] [cursor=pointer]\n      - paragraph [ref=e49]:\n        - generic [ref=e50]: Role\n        - combobox \"Role\" [active] [ref=e51]:\n          - option \"Read\" [selected]\n          - option \"Triage\"\n          - option \"Write\"\n          - option \"Maintain\"\n          - option \"Admin\"\n      - paragraph [ref=e52]:\n        - button \"Add\" [ref=e53] [cursor=pointer]\n  - status [ref=e55]:\n    - generic [ref=e56]: Selected pw-writer-muq9qxgegiuw\n```",
+      "at": "t06-REQ-6.spec.cjs:113",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-6-1#3",
+      "name": "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'success', exact: true })\n    - locator resolved to <option value=\"success\">success</option>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    10 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n\n\n  187 |   await expect(page.getByRole('",
+      "source": "test('REQ-6-1#3: REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3', async ({ page }) => {\n  await signIn(page);\n  await openPullRequest(page, PUBLIC_PR);\n\n  await expect(page.getByRole('combobox', { name: 'test status', exact: true })).toBeVisible();\n  await page.getByRole('combobox', { name: 'test status', exact: true }).click();\n  await page.getByRole('option', { name: 'success', exact: true }).click();\n  await page.getByRole('button', { name: 'Save', exact: true }).click();\n\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n  await expect(page.getByRole('heading', { name: PUBLIC_PR, exact: true })).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - searchbox \"Search\" [ref=e13]: acme-docs\n      - button \"Account menu\" [ref=e14] [cursor=pointer]\n      - generic [ref=e15]: alice-dev\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Acme Demo/acme-docs\" [level=1] [ref=e18]\n      - paragraph [ref=e19]: Public\n      - paragraph [ref=e20]: Documentation and search flow for the Acme platform\n      - navigation [ref=e21]:\n        - link \"Code\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/code/feature-search\"\n        - link \"Issues\" [ref=e23] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/issues\"\n        - link \"Pull requests\" [ref=e24] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/pulls\"\n        - link \"Settings\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/repos/acme-demo/acme-docs/settings\"\n      - paragraph [ref=e26]:\n        - button \"Code\" [ref=e27] [cursor=pointer]\n        - button \"Branch feature-search\" [ref=e29] [cursor=pointer]\n        - button \"Add file\" [ref=e30] [cursor=pointer]\n      - heading \"Improve onboarding\" [level=1] [ref=e31]\n      - paragraph [ref=e32]: \"#1 · Open\"\n      - paragraph\n... page content omitted ...\n61] [cursor=pointer]\n      - paragraph [ref=e62]: Updates the onboarding flow.\n      - heading \"Conversation\" [level=2] [ref=e63]\n      - article [ref=e64]:\n        - heading \"bob-reviewer\" [level=3] [ref=e65]\n        - paragraph [ref=e66]: Should we also update the welcome text?\n        - paragraph [ref=e67]: 2 years ago\n      - heading \"Reviews\" [level=2] [ref=e68]\n      - article [ref=e69]:\n        - heading \"bob-reviewer\" [level=3] [ref=e70]\n        - paragraph [ref=e71]: Approved\n        - paragraph [ref=e72]: Looks good to me.\n        - paragraph [ref=e73]: 2 years ago\n    - complementary [ref=e74]:\n      - button \"Dashboard\" [ref=e75] [cursor=pointer]\n      - button \"Explore repositories\" [ref=e76] [cursor=pointer]\n      - button \"Organizations\" [ref=e77] [cursor=pointer]\n  - contentinfo [ref=e78]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t06-REQ-6.spec.cjs:189",
+      "seconds": 5.3
+    },
+    {
+      "id": "REQ-6-2-1",
+      "name": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-1#2",
+      "name": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-1#3",
+      "name": "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-2-2",
+      "name": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-2#2",
+      "name": "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-3",
+      "name": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-6-2-3#2",
+      "name": "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-2-4",
+      "name": "REQ-6-2-4: Create a Draft Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-6-2-4#2",
+      "name": "REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-3-1",
+      "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-1#2",
+      "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-1#3",
+      "name": "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 3",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-2",
+      "name": "REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-3-3",
+      "name": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:113 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-3-3: REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1', async ({ page }) => {\n  // non-author collaborator with Write access, built through the documented flows\n  const reviewer = await provisionWriter(page);\n  const body = `Inline comment ${unique()}`;\n\n  await signIn(page, reviewer.username, reviewer.password);\n  await openPullRequest(page, PUBLIC_PR);\n  await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n\n  await page.getByRole('button', { name: 'Add comment', exact: true }).first().click();\n  await page.getByLabel('Comment', { exact: true }).fill(body);\n  await page.getByRole('button', { name: 'Add single comment', exact: true }).click();\n\n  await expect(page.getByText(body, { exact: true })).toBeVisible();\n  await expect(page.getByText(reviewer.username, { exact: true }).first()).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText(body, { exact: true })).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n        - text: GitHub\n      - navigation [ref=e9]:\n        - link [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n          - text: Home\n      - generic [ref=e11]:\n        - searchbox [ref=e13]: acme-docs\n        - button [ref=e14] [cursor=pointer]: Account menu\n        - generic [ref=e15]: alice-dev\n    - generic [ref=e16]:\n      - main [ref=e17]:\n        - heading [level=1] [ref=e18]: Acme Demo/acme-docs\n        - paragraph [ref=e19]:\n          - link [ref=e20] [cursor=pointer]:\n            - /url: \"#/repos/acme-demo/acme-docs/settings\"\n            - text: Settings\n        - heading [level=2] [ref=e21]: Manage access\n        - paragraph [ref=e22]:\n          - button [ref=e23] [cursor=pointer]: Add people or teams\n        - article [ref=e24]:\n          - heading [level=3] [ref=e25]: bob-reviewer\n          - paragraph [ref=e26]:\n            - generic [ref=e27]: Role\n            - combobox [ref=e28]\n          - paragraph [ref=e29]:\n            - button [ref=e30] [cursor=pointer]: Save\n        - article [ref=e31]:\n          - heading [level=3] [ref=e32]: carol-reader\n          - paragraph [ref=e33]: Read\n        - article [ref=e34]:\n          - heading [level=3] [ref=e35]: frontend-team\n          - paragraph [ref=e36]: Write\n      - complementary [ref=e37]:\n    \n... page content omitted ...\nDashboard\n        - button [ref=e39] [cursor=pointer]: Explore repositories\n        - button [ref=e40] [cursor=pointer]: Organizations\n    - contentinfo [ref=e41]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n  - dialog \"Add people or teams\" [ref=e43]:\n    - generic [ref=e44]:\n      - paragraph [ref=e45]:\n        - textbox \"Search\" [ref=e46]: pw-writer-muq9r8z77d2z\n      - option \"pw-writer-muq9r8z77d2z\" [selected] [ref=e48] [cursor=pointer]\n      - paragraph [ref=e49]:\n        - generic [ref=e50]: Role\n        - combobox \"Role\" [active] [ref=e51]:\n          - option \"Read\" [selected]\n          - option \"Triage\"\n          - option \"Write\"\n          - option \"Maintain\"\n          - option \"Admin\"\n      - paragraph [ref=e52]:\n        - button \"Add\" [ref=e53] [cursor=pointer]\n  - status [ref=e55]:\n    - generic [ref=e56]: Selected pw-writer-muq9r8z77d2z\n```",
+      "at": "t06-REQ-6.spec.cjs:113",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-6-3-3#2",
+      "name": "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:113 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-3-3#2: REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2', async ({ page }) => {\n  const reviewer = await provisionWriter(page);\n  const body = `Pending comment ${unique()}`;\n\n  await signIn(page, reviewer.username, reviewer.password);\n  await openPullRequest(page, PUBLIC_PR);\n  await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n\n  await page.getByRole('button', { name: 'Add comment', exact: true }).first().click();\n  await page.getByLabel('Comment', { exact: true }).fill(body);\n  await page.getByRole('button', { name: 'Start a review', exact: true }).click();\n\n  await expect(page.getByText('Pending review', { exact: true })).toBeVisible();\n  await expect(page.getByText(body, { exact: true })).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('Pending review', { exact: true })).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n        - text: GitHub\n      - navigation [ref=e9]:\n        - link [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n          - text: Home\n      - generic [ref=e11]:\n        - searchbox [ref=e13]: acme-docs\n        - button [ref=e14] [cursor=pointer]: Account menu\n        - generic [ref=e15]: alice-dev\n    - generic [ref=e16]:\n      - main [ref=e17]:\n        - heading [level=1] [ref=e18]: Acme Demo/acme-docs\n        - paragraph [ref=e19]:\n          - link [ref=e20] [cursor=pointer]:\n            - /url: \"#/repos/acme-demo/acme-docs/settings\"\n            - text: Settings\n        - heading [level=2] [ref=e21]: Manage access\n        - paragraph [ref=e22]:\n          - button [ref=e23] [cursor=pointer]: Add people or teams\n        - article [ref=e24]:\n          - heading [level=3] [ref=e25]: bob-reviewer\n          - paragraph [ref=e26]:\n            - generic [ref=e27]: Role\n            - combobox [ref=e28]\n          - paragraph [ref=e29]:\n            - button [ref=e30] [cursor=pointer]: Save\n        - article [ref=e31]:\n          - heading [level=3] [ref=e32]: carol-reader\n          - paragraph [ref=e33]: Read\n        - article [ref=e34]:\n          - heading [level=3] [ref=e35]: frontend-team\n          - paragraph [ref=e36]: Write\n      - complementary [ref=e37]:\n    \n... page content omitted ...\nDashboard\n        - button [ref=e39] [cursor=pointer]: Explore repositories\n        - button [ref=e40] [cursor=pointer]: Organizations\n    - contentinfo [ref=e41]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n  - dialog \"Add people or teams\" [ref=e43]:\n    - generic [ref=e44]:\n      - paragraph [ref=e45]:\n        - textbox \"Search\" [ref=e46]: pw-writer-muq9rdhy1zma\n      - option \"pw-writer-muq9rdhy1zma\" [selected] [ref=e48] [cursor=pointer]\n      - paragraph [ref=e49]:\n        - generic [ref=e50]: Role\n        - combobox \"Role\" [active] [ref=e51]:\n          - option \"Read\" [selected]\n          - option \"Triage\"\n          - option \"Write\"\n          - option \"Maintain\"\n          - option \"Admin\"\n      - paragraph [ref=e52]:\n        - button \"Add\" [ref=e53] [cursor=pointer]\n  - status [ref=e55]:\n    - generic [ref=e56]: Selected pw-writer-muq9rdhy1zma\n```",
+      "at": "t06-REQ-6.spec.cjs:113",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-6-3-4",
+      "name": "REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:113 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-3-4: REQ-6-3-4: Submit a Pull Request Review - Scenario 1', async ({ page }) => {\n  const reviewer = await provisionWriter(page);\n  const summary = `Looks good ${unique()}`;\n\n  await signIn(page, reviewer.username, reviewer.password);\n  await openPullRequest(page, PUBLIC_PR);\n  await submitReview(page, 'Approve', summary);\n\n  await expect(page.getByText('Approved', { exact: true })).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('Approved', { exact: true })).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n        - text: GitHub\n      - navigation [ref=e9]:\n        - link [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n          - text: Home\n      - generic [ref=e11]:\n        - searchbox [ref=e13]: acme-docs\n        - button [ref=e14] [cursor=pointer]: Account menu\n        - generic [ref=e15]: alice-dev\n    - generic [ref=e16]:\n      - main [ref=e17]:\n        - heading [level=1] [ref=e18]: Acme Demo/acme-docs\n        - paragraph [ref=e19]:\n          - link [ref=e20] [cursor=pointer]:\n            - /url: \"#/repos/acme-demo/acme-docs/settings\"\n            - text: Settings\n        - heading [level=2] [ref=e21]: Manage access\n        - paragraph [ref=e22]:\n          - button [ref=e23] [cursor=pointer]: Add people or teams\n        - article [ref=e24]:\n          - heading [level=3] [ref=e25]: bob-reviewer\n          - paragraph [ref=e26]:\n            - generic [ref=e27]: Role\n            - combobox [ref=e28]\n          - paragraph [ref=e29]:\n            - button [ref=e30] [cursor=pointer]: Save\n        - article [ref=e31]:\n          - heading [level=3] [ref=e32]: carol-reader\n          - paragraph [ref=e33]: Read\n        - article [ref=e34]:\n          - heading [level=3] [ref=e35]: frontend-team\n          - paragraph [ref=e36]: Write\n      - complementary [ref=e37]:\n    \n... page content omitted ...\nDashboard\n        - button [ref=e39] [cursor=pointer]: Explore repositories\n        - button [ref=e40] [cursor=pointer]: Organizations\n    - contentinfo [ref=e41]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n  - dialog \"Add people or teams\" [ref=e43]:\n    - generic [ref=e44]:\n      - paragraph [ref=e45]:\n        - textbox \"Search\" [ref=e46]: pw-writer-muq9ri1ch19l\n      - option \"pw-writer-muq9ri1ch19l\" [selected] [ref=e48] [cursor=pointer]\n      - paragraph [ref=e49]:\n        - generic [ref=e50]: Role\n        - combobox \"Role\" [active] [ref=e51]:\n          - option \"Read\" [selected]\n          - option \"Triage\"\n          - option \"Write\"\n          - option \"Maintain\"\n          - option \"Admin\"\n      - paragraph [ref=e52]:\n        - button \"Add\" [ref=e53] [cursor=pointer]\n  - status [ref=e55]:\n    - generic [ref=e56]: Selected pw-writer-muq9ri1ch19l\n```",
+      "at": "t06-REQ-6.spec.cjs:113",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-6-3-4#2",
+      "name": "REQ-6-3-4: Submit a Pull Request Review - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:113 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-3-4#2: REQ-6-3-4: Submit a Pull Request Review - Scenario 2', async ({ page }) => {\n  const reviewer = await provisionWriter(page);\n  const summary = `Please rework ${unique()}`;\n\n  await signIn(page, reviewer.username, reviewer.password);\n  await openPullRequest(page, PUBLIC_PR);\n  await submitReview(page, 'Request changes', summary);\n\n  await expect(page.getByText('Changes requested', { exact: true })).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('Changes requested', { exact: true })).toBeVisible();\n  await expect(page.getByText(summary, { exact: true })).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n        - text: GitHub\n      - navigation [ref=e9]:\n        - link [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n          - text: Home\n      - generic [ref=e11]:\n        - searchbox [ref=e13]: acme-docs\n        - button [ref=e14] [cursor=pointer]: Account menu\n        - generic [ref=e15]: alice-dev\n    - generic [ref=e16]:\n      - main [ref=e17]:\n        - heading [level=1] [ref=e18]: Acme Demo/acme-docs\n        - paragraph [ref=e19]:\n          - link [ref=e20] [cursor=pointer]:\n            - /url: \"#/repos/acme-demo/acme-docs/settings\"\n            - text: Settings\n        - heading [level=2] [ref=e21]: Manage access\n        - paragraph [ref=e22]:\n          - button [ref=e23] [cursor=pointer]: Add people or teams\n        - article [ref=e24]:\n          - heading [level=3] [ref=e25]: bob-reviewer\n          - paragraph [ref=e26]:\n            - generic [ref=e27]: Role\n            - combobox [ref=e28]\n          - paragraph [ref=e29]:\n            - button [ref=e30] [cursor=pointer]: Save\n        - article [ref=e31]:\n          - heading [level=3] [ref=e32]: carol-reader\n          - paragraph [ref=e33]: Read\n        - article [ref=e34]:\n          - heading [level=3] [ref=e35]: frontend-team\n          - paragraph [ref=e36]: Write\n      - complementary [ref=e37]:\n    \n... page content omitted ...\nDashboard\n        - button [ref=e39] [cursor=pointer]: Explore repositories\n        - button [ref=e40] [cursor=pointer]: Organizations\n    - contentinfo [ref=e41]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n  - dialog \"Add people or teams\" [ref=e43]:\n    - generic [ref=e44]:\n      - paragraph [ref=e45]:\n        - textbox \"Search\" [ref=e46]: pw-writer-muq9rmklts3p\n      - option \"pw-writer-muq9rmklts3p\" [selected] [ref=e48] [cursor=pointer]\n      - paragraph [ref=e49]:\n        - generic [ref=e50]: Role\n        - combobox \"Role\" [active] [ref=e51]:\n          - option \"Read\" [selected]\n          - option \"Triage\"\n          - option \"Write\"\n          - option \"Maintain\"\n          - option \"Admin\"\n      - paragraph [ref=e52]:\n        - button \"Add\" [ref=e53] [cursor=pointer]\n  - status [ref=e55]:\n    - generic [ref=e56]: Selected pw-writer-muq9rmklts3p\n```",
+      "at": "t06-REQ-6.spec.cjs:113",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-6-4",
+      "name": "REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-6-5",
+      "name": "REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "error",
+      "observation": "Blocked by helper:t06-REQ-6.spec.cjs:113 (shared with 5 other test(s)).",
+      "source": "test('REQ-6-5: REQ-6-5: Merge an Eligible Pull Request - Scenario 1', async ({ page }) => {\n  const reviewer = await provisionWriter(page);\n  const branch = `pw-merge-${unique()}`;\n  const title = `Merge candidate ${branch}`;\n\n  // the repository admin creates a fresh Open PR targeting main\n  await signIn(page);\n  await openRepository(page);\n  await page.getByRole('link', { name: 'Code', exact: true }).click();\n  await switchBranch(page, MAIN, FEATURE);\n  await createBranch(page, FEATURE, branch);\n\n  await openComparePage(page);\n  await selectBranches(page, MAIN, branch);\n  await page.getByRole('button', { name: 'Create pull request', exact: true }).click();\n  await page.getByLabel('Title', { exact: true }).fill(title);\n  await page.getByRole('button', { name: 'Create pull request', exact: true }).click();\n  await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n  await signOut(page);\n\n  // a non-author collaborator approves the current compare commit\n  await signIn(page, reviewer.username, reviewer.password);\n  await openPullRequest(page, title);\n  await submitReview(page, 'Approve', `Approved ${unique()}`);\n  await expect(page.getByText('Approved', { exact: true })).toBeVisible();\n  await signOut(page);\n\n  // the admin satisfies the required check and merges\n  await signIn(page);\n  await openPullRequest(page, title);\n  await page.getByRole('combobox', { name: 'test status', exact: true }).click();\n  await page.getByRole('option', { name: 'success', exact: true }).click();\n  await page.getByRole('button', { name: 'Save', exact: true }).click();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n\n  await page.getByRole('button', { name: 'Merge pull request', exact: true }).click();\n  await page.getByRole('button', { name: 'Confirm merge', exact: true }).click();\n  await expect(page.getByText('Merged', { exact: true }).first()).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('Merged', { exact: true }).first()).toBeVisible();\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n        - text: GitHub\n      - navigation [ref=e9]:\n        - link [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n          - text: Home\n      - generic [ref=e11]:\n        - searchbox [ref=e13]: acme-docs\n        - button [ref=e14] [cursor=pointer]: Account menu\n        - generic [ref=e15]: alice-dev\n    - generic [ref=e16]:\n      - main [ref=e17]:\n        - heading [level=1] [ref=e18]: Acme Demo/acme-docs\n        - paragraph [ref=e19]:\n          - link [ref=e20] [cursor=pointer]:\n            - /url: \"#/repos/acme-demo/acme-docs/settings\"\n            - text: Settings\n        - heading [level=2] [ref=e21]: Manage access\n        - paragraph [ref=e22]:\n          - button [ref=e23] [cursor=pointer]: Add people or teams\n        - article [ref=e24]:\n          - heading [level=3] [ref=e25]: bob-reviewer\n          - paragraph [ref=e26]:\n            - generic [ref=e27]: Role\n            - combobox [ref=e28]\n          - paragraph [ref=e29]:\n            - button [ref=e30] [cursor=pointer]: Save\n        - article [ref=e31]:\n          - heading [level=3] [ref=e32]: carol-reader\n          - paragraph [ref=e33]: Read\n        - article [ref=e34]:\n          - heading [level=3] [ref=e35]: frontend-team\n          - paragraph [ref=e36]: Write\n      - complementary [ref=e37]:\n    \n... page content omitted ...\nDashboard\n        - button [ref=e39] [cursor=pointer]: Explore repositories\n        - button [ref=e40] [cursor=pointer]: Organizations\n    - contentinfo [ref=e41]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n  - dialog \"Add people or teams\" [ref=e43]:\n    - generic [ref=e44]:\n      - paragraph [ref=e45]:\n        - textbox \"Search\" [ref=e46]: pw-writer-muq9rrbmwl22\n      - option \"pw-writer-muq9rrbmwl22\" [selected] [ref=e48] [cursor=pointer]\n      - paragraph [ref=e49]:\n        - generic [ref=e50]: Role\n        - combobox \"Role\" [active] [ref=e51]:\n          - option \"Read\" [selected]\n          - option \"Triage\"\n          - option \"Write\"\n          - option \"Maintain\"\n          - option \"Admin\"\n      - paragraph [ref=e52]:\n        - button \"Add\" [ref=e53] [cursor=pointer]\n  - status [ref=e55]:\n    - generic [ref=e56]: Selected pw-writer-muq9rrbmwl22\n```",
+      "at": "t06-REQ-6.spec.cjs:113",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-6-5#2",
+      "name": "REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-6",
+      "name": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 1",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.2
+    },
+    {
+      "id": "REQ-6-6#2",
+      "name": "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 2",
+      "file": "t06-REQ-6.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "helper:t06-REQ-6.spec.cjs:113",
+      "name": "6 tests stop at the same helper line (REQ-6-1#2, REQ-6-3-3, REQ-6-3-3#2, REQ-6-3-4, REQ-6-3-4#2, REQ-6-5)",
+      "status": "fail",
+      "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'Write', exact: true })\n    - locator resolved to <option value=\"Write\">Write</option>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    10 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n\n\n  111 |   await page.getByRole('option', { na",
+      "steps": [],
+      "source": "test('REQ-6-1#2: REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2', async ({ page }) => {\n  // a non-Admin collaborator: created here with the Write repository role\n  const writer = await provisionWriter(page);\n  await signIn(page, writer.username, writer.password);\n\n  await openRepository(page);\n  await page.getByRole('link', { name: 'Settings', exact: true }).click();\n  await page.getByRole('link', { name: 'Branches', exact: true }).click();\n\n  await expect(page.getByRole('button', { name: 'Add branch protection rule', exact: true })).toHaveCount(0);\n});",
+      "blocks": [
+        "REQ-6-1#2",
+        "REQ-6-3-3",
+        "REQ-6-3-3#2",
+        "REQ-6-3-4",
+        "REQ-6-3-4#2",
+        "REQ-6-5"
+      ],
+      "file": "t06-REQ-6.spec.cjs",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n        - text: GitHub\n      - navigation [ref=e9]:\n        - link [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n          - text: Home\n      - generic [ref=e11]:\n        - searchbox [ref=e13]: acme-docs\n        - button [ref=e14] [cursor=pointer]: Account menu\n        - generic [ref=e15]: alice-dev\n    - generic [ref=e16]:\n      - main [ref=e17]:\n        - heading [level=1] [ref=e18]: Acme Demo/acme-docs\n        - paragraph [ref=e19]:\n          - link [ref=e20] [cursor=pointer]:\n            - /url: \"#/repos/acme-demo/acme-docs/settings\"\n            - text: Settings\n        - heading [level=2] [ref=e21]: Manage access\n        - paragraph [ref=e22]:\n          - button [ref=e23] [cursor=pointer]: Add people or teams\n        - article [ref=e24]:\n          - heading [level=3] [ref=e25]: bob-reviewer\n          - paragraph [ref=e26]:\n            - generic [ref=e27]: Role\n            - combobox [ref=e28]\n          - paragraph [ref=e29]:\n            - button [ref=e30] [cursor=pointer]: Save\n        - article [ref=e31]:\n          - heading [level=3] [ref=e32]: carol-reader\n          - paragraph [ref=e33]: Read\n        - article [ref=e34]:\n          - heading [level=3] [ref=e35]: frontend-team\n          - paragraph [ref=e36]: Write\n      - complementary [ref=e37]:\n    \n... page content omitted ...\nDashboard\n        - button [ref=e39] [cursor=pointer]: Explore repositories\n        - button [ref=e40] [cursor=pointer]: Organizations\n    - contentinfo [ref=e41]: Footer — GitHub Collaboration Platform Header · Sidebar · Main content · Footer\n  - dialog \"Add people or teams\" [ref=e43]:\n    - generic [ref=e44]:\n      - paragraph [ref=e45]:\n        - textbox \"Search\" [ref=e46]: pw-writer-muq9qxgegiuw\n      - option \"pw-writer-muq9qxgegiuw\" [selected] [ref=e48] [cursor=pointer]\n      - paragraph [ref=e49]:\n        - generic [ref=e50]: Role\n        - combobox \"Role\" [active] [ref=e51]:\n          - option \"Read\" [selected]\n          - option \"Triage\"\n          - option \"Write\"\n          - option \"Maintain\"\n          - option \"Admin\"\n      - paragraph [ref=e52]:\n        - button \"Add\" [ref=e53] [cursor=pointer]\n  - status [ref=e55]:\n    - generic [ref=e56]: Selected pw-writer-muq9qxgegiuw\n```"
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 25,
+    "parsed": 20
+  },
+  "seconds": 52.2
+}

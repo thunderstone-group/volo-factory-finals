@@ -1,0 +1,9 @@
+{
+  "exit": 0,
+  "seconds": 2229.8,
+  "package_sha256": "4ec287a63ac4278f22a0bb90843bda745eb08c785aa5b162287cceeed8bb8dbe",
+  "completed_phases": 2,
+  "estimated_cost_cny": 2.364831,
+  "unknown_usage_phases": [],
+  "scope": "Complete requirements after a dependency-closed foundation; both phases counted."
+}

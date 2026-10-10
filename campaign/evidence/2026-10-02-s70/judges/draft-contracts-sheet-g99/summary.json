@@ -1,0 +1,14 @@
+{
+  "app": "draft-contracts-sheet",
+  "judge": "g99",
+  "counts": {
+    "fail": 8,
+    "error": 97,
+    "pass": 1
+  },
+  "seconds": 553.3,
+  "coverage": {
+    "total": 100,
+    "parsed": 9
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "counts": {
+    "pass": 2,
+    "fail": 3
+  },
+  "cases": [
+    {
+      "id": "REQ-3-3#entry-1",
+      "status": "pass"
+    },
+    {
+      "id": "REQ-4-2-1#entry-1",
+      "status": "pass"
+    },
+    {
+      "id": "REQ-5-1-2#entry-1",
+      "status": "fail"
+    },
+    {
+      "id": "REQ-5-1-2#entry-2",
+      "status": "fail"
+    },
+    {
+      "id": "REQ-5-1-2#entry-3",
+      "status": "fail"
+    }
+  ]
+}

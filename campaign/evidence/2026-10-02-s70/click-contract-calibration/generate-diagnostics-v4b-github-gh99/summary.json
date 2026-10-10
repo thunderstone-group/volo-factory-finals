@@ -1,0 +1,10 @@
+{
+  "application": "generate-diagnostics-v4b-github",
+  "judge": "gh99",
+  "counts": {
+    "error": 29,
+    "pass": 54,
+    "fail": 21
+  },
+  "seconds": 246.1
+}

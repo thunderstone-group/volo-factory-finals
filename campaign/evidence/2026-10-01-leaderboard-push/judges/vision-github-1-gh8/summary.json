@@ -1,0 +1,14 @@
+{
+  "app": "vision-github-1",
+  "judge": "gh8",
+  "counts": {
+    "pass": 64,
+    "error": 15,
+    "fail": 23
+  },
+  "seconds": 154.1,
+  "coverage": {
+    "total": 100,
+    "parsed": 87
+  }
+}

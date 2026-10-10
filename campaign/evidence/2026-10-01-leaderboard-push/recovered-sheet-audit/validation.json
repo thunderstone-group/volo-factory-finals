@@ -1,0 +1,80 @@
+[
+  {
+    "file": "t04-REQ-4.spec.cjs",
+    "accepted": [
+      {
+        "id": "REQ-4-2-1#audit-1",
+        "requirement": "REQ-4-2-1",
+        "quote": "After a source-value edit, bulk paste, range move, or row/column structure change succeeds, all directly and indirectly dependent formulas update in dependency order; each formula bar continues to display its original formula while the grid displays the new result or error.",
+        "gap": "The existing tests only trigger recalculation through source-value edits and a bulk paste; the row/column structure change trigger is never exercised, so it is unverified that a dependent formula still displays a result consistent with the current source values after a row is inserted."
+      },
+      {
+        "id": "REQ-4-2-1#audit-2",
+        "requirement": "REQ-4-2-1",
+        "quote": "After refresh or reopening, results remain consistent with the current source values and must not show pre-change results; formulas in other worksheets that do not reference these source cells remain unchanged.",
+        "gap": "No existing test has two worksheets at all: the isolation property (a formula on another worksheet that does not reference the edited source cells stays unchanged) and its persistence are never checked."
+      },
+      {
+        "id": "REQ-4-1-2#audit-1",
+        "requirement": "REQ-4-1-2",
+        "quote": "relative row and column references in the target formula bar change according to the target offset while absolute references remain unchanged; the source formula and result remain unchanged, the target grid displays the result based on the new references, and the state persists after refresh.",
+        "gap": "Every existing copy of a formula uses a rightward offset only; the row direction of the offset is never verified, so an implementation that shifts only column references would pass the existing tests."
+      },
+      {
+        "id": "REQ-4-1-1#audit-1",
+        "requirement": "REQ-4-1-1",
+        "quote": "aggregate functions ignore empty cells, COUNT counts only numeric cells, and SUM/AVERAGE/MIN/MAX use only numeric cells and do not treat blanks as zero.",
+        "gap": "MIN and MAX are only ever evaluated over fully numeric ranges, and no aggregate is evaluated over a range containing non-numeric text alongside a blank; an implementation treating a blank as zero (MIN = 0) or counting text would not be caught."
+      },
+      {
+        "id": "REQ-4-2-2#audit-1",
+        "requirement": "REQ-4-2-2",
+        "quote": "a direct or indirect circular reference displays #REF!. When an error cell is selected, the formula bar displays the original formula submitted by the user; after refresh, both the error value and original formula persist. An error cell does not block viewing, editing, or recalculating other cells. After the user changes it to a valid formula through REQ-3-1-1, the grid displays the new result, the formula bar displays the new formula, related dependent results update, and the error no longer appears after refresh.",
+        "gap": "Only a direct self-reference is tested; the indirect circular case (two cells referring to each other), the repair of one cell of the cycle, the resulting recalculation of the other cell, and the disappearance of the error after refresh are unverified."
+      }
+    ],
+    "rejected": []
+  },
+  {
+    "file": "t05-REQ-5.spec.cjs",
+    "accepted": [
+      {
+        "id": "REQ-5-1-1#audit-1",
+        "requirement": "REQ-5-1-1",
+        "quote": "After sorting, the formula bar displays references and results consistent with the new positions, filtering and validation continue to apply to the same selected range, and data outside the selection remains unchanged",
+        "gap": "Every existing sort test sorts a plain, unfiltered range, so the stated interaction between sorting and filtering is never established: nothing shows that a filter created on the range keeps hiding its nonmatching row after that same range is sorted (and that the remaining source rows stay intact)."
+      },
+      {
+        "id": "REQ-5-1-2#audit-1",
+        "requirement": "REQ-5-1-2",
+        "quote": "condition options named \"Text contains\", \"Greater than\", \"Before\", \"Is empty\", and \"Is not empty\"",
+        "gap": "Only the \"Text contains\" and \"Greater than\" condition options are exercised; the \"Is empty\" option (which needs no Value) is never used, so this described input variant is unverified."
+      },
+      {
+        "id": "REQ-5-1-2#audit-2",
+        "requirement": "REQ-5-1-2",
+        "quote": "CSV export and pivot summarization still include hidden rows within the filtered range.",
+        "gap": "CSV export over a filtered range is checked, but pivot summarization over a filtered source range is never checked, so it is unknown whether a pivot built from a filtered range includes the hidden rows (Grand Total must stay the sum of all source records)."
+      },
+      {
+        "id": "REQ-5-2-1#audit-1",
+        "requirement": "REQ-5-2-1",
+        "quote": "saving a modification makes the new range effective immediately, deleting removes the constraint, and either successful operation closes the dialog without changing existing cell values.",
+        "gap": "Only the \"Delete rule\" path is exercised after reopening a rule; saving a modification (changing the rule parameters) and the fact that the new limits take effect immediately while existing cell values stay unchanged is never established, nor is a numeric rule's prefilled parameters on reopen."
+      },
+      {
+        "id": "REQ-5-3-1#audit-1",
+        "requirement": "REQ-5-3-1",
+        "quote": "COUNT displays 0 when a row/column combination has no record with a non-empty value field.",
+        "gap": "COUNT is only run without a column field; the stated 0 for a row/column combination that has no matching record (for example a region with no open record) is never established."
+      },
+      {
+        "id": "REQ-5-3-1#audit-2",
+        "requirement": "REQ-5-3-1",
+        "quote": "COUNT counts non-empty records in the value field and does not fail because of nonnumeric content.",
+        "gap": "COUNT is only applied to the numeric Sales field; COUNT over a nonnumeric value field (which must still count records and must not fail) is never exercised."
+      }
+    ],
+    "rejected": []
+  }
+]

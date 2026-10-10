@@ -1,0 +1,121 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-4-2-1#audit-1",
+      "name": "dependent formulas recalculate after a row insertion",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-2-1#audit-2",
+      "name": "formulas in another worksheet stay unchanged when source values change",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-1-2#audit-1",
+      "name": "copying a formula downward adjusts relative row references",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-1-1#audit-1",
+      "name": "aggregates ignore empty and non-numeric cells",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-2-2#audit-1",
+      "name": "an indirect circular reference shows #REF! and can be fixed",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-1-1#audit-1",
+      "name": "a filter still hides its nonmatching row after the same range is sorted",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-1-2#audit-1",
+      "name": "the \"Is empty\" condition hides every row whose field has a value",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-5-1-2#audit-2",
+      "name": "pivot summarization still includes rows hidden by a filter",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-5-2-1#audit-1",
+      "name": "saving a modified numeric rule makes the new limits effective immediately",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-3-1#audit-1",
+      "name": "COUNT shows 0 for a row/column combination with no record",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-3-1#audit-2",
+      "name": "COUNT over a text value field counts records without failing",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 11,
+    "parsed": 11
+  },
+  "seconds": 6.2
+}

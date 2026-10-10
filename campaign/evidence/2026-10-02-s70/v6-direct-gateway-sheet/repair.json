@@ -1,0 +1,689 @@
+{
+ "app": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-semantic-entry-v6-sheet/application",
+ "requirements": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/requirements-after-stage-announcement/hackathon--sheet/requirements.yaml",
+ "model": "deepseek-v4-flash-vision-exp",
+ "seconds": 626.7,
+ "error": null,
+ "draft_files": [
+  "frontend/public/seed.js",
+  "frontend/public/styles.css",
+  "frontend/public/app.js"
+ ],
+ "summary": {
+  "calls": 1,
+  "draft_call_limit": 4,
+  "repair_call_limit": 1,
+  "completed_calls": 1,
+  "failed_calls": 0,
+  "failure_limit": 1,
+  "refused_calls": 0,
+  "known_prompt_tokens": 99777,
+  "prompt_tokens": 99777,
+  "known_completion_tokens": 54003,
+  "completion_tokens": 54003,
+  "unknown_usage_calls": [],
+  "estimated_cost_cny": 0.253445,
+  "estimated_repair_cost_cny": 0.253445,
+  "repair_cny_limit": 1.0,
+  "side_calls": 0,
+  "fallback_model": null,
+  "calls_by_model": {
+   "deepseek-v4-flash-vision-exp": 1
+  },
+  "billing_status": "tokens_reported_cost_not_estimated"
+ },
+ "smoke": {
+  "executed": true,
+  "problems": [
+   "clicking `Export CSV` (data-action `export-csv`) on screen `#/workbook/wb-q3-sales` throws: URL.createObjectURL is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+   "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Worksheet options for \" shares worksheet with a field label",
+   "50 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"Last updated: <last updated value>\", \"the requested workflow,the requested workflow page entry the requested workflow\", \"A1=Region\", \"the requested workflow\", \"the requested workflow,the requested workflow\", \"the requested workflow UTF-8 CSV,the requested workflow\", \"the requested workflow CSV the requested workflow,the requested workflow\", \"the requested workflow CSV,the requested workflow\", \"the requested workflow Sheet1 the requested workflow\", \"Worksheet options for <worksheet name>\", \"East/1200\", \"North/800\", \"the requested workflow Sheet2,the requested workflow\", \"the requested workflow SheetN the requested workflow\", \"the requested workflow, the requested workflow\", \"<target worksheet name>\", \"the requested workflow 3 the requested workflow,the requested workflow\", \"the requested workflow B the requested workflow,the requested workflow\", \"Edit <cell coordinate>\", \"A1:B2\", \"Item/Qty\", \"Pen/4\", \"D1:E2\", \"Escape the requested workflow,the requested workflow\", \"the requested workflow B2 the requested workflow,the requested workflow\", \"the requested workflow A1 the requested workflow\", \"the requested workflow C3 the requested workflow\", \"the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow\", \"A1=2\", \"B1=3\", \"=A1+B1\", \"=C1*2\", \"A1:C6\", \"Region/Sales/Status\", \"East/1200/Open\", \"North/800/Closed\", \"South/700/Open\", \"the requested workflow Sales the requested workflow,the requested workflow\", \"the requested workflow ISO the requested workflow\", \"Filter <header text>\", \"the requested workflow, the requested workflow,the requested workflow\", \"CSV the requested workflow\", \"Open dropdown for <cell coordinate>\", \"Please select one of the following values: <comma-separated allowed values>\", \"Please enter a number between <minimum> and <maximum>\", \"the requested workflow A1:A2 the requested workflow,the requested workflow\", \"Source range: <cell range>\", \"<summarization method> of <value field>\", \"the requested workflow COUNT the requested workflow\", \"AVERAGE the requested workflow\""
+  ],
+  "vocabulary_missing": 50,
+  "scenarios": {
+   "counts": {
+    "pass": 68,
+    "fail": 9,
+    "error": 24
+   },
+   "coverage": {
+    "total": 100,
+    "parsed": 77
+   },
+   "seconds": 201.1,
+   "source_contracts": {},
+   "failing": [
+    {
+     "id": "REQ-1-3-2#4",
+     "observation": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Array [\n    \"Region\",\n-   \"\",\n+   \"Sales\",\n    \"left\",\n    \"\",\n    \"right\",\n  ]\n\n  465 |   // Empty cells inside the used range are preserved in row/column order.\n  466 |   const rows = parseCsv(text);\n> 467 |   expect(rows[0]).toEqual(['Region', '', 'left', '', 'right']);\n      |                   ^\n  4"
+    },
+    {
+     "id": "REQ-2-1-3#2",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet1', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet1', exact: true })\n\n\n  300 |     page.getByText('Worksheet name cannot be empty', { exact: true })\n  301 |   ).toBeVisible();\n> 302"
+    },
+    {
+     "id": "REQ-2-1-3#3",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet2', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet2', exact: true })\n\n\n  321 |     page.getByText('Worksheet name already exists', { exact: true })\n  322 |   ).toBeVisible();\n> 323 "
+    },
+    {
+     "id": "REQ-2-1-4#4",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('dialog', { name: 'Delete worksheet', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('dialog', { name: 'Delete worksheet', exact: true })\n\n\n  404 |   await clickMenuItem(page, 'Delete');\n  405 |   const del = page.getByRole("
+    },
+    {
+     "id": "REQ-3-2-1#3",
+     "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByLabel('Formula bar', { exact: true })\nExpected: \"=$D$1+1\"\nReceived: \"=D1+1\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByLabel('Formula bar', { exact: true })\n    9 × locator resolved to <input type=\"text\" data-ref=\"F2\" value=\"=D1+1\" id=\"formula-bar\" name=\"formulaBar\" autocomplete=\""
+    },
+    {
+     "id": "REQ-4-1-2",
+     "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByRole('textbox', { name: 'Formula bar', exact: true })\nExpected: \"=$A$12+B14\"\nReceived: \"=A12+B14\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByRole('textbox', { name: 'Formula bar', exact: true })\n    9 × locator resolved to <input type=\"text\" data-ref=\"D14\" id=\"formula-bar\" value=\""
+    },
+    {
+     "id": "REQ-4-2-2#5",
+     "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'D16', exact: true })\nExpected: \"#REF!\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'D16', exact: true "
+    },
+    {
+     "id": "REQ-5-1-1",
+     "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Region\"\nReceived: \"10\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div class=\"gc\" data-r=\"0\" data-c=\"0\" data-cell=\"1\" data-ref=\"A1\" tabindex=\"-1\" role=\""
+    },
+    {
+     "id": "REQ-5-1-1#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#4",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#5",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#6",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#4",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#5",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1#4",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1#5",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1#6",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#4",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#5",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#6",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#7",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#8",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#9",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+    },
+    {
+     "id": "helper:t05-REQ-5.spec.cjs:57",
+     "observation": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"true\"\nReceived: \"false\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div class=\"gc\" data-r=\"0\" data-c=\"0\" data-cell=\"1\" data-ref=\"A1\" tabindex="
+    }
+   ],
+   "invariants": [],
+   "translation": {}
+  },
+  "repair": {
+   "accepted": true,
+   "reason": "7 more scenario(s) pass",
+   "files": [
+    "frontend/public/app.js"
+   ]
+  },
+  "browser_before": [
+   {
+    "executed": true,
+    "diagnostic_only": true,
+    "errors": [],
+    "page_errors": [],
+    "actions": [
+     {
+      "scope": "page",
+      "name": "Workbooks",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "New blank workbook",
+      "action": "new-blank-workbook"
+     },
+     {
+      "scope": "page",
+      "name": "Worksheet options for Sheet1",
+      "action": "open-sheet-menu"
+     },
+     {
+      "scope": "page-popover",
+      "name": "Rename",
+      "action": "rename-worksheet"
+     },
+     {
+      "scope": "dialog",
+      "name": "Save",
+      "action": ""
+     },
+     {
+      "scope": "page",
+      "name": "Workbooks",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Worksheet options for Sheet1",
+      "action": "open-sheet-menu"
+     },
+     {
+      "scope": "page-popover",
+      "name": "Rename",
+      "action": "rename-worksheet"
+     },
+     {
+      "scope": "dialog",
+      "name": "Save",
+      "action": ""
+     },
+     {
+      "scope": "page",
+      "name": "Worksheet options for Sheet2",
+      "action": "open-sheet-menu"
+     },
+     {
+      "scope": "page-popover",
+      "name": "Rename",
+      "action": "rename-worksheet"
+     },
+     {
+      "scope": "dialog",
+      "name": "Cancel",
+      "action": "arc:close"
+     },
+     {
+      "scope": "page",
+      "name": "Worksheet options for Sheet3",
+      "action": "open-sheet-menu"
+     },
+     {
+      "scope": "page-popover",
+      "name": "Rename",
+      "action": "rename-worksheet"
+     },
+     {
+      "scope": "page",
+      "name": "Workbooks",
+      "action": "arc:nav"
+     }
+    ],
+    "screens": [
+     "#/",
+     "#/workbook/wb-2-1hgqs",
+     "#/workbook/wb-q3-sales",
+     "#/new-workbook"
+    ],
+    "browser": "143.0.7499.4",
+    "playwright": "1.57.0"
+   }
+  ],
+  "rounds": [
+   {
+    "round": 1,
+    "fatal": 0,
+    "failing": [
+     "REQ-1-3-2#4",
+     "REQ-2-1-3#2",
+     "REQ-2-1-3#3",
+     "REQ-2-1-4#4",
+     "REQ-3-2-1#3",
+     "REQ-4-1-2",
+     "REQ-4-2-2#5",
+     "REQ-5-1-1",
+     "helper:t05-REQ-5.spec.cjs:57"
+    ],
+    "passing_before": 68,
+    "accepted": true,
+    "gained": [
+     "REQ-2-1-3#2",
+     "REQ-2-1-3#3",
+     "REQ-2-1-4#4",
+     "REQ-3-2-1#3",
+     "REQ-4-1-2",
+     "REQ-4-2-2#5",
+     "REQ-5-2-1#4"
+    ],
+    "reason": "7 more scenario(s) pass",
+    "scenarios": {
+     "counts": {
+      "pass": 75,
+      "fail": 6,
+      "error": 23
+     },
+     "coverage": {
+      "total": 100,
+      "parsed": 81
+     },
+     "seconds": 165.6,
+     "source_contracts": {},
+     "failing": [
+      {
+       "id": "REQ-1-3-2#4",
+       "observation": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Array [\n    \"Region\",\n-   \"\",\n+   \"Sales\",\n    \"left\",\n    \"\",\n    \"right\",\n  ]\n\n  465 |   // Empty cells inside the used range are preserved in row/column order.\n  466 |   const rows = parseCsv(text);\n> 467 |   expect(rows[0]).toEqual(['Region', '', 'left', '', 'right']);\n      |                   ^\n  4"
+      },
+      {
+       "id": "REQ-5-1-1",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-1#2",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-1#3",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-1#4",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-1#5",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-1#6",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-2",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-2#2",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-2#3",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-2#4",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-1-2#5",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-2-1",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-2-1#2",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-2-1#5",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-2-1#6",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+      },
+      {
+       "id": "REQ-5-3-1",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+      },
+      {
+       "id": "REQ-5-3-1#2",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+      },
+      {
+       "id": "REQ-5-3-1#3",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+      },
+      {
+       "id": "REQ-5-3-1#4",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+      },
+      {
+       "id": "REQ-5-3-1#5",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+      },
+      {
+       "id": "REQ-5-3-1#6",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+      },
+      {
+       "id": "REQ-5-3-1#7",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+      },
+      {
+       "id": "REQ-5-3-1#8",
+       "observation": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  getByRole('tab', { name: 'Pivot1', exact: true })\nExpected: \"true\"\nReceived: \"false\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Pivot1', exact: true })\n    9 × locator resolved to <button role=\"tab\" type=\"button\" aria-selected=\"false\" data-action=\"switch-sh"
+      },
+      {
+       "id": "REQ-5-3-1#9",
+       "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+      },
+      {
+       "id": "helper:t05-REQ-5.spec.cjs:13",
+       "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Region\"\nReceived: \"10\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div class=\"gc\" data-r=\"0\" data-c=\"0\" data-cell=\"1\" data-ref=\"A1\" tabindex=\"-1\" role=\""
+      },
+      {
+       "id": "helper:t05-REQ-5.spec.cjs:92",
+       "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'Region', exact: true })\n\n\n  90 |   await expect(dialog).toBeVisible();\n  91 |   await dialog.getByRole('combobox', { name: 'Sort by', exact: true }).click();\n> 92 |   await page.getByRole('option', { name: by, exact: true }).click();\n     |                                                   "
+      },
+      {
+       "id": "helper:t05-REQ-5.spec.cjs:109",
+       "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Filter Region', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Filter Region', exact: true })\n\n\n  107 |   await dragSelect(page, 'A1', 'C4');\n  108 |   await openDataMenu(page, 'Create f"
+      },
+      {
+       "id": "helper:t05-REQ-5.spec.cjs:186",
+       "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'Region', exact: true })\n\n\n  184 | async function setPivotField(page, label, option) {\n  185 |   await pivotEditor(page).getByRole('combobox', { name: label, exact: true }).click();\n> 186 |   await page.getByRole('option', { name: option, exact: true }).click();\n      |                      "
+      }
+     ],
+     "invariants": [],
+     "translation": {}
+    },
+    "browser_after": [
+     {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+       {
+        "scope": "page",
+        "name": "Workbooks",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "New blank workbook",
+        "action": "new-blank-workbook"
+       },
+       {
+        "scope": "page",
+        "name": "Worksheet options for Sheet1",
+        "action": "open-sheet-menu"
+       },
+       {
+        "scope": "page-popover",
+        "name": "Rename",
+        "action": "rename-worksheet"
+       },
+       {
+        "scope": "dialog",
+        "name": "Save",
+        "action": ""
+       },
+       {
+        "scope": "page",
+        "name": "Workbooks",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Worksheet options for Sheet1",
+        "action": "open-sheet-menu"
+       },
+       {
+        "scope": "page-popover",
+        "name": "Rename",
+        "action": "rename-worksheet"
+       },
+       {
+        "scope": "dialog",
+        "name": "Save",
+        "action": ""
+       },
+       {
+        "scope": "page",
+        "name": "Worksheet options for Sheet2",
+        "action": "open-sheet-menu"
+       },
+       {
+        "scope": "page-popover",
+        "name": "Rename",
+        "action": "rename-worksheet"
+       },
+       {
+        "scope": "dialog",
+        "name": "Cancel",
+        "action": "arc:close"
+       },
+       {
+        "scope": "page",
+        "name": "Worksheet options for Sheet3",
+        "action": "open-sheet-menu"
+       },
+       {
+        "scope": "page-popover",
+        "name": "Rename",
+        "action": "rename-worksheet"
+       },
+       {
+        "scope": "page",
+        "name": "Workbooks",
+        "action": "arc:nav"
+       }
+      ],
+      "screens": [
+       "#/",
+       "#/workbook/wb-2-0pysm",
+       "#/workbook/wb-q3-sales",
+       "#/new-workbook"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+     }
+    ],
+    "files": [
+     "frontend/public/app.js"
+    ],
+    "replied": true,
+    "seconds": 420.0,
+    "cost_cny": 0.253445
+   }
+  ],
+  "stopped": "repair call limit reached (1)",
+  "problems_after": [],
+  "scenarios_after": {
+   "counts": {
+    "pass": 75,
+    "fail": 6,
+    "error": 23
+   },
+   "coverage": {
+    "total": 100,
+    "parsed": 81
+   },
+   "seconds": 165.6,
+   "source_contracts": {},
+   "failing": [
+    {
+     "id": "REQ-1-3-2#4",
+     "observation": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Array [\n    \"Region\",\n-   \"\",\n+   \"Sales\",\n    \"left\",\n    \"\",\n    \"right\",\n  ]\n\n  465 |   // Empty cells inside the used range are preserved in row/column order.\n  466 |   const rows = parseCsv(text);\n> 467 |   expect(rows[0]).toEqual(['Region', '', 'left', '', 'right']);\n      |                   ^\n  4"
+    },
+    {
+     "id": "REQ-5-1-1",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#4",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#5",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-1#6",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:92 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#4",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-1-2#5",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:109 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1#5",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-2-1#6",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:13 (shared with 4 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#2",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#3",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#4",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#5",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#6",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#7",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+    },
+    {
+     "id": "REQ-5-3-1#8",
+     "observation": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  getByRole('tab', { name: 'Pivot1', exact: true })\nExpected: \"true\"\nReceived: \"false\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Pivot1', exact: true })\n    9 × locator resolved to <button role=\"tab\" type=\"button\" aria-selected=\"false\" data-action=\"switch-sh"
+    },
+    {
+     "id": "REQ-5-3-1#9",
+     "observation": "Blocked by helper:t05-REQ-5.spec.cjs:186 (shared with 7 other test(s))."
+    },
+    {
+     "id": "helper:t05-REQ-5.spec.cjs:13",
+     "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Region\"\nReceived: \"10\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div class=\"gc\" data-r=\"0\" data-c=\"0\" data-cell=\"1\" data-ref=\"A1\" tabindex=\"-1\" role=\""
+    },
+    {
+     "id": "helper:t05-REQ-5.spec.cjs:92",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'Region', exact: true })\n\n\n  90 |   await expect(dialog).toBeVisible();\n  91 |   await dialog.getByRole('combobox', { name: 'Sort by', exact: true }).click();\n> 92 |   await page.getByRole('option', { name: by, exact: true }).click();\n     |                                                   "
+    },
+    {
+     "id": "helper:t05-REQ-5.spec.cjs:109",
+     "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Filter Region', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Filter Region', exact: true })\n\n\n  107 |   await dragSelect(page, 'A1', 'C4');\n  108 |   await openDataMenu(page, 'Create f"
+    },
+    {
+     "id": "helper:t05-REQ-5.spec.cjs:186",
+     "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'Region', exact: true })\n\n\n  184 | async function setPivotField(page, label, option) {\n  185 |   await pivotEditor(page).getByRole('combobox', { name: label, exact: true }).click();\n> 186 |   await page.getByRole('option', { name: option, exact: true }).click();\n      |                      "
+    }
+   ],
+   "invariants": [],
+   "translation": {}
+  }
+ }
+}

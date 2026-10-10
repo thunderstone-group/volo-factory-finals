@@ -1,0 +1,2 @@
+{"app": "dependency-build-checked-github", "judge": "gh8", "counts": {"pass": 69, "error": 11, "fail": 22}, "seconds": 128.6, "coverage": {"total": 100, "parsed": 91}}
+{"app": "dependency-build-checked-github", "judge": "gh99", "counts": {"error": 20, "pass": 69, "fail": 14}, "seconds": 154.2, "coverage": {"total": 100, "parsed": 83}}

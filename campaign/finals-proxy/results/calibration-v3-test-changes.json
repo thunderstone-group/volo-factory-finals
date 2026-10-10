@@ -1,0 +1,430 @@
+[
+  {
+    "file": "github-real/tests/evolution-navigation.ts",
+    "frames": [
+      "github-v3-F06",
+      "github-v3-F12"
+    ],
+    "reason": "Mirror the observed candidate polling body; retain the previously supported link/button candidates because the actual list is unseen.",
+    "before_sha256": "e82f8ce4188d13ebd86f726953f1056ea3998cdf7cef08daf0a62daed9a30b67",
+    "after_sha256": "1a59c9ff1f03277ca2dedd4f5f3434154a75b0fbc37c1e5b117f460663967f6e"
+  },
+  {
+    "file": "github-real/tests/20-REQ-3-5-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "f4500a8a632bae36f55a37579d91305a3c3c9f4870c3ecfa5886bc0c381fe88b",
+    "after_sha256": "ddd0d78da37aad5ef5a6aab0cd39c11d4a16341f414f6642d83b30435e0c68d2"
+  },
+  {
+    "file": "github-real/tests/25-REQ-4-5-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "b7f7b6b83a2129c4ce962df4a418c466a10413a272810213f102c0fbb0bb21a5",
+    "after_sha256": "a93e45c7ef10a697f41758a1fd1d5470b7f03a91b18186595d8d9824391cfcda"
+  },
+  {
+    "file": "github-real/tests/11-REQ-2-1-2-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "9c48e8f0a86f722b8623ea65bb5ea982bbc309ce34fe18173f33dae0e921d6a4",
+    "after_sha256": "64790b551a4b59615d73f2a6749b6bc67c1af306f6e68100562240f4c4378b25"
+  },
+  {
+    "file": "github-real/tests/12-REQ-2-1-2-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "e74bcf65fb07095f9376e6ea7334c235b7ee0ea5a4ebc7b49878cf1c52949e02",
+    "after_sha256": "fd21004d531567153ad31e40dcc441343f983d4b21cb451b157c3141f9a6aeac"
+  },
+  {
+    "file": "github-real/tests/09-REQ-1-4-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "700dd05ccc52ecff92ce985fd090492be8b94951e8761f31f37269717d3e43a8",
+    "after_sha256": "55e4346a3960da45e7adfffc5c1dddb854b274958f7cf25bdd2323e8836f4dca"
+  },
+  {
+    "file": "github-real/tests/28-REQ-5-5-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "1209b9c2eb9cc3fb1dbd7822d3642f2a0b880ce4f73935937edd39ef5071bad3",
+    "after_sha256": "d4d89235b4aa4a97674525b888c2cbd4f0d05fc7e33c0da62a1cafaa6318fa05"
+  },
+  {
+    "file": "github-real/tests/19-REQ-3-5-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "779b46ed8322c3a8e19e065113d3deb3c2b21d603f420828e0cb72b99791986e",
+    "after_sha256": "6d488ea67852fbf04faed8ce2dbd2d040bf84e5cc0a6ef44dc7875a74738280d"
+  },
+  {
+    "file": "github-real/tests/21-REQ-3-5-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "467805f0fcf207f5f929ab285ed3c7223a751654e86b38d44daa781cf565c32d",
+    "after_sha256": "224aa4f47fc0f419a1a3e1b09f69fecf7c1d6624c9d3d5175673145ecf93d309"
+  },
+  {
+    "file": "github-real/tests/08-REQ-1-4-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "15d423e2e091d64d34c3b993299568b6e2575729ce653c9d80d676673a24f133",
+    "after_sha256": "b4c5081068a6dfaccff1d76320da1a3db6dc09368539089a7cae2ce1eba34d3f"
+  },
+  {
+    "file": "github-real/tests/15-REQ-2-4-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "13532d315411024e85e297c6901fc2e9f14a54bfc6305acaa7299203d926e04a",
+    "after_sha256": "c40bca6c7c0829fa167f0b4bc610dcac38463f29a39eaa88a3644e52b2215064"
+  },
+  {
+    "file": "github-real/tests/07-REQ-1-4-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "817ec035d73718f255724810756c7232b6c7f58778f1ff599c7d842ab5b61a1e",
+    "after_sha256": "f33a0a264f04e0f60f838e2bb0c6471a99eca6a36e060390df98d310d44a0e65"
+  },
+  {
+    "file": "github-real/tests/27-REQ-4-5-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "0e2668d986059d16eadc362af90b34a46b584abdd8e4b3629130fa9d376900ca",
+    "after_sha256": "06113ba1ea9339058517d0d90b0b2a1fa316e383c77ee358b9b4dc7c55ed8c84"
+  },
+  {
+    "file": "github-real/tests/10-REQ-2-1-2-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "b384faedf875054dc18978280bdad042d06283659676c67e2183c13aa8855200",
+    "after_sha256": "91849cf76289c72fe83ea47ecead601032409c3baf4ebe5f36413f88fe4c77e8"
+  },
+  {
+    "file": "github-real/tests/13-REQ-2-4-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "cf896f58160e605ce737abb2260f1b39adf8a95f1055d9f9d190112ae703bf14",
+    "after_sha256": "5b8597b985ec9733e5225204503dea313c794182ae81c5a676821165e9ef7eb0"
+  },
+  {
+    "file": "github-real/tests/14-REQ-2-4-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "2b91540eac8ec7a9e07a8a1d18af5b6303b12777f5f0f1d8f33f3c37db5a7b76",
+    "after_sha256": "3f727632bd5b199494636a0e5af56fb664c8199058211a67bfdb100b47dd5303"
+  },
+  {
+    "file": "github-real/tests/26-REQ-4-5-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Use the observed polling navigation convention for existing exact-name link/button targets.",
+    "before_sha256": "ccc1da739b4ebf7c71b56014b4a1d7855fc4df5d9ead144d0b95089089fa7dac",
+    "after_sha256": "2f5909734a061d76b484230631be0afaf32e9b5ff0847177184d7b4665d70f10"
+  },
+  {
+    "file": "github-real/tests/10-REQ-2-1-2-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F12"
+    ],
+    "reason": "Scope Your organizations to a link in the Account menu, as shown at line 12.",
+    "before_sha256": "91849cf76289c72fe83ea47ecead601032409c3baf4ebe5f36413f88fe4c77e8",
+    "after_sha256": "6ae2ea2116b4e05164ff15e164ab22cf3d91542fb3c6cd677ca753a7ed6a6c92"
+  },
+  {
+    "file": "github-real/tests/11-REQ-2-1-2-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F12"
+    ],
+    "reason": "Scope Your organizations to a link in the Account menu, as shown at line 12.",
+    "before_sha256": "64790b551a4b59615d73f2a6749b6bc67c1af306f6e68100562240f4c4378b25",
+    "after_sha256": "02cf3aee09e8d9339b0a7a8c606a65140b4740d4bad63dda4ef348507b269f42"
+  },
+  {
+    "file": "github-real/tests/12-REQ-2-1-2-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F12"
+    ],
+    "reason": "Scope Your organizations to a link in the Account menu, as shown at line 12.",
+    "before_sha256": "fd21004d531567153ad31e40dcc441343f983d4b21cb451b157c3141f9a6aeac",
+    "after_sha256": "f5e704c6854173c77a2fcfe7fd86a89cc085b832ccf6c9d3c49310d2172de216"
+  },
+  {
+    "file": "github-real/tests/13-REQ-2-4-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Owner audit setup opens the named organization directly from the signed-in home, then polls Audit log. The caller sequence is inferred from the requirement; the report exposes only the polling helper and caller line.",
+    "before_sha256": "5b8597b985ec9733e5225204503dea313c794182ae81c5a676821165e9ef7eb0",
+    "after_sha256": "6e52b9c6f3322516b7bf51dce7879a2016d5c03379f2ef6c8f00c14a6718eb81"
+  },
+  {
+    "file": "github-real/tests/14-REQ-2-4-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F06"
+    ],
+    "reason": "Owner audit setup opens the named organization directly from the signed-in home, then polls Audit log. The caller sequence is inferred from the requirement; the report exposes only the polling helper and caller line.",
+    "before_sha256": "3f727632bd5b199494636a0e5af56fb664c8199058211a67bfdb100b47dd5303",
+    "after_sha256": "5474bd9861a05b3760bb879f412a4f7e6934818466295a58b2f76b92952b57b9"
+  },
+  {
+    "file": "github-real/tests/08-REQ-1-4-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F05"
+    ],
+    "reason": "Use the exact strict revoked/inactive regex before and after reload, including the observed first revoke button; do not choose between two matching markers.",
+    "before_sha256": "b4c5081068a6dfaccff1d76320da1a3db6dc09368539089a7cae2ce1eba34d3f",
+    "after_sha256": "224f9c25247a7e88b943de56b7be828d03c5eabf4af5bb7f30ec11cee9d33fc6"
+  },
+  {
+    "file": "github-real/tests/09-REQ-1-4-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F11",
+      "github-v3-F05"
+    ],
+    "reason": "The revoked page must show the main Sign in link. Preserve the other page as shown, without an additional reload or sign-in-form requirement.",
+    "before_sha256": "55e4346a3960da45e7adfffc5c1dddb854b274958f7cf25bdd2323e8836f4dca",
+    "after_sha256": "81772a51b8b907304d626bb1ce037ceb9f96438b67c100dd6e372764031ae9d6"
+  },
+  {
+    "file": "github-real/tests/21-REQ-3-5-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F07"
+    ],
+    "reason": "Check the visible Active text immediately after restore, before reopening and reloading the repository.",
+    "before_sha256": "224aa4f47fc0f419a1a3e1b09f69fecf7c1d6624c9d3d5175673145ecf93d309",
+    "after_sha256": "ce579f8a2e6ad4580758881ab749276abab9945d20c5eb76a29301c24d42e5ea"
+  },
+  {
+    "file": "github-real/tests/25-REQ-4-5-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F13"
+    ],
+    "reason": "Require a tag heading and the exact target-branch regex, retaining the published title/description and persistence checks.",
+    "before_sha256": "a93e45c7ef10a697f41758a1fd1d5470b7f03a91b18186595d8d9824391cfcda",
+    "after_sha256": "d9d52c62500e8b35e0b0a3f1fdc1e9f3b3390ba5ccd0d0b7efd2f3f3827eb8e4"
+  },
+  {
+    "file": "github-real/tests/26-REQ-4-5-scenario-2.spec.ts",
+    "frames": [
+      "github-v3-F08"
+    ],
+    "reason": "Replace the unspecified-description approximation with the now-observed Evolution release seed, tag heading and target-branch regex.",
+    "before_sha256": "2f5909734a061d76b484230631be0afaf32e9b5ff0847177184d7b4665d70f10",
+    "after_sha256": "a27ee5f06e930a6869a4c4fea76fcaeb2a39b0145f045c356febc3824e4d8999"
+  },
+  {
+    "file": "github-real/tests/27-REQ-4-5-scenario-3.spec.ts",
+    "frames": [
+      "github-v3-F09"
+    ],
+    "reason": "The resolved official seed RELEASE_TAG_S3 must occur as text exactly once after the duplicate error; an input value alone does not satisfy this.",
+    "before_sha256": "06113ba1ea9339058517d0d90b0b2a1fa316e383c77ee358b9b4dc7c55ed8c84",
+    "after_sha256": "b3a29d7190434f748d4acc3040a847c1d7e72497adb47c75d6d584a206b27f6a"
+  },
+  {
+    "file": "github-real/tests/28-REQ-5-5-scenario-1.spec.ts",
+    "frames": [
+      "github-v3-F10"
+    ],
+    "reason": "Assert the exact 1 reaction label before and after reload; remove the prior +1-count-only approximation.",
+    "before_sha256": "d4d89235b4aa4a97674525b888c2cbd4f0d05fc7e33c0da62a1cafaa6318fa05",
+    "after_sha256": "4286674339e415a923156eb9ecc8c4608644ca687cc6326537ee4793d31e7491"
+  },
+  {
+    "file": "github-real/tests/interactions.ts",
+    "frames": [
+      "github-v3-F10",
+      "github-v3-F06"
+    ],
+    "reason": "Recognize the observed reaction-count label in unchanged scenarios, exclude it from issue-content preservation comparison, and use the candidate poll when selecting a discovered issue.",
+    "before_sha256": "c5cbee7c657d27dbd7ac99e62d280ed6721d29c53bedd9bb10e1c7c8d8f2c1d1",
+    "after_sha256": "f2d79d4c1b95cacad6288e271ed1752c12556477a9661d1e0f4e0395f673b15a"
+  },
+  {
+    "file": "sheet-real/tests/28-REQ-8-1-1-scenario-1.spec.ts",
+    "frames": [
+      "sheet-v3-F18"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "8dd3882ddedaa49b9202a96c21be1952c2794bc78188e1c57283c70fd0bcf893",
+    "after_sha256": "3baacb088cad171e864bddec911c81dc82a299ea5dfba27bf701baecee1018d1"
+  },
+  {
+    "file": "sheet-real/tests/11-REQ-5-1-2-scenario-2.spec.ts",
+    "frames": [
+      "sheet-v3-F11"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "d9556e7023a9f82d1aecc7b04d8f20253d19f56577de6185ab73d371387c795b",
+    "after_sha256": "232c9429aa342bda21d78d75fade14ef0e6d9b82940a05e1adf6bbdebc56fdb0"
+  },
+  {
+    "file": "sheet-real/tests/12-REQ-5-1-2-scenario-3.spec.ts",
+    "frames": [
+      "sheet-v3-F11",
+      "sheet-v3-F12"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "e03655b340a7c7b7fd8c62b310305d372394d9ad648dda9d0f45e47867da5b7d",
+    "after_sha256": "e9f5e71822a9bed03ed5b1794082b80a8da4ff2d24af3cbf7e7df09cd49f805c"
+  },
+  {
+    "file": "sheet-real/tests/27-REQ-7-2-1-scenario-3.spec.ts",
+    "frames": [
+      "sheet-v3-F17"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "033257c89c1380f5f0ad25679fb7d06e09f8ea13225f024c8d8f7f547caa13d4",
+    "after_sha256": "694041c969be63befa1a5a7e89e07434958e4095ae3fc5fffbbf38dc9383595c"
+  },
+  {
+    "file": "sheet-real/tests/21-REQ-6-2-1-scenario-3.spec.ts",
+    "frames": [
+      "sheet-v3-F15"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "85602ceb44daf6d620731e4980cbd70bc3d3dfb608dd23b44ba194b9d6e7ae5b",
+    "after_sha256": "5ebdc2cad331b1971402bf62b8d02018c9747dc22a510e7b971e821c5f2b5e29"
+  },
+  {
+    "file": "sheet-real/tests/23-REQ-7-1-1-scenario-2.spec.ts",
+    "frames": [
+      "sheet-v3-F16"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "fcdb636930e68f822802b0aa28513a4330ee2046995abda7dbcaa11347be4e4b",
+    "after_sha256": "0dbb92f1d74a9e7db2144cafc5007593350c708955def4728bb127b9d3183134"
+  },
+  {
+    "file": "sheet-real/tests/15-REQ-5-2-1-scenario-3.spec.ts",
+    "frames": [
+      "sheet-v3-F13"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "703ff566909c68fd6a6507bcaf947b4f942992ec2ad5a392ed91d5602dd0ac4f",
+    "after_sha256": "49238ba636e8c0d3edf204a76546dc69cc11d8cc7e6fd2c6c6f62c56addda7a4"
+  },
+  {
+    "file": "sheet-real/tests/17-REQ-6-1-1-scenario-2.spec.ts",
+    "frames": [
+      "sheet-v3-F14"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "3cfd7a51ef679626f5738ba2ecf58d49df381f25b1cdd548722ac0d34cf20153",
+    "after_sha256": "860fac12326b23c822b5d0175eab563011f14548035a41442a65087f9baeee60"
+  },
+  {
+    "file": "sheet-real/tests/25-REQ-7-2-1-scenario-1.spec.ts",
+    "frames": [
+      "sheet-v3-F17"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "a720f03516136e57b1ae7694fedb16f10556819964e926fdeeac0c99bc82a32f",
+    "after_sha256": "aab072ca83b018a3cfe1e6086fc66b9e9b2bab1a1f1cf26107f8f6107cf01079"
+  },
+  {
+    "file": "sheet-real/tests/10-REQ-5-1-2-scenario-1.spec.ts",
+    "frames": [
+      "sheet-v3-F12"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "71ace5c99bd0cb9a206ec5a0914481180b3e3a9303613f4a4dfb654fc9e0347c",
+    "after_sha256": "57ff98b58de057e685b2b37f88e77d7833e599e51399d88d5eda48beafb0057f"
+  },
+  {
+    "file": "sheet-real/tests/18-REQ-6-1-1-scenario-3.spec.ts",
+    "frames": [
+      "sheet-v3-F14"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "417120e583927b50684b8848d5a6bd4c740ec8066d74ef1cc3f0dfe3235c4a09",
+    "after_sha256": "ed4d24bee8c82ff2539e6b62736b771cf1d834afca115c0059aff32d67ca57f7"
+  },
+  {
+    "file": "sheet-real/tests/16-REQ-6-1-1-scenario-1.spec.ts",
+    "frames": [
+      "sheet-v3-F14"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "9ea10f6b23c3eac4656fddbd845a5b95d1b9df74dea5224c4e209f5255ccdd03",
+    "after_sha256": "7903f36b901c8385f8b59de645ffaa95b938dcb671128b5fd6bd6982edff9613"
+  },
+  {
+    "file": "sheet-real/tests/19-REQ-6-2-1-scenario-1.spec.ts",
+    "frames": [
+      "sheet-v3-F15"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "34b0b7e41926318d2b6a519263d8e3d4c0408be8c21a9394c30ba3923fe8a601",
+    "after_sha256": "79992ae23674bb8925a106b60412271dd6d77b05b317cd7bd199a81efa3f3dab"
+  },
+  {
+    "file": "sheet-real/tests/24-REQ-7-1-1-scenario-3.spec.ts",
+    "frames": [
+      "sheet-v3-F10",
+      "sheet-v3-F16"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "e16da85a62f6518bd2f96a1b0b83735f7f9de961a0d20e91ce8da11cd24a217d",
+    "after_sha256": "1189bda465b09de9d3ae9f6d87c40e9f16e60026062f206ce78a143b6e013da9"
+  },
+  {
+    "file": "sheet-real/tests/20-REQ-6-2-1-scenario-2.spec.ts",
+    "frames": [
+      "sheet-v3-F15"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "86c7ca294cbb129bcd93b39496914b2ff5352bca7720be9a1cbc4c0de72286d1",
+    "after_sha256": "65c51bb078720cbb3fc47f7be6c2464812d0f8623350385a057a816cf7317047"
+  },
+  {
+    "file": "sheet-real/tests/22-REQ-7-1-1-scenario-1.spec.ts",
+    "frames": [
+      "sheet-v3-F16"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "196fa2d4289503927235ca6be765b509a377094b9c00d22607fcaa8271a390c3",
+    "after_sha256": "1efc745068ebd6fc5280cc376bbd513488fff0abbac47464fd91f119cc3c2983"
+  },
+  {
+    "file": "sheet-real/tests/26-REQ-7-2-1-scenario-2.spec.ts",
+    "frames": [
+      "sheet-v3-F17"
+    ],
+    "reason": "Mirror the newly observed exact menuitem/button/dialog scopes; retain unobserved gestures and assertions.",
+    "before_sha256": "4181f19b3e67b240613cae268029bc33324906601fcdcc0e8a983b5a0b8f015b",
+    "after_sha256": "c9fd73c28a82615b445fa02002179e26b3bd74a39290458e6f29ca9cc38de7e2"
+  }
+]

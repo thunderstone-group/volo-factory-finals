@@ -1,0 +1,652 @@
+{
+ "app": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-github/application",
+ "requirements": "~/projects/arcbench-campaign/evidence/2026-09-24-hackathon-v2/requirements/hackathon--github/requirements.yaml",
+ "model": "deepseek-v4-flash-vision-exp",
+ "seconds": 634.8,
+ "error": null,
+ "draft_files": [
+  "frontend/public/seed.js",
+  "frontend/public/app.js",
+  "frontend/public/styles.css"
+ ],
+ "summary": {
+  "calls": 3,
+  "draft_call_limit": 4,
+  "repair_call_limit": 3,
+  "completed_calls": 3,
+  "failed_calls": 0,
+  "failure_limit": 5,
+  "refused_calls": 0,
+  "known_prompt_tokens": 417517,
+  "prompt_tokens": 417517,
+  "known_completion_tokens": 102283,
+  "completion_tokens": 102283,
+  "unknown_usage_calls": [],
+  "estimated_cost_cny": 0.475417,
+  "estimated_repair_cost_cny": 0.475417,
+  "repair_cny_limit": 1.5,
+  "side_calls": 0,
+  "fallback_model": null,
+  "calls_by_model": {
+   "deepseek-v4-flash-vision-exp": 3
+  },
+  "billing_status": "tokens_reported_cost_not_estimated"
+ },
+ "smoke": {
+  "executed": true,
+  "problems": [
+   "Requirement-derived UI observation: Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions.",
+   "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Add comment\" shares comment with a field label"
+  ],
+  "vocabulary_missing": 0,
+  "scenarios": {
+   "counts": {
+    "pass": 99,
+    "error": 1,
+    "fail": 4
+   },
+   "coverage": {
+    "total": 100,
+    "parsed": 99
+   },
+   "seconds": 30.0,
+   "source_contracts": {
+    "fail": 4
+   },
+   "failing": [
+    {
+     "id": "REQ-4-1",
+     "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+     "id": "REQ-6-1#contract-1",
+     "observation": "a valid Request changes review on the current compare commit blocks merging, so no actionable Merge pull request control may be offered"
+    },
+    {
+     "id": "REQ-6-5#contract-1",
+     "observation": "with Require status check test enabled and test not success, the merge control must be non-actionable (disabled) rather than enabled"
+    },
+    {
+     "id": "REQ-6-3-3#contract-1",
+     "observation": "an unsubmitted pending review draft must not be public to another account before review submission"
+    },
+    {
+     "id": "REQ-5-3-1#contract-1",
+     "observation": "carol-reader holds only Read permission on the repository and must not appear in assignee results"
+    }
+   ],
+   "invariants": [],
+   "translation": {}
+  },
+  "repair": {
+   "accepted": false,
+   "reason": "no failing scenario passes after the change"
+  },
+  "browser_before": [
+   {
+    "executed": true,
+    "diagnostic_only": true,
+    "errors": [
+     "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+    ],
+    "page_errors": [],
+    "actions": [
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Dashboard",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Agree to the terms",
+      "action": ""
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     }
+    ],
+    "screens": [
+     "#/",
+     "#/signin",
+     "#/signup",
+     "#/forgot",
+     "#/orgs/acme-demo",
+     "#/repos/acme-demo/acme-docs",
+     "#/repos/alice-dev/acme-docs-fork",
+     "#/repos/bob-reviewer/bob-notes",
+     "#/dashboard",
+     "#/orgs",
+     "#/orgs/acme-demo/repositories",
+     "#/orgs/acme-demo/people"
+    ],
+    "browser": "143.0.7499.4",
+    "playwright": "1.57.0"
+   }
+  ],
+  "rounds": [
+   {
+    "round": 1,
+    "fatal": 0,
+    "failing": [
+     "REQ-6-1#contract-1",
+     "REQ-6-5#contract-1",
+     "REQ-6-3-3#contract-1",
+     "REQ-5-3-1#contract-1"
+    ],
+    "passing_before": 99,
+    "accepted": true,
+    "gained": [
+     "REQ-5-3-1#contract-1",
+     "REQ-6-1#contract-1",
+     "REQ-6-3-3#contract-1",
+     "REQ-6-5#contract-1"
+    ],
+    "lost": [
+     "REQ-6-5"
+    ],
+    "reason": "4 more scenario(s) pass, 1 lost",
+    "scenarios": {
+     "counts": {
+      "pass": 102,
+      "error": 1,
+      "fail": 1
+     },
+     "coverage": {
+      "total": 100,
+      "parsed": 99
+     },
+     "seconds": 35.5,
+     "source_contracts": {
+      "pass": 4
+     },
+     "failing": [
+      {
+       "id": "REQ-4-1",
+       "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+      },
+      {
+       "id": "REQ-6-5",
+       "observation": "Error: expect(locator).toBeEnabled() failed\n\nLocator:  getByRole('button', { name: 'Merge pull request', exact: true }).first()\nExpected: enabled\nReceived: disabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true }).first()\n    9 × locator resolved to <button disabled type=\"button\">Merge pull req"
+      }
+     ],
+     "invariants": [],
+     "translation": {}
+    },
+    "browser_after": [
+     {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [
+       "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+      ],
+      "page_errors": [],
+      "actions": [
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Dashboard",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Agree to the terms",
+        "action": ""
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       }
+      ],
+      "screens": [
+       "#/",
+       "#/signin",
+       "#/signup",
+       "#/forgot",
+       "#/orgs/acme-demo",
+       "#/repos/acme-demo/acme-docs",
+       "#/repos/alice-dev/acme-docs-fork",
+       "#/repos/bob-reviewer/bob-notes",
+       "#/dashboard",
+       "#/orgs",
+       "#/orgs/acme-demo/repositories",
+       "#/orgs/acme-demo/people"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+     }
+    ],
+    "files": [
+     "frontend/public/app.js",
+     "frontend/public/styles.css"
+    ],
+    "replied": true,
+    "seconds": 179.3,
+    "cost_cny": 0.172448
+   },
+   {
+    "round": 2,
+    "fatal": 0,
+    "failing": [
+     "REQ-6-5"
+    ],
+    "passing_before": 102,
+    "accepted": false,
+    "gained": [],
+    "reason": "no failing scenario passes after the change",
+    "scenarios": {
+     "counts": {
+      "pass": 102,
+      "error": 1,
+      "fail": 1
+     },
+     "coverage": {
+      "total": 100,
+      "parsed": 99
+     },
+     "seconds": 36.0,
+     "source_contracts": {
+      "pass": 4
+     },
+     "failing": [
+      {
+       "id": "REQ-4-1",
+       "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+      },
+      {
+       "id": "REQ-6-5",
+       "observation": "Error: expect(locator).toBeEnabled() failed\n\nLocator:  getByRole('button', { name: 'Merge pull request', exact: true }).first()\nExpected: enabled\nReceived: disabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true }).first()\n    9 × locator resolved to <button disabled type=\"button\">Merge pull req"
+      }
+     ],
+     "invariants": [],
+     "translation": {}
+    },
+    "browser_after": [
+     {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [
+       "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+      ],
+      "page_errors": [],
+      "actions": [
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Dashboard",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Agree to the terms",
+        "action": ""
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       }
+      ],
+      "screens": [
+       "#/",
+       "#/signin",
+       "#/signup",
+       "#/forgot",
+       "#/orgs/acme-demo",
+       "#/repos/acme-demo/acme-docs",
+       "#/repos/alice-dev/acme-docs-fork",
+       "#/repos/bob-reviewer/bob-notes",
+       "#/dashboard",
+       "#/orgs",
+       "#/orgs/acme-demo/repositories",
+       "#/orgs/acme-demo/people"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+     }
+    ],
+    "replied": true,
+    "seconds": 142.8,
+    "cost_cny": 0.098651
+   },
+   {
+    "round": 3,
+    "fatal": 0,
+    "failing": [
+     "REQ-6-5"
+    ],
+    "passing_before": 102,
+    "accepted": false,
+    "focus": [
+     "REQ-6-5"
+    ],
+    "gained": [],
+    "reason": "no failing scenario passes after the change",
+    "scenarios": {
+     "counts": {
+      "pass": 102,
+      "error": 1,
+      "fail": 1
+     },
+     "coverage": {
+      "total": 100,
+      "parsed": 99
+     },
+     "seconds": 35.4,
+     "source_contracts": {
+      "pass": 4
+     },
+     "failing": [
+      {
+       "id": "REQ-4-1",
+       "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+      },
+      {
+       "id": "REQ-6-5",
+       "observation": "Error: expect(locator).toBeEnabled() failed\n\nLocator:  getByRole('button', { name: 'Merge pull request', exact: true }).first()\nExpected: enabled\nReceived: disabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true }).first()\n    9 × locator resolved to <button disabled type=\"button\">Merge pull req"
+      }
+     ],
+     "invariants": [],
+     "translation": {}
+    },
+    "browser_after": [
+     {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [
+       "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+      ],
+      "page_errors": [],
+      "actions": [
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Dashboard",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Agree to the terms",
+        "action": ""
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       }
+      ],
+      "screens": [
+       "#/",
+       "#/signin",
+       "#/signup",
+       "#/forgot",
+       "#/orgs/acme-demo",
+       "#/repos/acme-demo/acme-docs",
+       "#/repos/alice-dev/acme-docs-fork",
+       "#/repos/bob-reviewer/bob-notes",
+       "#/dashboard",
+       "#/orgs",
+       "#/orgs/acme-demo/repositories",
+       "#/orgs/acme-demo/people"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+     }
+    ],
+    "replied": true,
+    "seconds": 274.3,
+    "cost_cny": 0.204318
+   }
+  ],
+  "stopped": "repair call limit reached (3)",
+  "problems_after": [
+   "Requirement-derived UI observation: Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+  ],
+  "scenarios_after": {
+   "counts": {
+    "pass": 102,
+    "error": 1,
+    "fail": 1
+   },
+   "coverage": {
+    "total": 100,
+    "parsed": 99
+   },
+   "seconds": 35.5,
+   "source_contracts": {
+    "pass": 4
+   },
+   "failing": [
+    {
+     "id": "REQ-4-1",
+     "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+     "id": "REQ-6-5",
+     "observation": "Error: expect(locator).toBeEnabled() failed\n\nLocator:  getByRole('button', { name: 'Merge pull request', exact: true }).first()\nExpected: enabled\nReceived: disabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true }).first()\n    9 × locator resolved to <button disabled type=\"button\">Merge pull req"
+    }
+   ],
+   "invariants": [],
+   "translation": {}
+  }
+ }
+}

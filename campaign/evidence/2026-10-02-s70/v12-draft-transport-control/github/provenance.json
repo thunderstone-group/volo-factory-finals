@@ -1,0 +1,7 @@
+{
+  "source": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-requirement-transactions-v12-github/.oneshot-yzcofu_g/app",
+  "application_sha256": "4dccc117ff6d2eab1aa36a55978b8b9135527e3e32c861918b52d02c88e1fe07",
+  "stage": "draft snapshot while agent waits for its self-check generation",
+  "model": "kimi-k2.7-code-highspeed after primary transport failures",
+  "final_delivery": false
+}

@@ -1,0 +1,101 @@
+{
+  "old_frozen_manifests_unchanged": {
+    "github": "569f6719e9eed44a28365ef64c036c75d0405df2010cdb1e34f8f0093a92e83b",
+    "sheet": "1278fbd112df8a197a60558401b9c1ad70cd1d7fe04c0722ad2e6cf538541d99",
+    "github-prose": "1db2869b83ce7a28c6ad0edbd427ce142211dfed9ce31352ad3c209d9d083e79",
+    "sheet-prose": "f0f56de4e8e0dc3a6c4d82c1fcaa7ea8463c6986218e58466d4033060678a5f9"
+  },
+  "old_reference_apps_unchanged": {
+    "github": "6a6363710cfd20068a93e8e9ca5208d437759f82bdea9a2ab92a2b9af884a318",
+    "sheet": "d95a204e528af77fd8ee46bd901997817546123cc24c120d295d9399d053667d"
+  },
+  "tasks": {
+    "github-real": {
+      "requirements_sha256": "f1f73b4190831cef37669f9e919edde50cd0bc7ad02b888e6dab617094921754",
+      "helper_sha256": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+      "scenario_count": 30,
+      "freeze_sha256": "83356a686697d29c9d12649bc37e6d0b25ef9eea13eebf121ed2740cea290133",
+      "baseline_application_unchanged": true,
+      "baseline_passed": 3,
+      "reference_application_sha256": "ddbe06b7ca24497d0eb0e47361328c52607387fbc109a06490634da70c659dcc",
+      "proxy_runs": [
+        {
+          "passed": 30,
+          "total": 30,
+          "wall_seconds": 63.259
+        },
+        {
+          "passed": 30,
+          "total": 30,
+          "wall_seconds": 68.583
+        }
+      ],
+      "regression": {
+        "v6-fixed-independent": {
+          "baseline": {
+            "pass": 107,
+            "fail": 4
+          },
+          "reference": {
+            "pass": 107,
+            "fail": 4
+          },
+          "seconds": 208.8,
+          "previously_passing_cases_lost": [],
+          "newly_passing_cases": []
+        }
+      }
+    },
+    "sheet-real": {
+      "requirements_sha256": "7a2ee0a9d81317bcc3f92fd627effae0c510412b891ab6c79896c4517b139962",
+      "helper_sha256": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+      "scenario_count": 30,
+      "freeze_sha256": "8d7d36e69c26eec483ca2a9340c3c206aae18ddd37a1a41d75263ea380c052ff",
+      "baseline_application_unchanged": true,
+      "baseline_passed": 0,
+      "reference_application_sha256": "f19707a038109a2825ee73c64d09cb2b5a61e1856e13fa20f3c976f33df80f84",
+      "proxy_runs": [
+        {
+          "passed": 30,
+          "total": 30,
+          "wall_seconds": 71.572
+        },
+        {
+          "passed": 30,
+          "total": 30,
+          "wall_seconds": 77.908
+        }
+      ],
+      "regression": {
+        "g99": {
+          "baseline": {
+            "pass": 66,
+            "fail": 9,
+            "error": 26
+          },
+          "reference": {
+            "pass": 66,
+            "fail": 9,
+            "error": 26
+          },
+          "seconds": 413.2,
+          "previously_passing_cases_lost": [],
+          "newly_passing_cases": []
+        },
+        "cov99n-arm": {
+          "baseline": {
+            "pass": 96,
+            "fail": 4
+          },
+          "reference": {
+            "pass": 96,
+            "fail": 4
+          },
+          "seconds": 243.4,
+          "previously_passing_cases_lost": [],
+          "newly_passing_cases": []
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "app": "official-sheet-r1",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 95,
+    "fail": 5
+  },
+  "seconds": 64.6,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

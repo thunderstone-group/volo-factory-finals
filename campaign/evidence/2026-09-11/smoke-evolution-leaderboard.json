@@ -1,0 +1,51 @@
+{
+  "source_url": "https://arc-bench.com/api/competitions/leaderboard?track=all&competition_id=smoke-evolution",
+  "fetched_at": "2026-09-11T04:45:14.065037+00:00",
+  "data": [
+    {
+      "username": "睿欣达工场",
+      "model_name": "deepseek-v4-flash",
+      "track": "smoke-evolution",
+      "avg_pass_rate": 100.0,
+      "total_token_millions": 0.241,
+      "total_token_cost": 1.371543,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": 72.9106,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 367,
+      "submission_count": 1
+    },
+    {
+      "username": "wjzhang",
+      "model_name": "deepseek-v4-flash",
+      "track": "smoke-evolution",
+      "avg_pass_rate": 100.0,
+      "total_token_millions": 0.0,
+      "total_token_cost": 0.0,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": null,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 616,
+      "submission_count": 5
+    },
+    {
+      "username": "kwy",
+      "model_name": "deepseek-v4-flash",
+      "track": "smoke-evolution",
+      "avg_pass_rate": 0.0,
+      "total_token_millions": 3.09,
+      "total_token_cost": 0.43368,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": null,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": false,
+      "seniority_label": "junior",
+      "avg_runtime_seconds": 900,
+      "submission_count": 1
+    }
+  ]
+}

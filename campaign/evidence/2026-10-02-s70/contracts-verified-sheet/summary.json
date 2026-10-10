@@ -1,0 +1,89 @@
+{
+  "finish": "stop",
+  "usage": {
+    "prompt_tokens": 34704,
+    "completion_tokens": 29652
+  },
+  "results": [
+    {
+      "id": "REQ-2-2-2#contract-1",
+      "status": "error",
+      "calls": {
+        "deleteLine": 1,
+        "currentWb": 3,
+        "currentSheet": 1,
+        "getWb": 3,
+        "pushUndo": 1,
+        "clearStatus": 1,
+        "refRC": 0,
+        "coordName": 0,
+        "shiftFormula": 0,
+        "makeValues": 1,
+        "evaluateFormula": 0,
+        "tokenizeFormula": 0,
+        "errObj": 0
+      },
+      "assertions": 3,
+      "phase": "check",
+      "error_name": "ReferenceError",
+      "message": "clearTimeout is not defined",
+      "error": "evalmachine.<anonymous>:4\n    clearTimeout(ARC._statusTimer);\n    ^\n\nReferenceError: clearTimeout is not defined\n    at clearStatus (evalmachine.<anonymous>:4:5)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:28:70)\n    at pushUndo (evalmachine.<anonymous>:4:5)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:28:70)\n    at deleteLine (evalmachine.<anonymous>:4:5)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:28:70)\n    at evalmachine.<anonymous>:2:1\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:39:8)"
+    },
+    {
+      "id": "REQ-2-2-1#contract-2",
+      "status": "error",
+      "calls": {
+        "shiftStructure": 1,
+        "computePivot": 0,
+        "makeValues": 0,
+        "evaluateFormula": 0,
+        "tokenizeFormula": 0,
+        "errObj": 0,
+        "coordName": 0,
+        "shiftFormula": 0,
+        "pushUndo": 1,
+        "clearStatus": 1,
+        "currentWb": 3,
+        "currentSheet": 1,
+        "getWb": 3,
+        "refRC": 0
+      },
+      "assertions": 2,
+      "phase": "check",
+      "error_name": "ReferenceError",
+      "message": "clearTimeout is not defined",
+      "error": "evalmachine.<anonymous>:4\n    clearTimeout(ARC._statusTimer);\n    ^\n\nReferenceError: clearTimeout is not defined\n    at clearStatus (evalmachine.<anonymous>:4:5)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:28:70)\n    at pushUndo (evalmachine.<anonymous>:4:5)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:28:70)\n    at shiftStructure (evalmachine.<anonymous>:5:5)\n    at value (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:28:70)\n    at evalmachine.<anonymous>:2:1\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:39:8)"
+    },
+    {
+      "id": "REQ-4-1-2#contract-3",
+      "status": "fail",
+      "calls": {
+        "adjustFormula": 1
+      },
+      "assertions": 3,
+      "phase": "check",
+      "error_name": "AssertionError",
+      "message": "Expected values to be strictly equal:\n\n'=A21' !== '=#REF!'\n",
+      "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'=A21' !== '=#REF!'\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:15:55)\n    at evalmachine.<anonymous>:2:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:39:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+    },
+    {
+      "id": "REQ-4-2-2#contract-4",
+      "status": "fail",
+      "calls": {
+        "makeValues": 1,
+        "evaluateFormula": 1,
+        "tokenizeFormula": 1,
+        "errObj": 0,
+        "coordName": 0
+      },
+      "assertions": 3,
+      "phase": "check",
+      "error_name": "AssertionError",
+      "message": "Expected values to be strictly equal:\n\n'null' !== '#REF!'\n",
+      "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'null' !== '#REF!'\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:15:55)\n    at evalmachine.<anonymous>:2:64\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/contract-runner.cjs:39:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+    }
+  ],
+  "task": "sheet",
+  "seconds": 291.7,
+  "estimated_cost_cny": 0.37098
+}

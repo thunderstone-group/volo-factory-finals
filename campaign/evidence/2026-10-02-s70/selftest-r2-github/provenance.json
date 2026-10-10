@@ -1,0 +1,23 @@
+{
+  "source_run": "583ef28ff0bc",
+  "source_submission": "f56d97c2fdb1",
+  "source_official_full_github_score": "18/100",
+  "business_source_unchanged": true,
+  "runtime_wrapper_added": "Dockerfile; PORT=3301 as official app runtime contract",
+  "source_hashes": {
+    "frontend/package-lock.json": "7ed934860c7525f337bbf857c2956639f750aa9770de278cdff314600ff78a92",
+    "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+    "frontend/public/app.js": "992f7f0031cc5b7cb23acfdd6ba708f247dc6057b2efc9e0bea84a6f225c9f88",
+    "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+    "frontend/public/lib/arc.js": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14",
+    "frontend/public/seed.js": "e6ebae97ed56de2bf92edf061c72f84b4d07b0e4db739b72f6bd3d6918dbda7e",
+    "frontend/public/styles.css": "ee41f57c97516187b528f4b726333d60d45737b3a8c5b4216096918904f552e0",
+    "backend/package-lock.json": "b3b1c68b586d6861f4c733c138abcb52bb7e4c8536511039a42ddd1418fcbe8b",
+    "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+    "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9"
+  },
+  "zip": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/selftest-r2-github/official-r2-github-app.zip",
+  "zip_sha256": "34cf591ad062194cd86e947237f6f5a22db3681dad0697e2376ad884cc99e43c",
+  "bytes": 40680,
+  "purpose": "Stage 1 diagnostic baseline on existing original-task application; not a new score claim or agent package"
+}

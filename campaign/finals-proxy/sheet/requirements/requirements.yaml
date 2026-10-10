@@ -1,0 +1,1458 @@
+id: ROOT
+name: Sheet Finals Proxy Evolution Light
+type: FOLDER
+description: |-
+  Light evolution requirements for the participant's actual spreadsheet finals base. Extend formulas, data cleanup and workbook organization. This remains a public single-user workspace: no account credentials exist in the original sheet task. Sharing, real-time collaboration, advanced styling, charts, macros and external office integrations remain out of scope.
+
+  Benchmark interaction contract: Every scenario starts at the application home entry in a fresh browser context, signed out. Authentication, when required, uses the original Sign in link, Username or email and masked Password inputs, and Sign in button. Navigation controls may be links or buttons with the exact accessible names stated below; form actions are buttons. Every named control or landmark is unique within its stated scope and visible when used. Inputs have associated labels matching the stated names. Named regions and dialogs expose those accessible roles and names. Native or custom selectors expose combobox and option semantics; a collapsed custom selector displays only the selected option. Lists expose list and listitem semantics in reading order. Status and alert messages have matching accessible names and visible text. Checked, selected and pressed states use their corresponding ARIA/native semantics. An absent control has zero matching accessible elements. Seed records described in GIVEN steps exist in the initial application state, rather than being created by another test. All EV-suffixed resources are distinct records; mutations affect only the current scenario's records. Original accounts and credentials are reused without changing credentials or shared account preferences. All 30 scenarios must work in any order on one continuously running application with a fresh browser context per test and no server reset. Persistence means saved application data survives navigation and reload. No private setup API, implementation-specific URL, framework, database key, CSS selector or particular markup structure is required. Preserve all original behavior except the explicitly described extension; unchanged controls retain their original names and semantics.
+dependencies: []
+children:
+- id: EV-1.1
+  name: Calculate IF with a comparison
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-1-1
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    Extend formulas with IF(condition, true_value, false_value), comparisons and quoted string literals. IF evaluates only the selected branch. Existing arithmetic and aggregates remain valid.
+
+    The current page contains one link or button named "Calculate EV-1.1" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one input labelled "Formula bar". The grid named "Worksheet grid" exposes "A1" as a gridcell.
+  scenarios:
+  - name: Calculate IF with a comparison
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Calculate EV-1.1" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=12 and B1 is blank.
+    - keyword: WHEN
+      content: The user activates "Calculate EV-1.1" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "=IF(A1>=10,\"Ready\",\"Wait\")" in the "Formula bar" field in the current
+        page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "Ready".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "4" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "Wait".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "Wait".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "=IF(A1>=10,\"Ready\",\"Wait\")".
+- id: EV-1.2
+  name: Count matching values with COUNTIF
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-1-1
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    COUNTIF(range, criterion) counts matching cells; criteria support numeric comparison prefixes and exact case-insensitive text. Results recalculate on source edits.
+
+    The current page contains one link or button named "Count EV-1.2" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one input labelled "Formula bar". The grid named "Worksheet grid" exposes "A2" as a gridcell.
+  scenarios:
+  - name: Count matching values with COUNTIF
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Count EV-1.2" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=5, A2=10, A3=15, A4=20. B1 is blank.
+    - keyword: WHEN
+      content: The user activates "Count EV-1.2" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "=COUNTIF(A1:A4,\">10\")" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "2".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A2" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "11" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "3".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "3".
+- id: EV-1.3
+  name: Sum matching rows with SUMIF
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-1-1
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    SUMIF(criteria_range, criterion, sum_range) sums numeric values whose corresponding criteria match case-insensitive text or numeric comparisons; nonmatching values do not contribute.
+
+    The current page contains one link or button named "Sum EV-1.3" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "C1" as a gridcell. The current page contains one input labelled "Formula bar". The grid named "Worksheet grid" exposes "B2" as a gridcell.
+  scenarios:
+  - name: Sum matching rows with SUMIF
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Sum EV-1.3" exists independently of every other scenario. Unless stated
+        otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns, and
+        all unspecified cells blank; there are no filters, validation rules, notes or named ranges. A1=East,
+        A2=West, A3=East; B1=12, B2=99, B3=8.
+    - keyword: WHEN
+      content: The user activates "Sum EV-1.3" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "C1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "=SUMIF(A1:A3,\"East\",B1:B3)" in the "Formula bar" field in the current
+        page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "C1" in the grid named "Worksheet grid" has exact text "20".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B2" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "1000" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "C1" in the grid named "Worksheet grid" has exact text "20".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "C1" in the grid named "Worksheet grid" has exact text "20".
+- id: EV-1.4
+  name: Recover from formula errors with IFERROR
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-2-2
+  dependencies:
+  - REQ-4-2-2
+  description: |-
+    IFERROR(expression, fallback) returns fallback only when the expression errors. Source correction restores the ordinary result without changing the expression; unrelated errors remain visible.
+
+    The current page contains one link or button named "Recover EV-1.4" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one input labelled "Formula bar". The grid named "Worksheet grid" exposes "C1" as a gridcell. The grid named "Worksheet grid" exposes "A1" as a gridcell.
+  scenarios:
+  - name: Recover from formula errors with IFERROR
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Recover EV-1.4" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=0 and C1 has formula =1/0.
+    - keyword: WHEN
+      content: The user activates "Recover EV-1.4" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "=IFERROR(10/A1,\"Pending\")" in the "Formula bar" field in the current
+        page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "Pending".
+    - keyword: THEN
+      content: The gridcell named "C1" in the grid named "Worksheet grid" has exact text "#DIV/0!".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "2" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "5".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "5".
+    - keyword: THEN
+      content: The gridcell named "C1" in the grid named "Worksheet grid" has exact text "#DIV/0!".
+- id: EV-1.5
+  name: Recalculate cross-worksheet references
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-2-1
+  dependencies:
+  - REQ-4-2-1
+  description: |-
+    Extend references to SheetName!A1 and single-quoted worksheet names. Source edits in another worksheet recalculate dependents and persist without leaking worksheet content.
+
+    The current page contains one link or button named "Recalculate EV-1.5" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one input labelled "Formula bar". The current page exposes "Rates" as a tab. The grid named "Worksheet grid" exposes "A1" as a gridcell. The current page exposes "Sheet1" as a tab.
+  scenarios:
+  - name: Recalculate cross-worksheet references
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Recalculate EV-1.5" exists independently of every other scenario.
+        Unless stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26
+        columns, and all unspecified cells blank; there are no filters, validation rules, notes or named
+        ranges. Tabs are Sheet1 and Rates; Sheet1!A1=10, Rates!A1=2. Sheet1 is active.
+    - keyword: WHEN
+      content: The user activates "Recalculate EV-1.5" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "=A1*'Rates'!A1" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "20".
+    - keyword: WHEN
+      content: The user clicks the tab named "Rates" in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "3" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user clicks the tab named "Sheet1" in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "30".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "30".
+- id: EV-1.6
+  name: Sort by a secondary column
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-1-1
+  dependencies:
+  - REQ-5-1-1
+  description: |-
+    Sort range adds optional Then by (default None) and Then order. Rows tie on the primary key before the secondary key is used; headers and outside cells remain unchanged.
+
+    The current page contains one link or button named "Sort EV-1.6" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The grid named "Worksheet grid" exposes "B4" as a gridcell. The current page exposes "Data" as a button. The current page exposes "Sort range" as a menuitem. A visible dialog named "Sort range" contains the controls and content within it in the scenario. The dialog named "Sort range" exposes "Data has header row" as a checkbox. The dialog named "Sort range" exposes "Sort by" as a combobox. The combobox labelled "Sort by" in the dialog named "Sort range" provides the option "Team". The dialog named "Sort range" exposes "Order" as a combobox. The combobox labelled "Order" in the dialog named "Sort range" provides the option "Ascending". The dialog named "Sort range" exposes "Then by" as a combobox. The combobox labelled "Then by" in the dialog named "Sort range" provides the option "Score". The dialog named "Sort range" exposes "Then order" as a combobox. The combobox labelled "Then order" in the dialog named "Sort range" provides the option "Descending". The dialog named "Sort range" exposes "Sort" as a button. The grid named "Worksheet grid" exposes "A2" as a gridcell. The grid named "Worksheet grid" exposes "B2" as a gridcell. The grid named "Worksheet grid" exposes "B3" as a gridcell. The grid named "Worksheet grid" exposes "A4" as a gridcell. The grid named "Worksheet grid" exposes "D1" as a gridcell.
+  scenarios:
+  - name: Sort by a secondary column
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Sort EV-1.6" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=Team,B1=Score; A2=Blue,B2=5; A3=Red,B3=3; A4=Blue,B4=9; D1=Sentinel.
+    - keyword: WHEN
+      content: The user activates "Sort EV-1.6" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user drags from gridcell "A1" to gridcell "B4" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Sort range" in the current page.
+    - keyword: WHEN
+      content: The user checks "Data has header row" in the dialog named "Sort range".
+    - keyword: WHEN
+      content: The user selects "Team" in the "Sort by" combobox in the dialog named "Sort range".
+    - keyword: WHEN
+      content: The user selects "Ascending" in the "Order" combobox in the dialog named "Sort range".
+    - keyword: WHEN
+      content: The user selects "Score" in the "Then by" combobox in the dialog named "Sort range".
+    - keyword: WHEN
+      content: The user selects "Descending" in the "Then order" combobox in the dialog named "Sort range".
+    - keyword: WHEN
+      content: The user clicks the button named "Sort" in the dialog named "Sort range".
+    - keyword: THEN
+      content: The gridcell named "A2" in the grid named "Worksheet grid" has exact text "Blue".
+    - keyword: THEN
+      content: The gridcell named "B2" in the grid named "Worksheet grid" has exact text "9".
+    - keyword: THEN
+      content: The gridcell named "B3" in the grid named "Worksheet grid" has exact text "5".
+    - keyword: THEN
+      content: The gridcell named "A4" in the grid named "Worksheet grid" has exact text "Red".
+    - keyword: THEN
+      content: The gridcell named "D1" in the grid named "Worksheet grid" has exact text "Sentinel".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B2" in the grid named "Worksheet grid" has exact text "9".
+- id: EV-1.7
+  name: Allow invalid input with a validation warning
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-2-1
+  dependencies:
+  - REQ-5-2-1
+  description: |-
+    Data validation adds On invalid data with Reject input (default) and Show warning. Show warning commits invalid input and displays Validation warning for the selected invalid cell; the rule and value persist. Reject input retains original atomic rejection.
+
+    The current page contains one link or button named "Allow EV-1.7" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The current page exposes "Data" as a button. The current page exposes "Data validation" as a menuitem. A visible dialog named "Data validation" contains the controls and content within it in the scenario. The dialog named "Data validation" exposes "Rule type" as a combobox. The combobox labelled "Rule type" in the dialog named "Data validation" provides the option "Number range". The dialog named "Data validation" contains one input labelled "Minimum". The dialog named "Data validation" contains one input labelled "Maximum". The dialog named "Data validation" exposes "On invalid data" as a combobox. The combobox labelled "On invalid data" in the dialog named "Data validation" provides the option "Show warning". The dialog named "Data validation" exposes "Save" as a button. The current page contains one input labelled "Formula bar". The current page contains the exact visible text "Validation warning" once when specified.
+  scenarios:
+  - name: Allow invalid input with a validation warning
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Allow EV-1.7" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=5.
+    - keyword: WHEN
+      content: The user activates "Allow EV-1.7" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Data validation" in the current page.
+    - keyword: WHEN
+      content: The user selects "Number range" in the "Rule type" combobox in the dialog named "Data validation".
+    - keyword: WHEN
+      content: The user enters "0" in the "Minimum" field in the dialog named "Data validation".
+    - keyword: WHEN
+      content: The user enters "10" in the "Maximum" field in the dialog named "Data validation".
+    - keyword: WHEN
+      content: The user selects "Show warning" in the "On invalid data" combobox in the dialog named "Data
+        validation".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Data validation".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "12" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "12".
+    - keyword: THEN
+      content: The exact text "Validation warning" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "12".
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Data validation" in the current page.
+    - keyword: THEN
+      content: The "On invalid data" combobox in the dialog named "Data validation" has selected option
+        "Show warning".
+- id: EV-1.8
+  name: Paste only calculated values
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-3-2-1
+  dependencies:
+  - REQ-3-2-1
+  description: |-
+    The grid context menu adds Paste values only. It pastes the copied range's calculated values, preserving layout while removing formulas in targets. The source remains unchanged and normal Paste still copies formulas.
+
+    The current page contains one link or button named "Paste EV-1.8" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The grid named "Worksheet grid" exposes "D1" as a gridcell. The current page exposes "Paste values only" as a menuitem. The current page contains one input labelled "Formula bar". The grid named "Worksheet grid" exposes "A1" as a gridcell.
+  scenarios:
+  - name: Paste only calculated values
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Paste EV-1.8" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=7; B1 has formula =A1*2; D1 is blank.
+    - keyword: WHEN
+      content: The user activates "Paste EV-1.8" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user presses "Control+c" on the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user right-clicks the gridcell named "D1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Paste values only" in the current page.
+    - keyword: THEN
+      content: The gridcell named "D1" in the grid named "Worksheet grid" has exact text "14".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "D1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "14".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "8" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "16".
+    - keyword: THEN
+      content: The gridcell named "D1" in the grid named "Worksheet grid" has exact text "14".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "D1" in the grid named "Worksheet grid" has exact text "14".
+- id: EV-1.9
+  name: Undo and redo a worksheet rename
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-3-2-2
+  dependencies:
+  - REQ-3-2-2
+  description: |-
+    Extend workbook session undo history to worksheet renaming. Undo restores the previous tab name and data; Redo reapplies the name. The visible state after redo persists.
+
+    The current page contains one link or button named "Undo EV-1.9" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Worksheet options for Sheet1" as a button. The current page exposes "Rename" as a menuitem. A visible dialog named "Rename worksheet" contains the controls and content within it in the scenario. The dialog named "Rename worksheet" contains one input labelled "Worksheet name". The dialog named "Rename worksheet" exposes "Save" as a button. The current page exposes "Undo" as a button. The current page exposes "Sheet1" as a tab. The current page exposes "Renamed EV-1.9" as a tab. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The current page exposes "Redo" as a button.
+  scenarios:
+  - name: Undo and redo a worksheet rename
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Undo EV-1.9" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        Sheet1!A1=Preserved.
+    - keyword: WHEN
+      content: The user activates "Undo EV-1.9" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Worksheet options for Sheet1" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Rename" in the current page.
+    - keyword: WHEN
+      content: The user enters "Renamed EV-1.9" in the "Worksheet name" field in the dialog named "Rename
+        worksheet".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Rename worksheet".
+    - keyword: WHEN
+      content: The user clicks the button named "Undo" in the current page.
+    - keyword: THEN
+      content: The tab named "Sheet1" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The tab named "Renamed EV-1.9" is absent in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "Preserved".
+    - keyword: WHEN
+      content: The user clicks the button named "Redo" in the current page.
+    - keyword: THEN
+      content: The tab named "Renamed EV-1.9" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The tab named "Renamed EV-1.9" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "Preserved".
+- id: EV-1.10
+  name: Concatenate cell text in a formula
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-1-1
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    Extend formula expressions with the & text concatenation operator and quoted strings. Number operands convert to their displayed text; dependency edits recalculate the result.
+
+    The current page contains one link or button named "Concatenate EV-1.10" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "C1" as a gridcell. The current page contains one input labelled "Formula bar". The grid named "Worksheet grid" exposes "B1" as a gridcell.
+  scenarios:
+  - name: Concatenate cell text in a formula
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Concatenate EV-1.10" exists independently of every other scenario.
+        Unless stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26
+        columns, and all unspecified cells blank; there are no filters, validation rules, notes or named
+        ranges. A1=Order, B1=42.
+    - keyword: WHEN
+      content: The user activates "Concatenate EV-1.10" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "C1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: 'The user enters "=A1&\" #\"&B1" in the "Formula bar" field in the current page.'
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: 'The gridcell named "C1" in the grid named "Worksheet grid" has exact text "Order #42".'
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "43" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: 'The gridcell named "C1" in the grid named "Worksheet grid" has exact text "Order #43".'
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: 'The gridcell named "C1" in the grid named "Worksheet grid" has exact text "Order #43".'
+- id: EV-2.1
+  name: Create a named range for formulas
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    Data > Named ranges opens a Named ranges region. Add named range opens a dialog with Name and Range (A1 notation on the active worksheet). Names are workbook-scoped and case-insensitive; formulas resolve them. Save persists range definitions.
+
+    The current page contains one link or button named "Create EV-2.1" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Data" as a button. The current page exposes "Named ranges" as a menuitem. A visible region named "Named ranges" contains the controls and content within it in the scenario. The region named "Named ranges" exposes "Add named range" as a button. A visible dialog named "Named range" contains the controls and content within it in the scenario. The dialog named "Named range" contains one input labelled "Name". The dialog named "Named range" contains one input labelled "Range". The dialog named "Named range" exposes "Save" as a button. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one input labelled "Formula bar".
+  scenarios:
+  - name: Create a named range for formulas
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Create EV-2.1" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=2,A2=3,A3=5.
+    - keyword: WHEN
+      content: The user activates "Create EV-2.1" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Named ranges" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Add named range" in the region named "Named ranges".
+    - keyword: WHEN
+      content: The user enters "Revenue" in the "Name" field in the dialog named "Named range".
+    - keyword: WHEN
+      content: The user enters "A1:A3" in the "Range" field in the dialog named "Named range".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Named range".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "=SUM(Revenue)" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "10".
+- id: EV-2.2
+  name: Rename a named range and its references
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.1
+  description: |-
+    Edit on a named range allows renaming. Existing formulas referencing that name are updated to the new name atomically; their calculated values remain unchanged.
+
+    The current page contains one link or button named "Rename EV-2.2" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Data" as a button. The current page exposes "Named ranges" as a menuitem. A visible region named "Revenue" contains the controls and content within it in the scenario. The region named "Revenue" exposes "Edit" as a button. A visible dialog named "Named range" contains the controls and content within it in the scenario. The dialog named "Named range" contains one input labelled "Name". The dialog named "Named range" exposes "Save" as a button. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one input labelled "Formula bar".
+  scenarios:
+  - name: Rename a named range and its references
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Rename EV-2.2" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=4,A2=6; named range Revenue refers to Sheet1!A1:A2; B1 has formula =SUM(Revenue).
+    - keyword: WHEN
+      content: The user activates "Rename EV-2.2" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Named ranges" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Edit" in the region named "Revenue".
+    - keyword: WHEN
+      content: The user enters "SalesTotal" in the "Name" field in the dialog named "Named range".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Named range".
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "=SUM(SalesTotal)".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "=SUM(SalesTotal)".
+- id: EV-2.3
+  name: Delete a named range without deleting data
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.1
+  description: |-
+    Delete on a named range opens Delete named range confirmation. Removing the definition preserves cells but unresolved formulas show #NAME? and retain their expression.
+
+    The current page contains one link or button named "Delete EV-2.3" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Data" as a button. The current page exposes "Named ranges" as a menuitem. A visible region named "Revenue" contains the controls and content within it in the scenario. The region named "Revenue" exposes "Delete" as a button. A visible dialog named "Delete named range" contains the controls and content within it in the scenario. The dialog named "Delete named range" exposes "Delete" as a button. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The grid named "Worksheet grid" exposes "A2" as a gridcell. The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one input labelled "Formula bar".
+  scenarios:
+  - name: Delete a named range without deleting data
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Delete EV-2.3" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=4,A2=6; Revenue refers to Sheet1!A1:A2; B1 has formula =SUM(Revenue).
+    - keyword: WHEN
+      content: The user activates "Delete EV-2.3" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Named ranges" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Delete" in the region named "Revenue".
+    - keyword: WHEN
+      content: The user clicks the button named "Delete" in the dialog named "Delete named range".
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "4".
+    - keyword: THEN
+      content: The gridcell named "A2" in the grid named "Worksheet grid" has exact text "6".
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "#NAME?".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "#NAME?".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "=SUM(Revenue)".
+- id: EV-2.4
+  name: Find case-sensitive text
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-3
+  description: |-
+    Find and replace opens a dialog. Find next searches the active worksheet in row-major order with optional Match case; it selects the matching cell and displays Match <coordinate>. It wraps after the last match and never changes data.
+
+    The current page contains one link or button named "Find EV-2.4" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Find and replace" as a button. A visible dialog named "Find and replace" contains the controls and content within it in the scenario. The dialog named "Find and replace" contains one input labelled "Find". The dialog named "Find and replace" exposes "Match case" as a checkbox. The dialog named "Find and replace" exposes "Find next" as a button. The dialog named "Find and replace" contains the exact visible text "Match B2" once when specified. The dialog named "Find and replace" exposes "Close" as a button. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B2" as a gridcell. The gridcell named "B2" exposes its selected state in the grid named "Worksheet grid". The grid named "Worksheet grid" exposes "A1" as a gridcell.
+  scenarios:
+  - name: Find case-sensitive text
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Find EV-2.4" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=alpha, B2=Alpha, C3=ALPHA.
+    - keyword: WHEN
+      content: The user activates "Find EV-2.4" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Find and replace" in the current page.
+    - keyword: WHEN
+      content: The user enters "Alpha" in the "Find" field in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user checks "Match case" in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user clicks the button named "Find next" in the dialog named "Find and replace".
+    - keyword: THEN
+      content: The exact text "Match B2" is visible exactly once in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user clicks the button named "Close" in the dialog named "Find and replace".
+    - keyword: THEN
+      content: The gridcell named "B2" in the grid named "Worksheet grid" has selected state "true".
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "alpha".
+- id: EV-2.5
+  name: Replace all text on the active worksheet
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.4
+  description: |-
+    Replace all replaces literal matches on the active worksheet only, honoring Match case. It reports the number of replacements and persists all changes atomically; other worksheets remain unchanged.
+
+    The current page contains one link or button named "Replace EV-2.5" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Find and replace" as a button. A visible dialog named "Find and replace" contains the controls and content within it in the scenario. The dialog named "Find and replace" contains one input labelled "Find". The dialog named "Find and replace" contains one input labelled "Replace with". The dialog named "Find and replace" exposes "Replace all" as a button. The dialog named "Find and replace" contains the exact visible text "2 replacements" once when specified. The dialog named "Find and replace" exposes "Close" as a button. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The grid named "Worksheet grid" exposes "A2" as a gridcell. The current page exposes "Other" as a tab. The current page exposes "Sheet1" as a tab.
+  scenarios:
+  - name: Replace all text on the active worksheet
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Replace EV-2.5" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        Tabs are Sheet1 and Other. Sheet1 has A1=cat, A2=catfish, A3=dog; Other!A1=cat. Sheet1 is active.
+    - keyword: WHEN
+      content: The user activates "Replace EV-2.5" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Find and replace" in the current page.
+    - keyword: WHEN
+      content: The user enters "cat" in the "Find" field in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user enters "fox" in the "Replace with" field in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user clicks the button named "Replace all" in the dialog named "Find and replace".
+    - keyword: THEN
+      content: The exact text "2 replacements" is visible exactly once in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user clicks the button named "Close" in the dialog named "Find and replace".
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "fox".
+    - keyword: THEN
+      content: The gridcell named "A2" in the grid named "Worksheet grid" has exact text "foxfish".
+    - keyword: WHEN
+      content: The user clicks the tab named "Other" in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "cat".
+    - keyword: WHEN
+      content: The user clicks the tab named "Sheet1" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "A2" in the grid named "Worksheet grid" has exact text "foxfish".
+- id: EV-2.6
+  name: Replace text inside formulas
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.4
+  description: |-
+    Search in formulas makes Find and replace operate on original expressions as well as ordinary text. Replacement recalculates formulas. With this option off, formula expressions are not modified by Replace all.
+
+    The current page contains one link or button named "Replace EV-2.6" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Find and replace" as a button. A visible dialog named "Find and replace" contains the controls and content within it in the scenario. The dialog named "Find and replace" contains one input labelled "Find". The dialog named "Find and replace" contains one input labelled "Replace with". The dialog named "Find and replace" exposes "Search in formulas" as a checkbox. The dialog named "Find and replace" exposes "Replace all" as a button. The dialog named "Find and replace" contains the exact visible text "2 replacements" once when specified. The dialog named "Find and replace" exposes "Close" as a button. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The grid named "Worksheet grid" exposes "B2" as a gridcell. The current page contains one input labelled "Formula bar".
+  scenarios:
+  - name: Replace text inside formulas
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Replace EV-2.6" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=2,A2=5; B1 has formula =A1*2 and B2 has formula =A1+1.
+    - keyword: WHEN
+      content: The user activates "Replace EV-2.6" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Find and replace" in the current page.
+    - keyword: WHEN
+      content: The user enters "A1" in the "Find" field in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user enters "A2" in the "Replace with" field in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user checks "Search in formulas" in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user clicks the button named "Replace all" in the dialog named "Find and replace".
+    - keyword: THEN
+      content: The exact text "2 replacements" is visible exactly once in the dialog named "Find and replace".
+    - keyword: WHEN
+      content: The user clicks the button named "Close" in the dialog named "Find and replace".
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: THEN
+      content: The gridcell named "B2" in the grid named "Worksheet grid" has exact text "6".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "=A2*2".
+- id: EV-2.7
+  name: Duplicate a worksheet independently
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-1-1
+  - REQ-5-2-1
+  description: |-
+    Duplicate in the worksheet tab menu creates and activates Copy of <name> immediately after the source. It copies values, formulas and validation rules with independent identities. Later edits do not affect the source.
+
+    The current page contains one link or button named "Duplicate EV-2.7" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Worksheet options for Sheet1" as a button. The current page exposes "Duplicate" as a menuitem. The current page exposes "Copy of Sheet1" as a tab. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The grid named "Worksheet grid" exposes "A1" as a gridcell. The current page contains one input labelled "Formula bar". The current page exposes "Sheet1" as a tab. The current page exposes "Data" as a button. The current page exposes "Data validation" as a menuitem. The dialog named "Data validation" contains one input labelled "Maximum".
+  scenarios:
+  - name: Duplicate a worksheet independently
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Duplicate EV-2.7" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        Sheet1 has A1=5,B1 formula =A1*2; A1 has Reject input numeric validation from 0 to 10.
+    - keyword: WHEN
+      content: The user activates "Duplicate EV-2.7" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Worksheet options for Sheet1" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Duplicate" in the current page.
+    - keyword: THEN
+      content: The tab named "Copy of Sheet1" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "8" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "16".
+    - keyword: WHEN
+      content: The user clicks the tab named "Sheet1" in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "5".
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: WHEN
+      content: The user clicks the tab named "Copy of Sheet1" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "8".
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Data validation" in the current page.
+    - keyword: THEN
+      content: The "Maximum" field in the dialog named "Data validation" displays "10".
+- id: EV-2.8
+  name: Hide a worksheet without losing its data
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-1-2
+  description: |-
+    Hide in the worksheet tab menu hides the selected worksheet and activates an adjacent visible worksheet. At least one sheet stays visible. Hidden worksheet data persists and is available through Hidden sheets.
+
+    The current page contains one link or button named "Hide EV-2.8" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Worksheet options for Archive" as a button. The current page exposes "Hide" as a menuitem. The current page exposes "Archive" as a tab. The current page exposes "Sheet1" as a tab. The tab named "Sheet1" exposes its selected state in the current page. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The current page exposes "Hidden sheets" as a button. A visible dialog named "Hidden sheets" contains the controls and content within it in the scenario. The dialog named "Hidden sheets" exposes "Show Archive" as a button.
+  scenarios:
+  - name: Hide a worksheet without losing its data
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Hide EV-2.8" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        Tabs are Sheet1 and Archive; Sheet1!A1=Current, Archive!A1=Retained. Archive is active.
+    - keyword: WHEN
+      content: The user activates "Hide EV-2.8" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Worksheet options for Archive" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Hide" in the current page.
+    - keyword: THEN
+      content: The tab named "Archive" is absent in the current page.
+    - keyword: THEN
+      content: The tab named "Sheet1" in the current page has selected state "true".
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "Current".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The tab named "Archive" is absent in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Hidden sheets" in the current page.
+    - keyword: THEN
+      content: The button named "Show Archive" is visible exactly once in the dialog named "Hidden sheets".
+- id: EV-2.9
+  name: Show a hidden worksheet
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.8
+  description: |-
+    Hidden sheets lists each hidden sheet as Show <name>. Showing restores its original tab order and activates it with its data intact.
+
+    The current page contains one link or button named "Show EV-2.9" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Hidden sheets" as a button. A visible dialog named "Hidden sheets" contains the controls and content within it in the scenario. The dialog named "Hidden sheets" exposes "Show Archive" as a button. The current page exposes "Archive" as a tab. The tab named "Archive" exposes its selected state in the current page. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell.
+  scenarios:
+  - name: Show a hidden worksheet
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Show EV-2.9" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        Sheet1 is visible and active with A1=Current. Archive follows it, hidden, with A1=Retained.
+    - keyword: WHEN
+      content: The user activates "Show EV-2.9" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Hidden sheets" in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Show Archive" in the dialog named "Hidden sheets".
+    - keyword: THEN
+      content: The tab named "Archive" in the current page has selected state "true".
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "Retained".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The tab named "Archive" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "Retained".
+- id: EV-2.10
+  name: Move a worksheet left
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-1-2
+  description: |-
+    Move left in a worksheet tab menu moves it one position left without changing its data or active state. Worksheet order is reflected by the Worksheet order list and survives reopening.
+
+    The current page contains one link or button named "Move EV-2.10" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Worksheet options for Third" as a button. The current page exposes "Move left" as a menuitem. The current page exposes "Worksheet order" as a list. The list named "Worksheet order" in the current page contains listitems with the exact stated visible text, in reading order. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The current page exposes "Third" as a tab. The tab named "Third" exposes its selected state in the current page.
+  scenarios:
+  - name: Move a worksheet left
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Move EV-2.10" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        Visible tabs are Sheet1, Second, Third in that order; Third is active with A1=Third data. Other
+        sheets are blank.
+    - keyword: WHEN
+      content: The user activates "Move EV-2.10" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Worksheet options for Third" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Move left" in the current page.
+    - keyword: THEN
+      content: 'The "Worksheet order" list in the current page contains exactly these entries in order:
+        ["Sheet1", "Third", "Second"].'
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "Third data".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: 'The "Worksheet order" list in the current page contains exactly these entries in order:
+        ["Sheet1", "Third", "Second"].'
+    - keyword: THEN
+      content: The tab named "Third" in the current page has selected state "true".
+- id: EV-3.1
+  name: Attach a note to a cell
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-1
+  description: |-
+    Insert note opens Cell note for the selected cell with Note and Save. A saved note adds Show note for <coordinate>, which reopens the saved note without altering the cell value.
+
+    The current page contains one link or button named "Attach EV-3.1" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The current page exposes "Insert note" as a button. A visible dialog named "Cell note" contains the controls and content within it in the scenario. The dialog named "Cell note" contains one input labelled "Note". The dialog named "Cell note" exposes "Save" as a button. The current page exposes "Show note for A1" as a button. The dialog named "Cell note" exposes "Close" as a button.
+  scenarios:
+  - name: Attach a note to a cell
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Attach EV-3.1" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=42.
+    - keyword: WHEN
+      content: The user activates "Attach EV-3.1" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user clicks the button named "Insert note" in the current page.
+    - keyword: WHEN
+      content: The user enters "Verified total EV-3.1" in the "Note" field in the dialog named "Cell note".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Cell note".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Show note for A1" in the current page.
+    - keyword: THEN
+      content: The "Note" field in the dialog named "Cell note" displays "Verified total EV-3.1".
+    - keyword: WHEN
+      content: The user clicks the button named "Close" in the dialog named "Cell note".
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "42".
+- id: EV-3.2
+  name: Edit then remove a cell note
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-3.1
+  description: |-
+    An existing Cell note supports Save and Delete note. Removing a note leaves its cell value unchanged and removes the Show note control after reload.
+
+    The current page contains one link or button named "Edit EV-3.2" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Show note for A1" as a button. A visible dialog named "Cell note" contains the controls and content within it in the scenario. The dialog named "Cell note" contains one input labelled "Note". The dialog named "Cell note" exposes "Save" as a button. The dialog named "Cell note" exposes "Delete note" as a button. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell.
+  scenarios:
+  - name: Edit then remove a cell note
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Edit EV-3.2" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=42 with note "Old note EV-3.2".
+    - keyword: WHEN
+      content: The user activates "Edit EV-3.2" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Show note for A1" in the current page.
+    - keyword: WHEN
+      content: The user enters "Updated note EV-3.2" in the "Note" field in the dialog named "Cell note".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Cell note".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Show note for A1" in the current page.
+    - keyword: THEN
+      content: The "Note" field in the dialog named "Cell note" displays "Updated note EV-3.2".
+    - keyword: WHEN
+      content: The user clicks the button named "Delete note" in the dialog named "Cell note".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The button named "Show note for A1" is absent in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "42".
+- id: EV-3.3
+  name: Trim whitespace only in the selection
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-3
+  - REQ-3-2-2
+  description: |-
+    Data > Trim whitespace removes leading and trailing ASCII spaces and collapses internal runs of ASCII spaces to one in selected ordinary text cells. Formulas and cells outside the selection remain unchanged. The operation is undoable.
+
+    The current page contains one link or button named "Trim EV-3.3" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The grid named "Worksheet grid" exposes "A2" as a gridcell. The current page exposes "Data" as a button. The current page exposes "Trim whitespace" as a menuitem. The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one input labelled "Formula bar". The current page exposes "Undo" as a button. The current page exposes "Redo" as a button.
+  scenarios:
+  - name: Trim whitespace only in the selection
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Trim EV-3.3" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1="  North   East  ", A2="  West  ", B1="  Outside  ".
+    - keyword: WHEN
+      content: The user activates "Trim EV-3.3" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user drags from gridcell "A1" to gridcell "A2" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Trim whitespace" in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "North East".
+    - keyword: THEN
+      content: The gridcell named "A2" in the grid named "Worksheet grid" has exact text "West".
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "  Outside  ".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "North East".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A2" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "West".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "B1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "  Outside  ".
+    - keyword: WHEN
+      content: The user clicks the button named "Undo" in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "  North   East  ".
+    - keyword: WHEN
+      content: The user clicks the button named "Redo" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "North East".
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The "Formula bar" field in the current page displays "North East".
+- id: EV-3.4
+  name: Split a selected column by a delimiter
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-3
+  - REQ-3-2-2
+  description: |-
+    Data > Split text to columns opens a dialog with Separator. Comma splits each selected cell into adjacent columns, preserving empty fields and row order. It commits as one undoable operation.
+
+    The current page contains one link or button named "Split EV-3.4" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The grid named "Worksheet grid" exposes "A2" as a gridcell. The current page exposes "Data" as a button. The current page exposes "Split text to columns" as a menuitem. A visible dialog named "Split text to columns" contains the controls and content within it in the scenario. The dialog named "Split text to columns" exposes "Separator" as a combobox. The combobox labelled "Separator" in the dialog named "Split text to columns" provides the option "Comma". The dialog named "Split text to columns" exposes "Split" as a button. The grid named "Worksheet grid" exposes "B1" as a gridcell. The grid named "Worksheet grid" exposes "C1" as a gridcell. The grid named "Worksheet grid" exposes "B2" as a gridcell. The grid named "Worksheet grid" exposes "C2" as a gridcell. The grid named "Worksheet grid" exposes "D1" as a gridcell.
+  scenarios:
+  - name: Split a selected column by a delimiter
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Split EV-3.4" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1="red,green,blue", A2="one,,three"; D1=Outside. Destination B1:C2 is blank.
+    - keyword: WHEN
+      content: The user activates "Split EV-3.4" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user drags from gridcell "A1" to gridcell "A2" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Split text to columns" in the current page.
+    - keyword: WHEN
+      content: The user selects "Comma" in the "Separator" combobox in the dialog named "Split text to
+        columns".
+    - keyword: WHEN
+      content: The user clicks the button named "Split" in the dialog named "Split text to columns".
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "red".
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "green".
+    - keyword: THEN
+      content: The gridcell named "C1" in the grid named "Worksheet grid" has exact text "blue".
+    - keyword: THEN
+      content: The gridcell named "B2" in the grid named "Worksheet grid" has exact text "".
+    - keyword: THEN
+      content: The gridcell named "C2" in the grid named "Worksheet grid" has exact text "three".
+    - keyword: THEN
+      content: The gridcell named "D1" in the grid named "Worksheet grid" has exact text "Outside".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "C2" in the grid named "Worksheet grid" has exact text "three".
+- id: EV-3.5
+  name: Remove duplicate records from a range
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-3
+  description: |-
+    Data > Remove duplicates opens a dialog with Data has header row and Remove duplicates. It compares all selected columns using exact values, keeps the first record in order, clears trailing cells inside the selected rectangle and leaves outside cells unchanged.
+
+    The current page contains one link or button named "Remove EV-3.5" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The grid named "Worksheet grid" exposes "B4" as a gridcell. The current page exposes "Data" as a button. The current page exposes "Remove duplicates" as a menuitem. A visible dialog named "Remove duplicates" contains the controls and content within it in the scenario. The dialog named "Remove duplicates" exposes "Data has header row" as a checkbox. The dialog named "Remove duplicates" exposes "Remove duplicates" as a button. The current page contains the exact visible text "1 duplicate removed" once when specified. The grid named "Worksheet grid" exposes "A2" as a gridcell. The grid named "Worksheet grid" exposes "A3" as a gridcell. The grid named "Worksheet grid" exposes "A4" as a gridcell. The grid named "Worksheet grid" exposes "D4" as a gridcell.
+  scenarios:
+  - name: Remove duplicate records from a range
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Remove EV-3.5" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=Name,B1=Count; A2=Apple,B2=2; A3=Pear,B3=3; A4=Apple,B4=2; D4=Outside.
+    - keyword: WHEN
+      content: The user activates "Remove EV-3.5" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user drags from gridcell "A1" to gridcell "B4" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user clicks the button named "Data" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Remove duplicates" in the current page.
+    - keyword: WHEN
+      content: The user checks "Data has header row" in the dialog named "Remove duplicates".
+    - keyword: WHEN
+      content: The user clicks the button named "Remove duplicates" in the dialog named "Remove duplicates".
+    - keyword: THEN
+      content: The exact text "1 duplicate removed" is visible exactly once in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "Name".
+    - keyword: THEN
+      content: The gridcell named "A2" in the grid named "Worksheet grid" has exact text "Apple".
+    - keyword: THEN
+      content: The gridcell named "A3" in the grid named "Worksheet grid" has exact text "Pear".
+    - keyword: THEN
+      content: The gridcell named "A4" in the grid named "Worksheet grid" has exact text "".
+    - keyword: THEN
+      content: The gridcell named "B4" in the grid named "Worksheet grid" has exact text "".
+    - keyword: THEN
+      content: The gridcell named "D4" in the grid named "Worksheet grid" has exact text "Outside".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "A3" in the grid named "Worksheet grid" has exact text "Pear".
+- id: EV-3.6
+  name: Freeze the top worksheet row
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-1-2
+  description: |-
+    View > Freeze rows opens Freeze rows with Rows to freeze, a nonnegative integer. Save keeps that many top rows fixed during vertical grid scrolling. Frozen rows reports the persisted setting, independently for each worksheet.
+
+    The current page contains one link or button named "Freeze EV-3.6" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "View" as a button. The current page exposes "Freeze rows" as a menuitem. A visible dialog named "Freeze rows" contains the controls and content within it in the scenario. The dialog named "Freeze rows" contains one input labelled "Rows to freeze". The dialog named "Freeze rows" exposes "Save" as a button. A visible region named "Frozen rows" contains the controls and content within it in the scenario. The region named "Frozen rows" contains the exact visible text "1 row frozen" once when specified. The current page exposes "Other" as a tab. The region named "Frozen rows" contains the exact visible text "0 rows frozen" once when specified. The current page exposes "Sheet1" as a tab.
+  scenarios:
+  - name: Freeze the top worksheet row
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Freeze EV-3.6" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        Tabs are Sheet1 and Other; Sheet1!A1=Header, Other!A1=Other data. No rows are frozen.
+    - keyword: WHEN
+      content: The user activates "Freeze EV-3.6" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "View" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Freeze rows" in the current page.
+    - keyword: WHEN
+      content: The user enters "1" in the "Rows to freeze" field in the dialog named "Freeze rows".
+    - keyword: WHEN
+      content: The user clicks the button named "Save" in the dialog named "Freeze rows".
+    - keyword: THEN
+      content: The exact text "1 row frozen" is visible exactly once in the region named "Frozen rows".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The exact text "1 row frozen" is visible exactly once in the region named "Frozen rows".
+    - keyword: WHEN
+      content: The user clicks the tab named "Other" in the current page.
+    - keyword: THEN
+      content: The exact text "0 rows frozen" is visible exactly once in the region named "Frozen rows".
+    - keyword: WHEN
+      content: The user clicks the tab named "Sheet1" in the current page.
+    - keyword: THEN
+      content: The exact text "1 row frozen" is visible exactly once in the region named "Frozen rows".
+- id: EV-3.7
+  name: Hide a column without deleting its values
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-2-2
+  description: |-
+    Hide column in a column-header menu hides that column and its cells while retaining their data and formula references. Show column <letter> appears for each hidden column.
+
+    The current page contains one link or button named "Hide EV-3.7" when this action is available. The current page exposes "Worksheet grid" as a grid. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B" as a columnheader. The current page exposes "Hide column" as a menuitem. The grid named "Worksheet grid" exposes "B1" as a gridcell. The grid named "Worksheet grid" exposes "C1" as a gridcell. The current page exposes "Show column B" as a button.
+  scenarios:
+  - name: Hide a column without deleting its values
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Hide EV-3.7" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=2,B1=8,C1 has formula =A1+B1.
+    - keyword: WHEN
+      content: The user activates "Hide EV-3.7" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user right-clicks the columnheader named "B" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user clicks the menuitem named "Hide column" in the current page.
+    - keyword: THEN
+      content: The columnheader named "B" is absent in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The gridcell named "B1" is absent in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The gridcell named "C1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" is absent in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The button named "Show column B" is visible exactly once in the current page.
+- id: EV-3.8
+  name: Show a hidden column
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-3.7
+  description: |-
+    Show column <letter> restores a hidden column in its original position, preserving values and formulas. Restoration persists.
+
+    The current page contains one link or button named "Show EV-3.8" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Show column B" as a button. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B" as a columnheader. The grid named "Worksheet grid" exposes "B1" as a gridcell. The grid named "Worksheet grid" exposes "C1" as a gridcell.
+  scenarios:
+  - name: Show a hidden column
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Show EV-3.8" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=2,B1=8,C1 has formula =A1+B1; column B is hidden.
+    - keyword: WHEN
+      content: The user activates "Show EV-3.8" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Show column B" in the current page.
+    - keyword: THEN
+      content: The columnheader named "B" is visible exactly once in the grid named "Worksheet grid".
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "8".
+    - keyword: THEN
+      content: The gridcell named "C1" in the grid named "Worksheet grid" has exact text "10".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "8".
+- id: EV-3.9
+  name: Toggle display of formula expressions
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    View > Show formulas is a menuitemcheckbox. Checked displays original expressions in formula cells; unchecked displays calculated values. It changes only presentation and persists for the current worksheet.
+
+    The current page contains one link or button named "Toggle EV-3.9" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "View" as a button. The current page exposes "Show formulas" as a menuitemcheckbox. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "B1" as a gridcell. The grid named "Worksheet grid" exposes "A1" as a gridcell. The menuitemcheckbox named "Show formulas" exposes its checked state in the current page.
+  scenarios:
+  - name: Toggle display of formula expressions
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Toggle EV-3.9" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=3,B1 has formula =A1*4.
+    - keyword: WHEN
+      content: The user activates "Toggle EV-3.9" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "View" in the current page.
+    - keyword: WHEN
+      content: The user clicks the menuitemcheckbox named "Show formulas" in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "=A1*4".
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "3".
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "=A1*4".
+    - keyword: WHEN
+      content: The user clicks the button named "View" in the current page.
+    - keyword: THEN
+      content: The menuitemcheckbox named "Show formulas" in the current page has checked state "true".
+    - keyword: WHEN
+      content: The user clicks the menuitemcheckbox named "Show formulas" in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "12".
+- id: EV-3.10
+  name: Make an independent workbook copy
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-1-2-1
+  - REQ-1-1-1
+  description: |-
+    Make a copy opens Copy workbook with Workbook name and Create copy. It copies all worksheets, formulas, notes and rules into a new workbook, opens that workbook and retains the original unchanged.
+
+    The current page contains one link or button named "Make EV-3.10" when this action is available. The current page exposes "Worksheet grid" as a grid. The current page exposes "Make a copy" as a button. A visible dialog named "Copy workbook" contains the controls and content within it in the scenario. The dialog named "Copy workbook" contains one input labelled "Workbook name". The dialog named "Copy workbook" exposes "Create copy" as a button. The current page exposes "Independent EV-3.10" as a heading. A visible grid named "Worksheet grid" contains the controls and content within it in the scenario. The grid named "Worksheet grid" exposes "A1" as a gridcell. The current page contains one input labelled "Formula bar". The grid named "Worksheet grid" exposes "B1" as a gridcell. The current page contains one link or button named "Independent EV-3.10" when this action is available.
+  scenarios:
+  - name: Make an independent workbook copy
+    steps:
+    - keyword: GIVEN
+      content: The user opens the application home entry in a fresh browser context, signed out.
+    - keyword: GIVEN
+      content: The public workbook "Make EV-3.10" exists independently of every other scenario. Unless
+        stated otherwise, it has only Sheet1, active with A1 selected, at least 100 rows and 26 columns,
+        and all unspecified cells blank; there are no filters, validation rules, notes or named ranges.
+        A1=6,B1 has formula =A1*3. No workbook named "Independent EV-3.10" exists.
+    - keyword: WHEN
+      content: The user activates "Make EV-3.10" in the current page.
+    - keyword: THEN
+      content: The grid named "Worksheet grid" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the button named "Make a copy" in the current page.
+    - keyword: WHEN
+      content: The user enters "Independent EV-3.10" in the "Workbook name" field in the dialog named
+        "Copy workbook".
+    - keyword: WHEN
+      content: The user clicks the button named "Create copy" in the dialog named "Copy workbook".
+    - keyword: THEN
+      content: The heading named "Independent EV-3.10" is visible exactly once in the current page.
+    - keyword: WHEN
+      content: The user clicks the gridcell named "A1" in the grid named "Worksheet grid".
+    - keyword: WHEN
+      content: The user enters "7" in the "Formula bar" field in the current page.
+    - keyword: WHEN
+      content: The user presses "Enter" in the "Formula bar" field in the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "21".
+    - keyword: WHEN
+      content: The user returns to the application home entry.
+    - keyword: WHEN
+      content: The user activates "Make EV-3.10" in the current page.
+    - keyword: THEN
+      content: The gridcell named "A1" in the grid named "Worksheet grid" has exact text "6".
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "18".
+    - keyword: WHEN
+      content: The user returns to the application home entry.
+    - keyword: WHEN
+      content: The user activates "Independent EV-3.10" in the current page.
+    - keyword: WHEN
+      content: The user reloads the current page.
+    - keyword: THEN
+      content: The gridcell named "B1" in the grid named "Worksheet grid" has exact text "21".

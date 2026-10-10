@@ -1,0 +1,14 @@
+{
+  "app": "diagnostic-recovery-repair-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 65,
+    "error": 13,
+    "fail": 24
+  },
+  "seconds": 167.3,
+  "coverage": {
+    "total": 100,
+    "parsed": 89
+  }
+}

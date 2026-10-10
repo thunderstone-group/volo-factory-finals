@@ -1,0 +1,14 @@
+{
+  "app": "vision-sheet-1",
+  "generation": {
+    "task": "sheet",
+    "model": "deepseek-v4-flash-vision-exp",
+    "package_sha256": "c2a2b32a5ed1ff709859cfe3989143cc44bc1343d8937d8ed20e110eb6f518b0",
+    "exit": 0,
+    "seconds": 3406.5
+  },
+  "observed_at": "2026-10-02T02:11:57.591542+08:00",
+  "judge_exit_code": 0,
+  "stdout": "{\"app\": \"vision-sheet-1\", \"judge\": \"g99\", \"counts\": {\"pass\": 94, \"fail\": 6}, \"seconds\": 55.6, \"coverage\": {\"total\": 100, \"parsed\": 100}}\n{\"app\": \"vision-sheet-1\", \"judge\": \"cov99n-arm\", \"counts\": {\"pass\": 94, \"fail\": 6}, \"seconds\": 72.7, \"coverage\": {\"total\": 100, \"parsed\": 100}}\n",
+  "stderr": ""
+}

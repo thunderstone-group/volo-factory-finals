@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "official_agreement": {
+    "github": {
+      "official_passed": 3,
+      "proxy_passed": 3,
+      "agreement": 30,
+      "total": 30,
+      "all_visible_frame_occurrences_extracted": 27
+    },
+    "sheet": {
+      "official_passed": 21,
+      "proxy_passed": 21,
+      "agreement": 30,
+      "total": 30,
+      "all_visible_frame_occurrences_extracted": 9
+    }
+  },
+  "local_agent_results": {
+    "github": {
+      "passed": 3,
+      "total": 30,
+      "wall_seconds": 327.729,
+      "app_sha256": "98656ca86fa211747a890136df9760f9ba075f61c85d2eda559dd08872f70f1d"
+    },
+    "sheet": {
+      "passed": 22,
+      "total": 30,
+      "wall_seconds": 151.151,
+      "app_sha256": "09888b038cfac652c6ec54e1ffb7e0395ebc153938896234fe0c7e39a006b280"
+    }
+  },
+  "source_apps_unchanged": {
+    "official-github": "c23b4a7174a920bc05cf882f6fc93161435cbf51504b5633d94a9813ce6ab5ee",
+    "official-sheet": "3b712617134fea45ab129ef965f3084892147c5768f2ee38cbaa844aec87cb2e",
+    "local-github": "98656ca86fa211747a890136df9760f9ba075f61c85d2eda559dd08872f70f1d",
+    "local-sheet": "09888b038cfac652c6ec54e1ffb7e0395ebc153938896234fe0c7e39a006b280"
+  },
+  "reference_runs": {
+    "github": [
+      {
+        "started_at": "2026-10-06T12:57:13.161000+00:00",
+        "duration_ms": 59656.756
+      },
+      {
+        "started_at": "2026-10-06T13:00:10.445000+00:00",
+        "duration_ms": 64862.011999999995
+      }
+    ],
+    "sheet": [
+      {
+        "started_at": "2026-10-06T12:57:13.134000+00:00",
+        "duration_ms": 68026.29
+      },
+      {
+        "started_at": "2026-10-06T13:00:10.473000+00:00",
+        "duration_ms": 74260.606
+      }
+    ]
+  },
+  "current_reference_audit": "results/real-final-audit-v2.json"
+}

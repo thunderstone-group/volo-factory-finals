@@ -1,0 +1,18 @@
+{
+  "task": "sheet-real",
+  "label": "plus0b95-s2",
+  "package_sha256": "0b9530764fb4f04ed6406c2c4eda84350a84f56e9097157bd473bca95dae3ff2",
+  "agent_env": [],
+  "exit": 0,
+  "seconds": 1646.4,
+  "proxy": {
+    "exit": 1,
+    "tail": "8c9747dc22a510e7b971e821c5f2b5e29\", \"tests/22-REQ-7-1-1-scenario-1.spec.ts\": \"1efc745068ebd6fc5280cc376bbd513488fff0abbac47464fd91f119cc3c2983\", \"tests/23-REQ-7-1-1-scenario-2.spec.ts\": \"0dbb92f1d74a9e7db2144cafc5007593350c708955def4728bb127b9d3183134\", \"tests/24-REQ-7-1-1-scenario-3.spec.ts\": \"1189bda465b09de9d3ae9f6d87c40e9f16e60026062f206ce78a143b6e013da9\", \"tests/25-REQ-7-2-1-scenario-1.spec.ts\": \"aab072ca83b018a3cfe1e6086fc66b9e9b2bab1a1f1cf26107f8f6107cf01079\", \"tests/26-REQ-7-2-1-scenario-2.spec.ts\": \"c9fd73c28a82615b445fa02002179e26b3bd74a39290458e6f29ca9cc38de7e2\", \"tests/27-REQ-7-2-1-scenario-3.spec.ts\": \"694041c969be63befa1a5a7e89e07434958e4095ae3fc5fffbbf38dc9383595c\", \"tests/28-REQ-8-1-1-scenario-1.spec.ts\": \"3baacb088cad171e864bddec911c81dc82a299ea5dfba27bf701baecee1018d1\", \"tests/29-REQ-8-1-1-scenario-2.spec.ts\": \"a71644039e73a62ce38e802992980a9fba5d1b0f771a402fff1ce16b1ba995bc\", \"tests/30-REQ-8-1-1-scenario-3.spec.ts\": \"db223aceade9072bb2a69c427f008bf8d65cd8c83c98ad1e38a4c68fa0200d4a\", \"tests/helpers.ts\": \"f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3\", \"tests/interactions.ts\": \"8a6faa41fb82e413e3006168afc8d9a833799dafd659700bd6e5a908d7991514\"}, \"test_suite_sha256\": \"741e3d370d71937f4ed4f1b4cd9252cbaeb896f0597d4f88e6ad26efb7b49e8f\", \"image_id\": \"sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de\", \"suite_duration_seconds\": 99.615, \"container_exit_code\": 1, \"passed\": 27, \"failed\": 3, \"total\": 30, \"wall_seconds\": 103.988}\n",
+    "report": "~/projects/arcbench-campaign/finals-proxy/results/local/sheet-real-plus0b95-s2-proxy.json"
+  },
+  "regression": {
+    "exit": 0,
+    "tail": "{\"summaries\": {\"g99\": {\"counts\": {\"pass\": 66, \"fail\": 9, \"error\": 26}, \"seconds\": 414.0, \"unavailable\": null}, \"cov99n-arm\": {\"counts\": {\"pass\": 96, \"fail\": 4}, \"seconds\": 228.6, \"unavailable\": null}}, \"task\": \"sheet\", \"app_dir\": \"~/projects/arcbench-campaign/finals-local/runs/sheet-real-plus0b95-s2/workspace\", \"wall_seconds\": 643.256, \"app_sha256\": \"41ade3a835b8e23a2d825ddb9421e90ed374936acfc40f39f0b73da43117e609\", \"original_requirements_sha256\": \"9cddf67be50748106289ed158648629a6c50c30a490d0eda5bd570c557440b96\", \"suite_sha256\": {\"g99\": \"ff6ca2de6d84e0fcbd4771c1c569f952ff26f441c398f86dec8db751acbc4716\", \"cov99n-arm\": \"b516a66419a1747273edf70419e3695ca74f79a931ffbce3681b013d1d1391f4\"}, \"image_id\": \"sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de\"}\n",
+    "report": "~/projects/arcbench-campaign/finals-proxy/results/local/sheet-real-plus0b95-s2-regression.json"
+  }
+}

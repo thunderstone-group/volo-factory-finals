@@ -1,0 +1,37 @@
+Listing tests:
+  01-EV-1.1.spec.ts:6:5 › EV-1.1: Calculate IF with a comparison
+  02-EV-1.2.spec.ts:6:5 › EV-1.2: Count matching values with COUNTIF
+  03-EV-1.3.spec.ts:6:5 › EV-1.3: Sum matching rows with SUMIF
+  04-EV-1.4.spec.ts:6:5 › EV-1.4: Recover from formula errors with IFERROR
+  05-EV-1.5.spec.ts:6:5 › EV-1.5: Recalculate cross-worksheet references
+  06-EV-1.6.spec.ts:6:5 › EV-1.6: Sort by a secondary column
+  07-EV-1.7.spec.ts:6:5 › EV-1.7: Allow invalid input with a validation warning
+  08-EV-1.8.spec.ts:6:5 › EV-1.8: Paste only calculated values
+  09-EV-1.9.spec.ts:6:5 › EV-1.9: Undo and redo a worksheet rename
+  10-EV-1.10.spec.ts:6:5 › EV-1.10: Concatenate cell text in a formula
+  11-EV-2.1.spec.ts:6:5 › EV-2.1: Create a named range for formulas
+  12-EV-2.2.spec.ts:6:5 › EV-2.2: Rename a named range and its references
+  13-EV-2.3.spec.ts:6:5 › EV-2.3: Delete a named range without deleting data
+  14-EV-2.4.spec.ts:6:5 › EV-2.4: Find case-sensitive text
+  15-EV-2.5.spec.ts:6:5 › EV-2.5: Replace all text on the active worksheet
+  16-EV-2.6.spec.ts:6:5 › EV-2.6: Replace text inside formulas
+  17-EV-2.7.spec.ts:6:5 › EV-2.7: Duplicate a worksheet independently
+  18-EV-2.8.spec.ts:6:5 › EV-2.8: Hide a worksheet without losing its data
+  19-EV-2.9.spec.ts:6:5 › EV-2.9: Show a hidden worksheet
+  20-EV-2.10.spec.ts:6:5 › EV-2.10: Move a worksheet left
+  21-EV-3.1.spec.ts:6:5 › EV-3.1: Attach a note to a cell
+  22-EV-3.2.spec.ts:6:5 › EV-3.2: Edit then remove a cell note
+  23-EV-3.3.spec.ts:6:5 › EV-3.3: Trim whitespace only in the selection
+  24-EV-3.4.spec.ts:6:5 › EV-3.4: Split a selected column by a delimiter
+  25-EV-3.5.spec.ts:6:5 › EV-3.5: Remove duplicate records from a range
+  26-EV-3.6.spec.ts:6:5 › EV-3.6: Freeze the top worksheet row
+  27-EV-3.7.spec.ts:6:5 › EV-3.7: Hide a column without deleting its values
+  28-EV-3.8.spec.ts:6:5 › EV-3.8: Show a hidden column
+  29-EV-3.9.spec.ts:6:5 › EV-3.9: Toggle display of formula expressions
+  30-EV-3.10.spec.ts:6:5 › EV-3.10: Make an independent workbook copy
+Total: 30 tests in 30 files
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

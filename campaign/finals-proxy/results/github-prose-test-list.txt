@@ -1,0 +1,32 @@
+Listing tests:
+  01-EV-1.1.spec.ts:6:5 › EV-1.1: Filter issues with combined qualifiers
+  02-EV-1.2.spec.ts:6:5 › EV-1.2: Sort the filtered issue list
+  03-EV-1.3.spec.ts:6:5 › EV-1.3: Filter draft pull requests by author
+  04-EV-1.4.spec.ts:6:5 › EV-1.4: Close an issue as not planned
+  05-EV-1.5.spec.ts:6:5 › EV-1.5: Preview a Markdown issue comment
+  06-EV-1.6.spec.ts:6:5 › EV-1.6: Preview a Markdown file before committing
+  07-EV-1.7.spec.ts:6:5 › EV-1.7: Convert an open pull request to draft
+  08-EV-1.8.spec.ts:6:5 › EV-1.8: Switch the pull request diff layout
+  09-EV-1.9.spec.ts:6:5 › EV-1.9: Search labels before applying one
+  10-EV-1.10.spec.ts:6:5 › EV-1.10: Swap comparison branches
+  11-EV-2.1.spec.ts:6:5 › EV-2.1: Star and unstar a repository
+  12-EV-2.2.spec.ts:6:5 › EV-2.2: Keep stars specific to each account
+  13-EV-2.3.spec.ts:6:5 › EV-2.3: Edit repository topics
+  14-EV-2.4.spec.ts:6:5 › EV-2.4: Restrict topic editing to administrators
+  15-EV-2.5.spec.ts:6:5 › EV-2.5: Archive a repository
+  16-EV-2.6.spec.ts:6:5 › EV-2.6: Read an archived repository as a visitor
+  17-EV-2.7.spec.ts:6:5 › EV-2.7: Create a repository label
+  18-EV-2.8.spec.ts:6:5 › EV-2.8: Rename an applied repository label
+  19-EV-2.9.spec.ts:6:5 › EV-2.9: Create a milestone with a due date
+  20-EV-2.10.spec.ts:6:5 › EV-2.10: Close and reopen a milestone
+  21-EV-3.1.spec.ts:6:5 › EV-3.1: Lock an issue conversation
+  22-EV-3.2.spec.ts:6:5 › EV-3.2: Deny issue locking to a read user
+  23-EV-3.3.spec.ts:6:5 › EV-3.3: Pin an issue to the repository list
+  24-EV-3.4.spec.ts:6:5 › EV-3.4: Unpin an issue without deleting it
+  25-EV-3.5.spec.ts:6:5 › EV-3.5: Toggle a thumbs-up reaction
+  26-EV-3.6.spec.ts:6:5 › EV-3.6: Create and use a saved reply
+  27-EV-3.7.spec.ts:6:5 › EV-3.7: Edit an authored issue comment
+  28-EV-3.8.spec.ts:6:5 › EV-3.8: Confirm deletion of an authored comment
+  29-EV-3.9.spec.ts:6:5 › EV-3.9: Complete an issue task-list item
+  30-EV-3.10.spec.ts:6:5 › EV-3.10: Resolve and reopen a review thread
+Total: 30 tests in 30 files

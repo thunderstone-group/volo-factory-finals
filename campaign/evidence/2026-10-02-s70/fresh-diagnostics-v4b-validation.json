@@ -1,0 +1,69 @@
+[
+  {
+    "task": "github",
+    "judge_exit": 0,
+    "scores": [
+      {
+        "app": "generate-diagnostics-v4b-github",
+        "judge": "gh99",
+        "counts": {
+          "error": 29,
+          "pass": 54,
+          "fail": 21
+        },
+        "seconds": 246.3,
+        "coverage": {
+          "total": 100,
+          "parsed": 75
+        }
+      },
+      {
+        "app": "generate-diagnostics-v4b-github",
+        "judge": "gh8",
+        "counts": {
+          "pass": 64,
+          "error": 16,
+          "fail": 23
+        },
+        "seconds": 180.4,
+        "coverage": {
+          "total": 100,
+          "parsed": 87
+        }
+      }
+    ]
+  },
+  {
+    "task": "sheet",
+    "judge_exit": 0,
+    "scores": [
+      {
+        "app": "generate-diagnostics-v4b-sheet",
+        "judge": "g99",
+        "counts": {
+          "pass": 88,
+          "fail": 12
+        },
+        "seconds": 85.1,
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        }
+      },
+      {
+        "app": "generate-diagnostics-v4b-sheet",
+        "judge": "cov99n-arm",
+        "counts": {
+          "pass": 92,
+          "error": 2,
+          "fail": 7
+        },
+        "seconds": 70.4,
+        "coverage": {
+          "total": 100,
+          "parsed": 99
+        }
+      }
+    ]
+  }
+]

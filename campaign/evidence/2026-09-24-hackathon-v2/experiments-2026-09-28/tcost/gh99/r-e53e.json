@@ -1,0 +1,1033 @@
+{
+ "kind": "testgen",
+ "scenarios": [
+  {
+   "id": "REQ-1-1-1",
+   "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 1",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-1-1-1#2",
+   "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 2",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Username format is invalid', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Username format is invalid', { exact: true })\n\n\n  126 |   await page.getByRole('button', { name: 'Create account', exact: true }).click();\n  127 |\n> 128 |   await expect(page.getByText('Username format is invalid', { exact: true })).toBeVisible();\n      |                                                                               ^\n  129 |   await expect(page.getByText('Email format is invalid', { exact: true })).toBeVisible();\n  130 |   ",
+   "source": "test('REQ-1-1-1#2: REQ-1-1-1: Register a New GitHub Account - Scenario 2', async ({ page }) => {\n  await openRegistration(page);\n\n  await page.getByLabel('Username', { exact: true }).fill('-bad');\n  await page.getByLabel('Email', { exact: true }).fill('not-an-email');\n  await page.getByLabel('Password', { exact: true }).fill('short');\n  await page.getByLabel('Confirm password', { exact: true }).fill('short');\n  await page.getByRole('button', { name: 'Create account', exact: true }).click();\n\n  await expect(page.getByText('Username format is invalid', { exact: true })).toBeVisible();\n  await expect(page.getByText('Email format is invalid', { exact: true })).toBeVisible();\n  await expect(page.getByText('Password requirements are not satisfied', { exact: true })).toBeVisible();\n  await expect(page.getByText('Agree to terms is required', { exact: true })).toBeVisible();\n\n  await expect(page.getByLabel('Username', { exact: true })).toHaveValue('-bad');\n  await expect(page.getByLabel('Email', { exact: true })).toHaveValue('not-an-email');\n  await expect(page.getByLabel('Password', { exact: true })).toHaveValue('');\n  await expect(page.getByLabel('Confirm password', { exact: true })).toHaveValue('');\n});",
+   "at": "t01-REQ-1.spec.cjs:128",
+   "seconds": 5.1
+  },
+  {
+   "id": "REQ-1-1-1#3",
+   "name": "REQ-1-1-1: Register a New GitHub Account - Scenario 3",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-1-1-2",
+   "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 1",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-1-2#2",
+   "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 2",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-1-2#3",
+   "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 3",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-1-2#4",
+   "name": "REQ-1-1-2: Sign In with an Existing Account - Scenario 4",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.1
+  },
+  {
+   "id": "REQ-1-1-3",
+   "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 1",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).not.toBeVisible() failed\n\nLocator:  getByText('Password updated', { exact: true })\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n  - Expect \"not toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Password updated', { exact: true })\n    9 × locator resolved to <span class=\"status-text\">Password updated</span>\n      - unexpected value \"visible\"\n\n\n  195 |   await enterRecoveryEmail(page, unknownEmail);\n  196 |   await submitReset(page, '123456', 'Candidate-password-789!', 'Candidate-password-789!');\n> 197 |   await expect(page.getByText('Password updated', { exact: true })).not.toBeVisible();\n      |                                          ",
+   "source": "test('REQ-1-1-3: REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 1', async ({ page }) => {\n  const account = await registerAccount(page);\n  const replacement = 'Replacement-password-456!';\n  const unknownEmail = `unknown-${u()}@example.test`;\n\n  await openForgotPassword(page);\n  await enterRecoveryEmail(page, unknownEmail);\n  await submitReset(page, '123456', 'Candidate-password-789!', 'Candidate-password-789!');\n  await expect(page.getByText('Password updated', { exact: true })).not.toBeVisible();\n\n  await openForgotPassword(page);\n  await enterRecoveryEmail(page, account.email);\n  await submitReset(page, '123456', replacement, replacement);\n  await expect(page.getByText('Password updated', { exact: true })).toBeVisible();\n\n  await attemptSignIn(page, account.email, account.password);\n  await expect(page.getByText('Invalid credentials', { exact: true })).toBeVisible();\n\n  await attemptSignIn(page, account.email, replacement);\n  await expectSignedInAs(page, account.username);\n});",
+   "at": "t01-REQ-1.spec.cjs:197",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-1-1-3#2",
+   "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 2",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-1-1-3#3",
+   "name": "REQ-1-1-3: Recover Account Access Through a Verified Email - Scenario 3",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-1-2",
+   "name": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 1",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Sign out', exact: true })\n\n\n  257 |\n  258 |   await page.getByRole('button', { name: 'Account menu', exact: true }).click();\n> 259 |   await page.getByRole('link', { name: 'Sign out', exact: true }).click();\n      |                                                                   ^\n  260 |   const confirmDialog = page.getByRole('dialog', { name: 'Sign out', exact: true });\n  261 |   await expect(confirmDialog).toBeVisible();\n  262 |   await confirmDialog.getByRole('button', { name: 'Confirm sign out', exact: true }).click();\n    at /private/tmp/claude-501/-Users-e0-7-projects/2696d4ed-",
+   "source": "test('REQ-1-2: REQ-1-2: Sign Out and End the Current Web Session - Scenario 1', async ({ page }) => {\n  await attemptSignIn(page, ALICE_USERNAME, ALICE_PASSWORD);\n  await expectSignedInAs(page, ALICE_USERNAME);\n\n  await page.getByRole('button', { name: 'Account menu', exact: true }).click();\n  await page.getByRole('link', { name: 'Your organizations', exact: true }).click();\n  await expect(page.getByRole('link', { name: 'New organization', exact: true })).toBeVisible();\n  const protectedUrl = page.url();\n\n  await page.getByRole('button', { name: 'Account menu', exact: true }).click();\n  await page.getByRole('link', { name: 'Sign out', exact: true }).click();\n  const cancelDialog = page.getByRole('dialog', { name: 'Sign out', exact: true });\n  await expect(cancelDialog).toBeVisible();\n  await cancelDialog.getByRole('button', { name: 'Cancel', exact: true }).click();\n  await expect(page.getByRole('button', { name: 'Account menu', exact: true })).toBeVisible();\n\n  await page.getByRole('button', { name: 'Account menu', exact: true }).click();\n  await page.getByRole('link', { name: 'Sign out', exact: true }).click();\n  const confirmDialog = page.getByRole('dialog', { name: 'Sign out', exact: true });\n  await expect(confirmDialog).toBeVisible();\n  await confirmDialog.getByRole('button', { name: 'Confirm sign out', exact: true }).click();\n\n  await page.goto('/');\n  await expectUnauthenticated(page);\n\n  await page.goto(protectedUrl);\n  await expectUnauthenticated(page);\n});",
+   "at": "t01-REQ-1.spec.cjs:259",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-1-2#2",
+   "name": "REQ-1-2: Sign Out and End the Current Web Session - Scenario 2",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-1-3",
+   "name": "REQ-1-3: Change Account Password - Scenario 1",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-1-3#2",
+   "name": "REQ-1-3: Change Account Password - Scenario 2",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Current password is incorrect', { exact: true }).or(getByText('Password confirmation does not match', { exact: true }))\nExpected: visible\nError: strict mode violation: getByText('Current password is incorrect', { exact: true }).or(getByText('Password confirmation does not match', { exact: true })) resolved to 2 elements:\n    1) <p role=\"alert\" data-err=\"current\" class=\"field-error\">Current password is incorrect</p> aka getByText('Current password is incorrect')\n    2) <p role=\"alert\" data-err=\"confirm\" class=\"field-error\">Password confirmation does not match</p> aka getByText('Password confirmation does')\n\nCall log:\n  - Expect ",
+   "source": "test('REQ-1-3#2: REQ-1-3: Change Account Password - Scenario 2', async ({ page }) => {\n  const account = await createAccountAndOpenPasswordSettings(page);\n\n  await page.getByLabel('Current password', { exact: true }).fill('wrong-password');\n  await page.getByLabel('New password', { exact: true }).fill('New-password-456!');\n  await page.getByLabel('Confirm password', { exact: true }).fill('does-not-match');\n  await page.getByRole('button', { name: 'Update password', exact: true }).click();\n\n  const error = page\n    .getByText('Current password is incorrect', { exact: true })\n    .or(page.getByText('Password confirmation does not match', { exact: true }));\n  await expect(error).toBeVisible();\n  await expect(page.getByText('Password updated', { exact: true })).not.toBeVisible();\n\n  await signOut(page);\n  await attemptSignIn(page, account.email, account.password);\n  await expectSignedInAs(page, account.username);\n});",
+   "at": "t01-REQ-1.spec.cjs:314",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-1-3#3",
+   "name": "REQ-1-3: Change Account Password - Scenario 3",
+   "file": "t01-REQ-1.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.5
+  },
+  {
+   "id": "REQ-2-1-1",
+   "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'acme-docs', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'acme-docs', exact: true })\n\n\n  187 |   await page.getByLabel('Find a repository', { exact: true }).fill('acme-docs');\n  188 |   await clickPublicFilter(page);\n> 189 |   await expect(page.getByRole('link', { name: 'acme-docs', exact: true })).toBeVisible();\n      |                                                                            ^\n  190 |   await expect(page.getByRole('link', { name: 'secret-research', exact: true })).",
+   "source": "test('REQ-2-1-1: REQ-2-1-1: Browse Organization Repositories - Scenario 1', async ({ page }) => {\n  await signIn(page, seed.alice, seed.alicePass);\n  await openOrganization(page, seed.org);\n  const orgUrl = page.url();\n  await signOut(page);\n  await page.goto(orgUrl);\n\n  await page.getByRole('link', { name: 'Repositories', exact: true }).click();\n  await page.getByLabel('Find a repository', { exact: true }).fill('secret-research');\n  await expect(page.getByRole('link', { name: 'secret-research', exact: true })).toHaveCount(0);\n\n  await page.getByLabel('Find a repository', { exact: true }).fill('acme-docs');\n  await clickPublicFilter(page);\n  await expect(page.getByRole('link', { name: 'acme-docs', exact: true })).toBeVisible();\n  await expect(page.getByRole('link', { name: 'secret-research', exact: true })).toHaveCount(0);\n\n  await page.getByRole('link', { name: 'acme-docs', exact: true }).click();\n  await expect(page.getByRole('heading', { name: `${seed.org}/${seed.repo}`, exact: true })).toBeVisible();\n\n  await page.goBack();\n  await expect(page.getByRole('link', { name: 'Repositories', exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByRole('link', { name: 'secret-research', exact: true })).toHaveCount(0);\n});",
+   "at": "t02-REQ-2.spec.cjs:189",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-2-1-1#2",
+   "name": "REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'acme-docs', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'acme-docs', exact: true })\n\n\n  205 |   await expect(page.getByLabel('Find a repository', { exact: true })).toBeVisible();\n  206 |   await page.getByLabel('Find a repository', { exact: true }).fill('acme-docs');\n> 207 |   await expect(page.getByRole('link', { name: 'acme-docs', exact: true })).toBeVisible();\n      |                                                                            ^\n  208 |   await page.reload();\n  209 ",
+   "source": "test('REQ-2-1-1#2: REQ-2-1-1: Browse Organization Repositories - Scenario 2', async ({ page }) => {\n  await signIn(page, seed.alice, seed.alicePass);\n  await openOrganization(page, seed.org);\n  await page.getByRole('link', { name: 'Repositories', exact: true }).click();\n  await expect(page.getByLabel('Find a repository', { exact: true })).toBeVisible();\n  await page.getByLabel('Find a repository', { exact: true }).fill('acme-docs');\n  await expect(page.getByRole('link', { name: 'acme-docs', exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByLabel('Find a repository', { exact: true })).toBeVisible();\n  await expect(page.getByRole('link', { name: 'acme-docs', exact: true })).toBeVisible();\n});",
+   "at": "t02-REQ-2.spec.cjs:207",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-2-1-2",
+   "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-2-1-2#2",
+   "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-1-2#3",
+   "name": "REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-2-2-1",
+   "name": "REQ-2-2-1: Create an Organization Team - Scenario 1",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-2-2-1#2",
+   "name": "REQ-2-2-1: Create an Organization Team - Scenario 2",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-2-2-2",
+   "name": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.9
+  },
+  {
+   "id": "REQ-2-2-2#2",
+   "name": "REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.9
+  },
+  {
+   "id": "REQ-2-2-3",
+   "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-2-2-3#2",
+   "name": "REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-2-2-4",
+   "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.8
+  },
+  {
+   "id": "REQ-2-2-4#2",
+   "name": "REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.6
+  },
+  {
+   "id": "REQ-2-3",
+   "name": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('row', { name: /team-mukpapxk82e7/ })\nExpected: 1\nReceived: 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('row', { name: /team-mukpapxk82e7/ })\n    9 × locator resolved to 0 elements\n      - unexpected value \"0\"\n\n\n  434 |   await grantTeamAccess(page, team, 'Write');\n  435 |   let row = page.getByRole('row', { name: new RegExp(team) });\n> 436 |   await expect(row).toHaveCount(1);\n      |                     ^\n  437 |   await expect(row).toContainText('Write');\n  438 |\n  439 |   await page.reload();\n    at /private/tmp/claude-501/-Users-e0-7-projects/2696d4ed-15e3-43",
+   "source": "test('REQ-2-3: REQ-2-3: Grant Repository Access to People and Teams - Scenario 1', async ({ page }) => {\n  const org = newOrg();\n  const team = newTeam();\n  const repo = newRepo();\n\n  await signIn(page, seed.alice, seed.alicePass);\n  await createOrganization(page, org, org);\n  await createTeam(page, org, team);\n  await createOrgRepository(page, org, repo);\n  await openManageAccess(page);\n\n  await grantTeamAccess(page, team, 'Write');\n  let row = page.getByRole('row', { name: new RegExp(team) });\n  await expect(row).toHaveCount(1);\n  await expect(row).toContainText('Write');\n\n  await page.reload();\n  row = page.getByRole('row', { name: new RegExp(team) });\n  await expect(row).toHaveCount(1);\n  await expect(row).toContainText('Write');\n\n  await grantTeamAccess(page, team, 'Write');\n  await expect(page.getByRole('row', { name: new RegExp(team) })).toHaveCount(1);\n});",
+   "at": "t02-REQ-2.spec.cjs:436",
+   "seconds": 5.5
+  },
+  {
+   "id": "REQ-2-3#2",
+   "name": "REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+   "file": "t02-REQ-2.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('row', { name: /team-mukpaufg4af9/ })\nExpected: 1\nReceived: 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('row', { name: /team-mukpaufg4af9/ })\n    9 × locator resolved to 0 elements\n      - unexpected value \"0\"\n\n\n  459 |   await grantTeamAccess(page, team, 'Write');\n  460 |   let row = page.getByRole('row', { name: new RegExp(team) });\n> 461 |   await expect(row).toHaveCount(1);\n      |                     ^\n  462 |\n  463 |   await row.getByRole('combobox', { name: 'Role', exact: true }).selectOption({ label: 'Read' });\n  464 |   await row.getByRole('button', { nam",
+   "source": "test('REQ-2-3#2: REQ-2-3: Grant Repository Access to People and Teams - Scenario 2', async ({ page }) => {\n  const org = newOrg();\n  const team = newTeam();\n  const repo = newRepo();\n\n  await signIn(page, seed.alice, seed.alicePass);\n  await createOrganization(page, org, org);\n  await createTeam(page, org, team);\n  await createOrgRepository(page, org, repo);\n  await openManageAccess(page);\n\n  await grantTeamAccess(page, team, 'Write');\n  let row = page.getByRole('row', { name: new RegExp(team) });\n  await expect(row).toHaveCount(1);\n\n  await row.getByRole('combobox', { name: 'Role', exact: true }).selectOption({ label: 'Read' });\n  await row.getByRole('button', { name: 'Save', exact: true }).click();\n\n  row = page.getByRole('row', { name: new RegExp(team) });\n  await expect(row).toHaveCount(1);\n  await expect(row).toContainText('Read');\n\n  await page.reload();\n  row = page.getByRole('row', { name: new RegExp(team) });\n  await expect(row).toHaveCount(1);\n  await expect(row).toContainText('Read');\n});\n\n// Added by the suite runner: a helper that uses `page` without taking it as a parameter sees the running test's page.\nrequire('@playwright/test').test.beforeEach(async ({ page }) => { globalThis.page = page; });",
+   "at": "t02-REQ-2.spec.cjs:461",
+   "seconds": 5.5
+  },
+  {
+   "id": "REQ-3-1",
+   "name": "REQ-3-1: Search for and Locate Repositories - Scenario 1",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed",
+   "source": "",
+   "at": "t03-REQ-3.spec.cjs:56",
+   "seconds": 5.1
+  },
+  {
+   "id": "REQ-3-1#2",
+   "name": "REQ-3-1: Search for and Locate Repositories - Scenario 2",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-1#3",
+   "name": "REQ-3-1: Search for and Locate Repositories - Scenario 3",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-1#4",
+   "name": "REQ-3-1: Search for and Locate Repositories - Scenario 4",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-2-1",
+   "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 1",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-2-1#2",
+   "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 2",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-2-1#3",
+   "name": "REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 3",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-2-2",
+   "name": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 1",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-2-2#2",
+   "name": "REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 2",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-2-3",
+   "name": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 1",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed",
+   "source": "",
+   "at": "t03-REQ-3.spec.cjs:182",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-3-2-3#2",
+   "name": "REQ-3-2-3: Copy a Repository Clone Value - Scenario 2",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed",
+   "source": "",
+   "at": "t03-REQ-3.spec.cjs:196",
+   "seconds": 5.4
+  },
+  {
+   "id": "REQ-3-3",
+   "name": "REQ-3-3: View a Public Repository Overview - Scenario 1",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-3-4",
+   "name": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 1",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-3-4#2",
+   "name": "REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 2",
+   "file": "t03-REQ-3.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-1",
+   "name": "Browse Repository Files and Directories - Scenario 1",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-4-2-1",
+   "name": "View Repository Commit History - Scenario 1",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('alice-dev', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('alice-dev', { exact: true }).first()\n\n\n  94 |   await page.getByRole('link', { name: /Commits/i }).first().click();\n  95 |   await expect(page.getByText('Document search flow', { exact: true })).toBeVisible();\n> 96 |   await expect(page.getByText('alice-dev', { exact: true }).first()).toBeVisible();\n     |                                                                      ^\n  97 |   await expect(page.getByText(/ago/).first()).toBeVisible();\n  98 |",
+   "source": "test('REQ-4-2-1: View Repository Commit History - Scenario 1', async ({ page }) => {\n  await openRepository(page, 'acme-docs');\n  await page.getByRole('link', { name: /Commits/i }).first().click();\n  await expect(page.getByText('Document search flow', { exact: true })).toBeVisible();\n  await expect(page.getByText('alice-dev', { exact: true }).first()).toBeVisible();\n  await expect(page.getByText(/ago/).first()).toBeVisible();\n\n  await page.getByRole('link', { name: 'Code', exact: true }).first().click();\n  await page.getByRole('link', { name: 'README.md', exact: true }).click();\n  await page.getByRole('link', { name: /Commits/i }).first().click();\n  await expect(page.getByText('Document search flow', { exact: true })).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('Document search flow', { exact: true })).toBeVisible();\n});",
+   "at": "t04-REQ-4.spec.cjs:96",
+   "seconds": 5.1
+  },
+  {
+   "id": "REQ-4-2-2",
+   "name": "Inspect Commit and Revision Differences - Scenario 1",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-2-3",
+   "name": "Search Code Within a Repository - Scenario 1",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('search flow', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('search flow', { exact: true }).first()\n\n\n  127 |\n  128 |   await page.getByRole('link', { name: 'search.ts', exact: true }).click();\n> 129 |   await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n      |                                                                        ^\n  130 |\n  131 |   await page.reload();\n  132 |   await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n    at /pr",
+   "source": "test('REQ-4-2-3: Search Code Within a Repository - Scenario 1', async ({ page }) => {\n  await openRepository(page, 'acme-docs');\n  await searchCode(page, 'search flow');\n\n  await expect(page.getByRole('link', { name: 'README.md', exact: true })).toBeVisible();\n  await expect(page.getByRole('link', { name: 'search.ts', exact: true })).toBeVisible();\n\n  await page.getByRole('link', { name: 'search.ts', exact: true }).click();\n  await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n\n  await page.reload();\n  await expect(page.getByText('search flow', { exact: true }).first()).toBeVisible();\n});",
+   "at": "t04-REQ-4.spec.cjs:129",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-4-2-3#2",
+   "name": "Search Code Within a Repository - Scenario 2",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-2-3#3",
+   "name": "Search Code Within a Repository - Scenario 3",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-2-3#4",
+   "name": "Search Code Within a Repository - Scenario 4",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-3-1",
+   "name": "List and Switch Repository Branches - Scenario 1",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-3-1#2",
+   "name": "List and Switch Repository Branches - Scenario 2",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.1
+  },
+  {
+   "id": "REQ-4-3-2",
+   "name": "Create a Branch from an Existing Revision - Scenario 1",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-3-2#2",
+   "name": "Create a Branch from an Existing Revision - Scenario 2",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-4-3-3",
+   "name": "Change the Repository Default Branch - Scenario 1",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-4-3-3#2",
+   "name": "Change the Repository Default Branch - Scenario 2",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-4-4",
+   "name": "Manage Repository Files Through the Web Interface - Scenario 1",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-4-4#2",
+   "name": "Manage Repository Files Through the Web Interface - Scenario 2",
+   "file": "t04-REQ-4.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-5-1-1",
+   "name": "REQ-5-1-1: List and Filter Repository Issues - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-5-1-1#2",
+   "name": "REQ-5-1-1: List and Filter Repository Issues - Scenario 2",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-5-1-2",
+   "name": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-5-1-2#2",
+   "name": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 2",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-5-1-2#3",
+   "name": "REQ-5-1-2: View an Issue and Its Discussion - Scenario 3",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-5-2-1",
+   "name": "REQ-5-2-1: Create a Repository Issue - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('alice-dev', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('alice-dev', { exact: true }).first()\n\n\n  112 |   await expect(page.getByText('Open', { exact: true })).toBeVisible();\n  113 |   await expect(page.getByText(description, { exact: true })).toBeVisible();\n> 114 |   await expect(page.getByText('alice-dev', { exact: true }).first()).toBeVisible();\n      |                                                                      ^\n  115 |   await page.getByRole('link', { name: 'Issues', exact: true }).click();",
+   "source": "test('REQ-5-2-1: REQ-5-2-1: Create a Repository Issue - Scenario 1', async ({ page }) => {\n  const title = `Created issue ${u()}`;\n  const description = 'Created by Playwright';\n  await openRepoIssues(page, true);\n  await page.getByRole('link', { name: 'New issue', exact: true }).click();\n  await page.getByLabel('Title', { exact: true }).fill(title);\n  await page.getByLabel('Description', { exact: true }).fill(description);\n  await page.getByRole('button', { name: 'Submit new issue', exact: true }).click();\n  await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n  await expect(page.getByText('Open', { exact: true })).toBeVisible();\n  await expect(page.getByText(description, { exact: true })).toBeVisible();\n  await expect(page.getByText('alice-dev', { exact: true }).first()).toBeVisible();\n  await page.getByRole('link', { name: 'Issues', exact: true }).click();\n  await page.getByRole('searchbox', { name: 'Search issues', exact: true }).fill(title);\n  await expect(page.getByRole('link', { name: title, exact: true })).toBeVisible();\n});",
+   "at": "t05-REQ-5.spec.cjs:114",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-5-2-1#2",
+   "name": "REQ-5-2-1: Create a Repository Issue - Scenario 2",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-5-2-2",
+   "name": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-5-2-2#2",
+   "name": "REQ-5-2-2: Edit an Issue Title and Description - Scenario 2",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-5-2-3",
+   "name": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-5-2-3#2",
+   "name": "REQ-5-2-3: Comment on an Issue Discussion - Scenario 2",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-5-3-1",
+   "name": "REQ-5-3-1: Assign or Unassign Issue Participants - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'bob-reviewer', exact: true })\n\n\n  204 |   await expect(page.getByText('bob-reviewer', { exact: true }).first()).toBeVisible();\n  205 |   await page.getByRole('button', { name: 'Assignees', exact: true }).click();\n> 206 |   await page.getByRole('option', { name: 'bob-reviewer', exact: true }).click();\n      |                                                                         ^\n  207 |   await page.reload();\n  208 |   await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n  209 | });\n    at /private/tmp/claude-501/-Users-e0-7-projects/2696d4ed-15e3-431",
+   "source": "test('REQ-5-3-1: REQ-5-3-1: Assign or Unassign Issue Participants - Scenario 1', async ({ page }) => {\n  const title = `Assignee issue ${u()}`;\n  await createIssue(page, title, '');\n  await page.getByRole('button', { name: 'Assignees', exact: true }).click();\n  await page.getByRole('textbox', { name: 'Search assignees', exact: true }).fill('bob-reviewer');\n  await page.getByRole('option', { name: 'bob-reviewer', exact: true }).click();\n  await expect(page.getByText('bob-reviewer', { exact: true }).first()).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('bob-reviewer', { exact: true }).first()).toBeVisible();\n  await page.getByRole('button', { name: 'Assignees', exact: true }).click();\n  await page.getByRole('option', { name: 'bob-reviewer', exact: true }).click();\n  await page.reload();\n  await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n});",
+   "at": "t05-REQ-5.spec.cjs:206",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-5-3-2",
+   "name": "REQ-5-3-2: Apply Labels to an Issue - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-5-3-3",
+   "name": "REQ-5-3-3: Assign Issues and Pull Requests to a Milestone - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-5-4",
+   "name": "REQ-5-4: Close or Reopen an Issue - Scenario 1",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-5-4#2",
+   "name": "REQ-5-4: Close or Reopen an Issue - Scenario 2",
+   "file": "t05-REQ-5.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements).",
+   "source": "",
+   "seconds": 0.0
+  },
+  {
+   "id": "REQ-6-1",
+   "name": "Protect Branches with Review and Status-Check Requirements - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.4
+  },
+  {
+   "id": "REQ-6-1#2",
+   "name": "Protect Branches with Review and Status-Check Requirements - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-6-1#3",
+   "name": "Protect Branches with Review and Status-Check Requirements - Scenario 3",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('test: pending', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('test: pending', { exact: true })\n\n\n  105 |   await openPR(page, SECOND_PR);\n  106 |   await page.getByRole('link', { name: 'Checks', exact: true }).click();\n> 107 |   await expect(page.getByText('test: pending', { exact: true })).toBeVisible();\n      |                                                                  ^\n  108 |   await page.getByLabel('test status', { exact: true }).selectOption({ label: 'success' });\n  109 |   await page.getByRole('butto",
+   "source": "test('REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await page.getByRole('link', { name: 'Checks', exact: true }).click();\n  await expect(page.getByText('test: pending', { exact: true })).toBeVisible();\n  await page.getByLabel('test status', { exact: true }).selectOption({ label: 'success' });\n  await page.getByRole('button', { name: 'Save', exact: true }).click();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('test: success', { exact: true })).toBeVisible();\n});",
+   "at": "t06-REQ-6.spec.cjs:107",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-6-2-1",
+   "name": "List and Filter Repository Pull Requests - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-2-1#2",
+   "name": "List and Filter Repository Pull Requests - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-2-1#3",
+   "name": "List and Filter Repository Pull Requests - Scenario 3",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-2-2",
+   "name": "Compare Branches Before Opening a Pull Request - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-6-2-2#2",
+   "name": "Compare Branches Before Opening a Pull Request - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-6-2-3",
+   "name": "Create a Pull Request from Comparison Results - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-6-2-3#2",
+   "name": "Create a Pull Request from Comparison Results - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-6-2-4",
+   "name": "Create a Draft Pull Request - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-6-2-4#2",
+   "name": "Create a Draft Pull Request - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-3-1",
+   "name": "View Pull Request Overview and Commits - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-3-1#2",
+   "name": "View Pull Request Overview and Commits - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-3-1#3",
+   "name": "View Pull Request Overview and Commits - Scenario 3",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-3-2",
+   "name": "Inspect Changed Files and Aggregate Diff - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-3-3",
+   "name": "Add Review Comments to Changed Code Lines - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test used the name 'Inline review comment', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded.",
+   "source": "",
+   "at": "t06-REQ-6.spec.cjs:259",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-6-3-3#2",
+   "name": "Add Review Comments to Changed Code Lines - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "error",
+   "observation": "The test used the name 'Pending inline note', which the requirements never give: TimeoutError: locator.click: Timeout 5000ms exceeded.",
+   "source": "",
+   "at": "t06-REQ-6.spec.cjs:271",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-6-3-4",
+   "name": "Submit a Pull Request Review - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Review changes', exact: true })\n\n\n  282 |   await openPR(page, SECOND_PR);\n  283 |   await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n> 284 |   await page.getByRole('button', { name: 'Review changes', exact: true }).click();\n      |                                                                           ^\n  285 |   await page.getByLabel('Summary', { exact: true }).fill('Approved by Playwright');\n  286 |   await page.getByRole('radio', { name: 'Approve', exact: true }).check();\n  287 |   await page.getByRole('button', { name: 'Submit review', exact: true ",
+   "source": "test('REQ-6-3-4: Submit a Pull Request Review - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n  await page.getByRole('button', { name: 'Review changes', exact: true }).click();\n  await page.getByLabel('Summary', { exact: true }).fill('Approved by Playwright');\n  await page.getByRole('radio', { name: 'Approve', exact: true }).check();\n  await page.getByRole('button', { name: 'Submit review', exact: true }).click();\n  await expect(page.getByText('Approved', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('Approved', { exact: true })).toBeVisible();\n});",
+   "at": "t06-REQ-6.spec.cjs:284",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-6-3-4#2",
+   "name": "Submit a Pull Request Review - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Review changes', exact: true })\n\n\n  295 |   await openPR(page, OPEN_PR);\n  296 |   await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n> 297 |   await page.getByRole('button', { name: 'Review changes', exact: true }).click();\n      |                                                                           ^\n  298 |   await page.getByLabel('Summary', { exact: true }).fill('Please split this change');\n  299 |   await page.getByRole('radio', { name: 'Request changes', exact: true }).check();\n  300 |   await page.getByRole('button', { name: 'Submit review', exac",
+   "source": "test('REQ-6-3-4: Submit a Pull Request Review - Scenario 2', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, OPEN_PR);\n  await page.getByRole('link', { name: 'Files changed', exact: true }).click();\n  await page.getByRole('button', { name: 'Review changes', exact: true }).click();\n  await page.getByLabel('Summary', { exact: true }).fill('Please split this change');\n  await page.getByRole('radio', { name: 'Request changes', exact: true }).check();\n  await page.getByRole('button', { name: 'Submit review', exact: true }).click();\n  await expect(page.getByText('Changes requested', { exact: true })).toBeVisible();\n  await expect(page.getByText('Please split this change', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('Changes requested', { exact: true })).toBeVisible();\n});",
+   "at": "t06-REQ-6.spec.cjs:297",
+   "seconds": 5.3
+  },
+  {
+   "id": "REQ-6-4",
+   "name": "Request or Remove Pull Request Reviewers - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Search', { exact: true })\n\n\n  309 |   await openPR(page, OPEN_PR);\n  310 |   await page.getByRole('button', { name: 'Reviewers', exact: true }).click();\n> 311 |   await page.getByLabel('Search', { exact: true }).fill('bob-reviewer');\n      |                                                    ^\n  312 |   await page.getByRole('option', { name: 'bob-reviewer', exact: true }).click();\n  313 |   await expect(page.getByRole('button', { name: 'Remove bob-reviewer', exact: true })).toBeVisible();\n  314 |   await page.getByRole('button', { name: 'Remove bob-reviewer', exact: true }).click();\n    at /private/tmp",
+   "source": "test('REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, OPEN_PR);\n  await page.getByRole('button', { name: 'Reviewers', exact: true }).click();\n  await page.getByLabel('Search', { exact: true }).fill('bob-reviewer');\n  await page.getByRole('option', { name: 'bob-reviewer', exact: true }).click();\n  await expect(page.getByRole('button', { name: 'Remove bob-reviewer', exact: true })).toBeVisible();\n  await page.getByRole('button', { name: 'Remove bob-reviewer', exact: true }).click();\n  await expect(page.getByRole('button', { name: 'Remove bob-reviewer', exact: true })).toHaveCount(0);\n  await page.reload();\n  await expect(page.getByRole('button', { name: 'Remove bob-reviewer', exact: true })).toHaveCount(0);\n});",
+   "at": "t06-REQ-6.spec.cjs:311",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-6-5",
+   "name": "Merge an Eligible Pull Request - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "fail",
+   "observation": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Merge pull request', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true })\n\n\n  321 |   await signInAsAlice(page);\n  322 |   await openPR(page, SECOND_PR);\n> 323 |   await expect(page.getByRole('button', { name: 'Merge pull request', exact: true })).toBeEnabled();\n      |                                                                                       ^\n  324 |   await page.getByRole('button', { name: 'Merge pull request', exact: true }).click();\n  ",
+   "source": "test('REQ-6-5: Merge an Eligible Pull Request - Scenario 1', async ({ page }) => {\n  await signInAsAlice(page);\n  await openPR(page, SECOND_PR);\n  await expect(page.getByRole('button', { name: 'Merge pull request', exact: true })).toBeEnabled();\n  await page.getByRole('button', { name: 'Merge pull request', exact: true }).click();\n  await page.getByRole('button', { name: 'Confirm merge', exact: true }).click();\n  await expect(page.getByText('Merged', { exact: true })).toBeVisible();\n  await page.reload();\n  await expect(page.getByText('Merged', { exact: true })).toBeVisible();\n});",
+   "at": "t06-REQ-6.spec.cjs:323",
+   "seconds": 5.2
+  },
+  {
+   "id": "REQ-6-5#2",
+   "name": "Merge an Eligible Pull Request - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "REQ-6-6",
+   "name": "Close or Reopen a Pull Request Without Merging - Scenario 1",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "REQ-6-6#2",
+   "name": "Close or Reopen a Pull Request Without Merging - Scenario 2",
+   "file": "t06-REQ-6.spec.cjs",
+   "steps": [],
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  }
+ ],
+ "invariants": [],
+ "coverage": {
+  "total": 100,
+  "parsed": 94
+ },
+ "seconds": 142.6
+}

@@ -1,0 +1,9 @@
+{
+  "package": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/home-entry-repair-github/home-entry-app.zip",
+  "sha256": "9f681c79c4105ad711555460496b20c9ae7ded4f6caadc08102346f1e6f3ab38",
+  "bytes": 40288,
+  "only_home_screen_function_changed": true,
+  "seed_auth_permissions_and_business_handlers_unchanged": true,
+  "model_calls": 1,
+  "estimated_cny": 0.250849
+}

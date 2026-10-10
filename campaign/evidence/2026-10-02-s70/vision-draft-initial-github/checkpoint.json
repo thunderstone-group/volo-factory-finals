@@ -1,0 +1,10 @@
+{
+  "source": "Exact packaged scaffold plus captured completed Vision draft blocks, before all repairs",
+  "package_sha256": "4ec287a63ac4278f22a0bb90843bda745eb08c785aa5b162287cceeed8bb8dbe",
+  "draft_content_sha256": "8e3934e9d46dbdae5e6f0c03f675dd1a3ba63b10ff244556e29c72a3ad3e136a",
+  "files": [
+    "frontend/public/seed.js",
+    "frontend/public/app.js",
+    "frontend/public/styles.css"
+  ]
+}

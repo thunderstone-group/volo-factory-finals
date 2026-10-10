@@ -1,0 +1,47 @@
+{
+  "at": "2026-10-02T04:12:00.737356+00:00",
+  "runs": [
+    {
+      "run_id": "9d673d2969ed",
+      "status": "FAILED",
+      "passed": 80,
+      "failed": 20,
+      "pass_rate": 80.0,
+      "tokens": 1738156,
+      "duration_seconds": 3715,
+      "failure_reason": "Runner exited with test failures or runtime errors",
+      "submission_id": "f56d97c2fdb1",
+      "requirement_id": "hackathon--sheet",
+      "finished_at": "2026-10-02T04:09:57.643080",
+      "display_name": "volo-s70-8ef69d0c-controls-r2",
+      "model_name": "deepseek-v4-flash-vision-exp",
+      "feature_implemented_count": 11,
+      "feature_total_count": 24,
+      "cost": {
+        "amount": 2.973834,
+        "currency": "CNY"
+      }
+    },
+    {
+      "run_id": "583ef28ff0bc",
+      "status": "FAILED",
+      "passed": 18,
+      "failed": 82,
+      "pass_rate": 18.0,
+      "tokens": 2144022,
+      "duration_seconds": 3267,
+      "failure_reason": "Runner exited with test failures or runtime errors",
+      "submission_id": "f56d97c2fdb1",
+      "requirement_id": "hackathon--github",
+      "finished_at": "2026-10-02T04:11:58.100780",
+      "display_name": "volo-s70-8ef69d0c-controls-r2",
+      "model_name": "deepseek-v4-flash-vision-exp",
+      "feature_implemented_count": 5,
+      "feature_total_count": 47,
+      "cost": {
+        "amount": 2.549267,
+        "currency": "CNY"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "phase": "checking_application",
+  "files": {
+    "README.md": "6879b0ce3a4fff03895c75e0c5ebe25c1bf99967209a7ac75c5707b2caa7e08f",
+    "backend/package.json": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827",
+    "backend/server.js": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9",
+    "frontend/package.json": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978",
+    "frontend/public/app.js": "c210760b3b369ce9b235e8a8d0a61ae0f1999bda239d777cb3005ff0d17666c6",
+    "frontend/public/index.html": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d",
+    "frontend/public/seed.js": "7d4a96eac196cec4ea67a243596aded20b07970f8262416da61f161723d48af8",
+    "frontend/public/styles.css": "53a62d3903531c781f65b75e234ec19d9f48dda16e263f854d489eb613570d69",
+    "frontend/public/lib/arc.js": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14"
+  }
+}

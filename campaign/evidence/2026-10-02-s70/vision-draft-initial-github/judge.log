@@ -1,0 +1,2 @@
+{"app": "vision-draft-initial-github", "judge": "gh8", "counts": {"pass": 44, "error": 20, "fail": 40}, "seconds": 265.7, "coverage": {"total": 100, "parsed": 84}}
+{"app": "vision-draft-initial-github", "judge": "gh99", "counts": {"error": 35, "pass": 38, "fail": 33}, "seconds": 339.5, "coverage": {"total": 100, "parsed": 71}}

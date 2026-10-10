@@ -1,0 +1,6 @@
+{
+  "at": "2026-10-08T18:46:55.771098+08:00",
+  "old_pid": 36976,
+  "new_pid": 63006,
+  "reason": "v6 official S 120.49138184788433 is already above v5 119.06; preserve the best-run submission. Replace guessed per-task selection and automatic deletion with read-only platform snapshots at 19:50 and 20:02."
+}

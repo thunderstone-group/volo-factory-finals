@@ -1,0 +1,263 @@
+{
+  "generation": {
+    "task": "sheet",
+    "model": "deepseek-v4-flash-vision-exp",
+    "package_sha256": "c2a2b32a5ed1ff709859cfe3989143cc44bc1343d8937d8ed20e110eb6f518b0",
+    "exit": 0,
+    "seconds": 3406.5
+  },
+  "calls": [
+    {
+      "call": 1,
+      "phase": "draft",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 64813,
+        "completion_tokens": 101824
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.472109
+    },
+    {
+      "call": 2,
+      "phase": "repair",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 115714,
+        "completion_tokens": 79191
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.369005
+    },
+    {
+      "call": 3,
+      "phase": "repair",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 129740,
+        "completion_tokens": 63291
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.269506
+    },
+    {
+      "call": 4,
+      "phase": "repair",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 133658,
+        "completion_tokens": 39589
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.164943
+    },
+    {
+      "call": 5,
+      "phase": "repair",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 133866,
+        "completion_tokens": 78264
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.319099
+    },
+    {
+      "call": "tests-1",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 45640,
+        "completion_tokens": 27195
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.153542
+    },
+    {
+      "call": "tests-2",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 46083,
+        "completion_tokens": 47505
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.192199
+    },
+    {
+      "call": "tests-3",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": null,
+      "usage": {},
+      "error_type": "StreamError",
+      "error_detail": "malformed SSE event",
+      "http_status": null,
+      "estimated_cost_cny": 0.217116
+    },
+    {
+      "call": "tests-4",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 46019,
+        "completion_tokens": 39944
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.160887
+    },
+    {
+      "call": "tests-5",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 45681,
+        "completion_tokens": 27092
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.110145
+    },
+    {
+      "call": "tests-6",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": null,
+      "usage": {},
+      "error_type": "StreamError",
+      "error_detail": "malformed SSE event",
+      "http_status": null,
+      "estimated_cost_cny": 0.286136
+    },
+    {
+      "call": "tests-7",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 46174,
+        "completion_tokens": 51084
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.205477
+    },
+    {
+      "call": "tests-8",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 52051,
+        "completion_tokens": 15858
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.070826
+    },
+    {
+      "call": "tests-9",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 54938,
+        "completion_tokens": 28625
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.12428
+    },
+    {
+      "call": "tests-10",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 54242,
+        "completion_tokens": 22981
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.101133
+    },
+    {
+      "call": "tests-11",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 50732,
+        "completion_tokens": 12859
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.057511
+    },
+    {
+      "call": "tests-12",
+      "phase": "tests",
+      "model": "deepseek-v4-flash-vision-exp",
+      "seconds": null,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 54204,
+        "completion_tokens": 21327
+      },
+      "error_type": null,
+      "error_detail": null,
+      "http_status": null,
+      "estimated_cost_cny": 0.094354
+    }
+  ],
+  "estimated_total_cost_cny": 3.368268,
+  "unknown_usage_calls": 2,
+  "cost_basis": "Model-reported usage where available, received-stream estimates for two failed calls, and published unit prices; not final billed cost."
+}

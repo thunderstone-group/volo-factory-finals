@@ -1,0 +1,14 @@
+[
+  {
+    "task": "github",
+    "pid": 52571,
+    "package_sha256": "e4a76b801595686de7c93d25cb2a8b45f4c9b39b8ae312dcb0df59379bf204a4",
+    "live_process": "52571 02:03 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python ~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/agent/main.py ~/projects/arcbench-campaign/evidence/2026-10-02-s70/requirements-after-stage-announcement/hackathon--github --output-dir ~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/application"
+  },
+  {
+    "task": "sheet",
+    "pid": 52570,
+    "package_sha256": "e4a76b801595686de7c93d25cb2a8b45f4c9b39b8ae312dcb0df59379bf204a4",
+    "live_process": "52570 02:03 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python ~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-sheet/agent/main.py ~/projects/arcbench-campaign/evidence/2026-10-02-s70/requirements-after-stage-announcement/hackathon--sheet --output-dir ~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-sheet/application"
+  }
+]

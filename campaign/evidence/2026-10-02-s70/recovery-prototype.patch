@@ -1,0 +1,298 @@
+diff --git a/oneshot/main.py b/oneshot/main.py
+index d62296c..6104b64 100644
+--- a/oneshot/main.py
++++ b/oneshot/main.py
+@@ -2079,6 +2079,7 @@ def finish_suite(job, budget, wait=TESTGEN_WAIT):
+     else:
+         summary.update({k: job["manifest"].get(k) for k in ("scenarios", "tests")},
+                        audit_checks=job["manifest"].get("audit_checks", 0),
++                       recovered_scenarios=job["manifest"].get("recovered_scenarios", 0),
+                        audit_errors=sum(bool(r.get("audit", {}).get("error")) for r in job["manifest"].get("files", [])),
+                        files=[{k: r.get(k) for k in ("file", "calls", "finish", "error", "syntax") if r.get(k) is not None}
+                               | {"tests": len(r.get("tests") or [])} for r in job["manifest"].get("files", [])])
+diff --git a/oneshot/testgen.py b/oneshot/testgen.py
+index 13ff609..42105bb 100644
+--- a/oneshot/testgen.py
++++ b/oneshot/testgen.py
+@@ -39,6 +39,7 @@ GROUP_SCENARIOS = 30  # scenarios per spec file (one model call); requirements a
+ GROUP_WORKERS = 1  # serialize long streams; preserve the completed file before starting the next one
+ AUDIT = os.environ.get("ONESHOT_TEST_AUDIT", "1") == "1"  # enabled in the isolated coverage candidate (roadmap 4.34)
+ AUDIT_LIMIT = 6  # Additional requirement-grounded checks per file, after reviewing the existing tests.
++RECOVER_SKIPPED = os.environ.get("ONESHOT_RECOVER_SKIPPED", "0") == "1"  # experimental until UI validity is calibrated
+ RUN_SECONDS = 900  # one suite run; a hung runner is stopped here
+ TEST_SECONDS = 15
+ ACTION_SECONDS = 5
+@@ -389,6 +390,8 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS,
+                 "tests": sum(len(r.get("tests") or []) for r in records),
+                 "seconds": round(time.monotonic() - started, 1), "prerequisites": prerequisites}
+     (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
++    if RECOVER_SKIPPED:
++        manifest = recover_skipped(text, suite, complete, workers=workers)
+     if (AUDIT if audit is None else audit):
+         manifest = audit_suite(text, suite, complete, workers=workers)
+         manifest["seconds"] = round(time.monotonic() - started, 1)
+@@ -396,6 +399,183 @@ def write_suite(text, suite, complete, prerequisites="", workers=GROUP_WORKERS,
+     return manifest
+ 
+ 
++RECOVER = """Review only the skipped scenarios in this file. The application is not available to you.
++For each skipped GIVEN state, search the requirements' dependency and creation flows before declaring it
++unconstructable. Compose actor creation, membership, authorization, resource creation/copying, and the required
++state transitions where the text provides them. Missing credentials for an unnamed seeded actor do not by
++themselves prevent registering a fresh actor with known compliant credentials and granting the required role.
++Likewise a linked resource can sometimes be created from an existing revision without changing the seed itself.
++Use only documented UI flows, roles and names. Do not invent seed credentials, API routes, database writes or
++browser-storage mutations. Do not weaken a GIVEN condition or replace a named required identity with another one.
++Creating a blank container does not reproduce the contents or relationships of a seeded container. If the needed
++state exists only in seed records, reuse its documented creation/copy flows; do not invent editing features the
++real-world product normally has. Reopen each flow from its documented entry, not an assumed link on the last page.
++For an unauthorized actor, navigation links may legitimately be absent. Follow only permitted navigation or a
++page address observed through authorized UI, then check the stated denial; never require an optional entry link.
++When a heading must contain a data value, check containment rather than imposing an exact whole heading.
++Construct fresh mutable records where possible, leave shared seed credentials and records usable by later tests,
++and keep the scenario's stated authorization and state effects. An unavailable required UI operation is a failing
++product check, not a reason to conditionally skip the test.
++
++Recover only scenarios you can justify. Keep all existing helpers and non-skipped tests exactly as they are.
++Return two blocks. recovery.json is an array with one entry per recovered scenario:
++[{"id":"<original scenario id>","setup":[{"requirement":"<requirement id establishing a needed flow>"}],
++"reason":"<how those public flows establish the original GIVEN state>"}]
++Every setup step cites a real requirement id, including prerequisite requirements in other groups. The caller
++attaches its authoritative description from the original input; do not retype or paraphrase it as a quotation.
++replacements.cjs contains ONLY standalone test(title, async (...) => {...}) declarations replacing those skipped
++tests, with the SAME ids and titles. Each must assert the required effect. Reuse existing helpers or define local
++functions inside the test callback. Do not add imports, suite hooks, test.skip/only/fixme or timeout overrides.
++If a state truly cannot be built using the documented UI, omit that scenario from both blocks. Empty is allowed.
++=== FILE: recovery.json ===
++<array>
++=== END ===
++=== FILE: replacements.cjs ===
++<replacement declarations>
++=== END ==="""
++
++
++def _skipped_declarations(body):
++    """Literal skipped declarations with inline callbacks; never rewrite unrelated source."""
++    found = {}
++    for match in TITLE.finditer(body):
++        if not body[match.start():match.end()].startswith("test.skip("):
++            continue
++        head = re.match(r"\s*,\s*(?:async\s+)?\([^)]*\)\s*=>\s*(\{)", body[match.end():])
++        if not head:
++            continue
++        close = _block_end(body, match.end() + head.end() - 1)
++        tail = re.match(r"\s*\)\s*;?", body[close + 1:]) if close >= 0 else None
++        if tail:
++            sid = _test_id(match.group(2))[0]
++            found[sid] = {"start": match.start(), "end": close + 1 + tail.end(), "title": match.group(2)}
++    return found
++
++
++def _recover_reply(content, original, requirements, node, path):
++    parts = {m.group(1).strip(): m.group(2) for m in FILE_BLOCK.finditer(content or "")}
++    if set(parts) != {"recovery.json", "replacements.cjs"}:
++        raise ValueError("recovery must return recovery.json and replacements.cjs")
++    claims = json.loads(parts["recovery.json"])
++    if not isinstance(claims, list):
++        raise ValueError("recovery claims must be a list")
++    body = unfence(parts["replacements.cjs"]).strip()
++    if SKIPPING.search(body) or re.search(r"\btest\.(?:before|after|describe|use|setTimeout)|\brequire\s*\(", body):
++        raise ValueError("recovery must preserve suite configuration and run every replacement")
++    if re.search(r"\b(?:localStorage|sessionStorage|indexedDB|fetch)\b|\.request\s*[.(]|\b(?:ARC|APP)\.state", body):
++        raise ValueError("recovery must construct state through the documented UI")
++    text = "\n".join(str(r.get("description") or "") + "\n" + json.dumps(r.get("scenarios") or [], ensure_ascii=False)
++                     for r in requirements.values())
++    undeclared = _undeclared_recovery_controls(body, text)
++    if undeclared:
++        raise ValueError("recovery uses undeclared UI names: " + ", ".join(undeclared))
++    blocks = _audit_test_blocks(body)
++    titles = {_test_id(m.group(2))[0]: m.group(2) for m in TITLE.finditer(body)}
++    skipped = _skipped_declarations(original)
++    claims = [dict(c, id=c['id'][:-2], reported_id=c['id'])
++              if isinstance(c, dict) and isinstance(c.get('id'), str) and c['id'].endswith('#1')
++              and c['id'][:-2] in skipped else c for c in claims]
++    ids = [c.get("id") for c in claims if isinstance(c, dict)]
++    if len(ids) != len(claims) or len(set(ids)) != len(ids) or set(ids) != set(blocks) or not set(ids) <= set(skipped):
++        raise ValueError("recovery ids must match only the original skipped scenarios")
++    helpers = _audit_assertion_helpers(original)
++    for claim in claims:
++        sid = claim["id"]
++        if titles[sid] != skipped[sid]["title"]:
++            raise ValueError("recovery must retain the original scenario title")
++        if (not isinstance(claim.get("reason"), str) or not claim["reason"].strip()
++                or not isinstance(claim.get("setup"), list) or not claim["setup"]):
++            raise ValueError("recovery needs a justified setup plan")
++        for step in claim["setup"]:
++            if not isinstance(step, dict):
++                raise ValueError("recovery setup steps must cite requirement descriptions")
++            rid = step.get("requirement")
++            if not isinstance(rid, str) or rid not in requirements or not requirements[rid].get("description"):
++                raise ValueError("recovery setup must cite an existing requirement description")
++        # Source text is copied from the input, never accepted from a model's retelling. This binds provenance,
++        # not semantic correctness; the real UI workflow still needs execution and review.
++        claim["source_descriptions"] = [
++            {"requirement": step["requirement"], "description": requirements[step["requirement"]]["description"]}
++            for step in claim["setup"]]
++        if not _audit_has_assertion(blocks[sid], helpers):
++            raise ValueError("recovery needs an observable assertion")
++    fixed = original
++    for sid in sorted(ids, key=lambda sid: skipped[sid]["start"], reverse=True):
++        span = skipped[sid]
++        fixed = fixed[:span["start"]] + blocks[sid] + fixed[span["end"]:]
++    if node and not _parses(node, path, fixed):
++        raise ValueError("recovered tests do not parse with the existing helpers")
++    return fixed, claims
++
++
++def _undeclared_recovery_controls(body, requirements):
++    """Catch invented literal interaction names before they can become product-repair targets."""
++    names = [m.group(2) for m in re.finditer(r"\.getBy(?:Label|Placeholder)\(\s*(['\"`])((?:\\.|(?!\1).)*)\1", body)]
++    role = re.compile(r"\.getByRole\(\s*(['\"])([\w-]+)\1\s*,\s*\{[^{}]*?\bname\s*:\s*(['\"`])((?:\\.|(?!\3).)*)\3")
++    names += [m.group(4) for m in role.finditer(body)
++              if m.group(2) in {"button", "link", "menuitem", "textbox", "searchbox", "combobox", "checkbox", "radio", "option"}]
++    quoted = _phrases(requirements)
++    return sorted({name for name in names if "${" not in name and ungrounded(name, body, requirements, quoted)})
++
++
++def recover_skipped(text, suite, complete, workers=GROUP_WORKERS):
++    """One requirements-only attempt per file to construct skipped GIVEN states; original live tests stay intact."""
++    suite = Path(suite)
++    manifest = json.loads((suite / "suite.json").read_text(encoding="utf-8"))
++    groups = {g["file"]: g for g in plan(text)}
++    requirements = {r["id"]: r for r in scenarios.load_requirements(text)}
++    node = _node()
++
++    def one(record):
++        name = record["file"]
++        if record.get("syntax") or name not in groups or record.get("recovery") or not (suite / name).is_file():
++            return
++        path = suite / name
++        original = path.read_text(encoding="utf-8")
++        skipped = _skipped_declarations(original)
++        if not skipped:
++            return
++        info = {"skipped_before": sorted(skipped), "claims": [], "calls": 0}
++        record["recovery"] = info
++        messages = request(text, groups[name], manifest.get("prerequisites") or "")
++        messages += [{"role": "assistant", "content": f"=== FILE: {name} ===\n{original.rstrip()}\n=== END ==="},
++                     {"role": "user", "content": RECOVER}]
++        for attempt in range(2):
++            try:
++                info["calls"] += 1
++                content, _, finish = complete(messages)
++            except Exception as exc:
++                info["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
++                break
++            try:
++                if finish != "stop":
++                    raise ValueError(f"recovery response is incomplete ({finish})")
++                fixed, claims = _recover_reply(content, original, requirements, node, path)
++                if claims:
++                    path.write_text(fixed, encoding="utf-8")
++                info["claims"] = claims
++                info.pop("error", None)
++                break
++            except (ValueError, TypeError, KeyError) as exc:
++                info["error"] = str(exc)[:500]
++                if attempt == 0:
++                    info["rejected_first_reply"] = str(exc)[:500]
++                    messages += [{"role": "assistant", "content": content}, {"role": "user", "content":
++                        "The recovery could not be validated: " + str(exc)[:800] +
++                        ". Correct the same two blocks from the public requirements, preserving the original runnable tests. "
++                        "Do not add controls or behavior outside those requirements. If the original GIVEN cannot be "
++                        "constructed through documented flows, leave that scenario unrecovered."}]
++            except OSError as exc:
++                info["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
++                break
++
++    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
++        list(pool.map(one, manifest["files"]))
++    manifest["recovered_scenarios"] = sum(len(r.get("recovery", {}).get("claims", [])) for r in manifest["files"])
++    (suite / "suite.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
++    return manifest
++
++
+ AUDIT_REQUEST = """Review the test file you just wrote against the requirements, without seeing any application.
+ The existing tests are immutable. Find explicit behaviours that they do NOT establish, especially a state change
+ used by a later feature, a rejected operation leaving all affected records unchanged, independent records or users,
+diff --git a/tests_oneshot/test_testgen.py b/tests_oneshot/test_testgen.py
+index bc2782d..dcead53 100644
+--- a/tests_oneshot/test_testgen.py
++++ b/tests_oneshot/test_testgen.py
+@@ -210,6 +210,76 @@ class AuditCase(unittest.TestCase):
+                 self.assertEqual(self.path.read_text(), self.original)
+ 
+ 
++class RecoveryCase(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.suite = Path(self.temp.name)
++        self.path = self.suite / testgen.plan(REQUIREMENTS)[0]["file"]
++        self.live = "test('REQ-1-1: Add one', async () => { expect(1).toBe(1); });"
++        self.skip = "test.skip('REQ-1-2: Edit one', () => { /* no initial record */ });"
++        self.original = "const { test, expect } = require('@playwright/test');\n" + self.live + "\n" + self.skip + "\n"
++        self.path.write_text(self.original)
++        (self.suite / 'suite.json').write_text(json.dumps({"files": [{"file": self.path.name,
++            "tests": ['REQ-1-1: Add one', 'REQ-1-2: Edit one']}], "scenarios": 2, "tests": 2}))
++        self.claim = {"id": "REQ-1-2", "reason": "Create a note before opening its editor.",
++                      "setup": [{"requirement": "REQ-1-1", "quote": 'The home page has a button named “Add note”'}]}
++        self.replacement = ("test('REQ-1-2: Edit one', async ({page}) => { "
++                            "await page.getByRole('button', {name:'Add note'}).click(); "
++                            "await expect(page.getByRole('textbox')).toBeVisible(); });")
++
++    def complete(self, messages):
++        self.assertTrue(any(self.original.rstrip() in m['content'] for m in messages if m['role'] == 'assistant'))
++        return ("=== FILE: recovery.json ===\n" + json.dumps([self.claim]) + "\n=== END ===\n"
++                "=== FILE: replacements.cjs ===\n" + self.replacement + "\n=== END ==="), {}, 'stop'
++
++    def test_recovers_only_skipped_body_and_preserves_live_tests_and_helpers(self):
++        result = testgen.recover_skipped(REQUIREMENTS, self.suite, self.complete)
++        self.assertEqual(result['recovered_scenarios'], 1)
++        self.assertEqual(self.path.read_text(), self.original.replace(self.skip, self.replacement))
++        testgen.recover_skipped(REQUIREMENTS, self.suite, lambda _: self.fail('repeated recovery'))
++
++    def test_invalid_provenance_live_test_replacement_and_state_injection_keep_original(self):
++        original_claim, original_replacement = dict(self.claim), self.replacement
++        cases = [
++            (dict(self.claim, setup=[{'requirement': 'REQ-unknown'}]), self.replacement),
++            (dict(self.claim, id='REQ-1-1'), self.replacement.replace('REQ-1-2: Edit one', 'REQ-1-1: Add one')),
++            (self.claim, self.replacement.replace("await page.getByRole", "localStorage.clear(); await page.getByRole")),
++        ]
++        for claim, replacement in cases:
++            with self.subTest(replacement=replacement):
++                (self.suite / 'suite.json').write_text(json.dumps({'files': [{'file': self.path.name}], 'tests': 2}))
++                self.claim, self.replacement = claim, replacement
++                result = testgen.recover_skipped(REQUIREMENTS, self.suite, self.complete)
++                self.assertEqual(self.path.read_text(), self.original)
++                self.assertIn('error', result['files'][0]['recovery'])
++        self.claim, self.replacement = original_claim, original_replacement
++
++    def test_first_scenario_alias_and_source_text_are_canonicalized_without_changing_tests(self):
++        self.claim = dict(self.claim, id='REQ-1-2#1', setup=[{'requirement': 'REQ-1-1', 'quote': 'Untrusted retelling'}])
++        result = testgen.recover_skipped(REQUIREMENTS, self.suite, self.complete)
++        claim = result['files'][0]['recovery']['claims'][0]
++        self.assertEqual(claim['id'], 'REQ-1-2')
++        self.assertEqual(claim['reported_id'], 'REQ-1-2#1')
++        self.assertEqual(claim['source_descriptions'], [{'requirement': 'REQ-1-1',
++            'description': 'The home page has a button named “Add note” and a text box labeled “Note title”.'}])
++        self.assertEqual(self.path.read_text(), self.original.replace(self.skip, self.replacement))
++
++    def test_undeclared_ui_flow_is_rejected_before_a_single_grounded_correction(self):
++        good, usage, finish = self.complete(testgen.request(REQUIREMENTS, testgen.plan(REQUIREMENTS)[0]) +
++                                             [{'role': 'assistant', 'content': self.original}])
++        replies = iter([good.replace("name:'Add note'", "name:'Invented workflow'"), good])
++        messages = []
++        def complete(prompt):
++            messages.append(prompt.copy())
++            return next(replies), usage, finish
++        result = testgen.recover_skipped(REQUIREMENTS, self.suite, complete)
++        self.assertEqual(result['recovered_scenarios'], 1)
++        self.assertEqual(len(messages), 2)
++        self.assertIn('Invented workflow', messages[-1][-1]['content'])
++        self.assertEqual(self.path.read_text(), self.original.replace(self.skip, self.replacement))
++
++
+ def result(status, message="", line=None, file="t01-REQ-1.spec.cjs", snippet=""):
+     error = {"message": message, "stack": message, "snippet": snippet}
+     if line:

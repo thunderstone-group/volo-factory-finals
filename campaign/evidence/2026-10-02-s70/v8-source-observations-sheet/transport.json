@@ -1,0 +1,18 @@
+[
+  {
+    "request_sha256": "aff7ba9612e00c19cf24eac9342777cd194f883d7ac3f009cfc37736cc97d40e",
+    "request_bytes": 130370,
+    "http_status": 200,
+    "curl_exit": 0,
+    "seconds": 491.02,
+    "bytes": 38269353
+  },
+  {
+    "request_sha256": "01b7579d0bcc79d243d6add3c7a45a5ab1b3779fa00788bc08995c034b4714c8",
+    "request_bytes": 149649,
+    "http_status": 200,
+    "curl_exit": 0,
+    "seconds": 132.69,
+    "bytes": 10388315
+  }
+]

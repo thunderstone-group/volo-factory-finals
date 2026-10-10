@@ -1,0 +1,332 @@
+{
+ "files": [
+  {
+   "file": "t02-REQ-2.spec.cjs",
+   "scenarios": [
+    "REQ-2-1-1",
+    "REQ-2-1-1#2",
+    "REQ-2-1-2",
+    "REQ-2-1-2#2",
+    "REQ-2-1-2#3",
+    "REQ-2-2-1",
+    "REQ-2-2-1#2",
+    "REQ-2-2-2",
+    "REQ-2-2-2#2",
+    "REQ-2-2-3",
+    "REQ-2-2-3#2",
+    "REQ-2-2-4",
+    "REQ-2-2-4#2",
+    "REQ-2-3",
+    "REQ-2-3#2"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-2-1-1: REQ-2-1-1: Browse Organization Repositories - Scenario 1",
+    "REQ-2-1-1#2: REQ-2-1-1: Browse Organization Repositories - Scenario 2",
+    "REQ-2-1-2: REQ-2-1-2: Create an Organization After Authentication - Scenario 1",
+    "REQ-2-1-2#2: REQ-2-1-2: Create an Organization After Authentication - Scenario 2",
+    "REQ-2-1-2#3: REQ-2-1-2: Create an Organization After Authentication - Scenario 3",
+    "REQ-2-2-1: REQ-2-2-1: Create an Organization Team - Scenario 1",
+    "REQ-2-2-1#2: REQ-2-2-1: Create an Organization Team - Scenario 2",
+    "REQ-2-2-2: REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 1",
+    "REQ-2-2-2#2: REQ-2-2-2: Manage Organization Team Members and Hierarchy - Scenario 2",
+    "REQ-2-2-3: REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 1",
+    "REQ-2-2-3#2: REQ-2-2-3: Directly Add a User as an Organization Member - Scenario 2",
+    "REQ-2-2-4: REQ-2-2-4: Remove a Member from an Organization - Scenario 1",
+    "REQ-2-2-4#2: REQ-2-2-4: Remove a Member from an Organization - Scenario 2",
+    "REQ-2-3: REQ-2-3: Grant Repository Access to People and Teams - Scenario 1",
+    "REQ-2-3#2: REQ-2-3: Grant Repository Access to People and Teams - Scenario 2",
+    "REQ-2-1-2#audit-1: Organization creation validates duplicate/missing and malformed identifiers",
+    "REQ-2-2-3#audit-1: Add member reports unknown and duplicate accounts",
+    "REQ-2-2-3#audit-2: Ordinary member sees organization but not an ungranted private repository",
+    "REQ-2-3#audit-1: Team member with Write grant opens the private repository"
+   ],
+   "audit": {
+    "claims": [
+     {
+      "id": "REQ-2-1-2#audit-1",
+      "requirement": "REQ-2-1-2",
+      "quote": "Submitting an existing identifier must show “Organization name already exists” even when the display name is also missing; it must not navigate to a heading for the existing organization. The malformed identifier “-invalid-organization” and a whitespace-only display name are rejected with the applicable field error.",
+      "gap": "Existing tests create a unique organization and verify success, but never submit the duplicate identifier with missing display name or the malformed identifier/whitespace display name, so those field errors and non-creation remain unestablished."
+     },
+     {
+      "id": "REQ-2-2-3#audit-1",
+      "requirement": "REQ-2-2-3",
+      "quote": "an existing member displays “Account is already a member”, and the unknown username `unknown-reviewer` displays “Account not found”",
+      "gap": "Existing add-member tests only cover the happy path and never exercise the duplicate or unknown-account failure messages or the unchanged single row."
+     },
+     {
+      "id": "REQ-2-2-3#audit-2",
+      "requirement": "REQ-2-2-3",
+      "quote": "A separately signed-in new member sees the organization identifier as complete visible text in Your organizations, while an ungranted private repository shows “Access denied”.",
+      "gap": "Add-member success tests verify membership and Your organizations but never open an ungranted private repository, so the rule that ordinary membership grants no private access is not established."
+     },
+     {
+      "id": "REQ-2-3#audit-1",
+      "requirement": "REQ-2-3",
+      "quote": "A private repository is accessible only to an organization Owner, a member with a direct repository role, or a direct member of a team that has a repository role; an ordinary organization Member has no default private-repository access.",
+      "gap": "Access-grant tests only verify the authorization list row; they never sign in a team member and open the private repository, so the resulting actual read access is unestablished."
+     }
+    ],
+    "calls": 1,
+    "rejected": [
+     {
+      "id": "REQ-2-2-2#audit-1",
+      "reason": "quote is not a verbatim requirement description excerpt"
+     },
+     {
+      "id": "REQ-2-2-4#audit-1",
+      "reason": "quote is not a verbatim requirement description excerpt"
+     }
+    ]
+   }
+  },
+  {
+   "file": "t06-REQ-6.spec.cjs",
+   "scenarios": [
+    "REQ-6-1",
+    "REQ-6-1#2",
+    "REQ-6-1#3",
+    "REQ-6-2-1",
+    "REQ-6-2-1#2",
+    "REQ-6-2-1#3",
+    "REQ-6-2-2",
+    "REQ-6-2-2#2",
+    "REQ-6-2-3",
+    "REQ-6-2-3#2",
+    "REQ-6-2-4",
+    "REQ-6-2-4#2",
+    "REQ-6-3-1",
+    "REQ-6-3-1#2",
+    "REQ-6-3-1#3",
+    "REQ-6-3-2",
+    "REQ-6-3-3",
+    "REQ-6-3-3#2",
+    "REQ-6-3-4",
+    "REQ-6-3-4#2",
+    "REQ-6-4",
+    "REQ-6-5",
+    "REQ-6-5#2",
+    "REQ-6-6",
+    "REQ-6-6#2"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 1",
+    "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 2",
+    "REQ-6-1: Protect Branches with Review and Status-Check Requirements - Scenario 3",
+    "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 1",
+    "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 2",
+    "REQ-6-2-1: List and Filter Repository Pull Requests - Scenario 3",
+    "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+    "REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 2",
+    "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 1",
+    "REQ-6-2-3: Create a Pull Request from Comparison Results - Scenario 2",
+    "REQ-6-2-4: Create a Draft Pull Request - Scenario 1",
+    "REQ-6-2-4: Create a Draft Pull Request - Scenario 2",
+    "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 1",
+    "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 2",
+    "REQ-6-3-1: View Pull Request Overview and Commits - Scenario 3",
+    "REQ-6-3-2: Inspect Changed Files and Aggregate Diff - Scenario 1",
+    "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 1",
+    "REQ-6-3-3: Add Review Comments to Changed Code Lines - Scenario 2",
+    "REQ-6-3-4: Submit a Pull Request Review - Scenario 1",
+    "REQ-6-3-4: Submit a Pull Request Review - Scenario 2",
+    "REQ-6-4: Request or Remove Pull Request Reviewers - Scenario 1",
+    "REQ-6-5: Merge an Eligible Pull Request - Scenario 1",
+    "REQ-6-5: Merge an Eligible Pull Request - Scenario 2",
+    "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 1",
+    "REQ-6-6: Close or Reopen a Pull Request Without Merging - Scenario 2",
+    "REQ-6-1#audit-1: protected branch rejects a direct file commit",
+    "REQ-6-2-2#audit-1: Read-only signed-in user cannot start comparison flow",
+    "REQ-6-2-3#audit-1: duplicate source/target pair does not create another PR",
+    "REQ-6-3-3#audit-1: pending inline review is not shown in Conversation",
+    "REQ-6-3-4#audit-1: PR author cannot submit a review on own PR"
+   ],
+   "audit": {
+    "claims": [
+     {
+      "id": "REQ-6-1#audit-1",
+      "requirement": "REQ-6-1",
+      "quote": "The system blocks direct writes to a protected branch and applies the rule during subsequent PR merging.",
+      "gap": "The existing protection test creates a rule and sets a check but never attempts a direct write to the protected branch, so the rule's blocking effect is not established."
+     },
+     {
+      "id": "REQ-6-2-2#audit-1",
+      "requirement": "REQ-6-2-2",
+      "quote": "Only signed-in users with Write, Maintain, Admin, or organization Owner status may compare branches on the repository pull-request page; Read and Triage may view existing PRs but cannot enter the creation-comparison flow.",
+      "gap": "All comparison tests sign in as an Admin; a Read/Triage user is never shown to lack the creation-comparison entry."
+     },
+     {
+      "id": "REQ-6-2-3#audit-1",
+      "requirement": "REQ-6-2-3",
+      "quote": "if there is no difference, the branches are the same, a Draft or Open PR with the same source/target pair already exists, the title is empty or overlong, the user lacks permission, or submission fails, no record is created.",
+      "gap": "Existing creation tests never submit a second PR for the same source/target pair, so the duplicate-pair rejection and the 'no record is created' guarantee are not established."
+     },
+     {
+      "id": "REQ-6-3-3#audit-1",
+      "requirement": "REQ-6-3-3",
+      "quote": "Start a review displays the body and Pending review to its author immediately, retains the pending draft after reload, and does not make it public before review submission.",
+      "gap": "Existing inline-comment tests verify the pending comment in Files changed but never verify that it is absent from Conversation before review submission."
+     },
+     {
+      "id": "REQ-6-3-4#audit-1",
+      "requirement": "REQ-6-3-4",
+      "quote": "A user who is not the PR author and has Write, Maintain, or Admin may submit Comment, Approve, or Request changes on an Open PR; the author and Draft PRs cannot submit reviews.",
+      "gap": "Existing review tests only submit as a reviewer; no test checks that the author of a freshly created PR cannot use the review submission entry."
+     }
+    ],
+    "calls": 1
+   }
+  }
+ ],
+ "scenarios": 40,
+ "tests": 49,
+ "seconds": 881.6,
+ "prerequisites": "",
+ "cost_cny": 2.5762,
+ "usage": [
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 64071,
+   "prompt_tokens": 64071,
+   "known_completion_tokens": 34830,
+   "completion_tokens": 34830,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.505683,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 64084,
+   "prompt_tokens": 64084,
+   "known_completion_tokens": 45859,
+   "completion_tokens": 45859,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.604983,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 64033,
+   "prompt_tokens": 64033,
+   "known_completion_tokens": 36139,
+   "completion_tokens": 36139,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.333977,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 64075,
+   "prompt_tokens": 64075,
+   "known_completion_tokens": 32809,
+   "completion_tokens": 32809,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.487506,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 64124,
+   "prompt_tokens": 64124,
+   "known_completion_tokens": 33274,
+   "completion_tokens": 33274,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.313662,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 64538,
+   "prompt_tokens": 64538,
+   "known_completion_tokens": 35568,
+   "completion_tokens": 35568,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.330353,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  }
+ ],
+ "audit_checks": 9,
+ "audit_seconds": 0.1
+}

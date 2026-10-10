@@ -1,0 +1,109 @@
+/* Scaffold styles. Mechanics: row actions are display:none at rest and appear on :hover/:focus-within
+   BELOW the row text (never absolutely positioned over a title); idle dialog/status roots are hidden. */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #1f2328; background: #fff; }
+a { color: #0969da; }
+button { font: inherit; cursor: pointer; }
+[hidden] { display: none !important; }
+.app-header { display: flex; align-items: center; gap: 16px; padding: 10px 16px; border-bottom: 1px solid #d0d7de; }
+.app-header .brand { font-weight: 700; text-decoration: none; color: inherit; }
+.app-header nav a { margin-right: 12px; }
+.account { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.layout { display: flex; gap: 24px; padding: 16px; align-items: flex-start; }
+.sidebar { width: 200px; flex: none; order: -1; }
+.sidebar button { display: block; width: 100%; text-align: left; margin: 0 0 8px; background: none; border: 0; padding: 6px 8px; border-radius: 6px; }
+.sidebar button[aria-current="page"] { background: #ddf4ff; }
+.main { flex: 1; min-width: 0; }
+.app-footer { padding: 12px 16px; border-top: 1px solid #d0d7de; color: #57606a; font-size: 13px; }
+.row { padding: 10px; border: 1px solid #d0d7de; border-radius: 6px; margin-bottom: 8px; }
+.row-actions { display: none; gap: 8px; margin-top: 8px; }
+.row:hover .row-actions, .row:focus-within .row-actions { display: flex; }
+#dialog-root[hidden], #status-root[hidden] { display: none; }
+#dialog-root { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.35); }
+.dialog { background: #fff; padding: 16px; border-radius: 8px; min-width: 320px; max-width: 90vw; max-height: 90vh; overflow: auto; }
+#status-root { position: fixed; left: 16px; bottom: 16px; }
+.status { background: #1f2328; color: #fff; padding: 10px 14px; border-radius: 6px; display: flex; gap: 12px; align-items: center; }
+form label { display: block; margin: 8px 0 4px; }
+input, textarea, select { font: inherit; padding: 6px 8px; width: 100%; max-width: 480px; }
+.app-header .brand-logo { display: inline-flex; align-items: center; background: none; border: 0; padding: 0 6px 0 0; color: inherit; cursor: pointer; }
+.app-footer .landmarks { opacity: 0.6; font-size: 0.85em; margin-left: 8px; }
+.popover { position: relative; z-index: 5; display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; margin-top: 4px; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+.popover button { display: inline-block; }
+.combobox { position: relative; display: inline-block; }
+.combobox [role="combobox"] { min-width: 120px; text-align: left; }
+.listbox { position: absolute; z-index: 6; left: 0; top: 100%; min-width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.12); padding: 4px 0; }
+.listbox [role="option"] { padding: 4px 10px; cursor: pointer; white-space: nowrap; }
+.listbox [role="option"]:hover, .listbox [role="option"][aria-selected="true"] { background: #eef; }
+
+/* --- application additions --- */
+img, svg { max-width: 100%; }
+h1 { font-size: 24px; margin: 8px 0 12px; }
+h2 { font-size: 18px; margin: 20px 0 8px; }
+h3 { font-size: 15px; margin: 8px 0 4px; }
+.muted { color: #57606a; font-size: 13px; }
+.msg { font-size: 14px; margin: 6px 0; }
+.msg.error { color: #b42318; }
+.msg.ok { color: #067647; }
+.global-search { display: inline-block; }
+.global-search input { width: 200px; }
+.who { font-weight: 600; }
+.repo-nav, .org-nav, .pr-nav, .team-nav, .settings-nav, .issue-filters, .pr-filters, .search-nav { display: flex; gap: 12px; margin: 12px 0; padding-bottom: 6px; border-bottom: 1px solid #d0d7de; }
+.marker { display: inline-block; border: 1px solid #d0d7de; border-radius: 2em; padding: 1px 8px; font-size: 12px; color: #57606a; }
+.repo-card, .org-card, .issue-row, .pr-row, .commit-row, .comment, .review, .member-row, .team-row, .protection-row, .check-row, .access-row, .search-hit, .entry, .release-row, .session-row {
+  border: 1px solid #d0d7de; border-radius: 6px; margin: 8px 0; padding: 8px 10px;
+}
+.entry { padding: 4px 8px; }
+.crumbs { font-size: 13px; color: #57606a; }
+.file-content { background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; padding: 10px; overflow: auto; white-space: pre-wrap; }
+.snippet { background: #f6f8fa; padding: 6px; white-space: pre-wrap; }
+.state { font-weight: 600; }
+.status-line { font-weight: 600; }
+.label { display: inline-block; background: #ddf4ff; border: 1px solid #b6e3ff; border-radius: 2em; padding: 0 8px; font-size: 12px; }
+.chip { display: inline-block; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 2em; padding: 0 8px; margin-right: 6px; font-size: 12px; }
+.chip button { font-size: 12px; border: 0; background: none; color: #0969da; padding: 0 0 0 6px; }
+.add { color: #067647; }
+.del { color: #b42318; }
+.description { white-space: pre-wrap; }
+.code { font-family: ui-monospace, monospace; font-size: 18px; font-weight: 700; }
+.code-toolbar { display: flex; gap: 8px; align-items: center; margin: 10px 0; flex-wrap: wrap; }
+.clone-url { font-family: ui-monospace, monospace; font-size: 13px; word-break: break-all; }
+.confirm { border: 1px dashed #d0d7de; border-radius: 6px; padding: 8px; margin: 8px 0; }
+.check, .radio { display: block; margin: 6px 0; font-weight: 400; }
+.check input, .radio input { width: auto; max-width: none; display: inline-block; margin-right: 6px; }
+.feed { list-style: none; padding-left: 0; }
+.feed li { padding: 4px 0; border-bottom: 1px solid #eaeef2; }
+.member-list { list-style: none; padding-left: 0; }
+.member-list li { padding: 4px 0; }
+.member-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.member-row .row-actions { display: flex; margin-top: 0; }
+.row-actions { display: none; }
+.popover .listbox { position: static; border: 0; box-shadow: none; padding: 0; }
+#dialog-root .listbox { position: static; max-height: 240px; overflow: auto; width: 100%; max-width: 480px; }
+.popover label { margin: 4px 0 2px; }
+.issue-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.chips { display: inline-flex; gap: 4px; align-items: center; }
+.access-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.access-row form { display: flex; gap: 6px; align-items: center; }
+.access-row .combobox label { display: inline-block; margin: 0 4px 0 0; }
+.summary { font-family: ui-monospace, monospace; }
+.merginfo { font-weight: 600; }
+.quick-links { font-size: 15px; }
+.quick-links a { margin-right: 12px; }
+.menu-host { position: relative; display: inline-block; }
+.access-table { border-collapse: collapse; margin: 10px 0; }
+.access-table th, .access-table td { border: 1px solid #d0d7de; padding: 6px 10px; text-align: left; vertical-align: middle; }
+.access-table .role { font-weight: 600; }
+.commit-files { margin: 4px 0 0; }
+.merge-method { margin: 8px 0; }
+.forked { font-size: 13px; color: #57606a; }
+.file-content mark { background: #fff3b0; }
+.signed-out { font-size: 15px; }
+.reactions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.reaction-type { font-weight: 600; }
+.reaction-count { color: #57606a; font-size: 13px; }
+.session-row .device { font-size: 16px; margin: 0 0 4px; }
+.session-flags { margin: 4px 0; }
+.audit-table { border-collapse: collapse; margin: 10px 0; }
+.audit-table th, .audit-table td { border: 1px solid #d0d7de; padding: 6px 10px; text-align: left; vertical-align: top; }
+.release-title { font-size: 16px; font-weight: 600; }
+.release-body { white-space: pre-wrap; }

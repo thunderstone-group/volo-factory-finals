@@ -1,0 +1,38 @@
+=== EDIT: frontend/public/seed.js ===
+<<<<<<< SEARCH
+    {
+      id: 'p3', repoId: 'r1', number: 3, title: 'Draft onboarding update', author: 'alice-dev',
+      base: 'main', compare: 'draft-feature', state: 'Draft',
+      body: 'Work in progress.',
+      createdAt: '2024-02-02T09:00:00.000Z',
+      changedFiles: []
+    }
+  ],
+=======
+    {
+      id: 'p3', repoId: 'r1', number: 3, title: 'Draft onboarding update', author: 'alice-dev',
+      base: 'main', compare: 'draft-feature', state: 'Draft',
+      body: 'Work in progress.',
+      createdAt: '2024-02-02T09:00:00.000Z',
+      changedFiles: []
+    },
+    {
+      id: 'p4', repoId: 'r1', number: 4, title: 'Refine release notes', author: 'bob-reviewer',
+      base: 'main', compare: 'release', state: 'Open',
+      body: 'Proposed release note update awaiting a required approval.',
+      createdAt: '2024-02-04T09:00:00.000Z',
+      changedFiles: []
+    }
+  ],
+>>>>>>> REPLACE
+=== END ===
+=== EDIT: frontend/public/seed.js ===
+<<<<<<< SEARCH
+    { id: 'ch3', prId: 'p3', name: 'test', status: 'pending', setter: '', time: '' }
+  ],
+=======
+    { id: 'ch3', prId: 'p3', name: 'test', status: 'pending', setter: '', time: '' },
+    { id: 'ch4', prId: 'p4', name: 'test', status: 'pending', setter: '', time: '' }
+  ],
+>>>>>>> REPLACE
+=== END ===

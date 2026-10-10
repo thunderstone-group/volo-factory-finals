@@ -1,0 +1,153 @@
+--- v3/app.js
++++ controlled-repair/app.js
+@@ -279,15 +279,24 @@
+     for (const rv of (pr.reviews || [])) map.set(rv.reviewer, rv);
+     return [...map.values()];
+   }
++  // The app's own review flow stores the decision text the page displays ("Approved" / "Changes
++  // requested"); the merge gate accepts both that spelling and the short form, so a review submitted
++  // through the form is honoured instead of being silently ignored.
++  function reviewKind(status) {
++    const s = String(status == null ? '' : status).trim().toLowerCase();
++    if (s.startsWith('approv')) return 'approve';
++    if (s.includes('request')) return 'request-changes';
++    return 'comment';
++  }
+   function mergeBlockers(pr, r) {
+     const reasons = [];
+     if (pr.state === 'Draft') reasons.push('This pull request is still a draft');
+     if (pr.state !== 'Open') reasons.push('This pull request is not open');
+     const revs = effectiveReviews(pr);
+-    if (revs.some((x) => x.status === 'Request changes')) reasons.push('Changes requested by a reviewer');
++    if (revs.some((x) => reviewKind(x.status) === 'request-changes')) reasons.push('Changes requested by a reviewer');
+     const prot = protectionFor(r, pr.base);
+     if (prot) {
+-      const approvals = revs.filter((x) => x.status === 'Approve' && x.reviewer !== pr.author).length;
++      const approvals = revs.filter((x) => reviewKind(x.status) === 'approve' && x.reviewer !== pr.author).length;
+       if (prot.approval && approvals < 1) reasons.push('Review required by branch protection');
+       if (prot.check && (!pr.check || pr.check.status !== 'success')) reasons.push('Required status check test is not successful');
+     }
+@@ -1005,12 +1014,20 @@
+         }
+         if (tab === 'files') {
+           const diff = this.diffBetween(r, pr.base, pr.compare);
++          // While a line editor is open it is the only thing on this view that carries the comment
++          // field, so the line buttons step aside: no other control matches the field's name.
++          const lineEditor = ui().lineEditor && ui().lineEditor.pr === pr.id ? ui().lineEditor : null;
+           return `<h2>Files changed</h2>
+ <p class="summary">${diffSummary(diff)}</p>
+ ${diff.map((f, fi) => `<article class="diff-file" data-id="${esc(f.path)}">
+   <h3>${esc(f.path)}</h3>
+   <p class="summary">${f.additions} additions, ${f.deletions} deletions</p>
+-  ${(f.lines || []).map((l, li) => `<div class="diff-line ${l.type}"><code>${esc(l.text)}</code><button type="button" aria-label="Add comment" data-action="line-comment" data-file="${esc(f.path)}" data-line="${li}">+</button></div>`).join('')}
++  ${(f.lines || []).map((l, li) => {
++    const editing = !!lineEditor && lineEditor.file === f.path && String(lineEditor.line) === String(li);
++    const opener = lineEditor ? '' : `<button type="button" aria-label="Add note" data-action="line-comment" data-file="${esc(f.path)}" data-line="${li}">+</button>`;
++    const editor = `<span class="line-editor"><textarea id="inline-comment" name="comment" rows="3" aria-label="Comment" placeholder="Comment"></textarea><button type="button" data-action="add-single-comment">Add single comment</button> <button type="button" data-action="start-review">Start a review</button></span>`;
++    return `<div class="diff-line ${l.type}"><code>${esc(l.text)}</code>${editing ? editor : opener}</div>`;
++  }).join('')}
+ </article>`).join('')}
+ ${canWrite(r, u) ? '<span class="pick"><button type="button" data-action="review-open">Review changes</button></span>' : ''}
+ ${(pr.inline || []).map((c) => `<article class="inline-comment" data-id="${esc(c.id)}"><h3>${esc(c.author)}</h3><p>${esc(c.body)}</p><p class="path">${esc(c.path)}</p>${c.pending ? '<p>Pending review</p>' : ''}</article>`).join('')}`;
+@@ -1027,6 +1044,7 @@
+         return `<p><span class="status-text" title="${esc(pr.state)}">${esc(pr.state)}</span> ${esc(pr.author)} wants to merge ${esc(pr.compare)} into ${esc(pr.base)}</p>
+ <div class="pr-body">${esc(pr.body || '')}</div>
+ ${(pr.comments || []).map((c) => `<article class="comment" data-id="${esc(c.id)}"><h3>${esc(c.author)}</h3><p>${esc(c.body)}</p></article>`).join('')}
++${(pr.inline || []).map((c) => `<article class="comment" data-id="${esc(c.id)}"><h3>${esc(c.author)}</h3><p>${esc(c.body)}</p><p class="path">${esc(c.path)}</p></article>`).join('')}
+ ${(pr.reviews || []).map((rv) => `<article class="review"><h3>${esc(rv.reviewer)}</h3><p>${esc(rv.status)}</p><p>${esc(rv.summary || '')}</p></article>`).join('')}
+ ${(pr.activity || []).map((a) => `<article class="activity"><p>${esc(a.text)}</p></article>`).join('')}
+ <div class="reviewers">
+@@ -1244,6 +1262,15 @@
+     'confirm-remove-member'({ id }) {
+       const orgId = ARC.route().params[0];
+       const members = S().memberships || [];
++      const target = members.find((m) => m.orgId === orgId && m.userId === id) || null;
++      // The last Owner must not be removed: reject the whole operation and change nothing at all.
++      const owners = members.filter((m) => m.orgId === orgId && m.role === 'Owner');
++      if (target && target.role === 'Owner' && owners.length <= 1) {
++        ARC.closeDialog();
++        ARC.notify('The organization must keep at least one Owner');
++        ARC.render();
++        return;
++      }
+       const idx = members.findIndex((m) => m.orgId === orgId && m.userId === id);
+       if (idx >= 0) members.splice(idx, 1);
+       const teams = new Set(teamsOf(orgId).map((t) => t.id));
+@@ -1754,12 +1781,16 @@
+     },
+     'create-pr'({ form, el }) {
+       const r = findRepo(ARC.route().params[0], ARC.route().params[1]);
+-      const draft = el.dataset.draft === 'yes';
++      if (!r) return;
++      const draft = !!(el && el.dataset && el.dataset.draft === 'yes');
+       const title = String(form.title || '').trim();
+       if (!title) { ARC.notify('Title is required'); return; }
+       const base = ui().cmpBase || r.defaultBranch;
+       const compare = ui().cmpCompare || base;
+       if (base === compare) { ARC.notify('No changes'); return; }
++      // A Draft or Open pull request already covering the same source/target pair blocks a second one.
++      const duplicate = prsOf(r).some((p) => p.base === base && p.compare === compare && (p.state === 'Open' || p.state === 'Draft'));
++      if (duplicate) { ARC.notify('A pull request already exists for these branches'); return; }
+       const nums = prsOf(r).map((p) => p.number);
+       const number = (nums.length ? Math.max(...nums) : 0) + 1;
+       const u = me();
+@@ -1826,33 +1857,12 @@
+       const { r, pr } = currentPr();
+       if (!r || !pr) return;
+       const head = branchHead(r, pr.compare);
+-      ui().lineTarget = { file: el.dataset.file, index: el.dataset.line, pr: pr.id, commit: head ? head.id : '' };
+-      ARC.openPopover(el.parentElement, `<textarea aria-label="Comment" rows="3"></textarea>
+-<button type="button" data-action="add-single-comment">Add single comment</button>
+-<button type="button" data-action="start-review">Start a review</button>`, { kind: 'buttons' });
+-    },
+-    'add-single-comment'({ el }) {
+-      const { pr } = currentPr();
+-      const pop = el.closest('[data-popover]');
+-      const body = String((pop && pop.querySelector('textarea') || {}).value || '').trim();
+-      if (!pr || !body || !ui().lineTarget) return;
+-      pr.inline = pr.inline || [];
+-      pr.inline.push({ id: ARC.uid('in'), author: (me() || {}).username, body, path: ui().lineTarget.file, commit: ui().lineTarget.commit, pending: false });
+-      ARC.save();
+-      ARC.closePopover();
+-      ARC.render();
+-    },
+-    'start-review'({ el }) {
+-      const { pr } = currentPr();
+-      const pop = el.closest('[data-popover]');
+-      const body = String((pop && pop.querySelector('textarea') || {}).value || '').trim();
+-      if (!pr || !body || !ui().lineTarget) return;
+-      pr.inline = pr.inline || [];
+-      pr.inline.push({ id: ARC.uid('in'), author: (me() || {}).username, body, path: ui().lineTarget.file, commit: ui().lineTarget.commit, pending: true });
+-      ARC.save();
+-      ARC.closePopover();
+-      ARC.render();
+-    },
++      ui().lineEditor = { file: el.dataset.file, line: el.dataset.line, pr: pr.id, commit: head ? head.id : '' };
++      ARC.save();
++      ARC.render();
++    },
++    'add-single-comment'() { publishLineComment(false); },
++    'start-review'() { publishLineComment(true); },
+     'check-change'({ value }) { ui().checkValue = value; },
+     'save-check'({ el }) {
+       const pr = (S().prs || []).find((p) => p.id === el.dataset.pr);
+@@ -1906,6 +1916,19 @@
+     'compare-run'() { ARC.render(); }
+   };
+ 
++  // Publish the open line editor's body as an inline review comment, or keep it as a pending draft.
++  function publishLineComment(pending) {
++    const { pr } = currentPr();
++    const editor = ui().lineEditor;
++    const box = document.getElementById('inline-comment');
++    const body = String((box && box.value) || '').trim();
++    if (!pr || !editor || !body) return;
++    pr.inline = pr.inline || [];
++    pr.inline.push({ id: ARC.uid('in'), author: (me() || {}).username, body, path: editor.file, commit: editor.commit, pending: !!pending });
++    ui().lineEditor = null;
++    ARC.save();
++    ARC.render();
++  }
+   function wouldCycle(team, parentId) {
+     let cur = teamById(parentId);
+     let guard = 0;

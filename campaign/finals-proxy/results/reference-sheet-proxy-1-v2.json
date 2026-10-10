@@ -1,0 +1,269 @@
+{
+  "task": "sheet",
+  "app_dir": "~/projects/arcbench-campaign/finals-proxy/reference/sheet-app",
+  "app_sha256": "d95a204e528af77fd8ee46bd901997817546123cc24c120d295d9399d053667d",
+  "frozen_manifest_sha256": "b3df877dcbfe91b2bdaa4eb2abd7d6c48e0b9a22700c5a739bd649b6651e9596",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "EV-1.1: Calculate IF with a comparison",
+      "file": "01-EV-1.1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3579,
+      "error": null
+    },
+    {
+      "name": "EV-1.2: Count matching values with COUNTIF",
+      "file": "02-EV-1.2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2877,
+      "error": null
+    },
+    {
+      "name": "EV-1.3: Sum matching rows with SUMIF",
+      "file": "03-EV-1.3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2882,
+      "error": null
+    },
+    {
+      "name": "EV-1.4: Recover from formula errors with IFERROR",
+      "file": "04-EV-1.4.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3116,
+      "error": null
+    },
+    {
+      "name": "EV-1.5: Recalculate cross-worksheet references",
+      "file": "05-EV-1.5.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3071,
+      "error": null
+    },
+    {
+      "name": "EV-1.6: Sort by a secondary column",
+      "file": "06-EV-1.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3472,
+      "error": null
+    },
+    {
+      "name": "EV-1.7: Allow invalid input with a validation warning",
+      "file": "07-EV-1.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3444,
+      "error": null
+    },
+    {
+      "name": "EV-1.8: Paste only calculated values",
+      "file": "08-EV-1.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3377,
+      "error": null
+    },
+    {
+      "name": "EV-1.9: Undo and redo a worksheet rename",
+      "file": "09-EV-1.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2699,
+      "error": null
+    },
+    {
+      "name": "EV-1.10: Concatenate cell text in a formula",
+      "file": "10-EV-1.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2826,
+      "error": null
+    },
+    {
+      "name": "EV-2.1: Create a named range for formulas",
+      "file": "11-EV-2.1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2915,
+      "error": null
+    },
+    {
+      "name": "EV-2.2: Rename a named range and its references",
+      "file": "12-EV-2.2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2703,
+      "error": null
+    },
+    {
+      "name": "EV-2.3: Delete a named range without deleting data",
+      "file": "13-EV-2.3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2726,
+      "error": null
+    },
+    {
+      "name": "EV-2.4: Find case-sensitive text",
+      "file": "14-EV-2.4.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2340,
+      "error": null
+    },
+    {
+      "name": "EV-2.5: Replace all text on the active worksheet",
+      "file": "15-EV-2.5.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2829,
+      "error": null
+    },
+    {
+      "name": "EV-2.6: Replace text inside formulas",
+      "file": "16-EV-2.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2838,
+      "error": null
+    },
+    {
+      "name": "EV-2.7: Duplicate a worksheet independently",
+      "file": "17-EV-2.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3209,
+      "error": null
+    },
+    {
+      "name": "EV-2.8: Hide a worksheet without losing its data",
+      "file": "18-EV-2.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2254,
+      "error": null
+    },
+    {
+      "name": "EV-2.9: Show a hidden worksheet",
+      "file": "19-EV-2.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2308,
+      "error": null
+    },
+    {
+      "name": "EV-2.10: Move a worksheet left",
+      "file": "20-EV-2.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2206,
+      "error": null
+    },
+    {
+      "name": "EV-3.1: Attach a note to a cell",
+      "file": "21-EV-3.1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2782,
+      "error": null
+    },
+    {
+      "name": "EV-3.2: Edit then remove a cell note",
+      "file": "22-EV-3.2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2785,
+      "error": null
+    },
+    {
+      "name": "EV-3.3: Trim whitespace only in the selection",
+      "file": "23-EV-3.3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10210,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByLabel('Formula bar', { exact: true })\nExpected: \"North East\"\nReceived: \"  Outside  \"\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 10000ms\n  - waiting for getByLabel('Formula bar', { exact: true })\n    10 × locator resolved to <input type=\"text\" name=\"formula\" id=\"formula-bar\" value=\"  Outside  \" placeholder=\"Formula bar\" data-change=\"formula-dirty\"/>\n       - unexpected value \"  Outside  \"\n\n\n  49 |   await visible(named(named(page, \"grid\", \"Worksheet grid\"), \"gridcell\", \"A1\")); await expect(named(named(page, \"grid\", \"Worksheet grid\"), \"gridcell\", \"A1\")).toHaveText(\"North East\");\n  50 |   // THEN: The \"Formula bar\" field in the current page displays \"North East\".\n> 51 |   await visible(field(page, \"Formula bar\")); await expect(field(page, \"Formula bar\")).toHaveValue(\"North East\");\n     |                                                                                       ^\n  52 | });\n  53 |\n    at /proxy/sheet/tests/23-EV-3.3.spec.ts:51:87"
+    },
+    {
+      "name": "EV-3.4: Split a selected column by a delimiter",
+      "file": "24-EV-3.4.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3896,
+      "error": null
+    },
+    {
+      "name": "EV-3.5: Remove duplicate records from a range",
+      "file": "25-EV-3.5.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3552,
+      "error": null
+    },
+    {
+      "name": "EV-3.6: Freeze the top worksheet row",
+      "file": "26-EV-3.6.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2595,
+      "error": null
+    },
+    {
+      "name": "EV-3.7: Hide a column without deleting its values",
+      "file": "27-EV-3.7.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2383,
+      "error": null
+    },
+    {
+      "name": "EV-3.8: Show a hidden column",
+      "file": "28-EV-3.8.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2289,
+      "error": null
+    },
+    {
+      "name": "EV-3.9: Toggle display of formula expressions",
+      "file": "29-EV-3.9.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2676,
+      "error": null
+    },
+    {
+      "name": "EV-3.10: Make an independent workbook copy",
+      "file": "30-EV-3.10.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3266,
+      "error": null
+    }
+  ],
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 98.702,
+  "container_exit_code": 1,
+  "passed": 29,
+  "failed": 1,
+  "total": 30,
+  "wall_seconds": 102.35
+}

@@ -1,0 +1,34 @@
+/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 32: 68618 Terminated: 15          ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 46/48
+--- timedOut: REQ-2-2-1 S5: 插入行时校验规则随原单元格下移
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'B2', exact: true })
+    Expected: "101"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'B2', exact: true })
+        13 × locator resolved to <td tabindex="-1" role="gridcell" aria-label="B2" data-coord="B2" class="selected" aria-selected="true">…</td>
+           - unexpected value ""
+      332 |   // The new blank row has no rule; the rule moved to B3 together with its value.
+      333 |   await setCell(page, 'B2', '101');
+    > 334 |   await expect(cell(page, 'B2')).toHaveText('101');
+          |                                  ^
+      335 |   await setCell(page, 'B3', '101');
+--- timedOut: REQ-2-2-2 S5: 插入列时校验规则随原单元格右移
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'B2', exact: true })
+    Expected: "101"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'B2', exact: true })
+        13 × locator resolved to <td tabindex="-1" role="gridcell" aria-label="B2" data-coord="B2" class="selected" aria-selected="true">…</td>
+           - unexpected value ""
+      324 |   // The new blank column has no rule; the rule moved to C2 together with its value.
+      325 |   await setCell(page, 'B2', '101');
+    > 326 |   await expect(cell(page, 'B2')).toHaveText('101');
+          |                                  ^
+      327 |   await setCell(page, 'C2', '101');

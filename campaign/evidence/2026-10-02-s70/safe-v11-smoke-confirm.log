@@ -1,0 +1,148 @@
+test_a_call_refused_before_any_byte_costs_nothing (test_smoke.SmokeCase) ... ok
+test_a_cut_repair_is_rejected_whole_while_a_cut_draft_is_kept (test_smoke.SmokeCase) ... [oneshot] call 1 was cut (StreamError) after 1547 characters; keeping its complete file blocks
+[oneshot] the output was cut off inside `frontend/public/app.js`; continuing
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.05288, "reason": "model stream failed (StreamError)"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "global model failure limit reached (2)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0529}
+ok
+test_a_failed_translation_is_not_retried_within_the_loop (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 3.5, "cost_cny": 0.051327, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 7.0, "repair_cny": 0.0513}
+ok
+test_a_gain_the_recheck_does_not_confirm_is_no_gain (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.051327, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 6.9, "repair_cny": 0.0513}
+ok
+test_a_load_failure_only_jsdom_reports_is_a_hint_when_chromium_renders_the_app (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 0.1, "cost_cny": 0.051305, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.1, "repair_cny": 0.0513}
+ok
+test_a_lost_scenario_that_passes_on_the_recheck_does_not_block_the_repair (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 2}, "seconds": 3.5, "cost_cny": 0.051818, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 2}, "failing": [], "errors": [], "seconds": 7.0, "repair_cny": 0.0518}
+ok
+test_a_real_port_collision_is_retried_without_a_model_repair (test_smoke.SmokeCase) ... ok
+test_a_recheck_that_cannot_run_is_the_checkers_failure_not_the_models (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"error": 1}, "seconds": 3.5, "cost_cny": 0.051327, "reason": "the scenario recheck could not run: Chromium is unavailable (browser): synthetic"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"error": 1}, "seconds": 3.5, "cost_cny": 0.051327, "reason": "the scenario recheck could not run: Chromium is unavailable (browser): synthetic"}
+[oneshot] repair end {"rounds": 2, "accepted": 0, "stopped": "repair call limit reached (2)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 10.5, "repair_cny": 0.1027}
+ok
+test_a_repair_that_breaks_a_passing_scenario_is_discarded_and_the_next_request_says_why (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 3.5, "cost_cny": 0.051808, "reason": "the change broke 1 passing scenario(s): REQ-1, and fixed only 1"}
+[oneshot] repair round {"round": 2, "accepted": true, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 2}, "seconds": 3.5, "cost_cny": 0.052949, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 2, "accepted": 1, "stopped": null, "counts_after": {"pass": 2}, "failing": [], "errors": [], "seconds": 10.5, "repair_cny": 0.1048}
+ok
+test_a_repair_that_gains_three_scenarios_per_lost_one_is_kept (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 3, "passing_before": 1, "counts_after": {"fail": 1, "pass": 3}, "seconds": 3.5, "cost_cny": 0.053137, "reason": "3 more scenario(s) pass, 1 lost"}
+[oneshot] repair round {"round": 2, "accepted": true, "failing_before": 1, "passing_before": 3, "counts_after": {"pass": 4}, "seconds": 3.5, "cost_cny": 0.0581, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 2, "accepted": 2, "stopped": null, "counts_after": {"pass": 4}, "failing": [], "errors": [], "seconds": 10.5, "repair_cny": 0.1112}
+ok
+test_a_repair_that_makes_a_clean_static_gate_flag_is_discarded (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 3.5, "cost_cny": 0.069353, "reason": "a static gate that was clean now flags: backend registers no process.on('uncaughtException' / 'unhandledRejection') handler: one thrown request handler ends the Node process and every later test fails"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 7.0, "repair_cny": 0.0694}
+ok
+test_a_repair_that_revives_a_dead_application_is_kept_although_it_renames_a_quoted_control (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {}, "seconds": 0.1, "cost_cny": 0.052734, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0527}
+ok
+test_a_revived_application_is_kept_although_the_scenario_recheck_could_not_run (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.051759, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "the scenario check could not run: RuntimeError: synthetic executor crash", "counts_after": null, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0518}
+[oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.051928, "reason": "the scenario recheck could not run: RuntimeError: synthetic executor crash"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.0, "repair_cny": 0.0519}
+ok
+test_a_scenario_that_did_not_fail_before_is_no_gain (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1, "pass": 2}, "seconds": 3.5, "cost_cny": 0.051489, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1, "error": 1, "unparsed": 1}, "failing": ["REQ-1"], "errors": ["REQ-2"], "seconds": 7.0, "repair_cny": 0.0515}
+ok
+test_a_scenario_that_fails_after_a_syntax_fix_gets_the_next_repair (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {"fail": 1, "pass": 1}, "seconds": 3.5, "cost_cny": 0.053093, "reason": "the application works again"}
+[oneshot] repair round {"round": 2, "accepted": true, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 2}, "seconds": 3.5, "cost_cny": 0.05867, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 2, "accepted": 2, "stopped": null, "counts_after": {"pass": 2}, "failing": [], "errors": [], "seconds": 7.2, "repair_cny": 0.1118}
+ok
+test_call_cost_reads_cache_hits_and_estimates_a_cut_stream (test_smoke.SmokeCase) ... ok
+test_cli_prints_smoke_summary_without_the_key (test_smoke.SmokeCase) ... ok
+test_click_handler_that_throws_is_reported_when_jsdom_is_available (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+ok
+test_crashing_backend_with_failed_repair_keeps_original_delivery (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.7, "cost_cny": 0.074484, "reason": "the application is still broken as a whole: backend `node server.js` exited with code 1 before answering GET /api/health: /private/var/folders/j8/60kxyby16mzdsdsy73k7w4bc0000gn/T/tmp668urxfh/.oneshot-"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": null, "failing": [], "errors": [], "seconds": 1.3, "repair_cny": 0.0745}
+ok
+test_discarded_repairs_in_a_row_end_the_loop (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.051587, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.05264, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.05264, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 4, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.5, "cost_cny": 0.05264, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 4, "accepted": 0, "stopped": "4 repairs in a row were discarded", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 17.6, "repair_cny": 0.2095}
+ok
+test_exact_name_gate_flags_decorated_quoted_names (test_smoke.SmokeCase) ... ok
+test_family_level_and_static_problems_alone_do_not_trigger_a_repair (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+ok
+test_frontend_that_fetches_its_data_on_load_is_not_a_script_error (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+ok
+test_frontend_that_throws_on_load_is_reported_when_jsdom_is_available (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+ok
+test_good_application_passes_without_repair (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+ok
+test_interrupted_repair_retries_same_request_without_publishing_partial_files (test_smoke.SmokeCase) ... [oneshot] call 2 failed; bounded retry in 0 s
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {}, "seconds": 3.6, "cost_cny": 0.051735, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 12.1, "repair_cny": 0.0517}
+ok
+test_layout_words_do_not_force_a_full_homepage_layout (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+ok
+test_literal_presence_diagnostics_do_not_become_repair_goals (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 3.6, "cost_cny": 0.053165, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 7.1, "repair_cny": 0.0532}
+ok
+test_missing_asset_referenced_by_index_is_reported (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.6, "repair_cny": 0}
+ok
+test_port_collision_retries_are_bounded_and_other_startup_errors_are_not_retried (test_smoke.SmokeCase) ... ok
+test_readonly_input_is_not_a_defect_without_a_requirement_to_edit_it (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.5, "repair_cny": 0}
+ok
+test_regressing_followup_keeps_the_prior_accepted_application (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {"fail": 1}, "seconds": 3.6, "cost_cny": 0.052769, "reason": "the application works again"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 1, "passing_before": 0, "counts_after": null, "seconds": 0.1, "cost_cny": 0.056306, "reason": "no follow-up for the syntax problem: repair call limit reached (2)"}
+[oneshot] repair end {"rounds": 2, "accepted": 1, "stopped": "repair call limit reached (2)", "counts_after": {"fail": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 3.8, "repair_cny": 0.1091}
+ok
+test_removing_a_decoration_from_a_quoted_name_is_not_a_rename (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.1, "cost_cny": 0.053392, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0534}
+ok
+test_rendered_control_name_survives_a_move_from_html_to_menu_data (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.1, "cost_cny": 0.053666, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0537}
+ok
+test_repair_retry_stops_at_the_shared_failure_budget (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": "model stream failed (StreamError)"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "global model failure limit reached (1)", "counts_after": null, "failing": [], "errors": [], "seconds": 8.4, "repair_cny": 0.0}
+ok
+test_repair_that_escapes_the_application_root_is_rejected (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.050754, "reason": "path escapes the output directory: ../escape.js"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair round {"round": 4, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair round {"round": 5, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair round {"round": 6, "accepted": false, "failing_before": 0, "passing_before": 0, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": ""}
+[oneshot] repair end {"rounds": 6, "accepted": 0, "stopped": "global model failure limit reached (5)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.7, "repair_cny": 0.0508}
+ok
+test_repair_that_removes_a_whole_app_failure_is_kept_despite_a_remaining_click_error (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {}, "seconds": 3.6, "cost_cny": 0.055901, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.8, "repair_cny": 0.0559}
+ok
+test_repair_that_renames_a_quoted_control_is_rejected (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 1, "fail": 1}, "seconds": 3.6, "cost_cny": 0.054443, "reason": "the change broke 1 passing scenario(s): REQ-2, and fixed only 1"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1, "pass": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 7.0, "repair_cny": 0.0544}
+ok
+test_replacing_the_scaffold_shell_is_a_gate_problem (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.6, "repair_cny": 0}
+ok
+test_root_404_is_repaired_and_repair_is_kept (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {}, "seconds": 3.5, "cost_cny": 0.070302, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 4.2, "repair_cny": 0.0703}
+ok
+test_runtime_text_is_not_required_to_be_one_literal_source_string (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 0, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.1, "cost_cny": 0.052868, "reason": "the application works again"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0529}
+[oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 0, "counts_after": {"pass": 1}, "seconds": 0.1, "cost_cny": 0.053297, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 1}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0533}
+ok
+test_scaffold_is_placed_shown_and_extended (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": {}, "failing": [], "errors": [], "seconds": 3.6, "repair_cny": 0}
+ok
+test_script_that_does_not_parse_is_reported_with_its_line_before_anything_is_served (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.2, "repair_cny": 0}
+ok
+test_script_that_never_returns_is_reported_not_skipped (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 4.6, "repair_cny": 0}
+ok
+test_static_gates_do_not_turn_word_overlap_or_readonly_fields_into_defects (test_smoke.SmokeCase) ... ok
+test_the_restore_swaps_by_rename_and_survives_a_failed_rename (test_smoke.SmokeCase) ... ok
+test_the_scenario_translation_call_is_on_the_ledger (test_smoke.SmokeCase) ... ok
+test_the_spend_limit_stops_the_repairs (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 0, "counts_after": {"pass": 1, "fail": 1}, "seconds": 3.5, "cost_cny": 2.38, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair spend limit reached (CNY 2.38 spent, the next call is estimated at 1.14, limit 2)", "counts_after": {"pass": 1, "fail": 1}, "failing": ["REQ-2"], "errors": [], "seconds": 7.0, "repair_cny": 2.38}
+ok
+test_unexecuted_control_observation_does_not_waive_name_preservation (test_smoke.SmokeCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 1, "fail": 1}, "seconds": 0.1, "cost_cny": 0.053563, "reason": "the change broke 1 passing scenario(s): REQ-2, and fixed only 1"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1, "pass": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.1, "repair_cny": 0.0536}
+ok
+test_without_node_the_check_is_skipped_not_failed (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": null, "counts_after": null, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0}
+ok
+test_wrong_content_type_and_bad_health_are_reported (test_smoke.SmokeCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 0.6, "repair_cny": 0}
+[oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "repair call limit reached (0)", "counts_after": null, "failing": [], "errors": [], "seconds": 8.4, "repair_cny": 0}
+ok
+
+----------------------------------------------------------------------
+Ran 51 tests in 215.381s
+
+OK

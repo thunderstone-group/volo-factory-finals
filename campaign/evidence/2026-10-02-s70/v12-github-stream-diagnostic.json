@@ -1,0 +1,12 @@
+{
+  "task": "github",
+  "transport": "transport-003.json",
+  "request_sha256": "a0612f72d2f9482f0f3707878334ea5df0276d110a7e9fd06d424092fc48cb34",
+  "size": 317237,
+  "bytes": 3493197,
+  "done": false,
+  "events": 10650,
+  "finish_reasons": [],
+  "usage": [],
+  "errors": []
+}

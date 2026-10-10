@@ -1,0 +1,14 @@
+{
+  "app": "official-github-r1",
+  "judge": "gh99",
+  "counts": {
+    "error": 23,
+    "pass": 69,
+    "fail": 10
+  },
+  "seconds": 181.5,
+  "coverage": {
+    "total": 100,
+    "parsed": 79
+  }
+}

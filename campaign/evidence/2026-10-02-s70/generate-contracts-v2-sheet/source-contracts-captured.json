@@ -1,0 +1,412 @@
+{
+ "proposed": [
+  {
+   "id": "REQ-2-2-1#contract-1",
+   "requirement": "REQ-2-2-1",
+   "explanation": "REQ-2-2-1 says that on row deletion 'rules on the target row are removed'. Fixture: the seeded workbook 'Q3 Sales'/Sheet1 (Region/Sales/Status, rows East 1200 Open, North 800 Closed, South 700 Open) with two 0-100 number rules added, one on B2 and one on B3 (minimal change; precondition confirms both reject 101 and B4 does not). Deleting the target row 3 through the editor's own rowOp steps (shiftRows/adjustFormulas/shiftRules/adjustPivotRange) leaves the B3 rule in force because shiftRules only moves endpoints strictly greater than the deleted row. B3 now holds the record that shifted up from row 4 ('700'), so entering 101 there is wrongly rejected with 'Please enter a number from 0 to 100' although the rule on the deleted row had to be removed; the B2 rule (control) is untouched.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRules",
+     "kind": "function",
+     "alias": "shiftRules"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "validationMessage",
+     "kind": "function",
+     "alias": "validationMessage"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRows",
+     "kind": "function",
+     "alias": "shiftRows"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustFormulas",
+     "kind": "function",
+     "alias": "adjustFormulas"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustPivotRange",
+     "kind": "function",
+     "alias": "adjustPivotRange"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "shiftRules",
+   "setup": "const seed = window.SEED.workbooks.find(function (w) { return w.id === 'wb-q3-sales'; });\nconst w = JSON.parse(JSON.stringify(seed));\nconst s = w.sheets[0];\ns.validations = [\n  { id: 'vr-keep', a: 'B2', b: 'B2', type: 'number', min: 0, max: 100 },\n  { id: 'vr-del', a: 'B3', b: 'B3', type: 'number', min: 0, max: 100 }\n];\nwindow.__w = w;\nwindow.__s = s;",
+   "precondition": "const s = window.__s;\nassert.strictEqual(validationMessage(s, 'B2', '101'), 'Please enter a number from 0 to 100');\nassert.strictEqual(validationMessage(s, 'B3', '101'), 'Please enter a number from 0 to 100');\nassert.strictEqual(validationMessage(s, 'B4', '101'), null);",
+   "check": "const w = window.__w;\nconst s = w.sheets[0];\nshiftRows(s, 2, -1);\nadjustFormulas(s, 2, -1, -1, 0);\nshiftRules(s, 2, -1, -1, 0);\nadjustPivotRange(w, s.id, 2, -1, -1, 0);\nassert.strictEqual(validationMessage(s, 'B2', '101'), 'Please enter a number from 0 to 100');\nassert.strictEqual(validationMessage(s, 'B3', '101'), null);",
+   "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n"
+  },
+  {
+   "id": "REQ-2-2-1#contract-2",
+   "requirement": "REQ-2-2-1",
+   "explanation": "REQ-2-2-1 requires that after a row change overlapping a pivot source range, 'Refresh pivot table' recomputes using the adjusted range, and REQ-5-3-1 requires pivot results to read only the selected source range. Fixture: the seeded 'Q3 Sales' workbook plus one pivot sheet whose source range is A1:B3 (header plus the East and North records) while row 4 (South/700) is inside the sheet but outside the selected source range; the precondition shows the pivot currently reads only East/North. Deleting row 3 (the last row of the source range) through the editor's own rowOp steps must shrink the stored range to A1:B2, but adjustPivotRange only moves endpoints strictly greater than the deleted row, so the range stays A1:B3 and the refresh summarizes the South record that was never part of the source range: a 'South' row group appears where the Grand Total row must be.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustPivotRange",
+     "kind": "function",
+     "alias": "adjustPivotRange"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "computePivot",
+     "kind": "function",
+     "alias": "computePivot"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRows",
+     "kind": "function",
+     "alias": "shiftRows"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustFormulas",
+     "kind": "function",
+     "alias": "adjustFormulas"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRules",
+     "kind": "function",
+     "alias": "shiftRules"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "adjustPivotRange",
+   "setup": "const seed = window.SEED.workbooks.find(function (w) { return w.id === 'wb-q3-sales'; });\nconst w = JSON.parse(JSON.stringify(seed));\nconst src = w.sheets[0];\nconst ps = { id: 'sh-pivot-1', name: 'Pivot1', cells: {}, sel: { a: 'A1', b: 'A1' }, filters: [], filterRange: null, validations: [], pivot: { sourceId: src.id, range: { a: 'A1', b: 'B3' }, rows: 'Region', columns: '', values: 'Sales', method: 'SUM' } };\nw.sheets.push(ps);\nwindow.__w = w;\nwindow.__s = src;\nwindow.__p = ps;",
+   "precondition": "const res = computePivot(window.__w, window.__p);\nassert.ok(res && !res.err);\nassert.strictEqual(res.cells.A1, 'Region');\nassert.strictEqual(res.cells.B1, 'SUM of Sales');\nassert.strictEqual(res.cells.A2, 'East');\nassert.strictEqual(res.cells.B2, '1200');\nassert.strictEqual(res.cells.A3, 'North');\nassert.strictEqual(res.cells.B3, '800');\nassert.strictEqual(res.cells.A4, 'Grand Total');\nassert.strictEqual(res.cells.B4, '2000');",
+   "check": "const w = window.__w;\nconst s = w.sheets[0];\nshiftRows(s, 2, -1);\nadjustFormulas(s, 2, -1, -1, 0);\nshiftRules(s, 2, -1, -1, 0);\nadjustPivotRange(w, s.id, 2, -1, -1, 0);\nconst res = computePivot(w, window.__p);\nassert.ok(res && !res.err);\nassert.strictEqual(res.cells.A2, 'East');\nassert.strictEqual(res.cells.B2, '1200');\nassert.strictEqual(res.cells.A3, 'Grand Total');\nassert.strictEqual(res.cells.B3, '1200');",
+   "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n"
+  },
+  {
+   "id": "REQ-2-2-2#contract-1",
+   "requirement": "REQ-2-2-2",
+   "explanation": "REQ-2-2-2 requires that after a column insertion 'filters continue to apply to the adjusted region'. Fixture: the seeded 'Q3 Sales'/Sheet1 with a value filter created over A1:C4 on the Status column (precondition: the two 'Open' rows are visible and the 'Closed' row is hidden). Inserting one column left of column A through the editor's own colOp steps (shiftCols/adjustFormulas/shiftRules/adjustPivotRange) shifts every record one column right, but sheet.filterRange and the stored filter column are never adjusted, so the filter keeps reading column C - now the numeric Sales column - and hides every data row, including the rows whose Status is still 'Open'.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "filterHidden",
+     "kind": "function",
+     "alias": "filterHidden"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftCols",
+     "kind": "function",
+     "alias": "shiftCols"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustFormulas",
+     "kind": "function",
+     "alias": "adjustFormulas"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRules",
+     "kind": "function",
+     "alias": "shiftRules"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustPivotRange",
+     "kind": "function",
+     "alias": "adjustPivotRange"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "filterHidden",
+   "setup": "const seed = window.SEED.workbooks.find(function (w) { return w.id === 'wb-q3-sales'; });\nconst w = JSON.parse(JSON.stringify(seed));\nconst s = w.sheets[0];\ns.filterRange = { a: 'A1', b: 'C4' };\ns.filters = [{ header: 'Status', col: 2, kind: 'values', values: ['Open'] }];\nwindow.__w = w;\nwindow.__s = s;",
+   "precondition": "const hidden = filterHidden(window.__s);\nassert.strictEqual(hidden.has(1), false);\nassert.strictEqual(hidden.has(2), true);\nassert.strictEqual(hidden.has(3), false);",
+   "check": "const w = window.__w;\nconst s = w.sheets[0];\nshiftCols(s, 0, 1);\nadjustFormulas(s, -1, 0, 0, 1);\nshiftRules(s, -1, 0, 0, 1);\nadjustPivotRange(w, s.id, -1, 0, 0, 1);\nconst hidden = filterHidden(s);\nassert.strictEqual(hidden.has(1), false);\nassert.strictEqual(hidden.has(2), true);",
+   "requirement_text": "Users insert a blank column to the left or right of a target column, or delete the target column, through the column-header menu in the current active worksheet. The column-header menu provides \"Insert 1 column left\", \"Insert 1 column right\", and \"Delete column\". On insertion, all complete data, validation rules, and formula references in the target column and subsequent columns shift right together; on deletion, subsequent columns shift left and rules on the target column are removed. Data outside the deleted column is preserved; affected formulas display the adjusted original formulas and correct results, while direct references that cannot be preserved display #REF!; filters continue to apply to the adjusted region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". After pivot-table source columns move, existing results remain unchanged until \"Refresh pivot table\" is clicked, after which the moved fields are used. If a selected header is deleted, refreshing or opening the pivot table editor displays a visible error requiring the field to be reselected and preserves the last successful result. If the operation fails, an error is shown and the grid retains the pre-operation structure immediately and after refresh.\n\nPage reference:\n![image](reference/manage-columns.png)\n"
+  }
+ ],
+ "first_execution": [
+  {
+   "id": "REQ-2-2-1#contract-1",
+   "status": "fail",
+   "calls": {
+    "shiftRules": 1,
+    "validationMessage": 2,
+    "shiftRows": 1,
+    "adjustFormulas": 1,
+    "adjustPivotRange": 1,
+    "ruleFor": 2,
+    "parseRef": 24,
+    "colIndex": 24,
+    "numRangeMessage": 2,
+    "coord": 13,
+    "colName": 13
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:10:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-2-2-1#contract-2",
+   "status": "fail",
+   "calls": {
+    "adjustPivotRange": 1,
+    "computePivot": 1,
+    "shiftRows": 1,
+    "adjustFormulas": 1,
+    "shiftRules": 1,
+    "parseRef": 16,
+    "colIndex": 16,
+    "coord": 17,
+    "colName": 17,
+    "fmtNum": 3
+   },
+   "assertions": 4,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'South'\n- 'Grand Total'\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'South'\n- 'Grand Total'\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:13:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-2-2-2#contract-1",
+   "status": "fail",
+   "calls": {
+    "filterHidden": 1,
+    "shiftCols": 1,
+    "adjustFormulas": 1,
+    "shiftRules": 1,
+    "adjustPivotRange": 1,
+    "parseRef": 14,
+    "colIndex": 14,
+    "coord": 15,
+    "colName": 15,
+    "matchFilter": 3
+   },
+   "assertions": 1,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Expected values to be strictly equal:\n\ntrue !== false\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\ntrue !== false\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:10:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  }
+ ],
+ "probes": [
+  {
+   "id": "REQ-2-2-1#contract-1",
+   "requirement": "REQ-2-2-1",
+   "explanation": "Verified after execution: the check fails exactly on the asserted requirement. REQ-2-2-1 requires that on row deletion 'subsequent rows shift upward and rules on the target row are removed'. Fixture (minimal change to the seeded 'Q3 Sales'/Sheet1: Region/Sales/Status, East 1200 Open, North 800 Closed, South 700 Open): two 0-100 number rules are added, on B2 and on B3; the precondition confirms both reject 101 and that B4 carries no rule (valid control, so a shifted rule is not mistaken for the surviving one). Deleting the target row 3 through the editor's own row-op step sequence (shiftRows -> adjustFormulas -> shiftRules -> adjustPivotRange, the same composition rowOp performs) leaves the B3 rule in force, because shiftRules only moves endpoints with row strictly greater than atRow and never drops a rule whose range is the deleted row. B3 now holds the record shifted up from row 4 ('700'), and entering 101 there is still rejected: validationMessage(s,'B3','101') returns 'Please enter a number from 0 to 100' instead of null. The B2 rule (control) correctly stays in force.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRules",
+     "kind": "function",
+     "alias": "shiftRules"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "validationMessage",
+     "kind": "function",
+     "alias": "validationMessage"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRows",
+     "kind": "function",
+     "alias": "shiftRows"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustFormulas",
+     "kind": "function",
+     "alias": "adjustFormulas"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustPivotRange",
+     "kind": "function",
+     "alias": "adjustPivotRange"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "shiftRules",
+   "setup": "const seed = window.SEED.workbooks.find(function (w) { return w.id === 'wb-q3-sales'; });\nconst w = JSON.parse(JSON.stringify(seed));\nconst s = w.sheets[0];\ns.validations = [\n  { id: 'vr-keep', a: 'B2', b: 'B2', type: 'number', min: 0, max: 100 },\n  { id: 'vr-del', a: 'B3', b: 'B3', type: 'number', min: 0, max: 100 }\n];\nwindow.__w = w;\nwindow.__s = s;",
+   "precondition": "const s = window.__s;\nassert.strictEqual(validationMessage(s, 'B2', '101'), 'Please enter a number from 0 to 100');\nassert.strictEqual(validationMessage(s, 'B3', '101'), 'Please enter a number from 0 to 100');\nassert.strictEqual(validationMessage(s, 'B4', '101'), null);",
+   "check": "const w = window.__w;\nconst s = w.sheets[0];\nshiftRows(s, 2, -1);\nadjustFormulas(s, 2, -1, -1, 0);\nshiftRules(s, 2, -1, -1, 0);\nadjustPivotRange(w, s.id, 2, -1, -1, 0);\nassert.strictEqual(validationMessage(s, 'B2', '101'), 'Please enter a number from 0 to 100');\nassert.strictEqual(validationMessage(s, 'B3', '101'), null);",
+   "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n"
+  },
+  {
+   "id": "REQ-2-2-1#contract-2",
+   "requirement": "REQ-2-2-1",
+   "explanation": "Verified after execution: the check fails exactly on the asserted requirement. REQ-2-2-1 requires that when a row change overlaps a pivot-table source range, 'Refresh pivot table' recomputes 'using the adjusted range', and REQ-5-3-1 requires the pivot to summarize only the selected source range. Fixture: the seeded 'Q3 Sales' workbook plus one pivot sheet whose source range is A1:B3 (header + the East and North records), while row 4 (South/700) is inside the sheet but outside the selected range; the precondition shows the current pivot reads only East (1200) and North (800), Grand Total 2000, so South is provably out of the selected range. Deleting row 3 (the last row inside the source range) through the editor's own row-op step sequence must shrink the stored range to A1:B2, but adjustPivotRange only moves endpoints with row strictly greater than atRow, so the range stays A1:B3 and the refresh replaces the Grand Total row with a 'South' group: computePivot now returns A3='South', i.e. it summarizes the South record that was never part of the selected source range.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustPivotRange",
+     "kind": "function",
+     "alias": "adjustPivotRange"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "computePivot",
+     "kind": "function",
+     "alias": "computePivot"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRows",
+     "kind": "function",
+     "alias": "shiftRows"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustFormulas",
+     "kind": "function",
+     "alias": "adjustFormulas"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRules",
+     "kind": "function",
+     "alias": "shiftRules"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "adjustPivotRange",
+   "setup": "const seed = window.SEED.workbooks.find(function (w) { return w.id === 'wb-q3-sales'; });\nconst w = JSON.parse(JSON.stringify(seed));\nconst src = w.sheets[0];\nconst ps = { id: 'sh-pivot-1', name: 'Pivot1', cells: {}, sel: { a: 'A1', b: 'A1' }, filters: [], filterRange: null, validations: [], pivot: { sourceId: src.id, range: { a: 'A1', b: 'B3' }, rows: 'Region', columns: '', values: 'Sales', method: 'SUM' } };\nw.sheets.push(ps);\nwindow.__w = w;\nwindow.__s = src;\nwindow.__p = ps;",
+   "precondition": "const res = computePivot(window.__w, window.__p);\nassert.ok(res && !res.err);\nassert.strictEqual(res.cells.A1, 'Region');\nassert.strictEqual(res.cells.B1, 'SUM of Sales');\nassert.strictEqual(res.cells.A2, 'East');\nassert.strictEqual(res.cells.B2, '1200');\nassert.strictEqual(res.cells.A3, 'North');\nassert.strictEqual(res.cells.B3, '800');\nassert.strictEqual(res.cells.A4, 'Grand Total');\nassert.strictEqual(res.cells.B4, '2000');",
+   "check": "const w = window.__w;\nconst s = w.sheets[0];\nshiftRows(s, 2, -1);\nadjustFormulas(s, 2, -1, -1, 0);\nshiftRules(s, 2, -1, -1, 0);\nadjustPivotRange(w, s.id, 2, -1, -1, 0);\nconst res = computePivot(w, window.__p);\nassert.ok(res && !res.err);\nassert.strictEqual(res.cells.A2, 'East');\nassert.strictEqual(res.cells.B2, '1200');\nassert.strictEqual(res.cells.A3, 'Grand Total');\nassert.strictEqual(res.cells.B3, '1200');",
+   "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n"
+  },
+  {
+   "id": "REQ-2-2-2#contract-1",
+   "requirement": "REQ-2-2-2",
+   "explanation": "Verified after execution: the check fails exactly on the asserted requirement. REQ-2-2-2 requires that after a column insertion 'filters continue to apply to the adjusted region', i.e. the filter must keep hiding/showing the same records after their columns shift. Fixture: the seeded 'Q3 Sales'/Sheet1 with a value filter created over A1:C4 on the Status column (precondition: the two Status='Open' rows 2 and 4 are visible and the 'Closed' row 3 is hidden). Inserting one column left of column A through the editor's own column-op step sequence (shiftCols -> adjustFormulas -> shiftRules -> adjustPivotRange, the composition colOp performs) shifts every record one column right, but the sheet's filter range and stored filter column are never adjusted, so the filter keeps reading column C - now the numeric Sales column - and hides every data row: after the operation filterHidden reports row 2 (East, Status still 'Open') as hidden, so hidden.has(1) is true when the record must remain visible.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "filterHidden",
+     "kind": "function",
+     "alias": "filterHidden"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftCols",
+     "kind": "function",
+     "alias": "shiftCols"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustFormulas",
+     "kind": "function",
+     "alias": "adjustFormulas"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "shiftRules",
+     "kind": "function",
+     "alias": "shiftRules"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "adjustPivotRange",
+     "kind": "function",
+     "alias": "adjustPivotRange"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "filterHidden",
+   "setup": "const seed = window.SEED.workbooks.find(function (w) { return w.id === 'wb-q3-sales'; });\nconst w = JSON.parse(JSON.stringify(seed));\nconst s = w.sheets[0];\ns.filterRange = { a: 'A1', b: 'C4' };\ns.filters = [{ header: 'Status', col: 2, kind: 'values', values: ['Open'] }];\nwindow.__w = w;\nwindow.__s = s;",
+   "precondition": "const hidden = filterHidden(window.__s);\nassert.strictEqual(hidden.has(1), false);\nassert.strictEqual(hidden.has(2), true);\nassert.strictEqual(hidden.has(3), false);",
+   "check": "const w = window.__w;\nconst s = w.sheets[0];\nshiftCols(s, 0, 1);\nadjustFormulas(s, -1, 0, 0, 1);\nshiftRules(s, -1, 0, 0, 1);\nadjustPivotRange(w, s.id, -1, 0, 0, 1);\nconst hidden = filterHidden(s);\nassert.strictEqual(hidden.has(1), false);\nassert.strictEqual(hidden.has(2), true);",
+   "requirement_text": "Users insert a blank column to the left or right of a target column, or delete the target column, through the column-header menu in the current active worksheet. The column-header menu provides \"Insert 1 column left\", \"Insert 1 column right\", and \"Delete column\". On insertion, all complete data, validation rules, and formula references in the target column and subsequent columns shift right together; on deletion, subsequent columns shift left and rules on the target column are removed. Data outside the deleted column is preserved; affected formulas display the adjusted original formulas and correct results, while direct references that cannot be preserved display #REF!; filters continue to apply to the adjusted region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". After pivot-table source columns move, existing results remain unchanged until \"Refresh pivot table\" is clicked, after which the moved fields are used. If a selected header is deleted, refreshing or opening the pivot table editor displays a visible error requiring the field to be reselected and preserves the last successful result. If the operation fails, an error is shown and the grid retains the pre-operation structure immediately and after refresh.\n\nPage reference:\n![image](reference/manage-columns.png)\n"
+  }
+ ],
+ "source_hashes": {
+  "frontend/public/app.js": "348d655afc295b950dc7b378c742f30bbdc6d2ec085df89ea031e47ccc618675",
+  "frontend/public/seed.js": "99721ff0395e94f6510e62083ccb21e7391e05ee154ef00078da063fbbaad761"
+ },
+ "validation": [
+  {
+   "id": "REQ-2-2-1#contract-1",
+   "status": "fail",
+   "calls": {
+    "shiftRules": 1,
+    "validationMessage": 2,
+    "shiftRows": 1,
+    "adjustFormulas": 1,
+    "adjustPivotRange": 1,
+    "ruleFor": 2,
+    "parseRef": 24,
+    "colIndex": 24,
+    "numRangeMessage": 2,
+    "coord": 13,
+    "colName": 13
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:10:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-2-2-1#contract-2",
+   "status": "fail",
+   "calls": {
+    "adjustPivotRange": 1,
+    "computePivot": 1,
+    "shiftRows": 1,
+    "adjustFormulas": 1,
+    "shiftRules": 1,
+    "parseRef": 16,
+    "colIndex": 16,
+    "coord": 17,
+    "colName": 17,
+    "fmtNum": 3
+   },
+   "assertions": 4,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'South'\n- 'Grand Total'\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'South'\n- 'Grand Total'\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:13:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-2-2-2#contract-1",
+   "status": "fail",
+   "calls": {
+    "filterHidden": 1,
+    "shiftCols": 1,
+    "adjustFormulas": 1,
+    "shiftRules": 1,
+    "adjustPivotRange": 1,
+    "parseRef": 14,
+    "colIndex": 14,
+    "coord": 15,
+    "colName": 15,
+    "matchFilter": 3
+   },
+   "assertions": 1,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Expected values to be strictly equal:\n\ntrue !== false\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\ntrue !== false\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:10:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-contracts-v2-sheet/agent/contract_runner.cjs:53:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  }
+ ]
+}

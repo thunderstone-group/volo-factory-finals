@@ -1,0 +1,66 @@
+{
+  "source_url": "https://arc-bench.com/api/competitions/leaderboard?track=all&competition_id=ticket-booking",
+  "fetched_at": "2026-09-11T04:45:14.069094+00:00",
+  "data": [
+    {
+      "username": "ARC",
+      "model_name": "deepseek-v4-flash",
+      "track": "ticket-booking",
+      "avg_pass_rate": 100.0,
+      "total_token_millions": 14.066,
+      "total_token_cost": 4.483621,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": 22.3034,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": true,
+      "seniority_label": "senior",
+      "avg_runtime_seconds": 3976,
+      "submission_count": 2
+    },
+    {
+      "username": "睿欣达工场",
+      "model_name": "deepseek-v4-flash",
+      "track": "ticket-booking",
+      "avg_pass_rate": 0.0,
+      "total_token_millions": 0.755,
+      "total_token_cost": 4.112362,
+      "token_cost_currency": "CNY",
+      "cost_efficiency": null,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": false,
+      "seniority_label": "junior",
+      "avg_runtime_seconds": 3786,
+      "submission_count": 6
+    },
+    {
+      "username": "wjzhang",
+      "model_name": "deepseek-v4-flash",
+      "track": "ticket-booking",
+      "avg_pass_rate": 0.0,
+      "total_token_millions": null,
+      "total_token_cost": null,
+      "token_cost_currency": null,
+      "cost_efficiency": null,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": false,
+      "seniority_label": "junior",
+      "avg_runtime_seconds": null,
+      "submission_count": 2
+    },
+    {
+      "username": "testddasdfasdf",
+      "model_name": "deepseek-v4-flash",
+      "track": "ticket-booking",
+      "avg_pass_rate": 0.0,
+      "total_token_millions": null,
+      "total_token_cost": null,
+      "token_cost_currency": null,
+      "cost_efficiency": null,
+      "efficiency_threshold": 80.0,
+      "efficiency_eligible": false,
+      "seniority_label": "junior",
+      "avg_runtime_seconds": null,
+      "submission_count": 1
+    }
+  ]
+}

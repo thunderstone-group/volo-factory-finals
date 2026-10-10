@@ -1,0 +1,61 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-3-3#entry-1",
+      "name": "Initial visible entry acme-docs",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-4-2-1#entry-1",
+      "name": "Initial visible entry acme-docs",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2#entry-1",
+      "name": "Initial visible entry Improve onboarding",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2#entry-2",
+      "name": "Initial visible entry Improve onboarding",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2#entry-3",
+      "name": "Initial visible entry Improve onboarding",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 5,
+    "parsed": 5
+  },
+  "seconds": 1.6
+}

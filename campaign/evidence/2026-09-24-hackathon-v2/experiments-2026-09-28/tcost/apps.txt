@@ -1,0 +1,10 @@
+b491 43 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-43-b491936e86f2/template
+e6cf 53 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-53-e6cf53b272c1/template
+a440 56 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-56-a4401f31bf34/template
+ad9a 69 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-69-ad9a34c9b1f6/template
+ed1e 78 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-78-ed1ef8fb5d78/template
+2c8e 79 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-79-2c8e9b1f5e5f/template
+4c98 79 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-79-4c98ff3ad8b3/template
+f49b 80 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-80-f49ba294f647/template
+f686 81 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-81-f6861552bce1/template
+fa94 82 ~/projects/arcbench-campaign/acceptance-hidden/oracle-2026-09-27/apps/sheet-82-fa94581a6fa7/template

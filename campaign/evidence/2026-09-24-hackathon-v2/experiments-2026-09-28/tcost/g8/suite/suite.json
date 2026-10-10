@@ -1,0 +1,723 @@
+{
+ "files": [
+  {
+   "file": "t01-REQ-1.spec.cjs",
+   "scenarios": [
+    "REQ-1-1-1",
+    "REQ-1-1-1#2",
+    "REQ-1-2-1",
+    "REQ-1-2-2",
+    "REQ-1-2-2#2"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-1-1-1: REQ-1-1-1 -the requested workflow,the requested workflow page entry the requested workflow",
+    "REQ-1-1-1#2: REQ-1-1-1 -the requested workflow",
+    "REQ-1-2-1: REQ-1-2-1 -the requested workflow,the requested workflow Sheet1 the requested workflow A1 the requested workflow",
+    "REQ-1-2-2: REQ-1-2-2 -the requested workflow,the requested workflow",
+    "REQ-1-2-2#2: REQ-1-2-2 -the requested workflow,the requested workflow"
+   ]
+  },
+  {
+   "file": "t02-REQ-1.spec.cjs",
+   "scenarios": [
+    "REQ-1-3-1",
+    "REQ-1-3-1#2",
+    "REQ-1-3-1#3",
+    "REQ-1-3-1#4",
+    "REQ-1-3-2",
+    "REQ-1-3-2#2",
+    "REQ-1-3-2#3",
+    "REQ-1-3-2#4"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-1-3-1: REQ-1-3-1 -the requested workflow UTF-8 CSV,the requested workflow",
+    "REQ-1-3-1#2: REQ-1-3-1 -the requested workflow CSV the requested workflow,the requested workflow",
+    "REQ-1-3-1#3: REQ-1-3-1 -the requested workflow CSV,the requested workflow",
+    "REQ-1-3-1#4: REQ-1-3-1 -the requested workflow CSV,the requested workflow",
+    "REQ-1-3-2: REQ-1-3-2 -the requested workflow,the requested workflow",
+    "REQ-1-3-2#2: REQ-1-3-2 -the requested workflow",
+    "REQ-1-3-2#3: REQ-1-3-2 -the requested workflow",
+    "REQ-1-3-2#4: REQ-1-3-2 -the requested workflow Sheet1 the requested workflow"
+   ]
+  },
+  {
+   "file": "t03-REQ-2.spec.cjs",
+   "scenarios": [
+    "REQ-2-1-1",
+    "REQ-2-1-1#2",
+    "REQ-2-1-2",
+    "REQ-2-1-2#2",
+    "REQ-2-1-2#3",
+    "REQ-2-1-2#4",
+    "REQ-2-1-2#5"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-2-1-1: REQ-2-1-1 -the requested workflow Sheet2,the requested workflow",
+    "REQ-2-1-1#2: REQ-2-1-1 -the requested workflow SheetN the requested workflow",
+    "REQ-2-1-2: REQ-2-1-2 -the requested workflow, the requested workflow",
+    "REQ-2-1-2#2: REQ-2-1-2 -the requested workflow",
+    "REQ-2-1-2#3: REQ-2-1-2 -the requested workflow",
+    "REQ-2-1-2#4: REQ-2-1-2 -the requested workflow",
+    "REQ-2-1-2#5: REQ-2-1-2 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t04-REQ-2.spec.cjs",
+   "scenarios": [
+    "REQ-2-1-3",
+    "REQ-2-1-3#2",
+    "REQ-2-1-3#3",
+    "REQ-2-1-4",
+    "REQ-2-1-4#2",
+    "REQ-2-1-4#3",
+    "REQ-2-1-4#4"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-2-1-3: REQ-2-1-3 -the requested workflow,the requested workflow",
+    "REQ-2-1-3#2: REQ-2-1-3 -the requested workflow,the requested workflow",
+    "REQ-2-1-3#3: REQ-2-1-3 -the requested workflow,the requested workflow",
+    "REQ-2-1-4: REQ-2-1-4 -the requested workflow,the requested workflow",
+    "REQ-2-1-4#2: REQ-2-1-4 -the requested workflow,the requested workflow",
+    "REQ-2-1-4#3: REQ-2-1-4 -the requested workflow,the requested workflow",
+    "REQ-2-1-4#4: REQ-2-1-4 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t05-REQ-2.spec.cjs",
+   "scenarios": [
+    "REQ-2-2-1",
+    "REQ-2-2-1#2",
+    "REQ-2-2-1#3",
+    "REQ-2-2-1#4",
+    "REQ-2-2-1#5"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-2-2-1: REQ-2-2-1 -the requested workflow 3 the requested workflow,the requested workflow",
+    "REQ-2-2-1#2: REQ-2-2-1 -the requested workflow 3 the requested workflow,the requested workflow",
+    "REQ-2-2-1#3: REQ-2-2-1 -the requested workflow",
+    "REQ-2-2-1#4: REQ-2-2-1 -the requested workflow",
+    "REQ-2-2-1#5: REQ-2-2-1 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t06-REQ-2.spec.cjs",
+   "scenarios": [
+    "REQ-2-2-2",
+    "REQ-2-2-2#2",
+    "REQ-2-2-2#3",
+    "REQ-2-2-2#4",
+    "REQ-2-2-2#5"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-2-2-2: REQ-2-2-2 -the requested workflow B the requested workflow,the requested workflow",
+    "REQ-2-2-2#2: REQ-2-2-2 -the requested workflow B the requested workflow,the requested workflow",
+    "REQ-2-2-2#3: REQ-2-2-2 -the requested workflow",
+    "REQ-2-2-2#4: REQ-2-2-2 -the requested workflow",
+    "REQ-2-2-2#5: REQ-2-2-2 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t07-REQ-3.spec.cjs",
+   "scenarios": [
+    "REQ-3-1-1",
+    "REQ-3-1-1#2",
+    "REQ-3-1-1#3",
+    "REQ-3-1-1#4"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-3-1-1: REQ-3-1-1 -the requested workflow,the requested workflow",
+    "REQ-3-1-1#2: REQ-3-1-1 -Escape the requested workflow,the requested workflow",
+    "REQ-3-1-1#3: REQ-3-1-1 -the requested workflow, the requested workflow, the requested workflow, the requested workflow",
+    "REQ-3-1-1#4: REQ-3-1-1 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t08-REQ-3.spec.cjs",
+   "scenarios": [
+    "REQ-3-1-2",
+    "REQ-3-1-2#2",
+    "REQ-3-1-2#3",
+    "REQ-3-1-2#4",
+    "REQ-3-1-2#5",
+    "REQ-3-1-3",
+    "REQ-3-1-3#2"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-3-1-2: REQ-3-1-2 -the requested workflow B2 the requested workflow,the requested workflow",
+    "REQ-3-1-2#2: REQ-3-1-2 -the requested workflow",
+    "REQ-3-1-2#3: REQ-3-1-2 -the requested workflow",
+    "REQ-3-1-2#4: REQ-3-1-2 -the requested workflow A1 the requested workflow",
+    "REQ-3-1-2#5: REQ-3-1-2 -the requested workflow C3 the requested workflow",
+    "REQ-3-1-3: REQ-3-1-3 -the requested workflow",
+    "REQ-3-1-3#2: REQ-3-1-3 -the requested workflow,the requested workflow"
+   ]
+  },
+  {
+   "file": "t09-REQ-3.spec.cjs",
+   "scenarios": [
+    "REQ-3-2-1",
+    "REQ-3-2-1#2",
+    "REQ-3-2-1#3",
+    "REQ-3-2-1#4"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-3-2-1: REQ-3-2-1 -the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow, the requested workflow",
+    "REQ-3-2-1#2: REQ-3-2-1 -the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow",
+    "REQ-3-2-1#3: REQ-3-2-1 -the requested workflow",
+    "REQ-3-2-1#4: REQ-3-2-1 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t10-REQ-3.spec.cjs",
+   "scenarios": [
+    "REQ-3-2-2",
+    "REQ-3-2-2#2",
+    "REQ-3-2-2#3",
+    "REQ-3-2-2#4",
+    "REQ-3-2-2#5",
+    "REQ-3-2-2#6",
+    "REQ-3-2-2#7"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-3-2-2: REQ-3-2-2 -the requested workflow,the requested workflow",
+    "REQ-3-2-2#2: REQ-3-2-2 -the requested workflow",
+    "REQ-3-2-2#3: REQ-3-2-2 -the requested workflow",
+    "REQ-3-2-2#4: REQ-3-2-2 -the requested workflow",
+    "REQ-3-2-2#5: REQ-3-2-2 -the requested workflow",
+    "REQ-3-2-2#6: REQ-3-2-2 -the requested workflow",
+    "REQ-3-2-2#7: REQ-3-2-2 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t11-REQ-4.spec.cjs",
+   "scenarios": [
+    "REQ-4-1-1",
+    "REQ-4-1-1#2",
+    "REQ-4-1-1#3",
+    "REQ-4-1-1#4",
+    "REQ-4-1-1#5",
+    "REQ-4-1-2",
+    "REQ-4-1-2#2"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-4-1-1: REQ-4-1-1 -the requested workflow,the requested workflow",
+    "REQ-4-1-1#2: REQ-4-1-1 -the requested workflow",
+    "REQ-4-1-1#3: REQ-4-1-1 -the requested workflow, the requested workflow",
+    "REQ-4-1-1#4: REQ-4-1-1 -the requested workflow",
+    "REQ-4-1-1#5: REQ-4-1-1 -the requested workflow",
+    "REQ-4-1-2: REQ-4-1-2 -the requested workflow",
+    "REQ-4-1-2#2: REQ-4-1-2 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t12-REQ-4.spec.cjs",
+   "scenarios": [
+    "REQ-4-2-1",
+    "REQ-4-2-1#2",
+    "REQ-4-2-1#3",
+    "REQ-4-2-2",
+    "REQ-4-2-2#2",
+    "REQ-4-2-2#3",
+    "REQ-4-2-2#4",
+    "REQ-4-2-2#5"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-4-2-1: REQ-4-2-1 -the requested workflow,the requested workflow",
+    "REQ-4-2-1#2: REQ-4-2-1 -the requested workflow",
+    "REQ-4-2-1#3: REQ-4-2-1 -the requested workflow",
+    "REQ-4-2-2: REQ-4-2-2 -the requested workflow,the requested workflow",
+    "REQ-4-2-2#2: REQ-4-2-2 -the requested workflow,the requested workflow",
+    "REQ-4-2-2#3: REQ-4-2-2 -the requested workflow",
+    "REQ-4-2-2#4: REQ-4-2-2 -the requested workflow",
+    "REQ-4-2-2#5: REQ-4-2-2 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t13-REQ-5.spec.cjs",
+   "scenarios": [
+    "REQ-5-1-1",
+    "REQ-5-1-1#2",
+    "REQ-5-1-1#3",
+    "REQ-5-1-1#4",
+    "REQ-5-1-1#5",
+    "REQ-5-1-1#6"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-5-1-1: REQ-5-1-1 -the requested workflow Sales the requested workflow,the requested workflow",
+    "REQ-5-1-1#2: REQ-5-1-1 -the requested workflow ISO the requested workflow",
+    "REQ-5-1-1#3: REQ-5-1-1 -the requested workflow",
+    "REQ-5-1-1#4: REQ-5-1-1 -the requested workflow",
+    "REQ-5-1-1#5: REQ-5-1-1 -the requested workflow",
+    "REQ-5-1-1#6: REQ-5-1-1 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t14-REQ-5.spec.cjs",
+   "scenarios": [
+    "REQ-5-1-2",
+    "REQ-5-1-2#2",
+    "REQ-5-1-2#3",
+    "REQ-5-1-2#4",
+    "REQ-5-1-2#5"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-5-1-2: REQ-5-1-2 -the requested workflow Region the requested workflow Sales the requested workflow,the requested workflow",
+    "REQ-5-1-2#2: REQ-5-1-2 -the requested workflow, the requested workflow,the requested workflow",
+    "REQ-5-1-2#3: REQ-5-1-2 -CSV the requested workflow",
+    "REQ-5-1-2#4: REQ-5-1-2 -the requested workflow",
+    "REQ-5-1-2#5: REQ-5-1-2 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t15-REQ-5.spec.cjs",
+   "scenarios": [
+    "REQ-5-2-1",
+    "REQ-5-2-1#2",
+    "REQ-5-2-1#3",
+    "REQ-5-2-1#4",
+    "REQ-5-2-1#5",
+    "REQ-5-2-1#6"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-5-2-1: REQ-5-2-1 -the requested workflow A1:A2 the requested workflow,the requested workflow",
+    "REQ-5-2-1#2: REQ-5-2-1 -the requested workflow",
+    "REQ-5-2-1#3: REQ-5-2-1 -the requested workflow",
+    "REQ-5-2-1#4: REQ-5-2-1 -the requested workflow",
+    "REQ-5-2-1#5: REQ-5-2-1 -the requested workflow",
+    "REQ-5-2-1#6: REQ-5-2-1 -the requested workflow"
+   ]
+  },
+  {
+   "file": "t16-REQ-5.spec.cjs",
+   "scenarios": [
+    "REQ-5-3-1",
+    "REQ-5-3-1#2",
+    "REQ-5-3-1#3",
+    "REQ-5-3-1#4",
+    "REQ-5-3-1#5",
+    "REQ-5-3-1#6",
+    "REQ-5-3-1#7",
+    "REQ-5-3-1#8",
+    "REQ-5-3-1#9"
+   ],
+   "calls": 1,
+   "finish": "stop",
+   "tests": [
+    "REQ-5-3-1: REQ-5-3-1 -the requested workflow Pivot1 the requested workflow Region the requested workflow Sales,the requested workflow",
+    "REQ-5-3-1#2: REQ-5-3-1 -the requested workflow,the requested workflow",
+    "REQ-5-3-1#3: REQ-5-3-1 -the requested workflow COUNT the requested workflow",
+    "REQ-5-3-1#4: REQ-5-3-1 -AVERAGE the requested workflow",
+    "REQ-5-3-1#5: REQ-5-3-1 -the requested workflow",
+    "REQ-5-3-1#6: REQ-5-3-1 -the requested workflow",
+    "REQ-5-3-1#7: REQ-5-3-1 -the requested workflow",
+    "REQ-5-3-1#8: REQ-5-3-1 -the requested workflow",
+    "REQ-5-3-1#9: REQ-5-3-1 -the requested workflow COUNT the requested workflow"
+   ]
+  }
+ ],
+ "scenarios": 100,
+ "tests": 100,
+ "seconds": 1484.5,
+ "prerequisites": "",
+ "cost_cny": 5.1588,
+ "usage": [
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45202,
+   "prompt_tokens": 45202,
+   "known_completion_tokens": 19150,
+   "completion_tokens": 19150,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.307956,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45327,
+   "prompt_tokens": 45327,
+   "known_completion_tokens": 41578,
+   "completion_tokens": 41578,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.510183,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45271,
+   "prompt_tokens": 45271,
+   "known_completion_tokens": 32769,
+   "completion_tokens": 32769,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.430734,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45275,
+   "prompt_tokens": 45275,
+   "known_completion_tokens": 26561,
+   "completion_tokens": 26561,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.374874,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45195,
+   "prompt_tokens": 45195,
+   "known_completion_tokens": 7610,
+   "completion_tokens": 7610,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.079352,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45193,
+   "prompt_tokens": 45193,
+   "known_completion_tokens": 28071,
+   "completion_tokens": 28071,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.263495,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45159,
+   "prompt_tokens": 45159,
+   "known_completion_tokens": 29731,
+   "completion_tokens": 29731,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.278333,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45278,
+   "prompt_tokens": 45278,
+   "known_completion_tokens": 22597,
+   "completion_tokens": 22597,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.209287,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45171,
+   "prompt_tokens": 45171,
+   "known_completion_tokens": 25647,
+   "completion_tokens": 25647,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.241613,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45262,
+   "prompt_tokens": 45262,
+   "known_completion_tokens": 27608,
+   "completion_tokens": 27608,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.259535,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45264,
+   "prompt_tokens": 45264,
+   "known_completion_tokens": 22348,
+   "completion_tokens": 22348,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.212201,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45306,
+   "prompt_tokens": 45306,
+   "known_completion_tokens": 25508,
+   "completion_tokens": 25508,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.240767,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45230,
+   "prompt_tokens": 45230,
+   "known_completion_tokens": 48455,
+   "completion_tokens": 48455,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.447062,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45199,
+   "prompt_tokens": 45199,
+   "known_completion_tokens": 39951,
+   "completion_tokens": 39951,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.370433,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45229,
+   "prompt_tokens": 45229,
+   "known_completion_tokens": 30765,
+   "completion_tokens": 30765,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.287849,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  {
+   "calls": 1,
+   "draft_call_limit": 1,
+   "repair_call_limit": 24,
+   "completed_calls": 1,
+   "failed_calls": 0,
+   "failure_limit": 5,
+   "refused_calls": 0,
+   "known_prompt_tokens": 45367,
+   "prompt_tokens": 45367,
+   "known_completion_tokens": 70421,
+   "completion_tokens": 70421,
+   "unknown_usage_calls": [],
+   "estimated_cost_cny": 0.645167,
+   "estimated_repair_cost_cny": 0,
+   "repair_cny_limit": 10.0,
+   "side_calls": 0,
+   "fallback_model": null,
+   "calls_by_model": {
+    "deepseek-v4-flash": 1
+   },
+   "billing_status": "tokens_reported_cost_not_estimated"
+  }
+ ]
+}

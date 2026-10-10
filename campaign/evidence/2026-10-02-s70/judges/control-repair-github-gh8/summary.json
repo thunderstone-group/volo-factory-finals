@@ -1,0 +1,14 @@
+{
+  "app": "control-repair-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 66,
+    "error": 13,
+    "fail": 23
+  },
+  "seconds": 151.3,
+  "coverage": {
+    "total": 100,
+    "parsed": 89
+  }
+}

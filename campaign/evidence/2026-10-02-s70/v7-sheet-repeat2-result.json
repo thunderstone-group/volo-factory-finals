@@ -1,0 +1,39 @@
+{
+  "run_id": "31ff91b909a0",
+  "status": "FAILED",
+  "passed": 78,
+  "failed": 22,
+  "pass_rate": 78.0,
+  "tokens": 5177303,
+  "duration_seconds": 11844,
+  "failure_reason": "Runner exited with test failures or runtime errors",
+  "submission_id": "12e3bab723fd",
+  "requirement_id": "hackathon--sheet",
+  "finished_at": "2026-10-03T13:32:54.066308",
+  "display_name": "volo-v7-selected-content-20261002",
+  "model_name": "deepseek-v4-flash-vision-exp",
+  "feature_implemented_count": 12,
+  "feature_total_count": 24,
+  "cost": {
+    "amount": 6.605223,
+    "currency": "CNY"
+  },
+  "steps": [
+    {
+      "key": "deploy_agent",
+      "status": "completed",
+      "description": "Done"
+    },
+    {
+      "key": "start_agent",
+      "status": "completed",
+      "description": "Done"
+    },
+    {
+      "key": "run_tests",
+      "status": "completed",
+      "description": "Evaluation completed"
+    }
+  ],
+  "failed_tests": []
+}

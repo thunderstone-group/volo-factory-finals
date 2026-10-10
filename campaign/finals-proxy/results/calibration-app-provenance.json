@@ -1,0 +1,86 @@
+{
+  "official-github": {
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r1/gh/template",
+    "copy": "calibration/apps/official-github",
+    "app_sha256": "c23b4a7174a920bc05cf882f6fc93161435cbf51504b5633d94a9813ce6ab5ee",
+    "source_component_sha256": {
+      "frontend": "6b065dbe60008a10dce5d671c4841f83861dcdf37bc7e7e9f616d4fa9ef91dc8",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    },
+    "copied_components": [
+      "frontend",
+      "backend"
+    ],
+    "ignored": [
+      ".arc",
+      "requirements",
+      "node_modules",
+      ".git",
+      "dist",
+      "__pycache__"
+    ]
+  },
+  "official-sheet": {
+    "source": "~/projects/arcbench-campaign/evidence/2026-10-06-finals/finals-r1/sh/template",
+    "copy": "calibration/apps/official-sheet",
+    "app_sha256": "3b712617134fea45ab129ef965f3084892147c5768f2ee38cbaa844aec87cb2e",
+    "source_component_sha256": {
+      "frontend": "6f41784f6b35ccf461c75ccf2759c4cee33fcdd76d6db570a681a6e0742be3ba",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    },
+    "copied_components": [
+      "frontend",
+      "backend"
+    ],
+    "ignored": [
+      ".arc",
+      "requirements",
+      "node_modules",
+      ".git",
+      "dist",
+      "__pycache__"
+    ]
+  },
+  "local-github": {
+    "source": "~/projects/arcbench-campaign/finals-local/runs/github-real-main9293-s1/workspace",
+    "copy": "calibration/apps/local-github",
+    "app_sha256": "98656ca86fa211747a890136df9760f9ba075f61c85d2eda559dd08872f70f1d",
+    "source_component_sha256": {
+      "frontend": "d70cf58bea3af89c783f3b93e2f818e5c359109050564fb823a6ec1fd192ca36",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    },
+    "copied_components": [
+      "frontend",
+      "backend"
+    ],
+    "ignored": [
+      ".arc",
+      "requirements",
+      "node_modules",
+      ".git",
+      "dist",
+      "__pycache__"
+    ]
+  },
+  "local-sheet": {
+    "source": "~/projects/arcbench-campaign/finals-local/runs/sheet-real-main9293-s1/workspace",
+    "copy": "calibration/apps/local-sheet",
+    "app_sha256": "09888b038cfac652c6ec54e1ffb7e0395ebc153938896234fe0c7e39a006b280",
+    "source_component_sha256": {
+      "frontend": "af72892f25562e12ef8986bcc210516fcb43bddc051ca5b30571a088f2bc1601",
+      "backend": "6dd26c3564cd767cd5ede17d9b063f4ef764e4f68e25d7d6f3b2e744462af174"
+    },
+    "copied_components": [
+      "frontend",
+      "backend"
+    ],
+    "ignored": [
+      ".arc",
+      "requirements",
+      "node_modules",
+      ".git",
+      "dist",
+      "__pycache__"
+    ]
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "files": {
+    "contract_bindings.cjs": {
+      "bytes": 4426,
+      "sha256": "18fe42b15324f4ae0cdf1a252989c2304faee1a55928f478a60be591499e119a"
+    },
+    "contract_runner.cjs": {
+      "bytes": 4847,
+      "sha256": "5fce9ff14e5c8f2406352ba9bcb0c04737174878574352fdf4880888d29ad53f"
+    },
+    "dialect.md": {
+      "bytes": 8700,
+      "sha256": "967dd6ed5d4f2c12536cf34e728b0828db18c147f1be3c0880aff198ba8250c8"
+    },
+    "light_tests.py": {
+      "bytes": 17279,
+      "sha256": "f6324b2be8d32fd2f0b3ee28b5395c2e6d735d73371eb1bb3e958493310b9fc0"
+    },
+    "main.py": {
+      "bytes": 155888,
+      "sha256": "145fc0d2aae405773946d7ab81c3dd206a13046e4d31c9ebf34b6c03f701223c"
+    },
+    "regression_guard.py": {
+      "bytes": 23466,
+      "sha256": "db0a2bf85db5775f4a2412ea460f135027c4ae8e3a6ef5c7e9a718d39e743a8d"
+    },
+    "regression_probe.cjs": {
+      "bytes": 15048,
+      "sha256": "b2ba72bd42b0c1e9af50312882bc34b1ce9d76a044e61c3f5aaccc3f6a5cffb4"
+    },
+    "requirements.txt": {
+      "bytes": 69,
+      "sha256": "05952bef1c3e375aaada3c27ac8c08b54a11a5265b5aba98821780a6c4a2d61b"
+    },
+    "scaffold/README.md": {
+      "bytes": 2452,
+      "sha256": "63fb019f52619c3cd4ebe8a31e6e5851f3666ba85e06054cedd01057dd28f384"
+    },
+    "scaffold/backend/package.json": {
+      "bytes": 113,
+      "sha256": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+    },
+    "scaffold/backend/server.js": {
+      "bytes": 4004,
+      "sha256": "e71bda721e32549d2c2779799697c87809dc5a2ee8352791fe951ef470b53ddd"
+    },
+    "scaffold/frontend/package.json": {
+      "bytes": 166,
+      "sha256": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978"
+    },
+    "scaffold/frontend/public/app.js": {
+      "bytes": 3821,
+      "sha256": "593bd96d86b78b2ba904d5a612b763007bb7048f4eac9cc0a4ecf25f95085c8f"
+    },
+    "scaffold/frontend/public/index.html": {
+      "bytes": 722,
+      "sha256": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d"
+    },
+    "scaffold/frontend/public/lib/arc.js": {
+      "bytes": 22504,
+      "sha256": "7da0458aa7e85a1e10c70e2124153fea6e03ada1adaaaf20d27a5aac0113d1a6"
+    },
+    "scaffold/frontend/public/seed.js": {
+      "bytes": 475,
+      "sha256": "eb060ad3b56edf7c18ca43b918fa1bb3c4ed809a081566011ef118a50c568754"
+    },
+    "scaffold/frontend/public/styles.css": {
+      "bytes": 2645,
+      "sha256": "c95a5a7638832c434751c3d314290cf3e7d95f8ebaa00be3bcdced4b8d45227d"
+    },
+    "scenario_check.cjs": {
+      "bytes": 29025,
+      "sha256": "be92a7ab5d6af7e948149f97a2c75ccfda9396067f43eef0764499e07c9a3ad9"
+    },
+    "scenario_check.py": {
+      "bytes": 27599,
+      "sha256": "c7f4eece0c1048952b8ab64642e24c6a032b72a237e8b856e86d2beed361786f"
+    },
+    "scenario_translate.py": {
+      "bytes": 35933,
+      "sha256": "dea950422a08bc87278a4bb0a64bd302545ceccbe03f8ae71b5b0288b8cff9b0"
+    },
+    "scenarios.py": {
+      "bytes": 92688,
+      "sha256": "ddaad69bdd0339e360ae756fe39db80849588d4b3b71be72514449b8227b7a6f"
+    },
+    "semantic_probe.cjs": {
+      "bytes": 17515,
+      "sha256": "4d6386bbe7b4ac8f3a92b0d35396e30cd0d5224f0e6bfa6be1384268ebf00d99"
+    },
+    "source_contracts.py": {
+      "bytes": 22939,
+      "sha256": "4bf4efdca65750d9feefd247db0de3d2a9dc06a5254c0b96689c61d3764156ef"
+    },
+    "testgen.py": {
+      "bytes": 69587,
+      "sha256": "2711b478d6a6c638bfa35118fd251f72bdf3b5121f2649e0c3c668a396977f55"
+    }
+  },
+  "imported_from": {
+    "files": {
+      "dialect.md": {
+        "bytes": 5299,
+        "sha256": "03d76d74e739f4975fa98d9bf5cb2fd882d4789471a497885602c35df1285d55"
+      },
+      "main.py": {
+        "bytes": 13406,
+        "sha256": "46077d46b689f1d3914ed6bc70b8c62e9aaf562382113e2c04dc972958ba0a2c"
+      },
+      "requirements.txt": {
+        "bytes": 15,
+        "sha256": "af1d882a2cc1717c9da20d96d963d2bf7f83b28f2a191612a17599e0e44ff3a5"
+      }
+    },
+    "origin": "oneshot-lab/arc-package",
+    "origin_files_untracked": true,
+    "origin_git_head": "a15036778e1eee9314ecd5b6fb6e4cb79b0a1010"
+  },
+  "package_bytes": 564781,
+  "package_sha256": "5f5b9a786b6fa84cd18337c84ef90d82e7ddfc4ec12eb5d7af123aad7fd1f1fe",
+  "schema_version": 1,
+  "source_hash_scheme": "sha256 of UTF-8 JSON files object; sorted keys; compact separators",
+  "source_sha256": "78487755c3f3be7c00478d706c8520aefd04ef5dd193f3fa088703a3293ed463"
+}

@@ -1,0 +1,356 @@
+{
+ "app": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-entry-native-v5-github/application",
+ "requirements": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/requirements-after-stage-announcement/hackathon--github/requirements.yaml",
+ "model": "deepseek-v4-flash-vision-exp",
+ "seconds": 110.9,
+ "error": null,
+ "draft_files": [
+  "frontend/public/index.html",
+  "frontend/public/seed.js",
+  "frontend/public/styles.css",
+  "frontend/public/app.js"
+ ],
+ "summary": {
+  "calls": 1,
+  "draft_call_limit": 4,
+  "repair_call_limit": 1,
+  "completed_calls": 1,
+  "failed_calls": 0,
+  "failure_limit": 5,
+  "refused_calls": 0,
+  "known_prompt_tokens": 108468,
+  "prompt_tokens": 108468,
+  "known_completion_tokens": 10911,
+  "completion_tokens": 10911,
+  "unknown_usage_calls": [],
+  "estimated_cost_cny": 0.151485,
+  "estimated_repair_cost_cny": 0.151485,
+  "repair_cny_limit": 0.5,
+  "side_calls": 0,
+  "fallback_model": null,
+  "calls_by_model": {
+   "deepseek-v4-flash-vision-exp": 1
+  },
+  "billing_status": "tokens_reported_cost_not_estimated"
+ },
+ "smoke": {
+  "executed": true,
+  "problems": [
+   "1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “src” appears only as `script src=`"
+  ],
+  "vocabulary_missing": 0,
+  "scenarios": {
+   "counts": {
+    "pass": 3,
+    "fail": 8
+   },
+   "coverage": {
+    "total": 11,
+    "parsed": 11
+   },
+   "seconds": 44.2,
+   "source_contracts": {},
+   "failing": [
+    {
+     "id": "REQ-5-1-1#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Issues\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  58 |   await page.goto('/');\n  59 |   const name = \"Issues\";\n> 60 |   await expect.poll(async () => {\n     |   ^\n  61 |     for (const role of ['button','link"
+    },
+    {
+     "id": "REQ-5-1-1#entry-2",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Issues\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  76 |   await page.goto('/');\n  77 |   const name = \"Issues\";\n> 78 |   await expect.poll(async () => {\n     |   ^\n  79 |     for (const role of ['button','link"
+    },
+    {
+     "id": "REQ-5-1-2#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  94 |   await page.goto('/');\n  95 |   const name = \"Improve onboarding\";\n> 96 |   await expect.poll(async () => {\n     |   ^\n  97 |     for (const"
+    },
+    {
+     "id": "REQ-5-1-2#entry-2",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  112 |   await page.goto('/');\n  113 |   const name = \"Improve onboarding\";\n> 114 |   await expect.poll(async () => {\n      |   ^\n  115 |     for ("
+    },
+    {
+     "id": "REQ-5-1-2#entry-3",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  130 |   await page.goto('/');\n  131 |   const name = \"Improve onboarding\";\n> 132 |   await expect.poll(async () => {\n      |   ^\n  133 |     for ("
+    },
+    {
+     "id": "REQ-6-2-1#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Pull requests\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  148 |   await page.goto('/');\n  149 |   const name = \"Pull requests\";\n> 150 |   await expect.poll(async () => {\n      |   ^\n  151 |     for (const role"
+    },
+    {
+     "id": "REQ-6-2-1#entry-2",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Pull requests\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  166 |   await page.goto('/');\n  167 |   const name = \"Pull requests\";\n> 168 |   await expect.poll(async () => {\n      |   ^\n  169 |     for (const role"
+    },
+    {
+     "id": "REQ-6-3-1#entry-1",
+     "observation": "Error: The first WHEN target must be interactive at the stated initial home: Overview onboarding PR\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  184 |   await page.goto('/');\n  185 |   const name = \"Overview onboarding PR\";\n> 186 |   await expect.poll(async () => {\n      |   ^\n  187 |  "
+    }
+   ],
+   "invariants": [],
+   "translation": {}
+  },
+  "repair": {
+   "accepted": true,
+   "reason": "8 more scenario(s) pass",
+   "files": [
+    "frontend/public/app.js"
+   ]
+  },
+  "browser_before": [
+   {
+    "executed": true,
+    "diagnostic_only": true,
+    "errors": [],
+    "page_errors": [],
+    "actions": [
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Overview",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "Agree to the terms",
+      "action": ""
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     },
+     {
+      "scope": "page",
+      "name": "GitHub",
+      "action": "arc:nav"
+     }
+    ],
+    "screens": [
+     "#/",
+     "#/signin",
+     "#/signup",
+     "#/org/acme-demo",
+     "#/r/acme-demo/acme-docs",
+     "#/r/alice-dev/branch-switch-demo",
+     "#/r/alice-dev/default-branch-demo",
+     "#/r/alice-dev/file-management-demo",
+     "#/r/alice-dev/branch-protection-demo",
+     "#/r/fork-user/acme-docs-fork",
+     "#/forgot",
+     "#/org/acme-demo/repositories"
+    ],
+    "browser": "143.0.7499.4",
+    "playwright": "1.57.0"
+   }
+  ],
+  "rounds": [
+   {
+    "round": 1,
+    "fatal": 0,
+    "failing": [
+     "REQ-5-1-1#entry-1",
+     "REQ-5-1-1#entry-2",
+     "REQ-5-1-2#entry-1",
+     "REQ-5-1-2#entry-2",
+     "REQ-5-1-2#entry-3",
+     "REQ-6-2-1#entry-1",
+     "REQ-6-2-1#entry-2",
+     "REQ-6-3-1#entry-1"
+    ],
+    "passing_before": 3,
+    "accepted": true,
+    "gained": [
+     "REQ-5-1-1#entry-1",
+     "REQ-5-1-1#entry-2",
+     "REQ-5-1-2#entry-1",
+     "REQ-5-1-2#entry-2",
+     "REQ-5-1-2#entry-3",
+     "REQ-6-2-1#entry-1",
+     "REQ-6-2-1#entry-2",
+     "REQ-6-3-1#entry-1"
+    ],
+    "reason": "8 more scenario(s) pass",
+    "scenarios": {
+     "counts": {
+      "pass": 11
+     },
+     "coverage": {
+      "total": 11,
+      "parsed": 11
+     },
+     "seconds": 1.9,
+     "source_contracts": {},
+     "failing": [],
+     "invariants": [],
+     "translation": {}
+    },
+    "browser_after": [
+     {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Overview",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "Agree to the terms",
+        "action": ""
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       },
+       {
+        "scope": "page",
+        "name": "GitHub",
+        "action": "arc:nav"
+       }
+      ],
+      "screens": [
+       "#/",
+       "#/signin",
+       "#/signup",
+       "#/org/acme-demo",
+       "#/r/acme-demo/acme-docs",
+       "#/r/acme-demo/acme-docs/issues",
+       "#/r/acme-demo/acme-docs/pulls",
+       "#/r/acme-demo/acme-docs/issues/1",
+       "#/r/acme-demo/acme-docs/issues/2",
+       "#/r/acme-demo/acme-docs/issues/3",
+       "#/r/acme-demo/acme-docs/issues/4",
+       "#/r/acme-demo/acme-docs/issues/5"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+     }
+    ],
+    "files": [
+     "frontend/public/app.js"
+    ],
+    "replied": true,
+    "seconds": 59.8,
+    "cost_cny": 0.151485
+   }
+  ],
+  "problems_after": [
+   "clicking `Confirm merge` (data-action `confirm-merge`) on screen `#/r/acme-demo/acme-docs/pulls/8` throws: Cannot read properties of null (reading 'username'). A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler"
+  ],
+  "scenarios_after": {
+   "counts": {
+    "pass": 11
+   },
+   "coverage": {
+    "total": 11,
+    "parsed": 11
+   },
+   "seconds": 1.9,
+   "source_contracts": {},
+   "failing": [],
+   "invariants": [],
+   "translation": {}
+  }
+ }
+}

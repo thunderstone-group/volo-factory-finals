@@ -1,0 +1,7 @@
+{
+  "source": "native-field-reader-official-sheet",
+  "changed": [
+    "frontend/public/lib/arc.js"
+  ],
+  "library_sha256": "fc56e0fd7a81c3e6d72bfe6df1cefc197e7004d0087a98193f9bea886ae44779"
+}

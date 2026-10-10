@@ -1,0 +1,14 @@
+{
+  "app": "draft-contracts-github",
+  "judge": "gh8",
+  "counts": {
+    "fail": 29,
+    "error": 43,
+    "pass": 36
+  },
+  "seconds": 284.0,
+  "coverage": {
+    "total": 100,
+    "parsed": 65
+  }
+}

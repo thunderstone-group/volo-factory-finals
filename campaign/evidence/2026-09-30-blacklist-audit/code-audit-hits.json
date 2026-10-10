@@ -1,0 +1,567 @@
+[
+  {
+    "file": "main.py",
+    "line": 35,
+    "text": "DEFAULT_BASE = \"https://api.arc-bench.com/v1\""
+  },
+  {
+    "file": "main.py",
+    "line": 44,
+    "text": "REPAIR_CALLS = 24  # Completed repair calls. An edit round costs CNY 0.25-0.5 on a large task; the GitHub (6 calls,"
+  },
+  {
+    "file": "main.py",
+    "line": 45,
+    "text": "# 25 -> 38) and Sheet (12 calls, 20 -> 72) replays both stopped at the call cap while still gaining. Cost enters the"
+  },
+  {
+    "file": "main.py",
+    "line": 48,
+    "text": "REPAIR_REJECTIONS = 4  # Consecutive discarded repairs before the loop gives up. On 09-25 (GitHub, run 95ec6880ee7f) a"
+  },
+  {
+    "file": "main.py",
+    "line": 55,
+    "text": "TESTGEN = os.environ.get(\"ONESHOT_TESTGEN\", \"1\") == \"1\"  # requirement-written tests drive the repairs (testgen.py)"
+  },
+  {
+    "file": "main.py",
+    "line": 57,
+    "text": "# or two failing tests left while 11-18 of its tests could not judge the application, and hidden scores sat 1-10 under"
+  },
+  {
+    "file": "main.py",
+    "line": 58,
+    "text": "# it; a second suite found 10-12 new failures on two stopped Sheet apps, in the blocks the first could not judge."
+  },
+  {
+    "file": "main.py",
+    "line": 59,
+    "text": "SECOND_SUITE = os.environ.get(\"ONESHOT_SECOND_SUITE\", \"0\") == \"1\"  # off (roadmap 4.23): its ~CNY 16 costs ~3 S points"
+  },
+  {
+    "file": "main.py",
+    "line": 77,
+    "text": "# stopped the loop and one Sheet run shipped a draft that passed 8 written tests (hidden 1/100). Nothing is billed for"
+  },
+  {
+    "file": "main.py",
+    "line": 84,
+    "text": "SCAFFOLD = os.environ.get(\"ONESHOT_SCAFFOLD\", \"1\") != \"0\"  # place oneshot/scaffold in the stage before a fresh generation and show it in the prompt"
+  },
+  {
+    "file": "main.py",
+    "line": 112,
+    "text": "  listens on `process.env.PORT`, serves `../frontend/dist` as static files with `/` -> `index.html`,"
+  },
+  {
+    "file": "main.py",
+    "line": 195,
+    "text": "        raw = os.environ.get(env, \"\").strip()"
+  },
+  {
+    "file": "main.py",
+    "line": 205,
+    "text": "        raw = os.environ.get(env, \"\").strip()"
+  },
+  {
+    "file": "main.py",
+    "line": 367,
+    "text": "    configured = os.environ.get(\"FALLBACK_MODEL\")"
+  },
+  {
+    "file": "main.py",
+    "line": 378,
+    "text": "    Sheet run's written tests and repairs to Kimi HighSpeed, CNY 28 for 5 hidden passes.) A stream that ends normally without content (the reasoning"
+  },
+  {
+    "file": "main.py",
+    "line": 586,
+    "text": "        # A doubled separator leaked `=======` into app.js (a Sheet replay round then shipped a file that did not parse)."
+  },
+  {
+    "file": "main.py",
+    "line": 612,
+    "text": "    (one GitHub replay lost a whole 11-hunk round to its last hunk); the tests then judge the result. Returns (files"
+  },
+  {
+    "file": "main.py",
+    "line": 696,
+    "text": "    return {name: os.environ[name] for name in keep if name in os.environ}"
+  },
+  {
+    "file": "main.py",
+    "line": 889,
+    "text": "      return fetch(new URL(target, process.env.PROBE_URL).href, init);"
+  },
+  {
+    "file": "main.py",
+    "line": 899,
+    "text": "    dom = await JSDOM.fromURL(process.env.PROBE_URL, { runScripts: 'dangerously', resources: 'usable',"
+  },
+  {
+    "file": "main.py",
+    "line": 1080,
+    "text": "    if \"PLAYWRIGHT_BROWSERS_PATH\" in os.environ:"
+  },
+  {
+    "file": "main.py",
+    "line": 1081,
+    "text": "        env[\"PLAYWRIGHT_BROWSERS_PATH\"] = os.environ[\"PLAYWRIGHT_BROWSERS_PATH\"]"
+  },
+  {
+    "file": "main.py",
+    "line": 1248,
+    "text": "            \"including `/`; synchronous hash routing from an in-memory store seeded by `seed.js`; row actions hidden \""
+  },
+  {
+    "file": "main.py",
+    "line": 1544,
+    "text": "    and `, and` while missing 11 of Sheet's quoted phrases (5 of its messages) and 12 of GitHub's (09-27). A quoted"
+  },
+  {
+    "file": "main.py",
+    "line": 1676,
+    "text": "             \"Each hidden test starts at `/` in a fresh, signed-out browser session, against the state below, and \""
+  },
+  {
+    "file": "main.py",
+    "line": 1759,
+    "text": "            f\"translations go in a separate aria-hidden sibling element): {shown}\"]"
+  },
+  {
+    "file": "main.py",
+    "line": 1865,
+    "text": "    accessible name, so the visible label no longer finds the field. A submission 9 Sheet repair gave the field labelled"
+  },
+  {
+    "file": "main.py",
+    "line": 1866,
+    "text": "    with the quoted \"Worksheet name\" `aria-label=\"Workbook name\"`, the rename guard still read the label text, and the"
+  },
+  {
+    "file": "main.py",
+    "line": 2225,
+    "text": "    to come last, after every single test, and fell outside the TESTGEN_SHOWN a request lists: on one GitHub draft all"
+  },
+  {
+    "file": "main.py",
+    "line": 2368,
+    "text": "    # such a fix at zero gain (a GitHub replay went from 25 to 32 passing tests and was credited with 4)."
+  },
+  {
+    "file": "main.py",
+    "line": 2408,
+    "text": "        # Written tests follow the same rule: under zero loss a GitHub replay discarded a repair worth 25 -> 32 for"
+  },
+  {
+    "file": "main.py",
+    "line": 2409,
+    "text": "        # one lost test, and a gained test is as likely a hidden path as a lost one."
+  },
+  {
+    "file": "main.py",
+    "line": 2416,
+    "text": "        # Against a hundred written tests a guard is one more lost test, not a veto: on 09-25 (Sheet, run"
+  },
+  {
+    "file": "main.py",
+    "line": 2727,
+    "text": "    key = os.environ.get(\"OPENAI_API_KEY\")"
+  },
+  {
+    "file": "main.py",
+    "line": 2747,
+    "text": "                                    os.environ.get(\"MODEL\", DEFAULT_MODEL),"
+  },
+  {
+    "file": "main.py",
+    "line": 2748,
+    "text": "                                    os.environ.get(\"OPENAI_BASE_URL\", DEFAULT_BASE), key,"
+  },
+  {
+    "file": "main.py",
+    "line": 2760,
+    "text": "                                os.environ.get(\"MODEL\", DEFAULT_MODEL),"
+  },
+  {
+    "file": "main.py",
+    "line": 2761,
+    "text": "                                os.environ.get(\"OPENAI_BASE_URL\", DEFAULT_BASE), key,"
+  },
+  {
+    "file": "dialect.md",
+    "line": 45,
+    "text": "siblings inert and aria-hidden. Ordinary contextual menus and palettes are not automatically modal;"
+  },
+  {
+    "file": "dialect.md",
+    "line": 47,
+    "text": "Idle dialog and notification roots remain hidden and must not intercept clicks."
+  },
+  {
+    "file": "dialect.md",
+    "line": 87,
+    "text": "separate `<span aria-hidden=\"true\">` and give the control `aria-label` equal to the quoted name. The role"
+  },
+  {
+    "file": "semantic_probe.cjs",
+    "line": 46,
+    "text": "    copy.querySelectorAll('[aria-hidden=\"true\"]').forEach(n => n.remove());"
+  },
+  {
+    "file": "semantic_probe.cjs",
+    "line": 68,
+    "text": "    if (el.closest('[hidden], [inert], [aria-hidden=\"true\"]')) return false;"
+  },
+  {
+    "file": "semantic_probe.cjs",
+    "line": 71,
+    "text": "      if (style.display === 'none' || style.visibility === 'hidden') return false;"
+  },
+  {
+    "file": "semantic_probe.cjs",
+    "line": 82,
+    "text": "          win.getComputedStyle(el).visibility !== 'hidden';"
+  },
+  {
+    "file": "semantic_probe.cjs",
+    "line": 145,
+    "text": "    const copy=e.cloneNode(true);copy.querySelectorAll('[aria-hidden=\"true\"]').forEach(x=>x.remove());"
+  },
+  {
+    "file": "semantic_probe.cjs",
+    "line": 190,
+    "text": "      errors.add(`Activating \"${contract.control}\" in \"${contract.form}\" leaves the \"${contract.placeholder}\" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.`);"
+  },
+  {
+    "file": "semantic_probe.cjs",
+    "line": 308,
+    "text": "            errors.add(`Activating \"${contract.control}\" in \"${contract.form}\" leaves the \"${contract.placeholder}\" textbox hidden. Preserve the disclosure state across rendering instead of resetting the form on every render.`);"
+  },
+  {
+    "file": "scenarios.py",
+    "line": 867,
+    "text": "                         r\"(?P<noun>editor|dialog|form|menu|panel|popover|modal|drawer|window|sheet|list|view|tab|picker)?\""
+  },
+  {
+    "file": "scenarios.py",
+    "line": 1041,
+    "text": "_NEGATIVE_SUFFIX = re.compile(r\"\\s+(?:is|are)(?: now)? (?:absent|gone|removed|deleted|hidden|not (?:visible|displayed|\""
+  },
+  {
+    "file": "scenarios.py",
+    "line": 1062,
+    "text": "_CLOSES = re.compile(r\"\\s+(?:closes|is closed|disappears|is dismissed|is hidden|goes away|vanishes|\""
+  },
+  {
+    "file": "scenario_translate.py",
+    "line": 29,
+    "text": "DEFAULT_BASE = \"https://api.arc-bench.com/v1\""
+  },
+  {
+    "file": "scenario_translate.py",
+    "line": 35,
+    "text": "CACHE_DIR = Path(os.environ.get(\"SCENARIO_CACHE_DIR\") or Path(tempfile.gettempdir()) / \"oneshot-scenario-cache\")"
+  },
+  {
+    "file": "scenario_translate.py",
+    "line": 550,
+    "text": "    model = model or os.environ.get(\"SCENARIO_MODEL\") or MODEL"
+  },
+  {
+    "file": "scenario_translate.py",
+    "line": 578,
+    "text": "    key = key if key is not None else os.environ.get(\"OPENAI_API_KEY\", \"\")"
+  },
+  {
+    "file": "scenario_translate.py",
+    "line": 582,
+    "text": "    base = base or os.environ.get(\"OPENAI_BASE_URL\") or DEFAULT_BASE"
+  },
+  {
+    "file": "scenario_check.py",
+    "line": 54,
+    "text": "    env = {name: os.environ[name] for name in keep if name in os.environ}"
+  },
+  {
+    "file": "scenario_check.py",
+    "line": 524,
+    "text": "    if not allowed or os.environ.get(\"SCENARIO_TRANSLATE\", \"1\") == \"0\":"
+  },
+  {
+    "file": "scenario_check.cjs",
+    "line": 9,
+    "text": "const ACTION_MS = Number(process.env.SCENARIO_ACTION_MS || 2500);"
+  },
+  {
+    "file": "scenario_check.cjs",
+    "line": 10,
+    "text": "const EXPECT_MS = Number(process.env.SCENARIO_EXPECT_MS || 2500);"
+  },
+  {
+    "file": "scenario_check.cjs",
+    "line": 210,
+    "text": "        return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };"
+  },
+  {
+    "file": "testgen.py",
+    "line": 35,
+    "text": "# file per top-level requirement group (Sheet 5 files of 13-26, GitHub 6 of 14-25) cost CNY 2.29 against 5.16 for"
+  },
+  {
+    "file": "testgen.py",
+    "line": 36,
+    "text": "# 8 per file (16 files) on 09-28, and ranked ten apps with known hidden scores better (Spearman 0.94 vs 0.86, errors"
+  },
+  {
+    "file": "testgen.py",
+    "line": 135,
+    "text": "        group[\"file\"] = f\"t{number:02d}-{re.sub(r'[^A-Za-z0-9_-]+', '-', group['top'])}.spec.cjs\""
+  },
+  {
+    "file": "testgen.py",
+    "line": 174,
+    "text": "    \"\"\"A file body without the Markdown code fence a reply may wrap it in: three of fifteen files of one GitHub suite"
+  },
+  {
+    "file": "testgen.py",
+    "line": 180,
+    "text": "# Two slips of the writer kill whole files whatever the application does. In eight Sheet suites (09-27) 13-19 tests"
+  },
+  {
+    "file": "testgen.py",
+    "line": 182,
+    "text": "# the hidden suite fails most: a helper that uses `page` without taking it as a parameter (`ReferenceError: page is"
+  },
+  {
+    "file": "testgen.py",
+    "line": 325,
+    "text": "    took 13 tests of a Sheet suite with it. Titles that already carry a listed id are left alone.\"\"\""
+  },
+  {
+    "file": "testgen.py",
+    "line": 432,
+    "text": "    tests per Sheet application, whole REQ-5 files, never a repair target). The call continues the file's own"
+  },
+  {
+    "file": "testgen.py",
+    "line": 539,
+    "text": "# run\" (09-25 Sheet run dca5df727dcb: a draft that overflowed its stack made each test wait out its timeouts, the suite"
+  },
+  {
+    "file": "testgen.py",
+    "line": 588,
+    "text": "    # A phrase that is all placeholder (`<target worksheet name>`) would match any name; it grounds nothing."
+  },
+  {
+    "file": "testgen.py",
+    "line": 601,
+    "text": "        # A grid cell's address is how any spreadsheet names its cells, not something the test made up (09-25: nine"
+  },
+  {
+    "file": "testgen.py",
+    "line": 602,
+    "text": "        # Sheet tests addressing E1, F1, H2 or B5 were set aside as errors and never drove a repair)."
+  },
+  {
+    "file": "testgen.py",
+    "line": 606,
+    "text": "        return False  # the next of a numbered series the requirements name (`Sheet3` after `Sheet1`, `Sheet2`)"
+  },
+  {
+    "file": "testgen.py",
+    "line": 664,
+    "text": "    # One line per phrase: YAML folds long descriptions, and five quoted Sheet messages (\"Worksheet name already"
+  },
+  {
+    "file": "testgen.py",
+    "line": 796,
+    "text": "            if name in os.environ:"
+  },
+  {
+    "file": "testgen.py",
+    "line": 797,
+    "text": "                runner_env[name] = os.environ[name]"
+  },
+  {
+    "file": "testgen.py",
+    "line": 806,
+    "text": "            # run although it parses (09-25 23:07 Sheet run: all 100 tests \"Not run\" in 1.7 s, repairs stopped after"
+  },
+  {
+    "file": "testgen.py",
+    "line": 910,
+    "text": "        key = os.environ.get(\"OPENAI_API_KEY\")"
+  },
+  {
+    "file": "testgen.py",
+    "line": 914,
+    "text": "        complete = _cli_complete(os.environ.get(\"MODEL\", \"deepseek-v4-flash\"),"
+  },
+  {
+    "file": "testgen.py",
+    "line": 915,
+    "text": "                                 os.environ.get(\"OPENAI_BASE_URL\", \"https://api.arc-bench.com/v1\"), key)"
+  },
+  {
+    "file": "scaffold/README.md",
+    "line": 11,
+    "text": "| `frontend/public/index.html` | shell | `#dialog-root` / `#status-root` hidden while idle (never intercept pointer events); script order seed → arc → app |"
+  },
+  {
+    "file": "scaffold/README.md",
+    "line": 16,
+    "text": "| `lib/arc.js` §Dialog | `openDialog` / `closeDialog` | siblings `inert` + `aria-hidden` while open (Playwright ignores `aria-modal`); no outside textbox visible to the fill ladder |"
+  },
+  {
+    "file": "scaffold/README.md",
+    "line": 18,
+    "text": "| `lib/arc.js` §Combobox | `combobox({label, name, options, value, change})` | a named combo box whose options are clicked: `role=combobox` named by its label, a `role=listbox` of `role=option` elements that exists only while open (an option name shared by several boxes stays unique), the value in a hidden input so forms submit it; never a native `<select>` for such boxes, whose options a click cannot reach |"
+  },
+  {
+    "file": "scaffold/README.md",
+    "line": 19,
+    "text": "| `lib/arc.js` §Presses | `ARC.render()` waits during a left-button press | the browser sends `click` (and `dblclick` on the second press) only to an element still in the document at release; a render in a mousedown/mouseup handler replaced it, so no grid cell of three 09-24 spreadsheet drafts ever received a click and no double-click editor opened. The render runs at the end of the click sequence, same task; an editor a dblclick handler wrote itself is kept |"
+  },
+  {
+    "file": "scaffold/backend/server.js",
+    "line": 86,
+    "text": "server.listen(Number(process.env.PORT) || 3000, () => console.log('listening', server.address().port));"
+  },
+  {
+    "file": "scaffold/frontend/public/index.html",
+    "line": 7,
+    "text": "<link rel=\"stylesheet\" href=\"styles.css\">"
+  },
+  {
+    "file": "scaffold/frontend/public/index.html",
+    "line": 14,
+    "text": "<div id=\"dialog-root\" hidden></div>"
+  },
+  {
+    "file": "scaffold/frontend/public/index.html",
+    "line": 15,
+    "text": "<div id=\"status-root\" hidden></div>"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 100,
+    "text": "  <button type=\"button\" class=\"brand-logo\" aria-label=\"${ARC.esc(L.brand || 'App')}\" data-action=\"arc:nav\" data-hash=\"#/\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M4 5h16v14H4z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/><path d=\"M8 9h8M8 13h5\" stroke=\"currentColor\" stroke-width=\"2\"/></svg></button>"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 119,
+    "text": "  // element and silently drops the click and the double-click (09-24: three of three spreadsheet drafts"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 138,
+    "text": "  // pressed cell and re-selected it, so a menu Copy on a dragged range copied one cell (two of four spreadsheet"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 187,
+    "text": "  // the same thing, so the later copy is hidden. Controls that differ in anything (a record id, a role) stay."
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 191,
+    "text": "      if (el.hidden || !el.getClientRects().length) continue;"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 193,
+    "text": "      if (seen.has(key)) { el.hidden = true; el.setAttribute('data-arc-duplicate', ''); } else seen.add(key);"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 197,
+    "text": "  // --- Dialog: while a chooser is open every sibling is inert + aria-hidden (Playwright ignores"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 198,
+    "text": "  // aria-modal), so no text input outside the dialog is visible to the fill ladder. The root is hidden"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 204,
+    "text": "    root.hidden = false;"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 212,
+    "text": "    root.hidden = true; root.innerHTML = '';"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 220,
+    "text": "      if (on) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 221,
+    "text": "      else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 262,
+    "text": "  // to one element. The value rides in a hidden input named `name`, so forms submit it like any field."
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 264,
+    "text": "  // renders a <label>, the box (role=combobox, named by the label) and the hidden input; `change` names an"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 274,
+    "text": "      `<input type=\"hidden\" name=\"${ARC.esc(o.name || '')}\" value=\"${ARC.esc(current ? current.value : '')}\"></span>`;"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 283,
+    "text": "    const value = (wrap.querySelector('input[type=\"hidden\"]') || {}).value;"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 306,
+    "text": "    const input = wrap.querySelector('input[type=\"hidden\"]');"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 334,
+    "text": "  // Pasted text arrives with \\n line ends and without the one line break that ends copied rows (spreadsheets and"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 409,
+    "text": "    root.hidden = false;"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 411,
+    "text": "    ARC._statusTimer = setTimeout(() => { root.hidden = true; root.innerHTML = ''; ARC._undo = null; }, (opts && opts.ms) || 6000);"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 414,
+    "text": "  // --- Row actions: hidden at rest, revealed by :hover/:focus-within (styles.css), so at any instant"
+  },
+  {
+    "file": "scaffold/frontend/public/lib/arc.js",
+    "line": 426,
+    "text": "    if (name === 'arc:undo') { const u = ARC._undo; ARC._undo = null; document.getElementById('status-root').hidden = true; if (u) u(); return; }"
+  },
+  {
+    "file": "scaffold/frontend/public/styles.css",
+    "line": 2,
+    "text": "   BELOW the row text (never absolutely positioned over a title); idle dialog/status roots are hidden. */"
+  },
+  {
+    "file": "scaffold/frontend/public/styles.css",
+    "line": 20,
+    "text": "#dialog-root[hidden], #status-root[hidden] { display: none; }"
+  }
+]

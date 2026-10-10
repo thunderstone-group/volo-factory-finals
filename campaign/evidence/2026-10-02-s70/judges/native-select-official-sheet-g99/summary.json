@@ -1,0 +1,13 @@
+{
+  "app": "native-select-official-sheet",
+  "judge": "g99",
+  "counts": {
+    "pass": 80,
+    "fail": 20
+  },
+  "seconds": 131.0,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

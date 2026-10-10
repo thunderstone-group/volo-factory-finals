@@ -1,0 +1,87 @@
+[
+  {
+    "id": "REQ-2-2-2#contract-1",
+    "requirement": "REQ-2-2-2",
+    "evidence": "Data outside the deleted column is preserved",
+    "explanation": "Deleting column B from a valid minimal sheet with A1='x', B1='y', and A2='z' must remove B1 while preserving A1 and A2, since no columns follow B to shift left. The real deleteLine implementation re-packs all surviving cells row-major, moving A2 into B1 and erasing A2; makeValues therefore shows an empty A2 instead of 'z'.",
+    "functions": [
+      {"file": "frontend/public/app.js", "name": "deleteLine", "kind": "function", "alias": "deleteLine"},
+      {"file": "frontend/public/app.js", "name": "currentWb", "kind": "function", "alias": "currentWb"},
+      {"file": "frontend/public/app.js", "name": "currentSheet", "kind": "function", "alias": "currentSheet"},
+      {"file": "frontend/public/app.js", "name": "getWb", "kind": "function", "alias": "getWb"},
+      {"file": "frontend/public/app.js", "name": "pushUndo", "kind": "function", "alias": "pushUndo"},
+      {"file": "frontend/public/app.js", "name": "clearStatus", "kind": "function", "alias": "clearStatus"},
+      {"file": "frontend/public/app.js", "name": "refRC", "kind": "function", "alias": "refRC"},
+      {"file": "frontend/public/app.js", "name": "coordName", "kind": "function", "alias": "coordName"},
+      {"file": "frontend/public/app.js", "name": "shiftFormula", "kind": "function", "alias": "shiftFormula"},
+      {"file": "frontend/public/app.js", "name": "makeValues", "kind": "function", "alias": "makeValues"},
+      {"file": "frontend/public/app.js", "name": "evaluateFormula", "kind": "function", "alias": "evaluateFormula"},
+      {"file": "frontend/public/app.js", "name": "tokenizeFormula", "kind": "function", "alias": "tokenizeFormula"},
+      {"file": "frontend/public/app.js", "name": "errObj", "kind": "function", "alias": "errObj"}
+    ],
+    "initializers": [],
+    "subject": "deleteLine",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=globalThis.COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;globalThis.ARC={state:{workbooks:[],ui:{}},route:function(){return {name:'workbook',params:['wb1']};},save:function(){},render:function(){},uid:function(){return 'u';}};globalThis.document={getElementById:function(){return null;}};ARC.state.workbooks.push({id:'wb1',activeSheet:'sh1',sheets:[{id:'sh1',name:'Sheet1',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'x',B1:'y',A2:'z'}}]});",
+    "precondition": "var s0=ARC.state.workbooks[0].sheets[0];var vals0=makeValues(s0);assert.strictEqual(vals0('A1').text,'x');assert.strictEqual(vals0('B1').text,'y');assert.strictEqual(vals0('A2').text,'z');",
+    "check": "deleteLine('col',1,1);var s=ARC.state.workbooks[0].sheets[0];var vals=makeValues(s);assert.strictEqual(vals('A1').text,'x');assert.strictEqual(vals('A2').text,'z');assert.strictEqual(vals('B1').text,'');"
+  },
+  {
+    "id": "REQ-2-2-1#contract-2",
+    "requirement": "REQ-2-2-1",
+    "evidence": "recomputed using the adjusted range",
+    "explanation": "The pivot is configured over A1:B3 of the source sheet with Region/Sales headers. Inserting a row above that range shifts the source range to A2:B4, so clicking Refresh must recompute from the adjusted range. The implementation leaves pivot.range at A1:B3; computePivot then reads the blank inserted row as the header and returns 'Pivot field is no longer available. Select a new field.' instead of a refreshed result.",
+    "functions": [
+      {"file": "frontend/public/app.js", "name": "shiftStructure", "kind": "function", "alias": "shiftStructure"},
+      {"file": "frontend/public/app.js", "name": "computePivot", "kind": "function", "alias": "computePivot"},
+      {"file": "frontend/public/app.js", "name": "makeValues", "kind": "function", "alias": "makeValues"},
+      {"file": "frontend/public/app.js", "name": "evaluateFormula", "kind": "function", "alias": "evaluateFormula"},
+      {"file": "frontend/public/app.js", "name": "tokenizeFormula", "kind": "function", "alias": "tokenizeFormula"},
+      {"file": "frontend/public/app.js", "name": "errObj", "kind": "function", "alias": "errObj"},
+      {"file": "frontend/public/app.js", "name": "coordName", "kind": "function", "alias": "coordName"},
+      {"file": "frontend/public/app.js", "name": "shiftFormula", "kind": "function", "alias": "shiftFormula"},
+      {"file": "frontend/public/app.js", "name": "pushUndo", "kind": "function", "alias": "pushUndo"},
+      {"file": "frontend/public/app.js", "name": "clearStatus", "kind": "function", "alias": "clearStatus"},
+      {"file": "frontend/public/app.js", "name": "currentWb", "kind": "function", "alias": "currentWb"},
+      {"file": "frontend/public/app.js", "name": "currentSheet", "kind": "function", "alias": "currentSheet"},
+      {"file": "frontend/public/app.js", "name": "getWb", "kind": "function", "alias": "getWb"},
+      {"file": "frontend/public/app.js", "name": "refRC", "kind": "function", "alias": "refRC"}
+    ],
+    "initializers": [],
+    "subject": "shiftStructure",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=globalThis.COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;globalThis.ARC={state:{workbooks:[],ui:{}},route:function(){return {name:'workbook',params:['wb1']};},save:function(){},render:function(){},uid:function(){return 'u';}};globalThis.document={getElementById:function(){return null;}};ARC.state.workbooks.push({id:'wb1',activeSheet:'src',sheets:[{id:'src',name:'Data',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'Sales',A2:'East',B2:'10',A3:'West',B3:'20'}},{id:'pvt',name:'Pivot1',sel:{r1:0,c1:0,r2:0,c2:0},validations:[],cells:{A1:'Region',B1:'SUM of Sales',A2:'East',B2:'10',A3:'West',B3:'20'},pivot:{sourceSheet:'src',range:{r1:0,c1:0,r2:2,c2:1},rows:'Region',columns:'',values:'Sales',summarize:'SUM'}}]});",
+    "precondition": "var w0=ARC.state.workbooks[0];assert.strictEqual(w0.activeSheet,'src');assert.deepStrictEqual(w0.sheets[1].pivot.range,{r1:0,c1:0,r2:2,c2:1});",
+    "check": "shiftStructure('row',0,1,true);var w=ARC.state.workbooks[0];var p=w.sheets[1].pivot;var res=computePivot(w,p);assert.strictEqual(res.error,undefined);assert.strictEqual(res.cells.A1,'Region');"
+  },
+  {
+    "id": "REQ-4-1-2#contract-3",
+    "requirement": "REQ-4-1-2",
+    "evidence": "If the offset moves a relative reference outside the worksheet bounds, the target formula bar displays =#REF! and the grid displays #REF!.",
+    "explanation": "adjustFormula is the helper ARC.onPaste uses to adjust copied formulas. Copying B1 (containing =A20) to B2 is a legal in-grid paste, but the relative A20 reference moves by +1 row to A21, outside the 20-row worksheet. The helper returns '=A21' instead of '=#REF!' because it bounds-checks negative rows and columns but not r >= ROW_COUNT.",
+    "functions": [
+      {"file": "frontend/public/app.js", "name": "adjustFormula", "kind": "function", "alias": "adjustFormula"}
+    ],
+    "initializers": [],
+    "subject": "adjustFormula",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=globalThis.COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;",
+    "precondition": "assert.strictEqual(ROW_COUNT,20);assert.strictEqual(COL_LIST.indexOf('A'),0);",
+    "check": "assert.strictEqual(adjustFormula('=A20',1,0),'=#REF!');"
+  },
+  {
+    "id": "REQ-4-2-2#contract-4",
+    "requirement": "REQ-4-2-2",
+    "evidence": "an invalid reference displays #REF!",
+    "explanation": "A formula '=U1' refers to column U, outside the A-T worksheet grid. The formula engine tokenizes it as a reference and returns the string 'null' for the missing cell; makeValues therefore displays 'null' in the grid instead of the required '#REF!' for an invalid reference.",
+    "functions": [
+      {"file": "frontend/public/app.js", "name": "makeValues", "kind": "function", "alias": "makeValues"},
+      {"file": "frontend/public/app.js", "name": "evaluateFormula", "kind": "function", "alias": "evaluateFormula"},
+      {"file": "frontend/public/app.js", "name": "tokenizeFormula", "kind": "function", "alias": "tokenizeFormula"},
+      {"file": "frontend/public/app.js", "name": "errObj", "kind": "function", "alias": "errObj"},
+      {"file": "frontend/public/app.js", "name": "coordName", "kind": "function", "alias": "coordName"}
+    ],
+    "initializers": [],
+    "subject": "makeValues",
+    "setup": "globalThis.COL_LIST='ABCDEFGHIJKLMNOPQRST'.split('');globalThis.MAX_COL=globalThis.COL_LIST.length;globalThis.ROW_COUNT=20;globalThis.REF_RE=/(\\$?)([A-Za-z]{1,3})(\\$?)([0-9]+)/g;",
+    "precondition": "var sheet={cells:{A1:'=U1'}};assert.strictEqual(sheet.cells.A1,'=U1');assert.strictEqual(COL_LIST.indexOf('U'),-1);",
+    "check": "var sheet={cells:{A1:'=U1'}};var vals=makeValues(sheet);assert.strictEqual(vals('A1').text,'#REF!');"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "attempt": 18,
+  "request_sha256": "5d1c0616c3e9a3f941effb980e6903f5333a1a08df6e7a1644a8e85bceedb9d3",
+  "request_bytes": 493324,
+  "started_at": 1791028771.727848,
+  "interface": "en0",
+  "http_version": "1.1",
+  "resolved_ip": "189.1.235.72",
+  "http_status": 200,
+  "curl_exit": 0,
+  "seconds": 292.167,
+  "received_bytes": 20821574
+}

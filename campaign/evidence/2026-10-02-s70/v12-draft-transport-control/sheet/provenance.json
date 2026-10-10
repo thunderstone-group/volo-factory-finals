@@ -1,0 +1,7 @@
+{
+  "source": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-requirement-transactions-v12-sheet/.oneshot-h23ecpcn/app",
+  "application_sha256": "c0ac6002fb35e353d3ed377910c8c612ad7a3a3e6dec7e057d9972f51e4e3239",
+  "stage": "draft snapshot while agent waits for its self-check generation",
+  "model": "kimi-k2.7-code-highspeed after primary transport failures",
+  "final_delivery": false
+}

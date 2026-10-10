@@ -1,0 +1,13 @@
+{
+  "source_run": "4666c04f629e",
+  "source_submission": "f56d97c2fdb1",
+  "original_github_passed": 46,
+  "source_zip_sha256": "47af59ed6bf3cfa792079e120d847735a4955cf787ba59fa98de15121a5ed377",
+  "archive_application_prefix": "template/",
+  "own_delivery_files_extracted": 39,
+  "business_files_unchanged_from_official": true,
+  "wrapper_added": "same validated node22-alpine Dockerfile, honors PORT",
+  "package": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/official-github-refreshed/official-github-46-app.zip",
+  "package_sha256": "e4d684922f6d0494e67f6f826f7612be9f24fe85df53ed451c38dfe0620bb178",
+  "bytes": 39894
+}

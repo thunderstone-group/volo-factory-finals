@@ -1,0 +1,193 @@
+{
+ "tests": [
+  {
+   "id": "REQ-5-1-1",
+   "n": 1,
+   "title": "Filter issues by Open status, keyword, and bug label, then switch to Closed and verify only the matching closed issue remains and issue data is unchanged",
+   "checks": [
+    "Selecting Open, entering the unique keyword, and choosing the bug label shows only the matching Open issue",
+    "Each visible row displays issue number, title, status, author, and labels",
+    "Clicking the title link opens the issue detail page",
+    "After switching to Closed, the Open issue is hidden and the matching Closed issue is shown",
+    "Filtering does not create or modify any issue; reload retains the filter context and results"
+   ]
+  },
+  {
+   "id": "REQ-5-1-1",
+   "n": 2,
+   "title": "Filter the issue list to Closed and search by the closed issue title; verify only that closed issue is shown and persists after reload",
+   "checks": [
+    "Selecting Closed and entering the closed issue title in Search issues displays only the matching Closed issue",
+    "The matching closed issue title link has accessible name exactly the title",
+    "Open issues are not displayed under the Closed filter",
+    "After reload, the same filtered result is shown and issue data remains unchanged"
+   ]
+  },
+  {
+   "id": "REQ-5-1-2",
+   "n": 1,
+   "title": "Open an issue from the list and verify the full detail view: number, title, Open status, description, metadata, comments, and chronological activity; reload preserves the data",
+   "checks": [
+    "The detail page heading accessible name is exactly the complete issue title without the number",
+    "Visible Open status, saved description, label, assignee, comment author, and comment body are displayed",
+    "Creation and comment activities appear in chronological order",
+    "Refreshing or reopening the same issue number shows the same title, status, metadata, and comments"
+   ]
+  },
+  {
+   "id": "REQ-5-1-2",
+   "n": 2,
+   "title": "A signed-in user with read-only permission views the issue detail but sees no editable issue controls",
+   "checks": [
+    "All saved issue fields, metadata, and comments are visible to the authorized signed-in user",
+    "Edit issue title, Edit issue description, comment editor, assignee, label, milestone, and close/reopen controls are not available to Read/Triage users",
+    "Refreshing or reopening the page keeps the same persisted issue data"
+   ]
+  },
+  {
+   "id": "REQ-5-1-2",
+   "n": 3,
+   "title": "A user without repository view permission is denied access to the issue detail content",
+   "checks": [
+    "Directly opening the issue address for an inaccessible repository requires authentication or shows an access-denied state",
+    "Issue title, description, comments, and metadata are not exposed to the unauthorized user",
+    "No editable controls are rendered and issue data remains unchanged"
+   ]
+  },
+  {
+   "id": "REQ-5-2-1",
+   "n": 1,
+   "title": "Create a new issue with a valid title and description; verify unique number, Open status, author, activity, list presence, and persistence, and that rejections create no issue",
+   "checks": [
+    "Redirects to the new issue detail page showing a unique incrementing repository-scoped number, Open status, entered title and description, and current user as author",
+    "The activity timeline contains a creation record",
+    "Returning to the issue list shows the new issue by its number and title link",
+    "After reload, the issue and its values persist",
+    "Blank title, overlong title, missing write permission, or failed submission displays a reason and adds no issue or number"
+   ]
+  },
+  {
+   "id": "REQ-5-2-1",
+   "n": 2,
+   "title": "Submitting a title of only three spaces is treated as blank; displays 'Title is required' and creates no issue",
+   "checks": [
+    "Clicking Submit new issue with a title of three spaces and empty description remains on the form",
+    "Visible field error 'Title is required' is shown beside the title field",
+    "No issue record or new issue number is created",
+    "After reload, the issue list is unchanged and the failed input creates no partial data"
+   ]
+  },
+  {
+   "id": "REQ-5-2-2",
+   "n": 1,
+   "title": "Edit an issue title and description separately; verify updated values in detail and list, activity records, unchanged metadata, and persistence after reload",
+   "checks": [
+    "Saving a new valid title updates the title heading and issue-list summary for the same issue number",
+    "Saving a new valid description makes the exact new description visible on the detail page",
+    "Activity timeline records both edits with editor and time",
+    "Status, labels, assignees, and other issues remain unchanged",
+    "After reload, the new title and description persist; blank title, overlong input, or failed save retains the original field value"
+   ]
+  },
+  {
+   "id": "REQ-5-2-2",
+   "n": 2,
+   "title": "Clearing the issue title to blank displays 'Title is required' and retains the original title after reload",
+   "checks": [
+    "Entering three spaces as the new title and clicking Save issue title rejects the save",
+    "Visible message 'Title is required' is shown",
+    "The original title heading remains after reload",
+    "No activity or title change is persisted"
+   ]
+  },
+  {
+   "id": "REQ-5-2-3",
+   "n": 1,
+   "title": "Add a comment and a reaction to an issue; verify publication, timeline persistence, duplicate reaction removal, and rejection cases leave no partial records",
+   "checks": [
+    "After clicking Comment, the timeline displays the current user, full comment body, and creation time",
+    "Selecting a reaction on an existing comment shows the reaction and count",
+    "Selecting the same reaction again removes it without creating a duplicate",
+    "After reload, the comment and final reaction state persist",
+    "Blank or overlong comments, lack of comment permission, or failed publication append no partial comment or timeline record"
+   ]
+  },
+  {
+   "id": "REQ-5-2-3",
+   "n": 2,
+   "title": "Submitting whitespace-only comment text creates no comment or timeline record and the discussion count is unchanged after reload",
+   "checks": [
+    "Entering only whitespace in the Comment box and activating Comment produces no new comment article",
+    "No activity/timeline record is appended",
+    "Discussion count remains unchanged after reload",
+    "Existing comments remain stable"
+   ]
+  },
+  {
+   "id": "REQ-5-3-1",
+   "n": 1,
+   "title": "Assign then unassign an issue participant from the Assignees picker; verify immediate save, activity records, persistence, non-assignable exclusion, and permission restriction",
+   "checks": [
+    "Clicking the Assignees settings icon, searching, and checking an assignable member immediately saves the assignment and closes the picker",
+    "The exact member username appears in the assignee area and remains after reload",
+    "Reopening Assignees and checking the same member again immediately removes the assignment and closes the picker",
+    "Assignment and unassignment activities are recorded chronologically",
+    "Non-assignable accounts do not appear in search results; unassignment does not delete the account or its repository grant",
+    "Users without Triage/Maintain/Admin cannot save assignee changes"
+   ]
+  },
+  {
+   "id": "REQ-5-3-2",
+   "n": 1,
+   "title": "Apply then remove an existing repository label to an issue; verify immediate save, reload persistence, no cross-repository labels, and permission restriction",
+   "checks": [
+    "Clicking the bug label option in the Labels picker immediately saves the association and closes the picker",
+    "The bug label is visible on the detail page and issue list and remains after reload",
+    "Reopening Labels and selecting bug again removes the label association",
+    "The selector offers only labels from the current repository and cannot create or associate labels from another repository",
+    "Read and Write users cannot submit label changes; the server rejects unauthorized submissions"
+   ]
+  },
+  {
+   "id": "REQ-5-3-3",
+   "n": 1,
+   "title": "Assign an issue to a current-repository milestone then remove it with None; verify immediate save, persistence, no cross-repository milestones, and role restriction",
+   "checks": [
+    "Clicking the Milestone settings icon and selecting v1.0 immediately saves the association and closes the picker",
+    "The detail page displays the milestone name and records an association activity; it remains after reload",
+    "Reopening Milestone and choosing None removes the display and association",
+    "The selector offers only milestones from the current repository and does not create cross-repository associations",
+    "Read and Write users can only view the current milestone and cannot save changes"
+   ]
+  },
+  {
+   "id": "REQ-5-4",
+   "n": 1,
+   "title": "Close then reopen an issue; verify status transitions, timeline events, unchanged metadata, and final Open state after reload",
+   "checks": [
+    "Clicking Close issue immediately changes status to Closed and appends a Closed activity",
+    "Clicking Reopen issue immediately changes status to Open and appends a Reopen activity",
+    "Issue number, title, description, comments, labels, assignees, and milestone remain unchanged",
+    "After reload, the issue list and detail page show the final Open status",
+    "The Close issue button is available again on the reopened issue"
+   ]
+  },
+  {
+   "id": "REQ-5-4",
+   "n": 2,
+   "title": "A user without issue-management permission cannot close or reopen an issue; both controls are absent and status remains unchanged",
+   "checks": [
+    "The Read-only viewer sees neither Close issue nor Reopen issue buttons",
+    "Any attempted close/reopen submission is rejected by the server",
+    "Issue status and activity timeline remain unchanged",
+    "After reload, the issue status is still the original Open or Closed state"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 63010,
+  "completion_tokens": 8707
+ },
+ "cost_cny": 0.4358,
+ "finish": "stop"
+}

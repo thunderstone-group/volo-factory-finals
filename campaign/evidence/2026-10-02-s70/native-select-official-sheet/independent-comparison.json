@@ -1,0 +1,77 @@
+[
+  {
+    "judge": "g99",
+    "changed_cases": [
+      {
+        "id": "REQ-5-3-1#2",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#3",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#4",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#5",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#7",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#8",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#9",
+        "before": "pass",
+        "after": "fail"
+      }
+    ]
+  },
+  {
+    "judge": "cov99n-arm",
+    "changed_cases": [
+      {
+        "id": "REQ-5-3-1#3",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#4",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#5",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#7",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#8",
+        "before": "pass",
+        "after": "fail"
+      },
+      {
+        "id": "REQ-5-3-1#9",
+        "before": "pass",
+        "after": "fail"
+      }
+    ]
+  }
+]

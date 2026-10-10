@@ -1,0 +1,43 @@
+{
+  "counts": {
+    "pass": 122,
+    "error": 7
+  },
+  "coverage": {
+    "total": 129,
+    "parsed": 122
+  },
+  "seconds": 37.4,
+  "failing": [
+    {
+      "id": "REQ-6-1#2",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-3-3",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-3-3#2",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-3-4",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-3-4#2",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-5",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-6#2",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    }
+  ],
+  "invariants": [],
+  "translation": {}
+}

@@ -1,0 +1,283 @@
+{
+ "tests": [
+  {
+   "id": "REQ-2-1-1",
+   "n": 1,
+   "title": "Add worksheet to a workbook containing only Sheet1 creates Sheet2, makes it active with A1 selected, leaves Sheet1 unchanged, and persists after refresh",
+   "checks": [
+    "Button 'Add worksheet' is visible and clickable in tab bar",
+    "New tab with accessible name Sheet2 appears",
+    "Sheet2 tab has aria-selected=true and its grid is active with A1 selected",
+    "Sheet2 grid is blank and does not inherit filters/validation/pivot from Sheet1",
+    "Sheet1 tab and its data remain unchanged",
+    "After refresh/reopen, Sheet2 still exists and is active"
+   ]
+  },
+  {
+   "id": "REQ-2-1-1",
+   "n": 2,
+   "title": "Add worksheet when Sheet1 and Sheet2 already exist assigns the first unused SheetN name (Sheet3), keeps existing sheets unchanged, and persists",
+   "checks": [
+    "New tab is named Sheet3 (first unused SheetN in positive-integer order)",
+    "New worksheet is blank and does not inherit filters, validation, or pivot results",
+    "New worksheet becomes active and A1 is selected",
+    "Existing Sheet1 and Sheet2 remain unchanged",
+    "After refresh, Sheet3 still exists"
+   ]
+  },
+  {
+   "id": "REQ-2-1-2",
+   "n": 1,
+   "title": "Click another worksheet tab and all worksheet state (grid, row/column structure, selection, formula bar, filters, validation, pivot results) switches to that tab; active tab persists after refresh",
+   "checks": [
+    "Target tab has aria-selected=true",
+    "Grid displays target worksheet values (East/1200, North/800)",
+    "Selected cell, formula bar, filter buttons, validation entry points, and pivot results match target worksheet",
+    "After refresh, the same tab remains active with the same state"
+   ]
+  },
+  {
+   "id": "REQ-2-1-2",
+   "n": 2,
+   "title": "After switching to a worksheet, the Formula bar displays the selected cell's ordinary value or original formula while the grid shows the value/result",
+   "checks": [
+    "Formula bar labeled 'Formula bar' is present",
+    "For ordinary cell, formula bar equals grid value",
+    "For formula cell, formula bar shows original formula and grid shows calculated result"
+   ]
+  },
+  {
+   "id": "REQ-2-1-2",
+   "n": 3,
+   "title": "Switch to a worksheet with no selection history selects A1 as the current cell",
+   "checks": [
+    "A1 gridcell has aria-selected=true",
+    "Current cell indicator is A1",
+    "Formula bar reflects A1's value or empty state"
+   ]
+  },
+  {
+   "id": "REQ-2-1-2",
+   "n": 4,
+   "title": "Switching away from and back to a worksheet does not modify it; its most recent successful state is restored on return",
+   "checks": [
+    "Source worksheet grid values unchanged after returning",
+    "Saved selection on source worksheet restored",
+    "No data from the other worksheet appears in source grid",
+    "Formula bar shows source worksheet's selected cell content"
+   ]
+  },
+  {
+   "id": "REQ-2-1-2",
+   "n": 5,
+   "title": "Reopening/refreshing the workbook directly displays the last active tab and restores each worksheet's last confirmed selected cell",
+   "checks": [
+    "Active tab after refresh is the last active tab before refresh",
+    "Switching to another worksheet shows its last confirmed selected cell",
+    "aria-selected states inside/outside the saved selection match the saved rectangle",
+    "Grid values and formulas per worksheet are restored"
+   ]
+  },
+  {
+   "id": "REQ-2-1-3",
+   "n": 1,
+   "title": "Rename a worksheet via its tab menu to a new unique name; the tab shows the new name and it persists after refresh",
+   "checks": [
+    "Worksheet options button for target tab opens menu with menuitem 'Rename'",
+    "Dialog 'Rename worksheet' opens with textbox 'Worksheet name' prefilled with current name",
+    "Enter new name and click Save",
+    "Tab accessible name becomes the new name",
+    "After refresh/reopen, tab still shows new name"
+   ]
+  },
+  {
+   "id": "REQ-2-1-3",
+   "n": 2,
+   "title": "Attempt to rename a worksheet to an empty or whitespace-only name is rejected with 'Worksheet name cannot be empty'; original name remains and persists",
+   "checks": [
+    "Enter spaces or empty text in 'Worksheet name'",
+    "Error 'Worksheet name cannot be empty' displayed",
+    "Tab still shows original worksheet name",
+    "After refresh, original name remains"
+   ]
+  },
+  {
+   "id": "REQ-2-1-3",
+   "n": 3,
+   "title": "Attempt to rename a worksheet to a duplicate name is rejected with 'Worksheet name already exists'; original name remains and persists",
+   "checks": [
+    "Enter an existing worksheet name (e.g., Sheet2)",
+    "Error 'Worksheet name already exists' displayed",
+    "Tab still shows original worksheet name",
+    "After refresh, original name remains"
+   ]
+  },
+  {
+   "id": "REQ-2-1-4",
+   "n": 1,
+   "title": "Delete a worksheet through its tab menu and confirm in the Delete worksheet dialog; target tab/data disappear, an adjacent tab becomes active, and deletion persists after refresh",
+   "checks": [
+    "Menu 'Delete' command opens dialog 'Delete worksheet' whose text includes target worksheet name",
+    "Click 'Delete worksheet' confirmation button",
+    "Target tab no longer present and adjacent worksheet tab is active",
+    "Target data/formulas/filters/validation/pivot no longer appear",
+    "After refresh, target tab remains absent"
+   ]
+  },
+  {
+   "id": "REQ-2-1-4",
+   "n": 2,
+   "title": "Delete a pivot-result worksheet: target pivot tab disappears and its source worksheet is no longer constrained by that pivot table; source data unchanged",
+   "checks": [
+    "Delete command opens confirmation dialog for pivot-result worksheet",
+    "After confirm, pivot-result tab is absent",
+    "Attempting to delete source worksheet no longer shows 'Please delete or rebuild dependent pivot tables first'",
+    "Source worksheet data remains unchanged"
+   ]
+  },
+  {
+   "id": "REQ-2-1-4",
+   "n": 3,
+   "title": "Attempt to delete a worksheet that is still a pivot-table source is rejected with 'Please delete or rebuild dependent pivot tables first'; dialog closes and both source data and pivot results remain unchanged",
+   "checks": [
+    "Confirmation for source worksheet is attempted",
+    "Error 'Please delete or rebuild dependent pivot tables first' displayed",
+    "Source worksheet tab/grid remains visible unchanged",
+    "Pivot results remain unchanged",
+    "After refresh, both still present"
+   ]
+  },
+  {
+   "id": "REQ-2-1-4",
+   "n": 4,
+   "title": "Delete the only remaining worksheet: no confirmation dialog opens, 'A workbook must contain at least one worksheet' is displayed, and the worksheet remains after refresh",
+   "checks": [
+    "Clicking Delete on last worksheet does not open 'Delete worksheet' dialog",
+    "Error 'A workbook must contain at least one worksheet' displayed",
+    "Worksheet tab remains present",
+    "After refresh, worksheet still present"
+   ]
+  },
+  {
+   "id": "REQ-2-2-1",
+   "n": 1,
+   "title": "Insert 1 row above row 3 via the row-number menu: row 3 and subsequent rows shift down, formulas/validation/filters follow, and structure persists after refresh",
+   "checks": [
+    "Row-number menu for row 3 provides 'Insert 1 row above' menuitem",
+    "New blank row appears at row 3 and old row 3 moves to row 4",
+    "Subsequent complete records, validation rules, and formula references shift downward together",
+    "Formula bar displays adjusted original formulas and correct results",
+    "Row headers use ARIA rowheader with decimal row numbers",
+    "After refresh, inserted blank row remains"
+   ]
+  },
+  {
+   "id": "REQ-2-2-1",
+   "n": 2,
+   "title": "Insert 1 row below row 3: subsequent rows shift down, new blank row appears below target, formulas adjust, and the structure persists after refresh",
+   "checks": [
+    "Row-number menu provides 'Insert 1 row below'",
+    "New blank row appears below row 3 and old row 4 moves down",
+    "Validation rules and formula references shift down together",
+    "After refresh, structure persists"
+   ]
+  },
+  {
+   "id": "REQ-2-2-1",
+   "n": 3,
+   "title": "Delete row 3 via row-number menu: subsequent rows shift up, target row's validation rules are removed, affected formulas adjust or show explicit error, and the deletion persists",
+   "checks": [
+    "Row-number menu for row 3 provides 'Delete row'",
+    "Row 3 removed and old row 4 moves up to row 3",
+    "Rules on deleted row are removed; cells outside deleted row preserved",
+    "Affected formulas display adjusted formulas/results; unpreservable references show explicit error",
+    "After refresh, deletion persists"
+   ]
+  },
+  {
+   "id": "REQ-2-2-1",
+   "n": 4,
+   "title": "After a row structure change shifts a 0-to-100 numeric validation rule onto an out-of-range value, entering that value is rejected with 'Please enter a number from 0 to 100' and the original value remains",
+   "checks": [
+    "Cell subject to shifted 0-to-100 rule exists",
+    "Attempt to enter 101 through grid or formula bar displays 'Please enter a number from 0 to 100'",
+    "Operation rejected and original value remains",
+    "No partial record created"
+   ]
+  },
+  {
+   "id": "REQ-2-2-1",
+   "n": 5,
+   "title": "A row change overlapping a pivot-table source range leaves existing pivot results unchanged until 'Refresh pivot table' is clicked, after which results are recomputed from the adjusted range and persist",
+   "checks": [
+    "Before refresh, pivot result shows old source range/values",
+    "Click 'Refresh pivot table' on pivot result worksheet",
+    "Pivot result recomputed using adjusted row range",
+    "Source worksheet data unchanged",
+    "After refresh, recomputed pivot results persist"
+   ]
+  },
+  {
+   "id": "REQ-2-2-2",
+   "n": 1,
+   "title": "Insert 1 column left of column B via the column-header menu: column B and subsequent columns shift right, formulas/validation/filters adjust, and the structure persists after refresh",
+   "checks": [
+    "Column-header menu for B provides 'Insert 1 column left'",
+    "New blank column appears at B and old B moves to C",
+    "Complete data, validation rules, and formula references in B+ shift right together",
+    "Column headers use ARIA columnheader with column letters",
+    "After refresh, inserted column remains"
+   ]
+  },
+  {
+   "id": "REQ-2-2-2",
+   "n": 2,
+   "title": "Insert 1 column right of column B: subsequent columns shift right, new blank column appears to the right of B, formulas adjust, and the structure persists",
+   "checks": [
+    "Column-header menu provides 'Insert 1 column right'",
+    "New blank column appears after B and old C moves to D",
+    "Data/formulas/validation outside inserted column remain shifted correctly",
+    "After refresh, structure persists"
+   ]
+  },
+  {
+   "id": "REQ-2-2-2",
+   "n": 3,
+   "title": "Delete column B via column-header menu: subsequent columns shift left, data outside B preserved, direct references to B display #REF!, and the deletion persists",
+   "checks": [
+    "Column-header menu provides 'Delete column'",
+    "Column B removed and old C moves to B",
+    "Rules on deleted column are removed",
+    "Direct formulas referencing B display #REF! in grid and formula bar; other formulas adjust",
+    "After refresh, deletion persists"
+   ]
+  },
+  {
+   "id": "REQ-2-2-2",
+   "n": 4,
+   "title": "After a column structure change shifts a 0-to-100 numeric validation rule onto an out-of-range value, entering 101 displays 'Please enter a number from 0 to 100' and the edit is rejected; original value remains",
+   "checks": [
+    "Shifted 0-to-100 rule present on target cell",
+    "Enter 101 displays 'Please enter a number from 0 to 100'",
+    "Original value retained and no partial change occurs"
+   ]
+  },
+  {
+   "id": "REQ-2-2-2",
+   "n": 5,
+   "title": "After pivot-table source columns move, existing pivot results remain unchanged until 'Refresh pivot table' is clicked, then recompute using moved fields; a deleted selected header causes 'Pivot field is no longer available. Select a new field.' and preserves last successful result",
+   "checks": [
+    "Before refresh, pivot result uses old columns/values",
+    "Click 'Refresh pivot table' after column move: pivot recomputes with moved fields",
+    "If selected header deleted, refresh displays 'Pivot field is no longer available. Select a new field.'",
+    "Last successful pivot result preserved and source worksheet not modified"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 44506,
+  "completion_tokens": 22171
+ },
+ "cost_cny": 0.2083,
+ "finish": "stop"
+}

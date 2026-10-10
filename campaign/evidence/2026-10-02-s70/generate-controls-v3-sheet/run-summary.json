@@ -1,0 +1,466 @@
+{
+  "usage": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 5,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 5
+    },
+    "completed_calls": 5,
+    "completion_tokens": 221476,
+    "draft_call_limit": 4,
+    "estimated_cost_cny": 2.051541,
+    "estimated_repair_cost_cny": 0.633564,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 221476,
+    "known_prompt_tokens": 315129,
+    "prompt_tokens": 315129,
+    "refused_calls": 0,
+    "repair_call_limit": 24,
+    "repair_cny_limit": 10.0,
+    "side_calls": 6,
+    "unknown_usage_calls": []
+  },
+  "smoke": {
+    "executed": true,
+    "problems": [],
+    "vocabulary_missing": 0,
+    "scenarios": {
+      "counts": {
+        "pass": 100,
+        "fail": 4
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      },
+      "seconds": 36.7,
+      "source_contracts": {
+        "fail": 4
+      },
+      "failing": [
+        {
+          "id": "REQ-2-2-2#contract-1",
+          "observation": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n"
+        },
+        {
+          "id": "REQ-2-2-2#contract-2",
+          "observation": "Expected values to be strictly equal:\n\n'P4' !== 'Q4'\n"
+        },
+        {
+          "id": "REQ-2-2-2#contract-3",
+          "observation": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   2,\n    3,\n+   4\n  ]\n"
+        },
+        {
+          "id": "REQ-2-2-1#contract-4",
+          "observation": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "repair": {
+      "accepted": true,
+      "reason": "4 more scenario(s) pass",
+      "files": [
+        "frontend/public/app.js"
+      ]
+    },
+    "browser_before": [
+      {
+        "executed": true,
+        "diagnostic_only": true,
+        "errors": [],
+        "page_errors": [],
+        "actions": [
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "New blank workbook",
+            "action": "new-blank"
+          },
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Worksheet options for Sheet1",
+            "action": "sheet-options"
+          },
+          {
+            "scope": "page-popover",
+            "name": "Rename",
+            "action": "rename-sheet"
+          },
+          {
+            "scope": "dialog",
+            "name": "Save",
+            "action": ""
+          },
+          {
+            "scope": "page",
+            "name": "Worksheet options for Sheet2",
+            "action": "sheet-options"
+          },
+          {
+            "scope": "page-popover",
+            "name": "Rename",
+            "action": "rename-sheet"
+          },
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          }
+        ],
+        "screens": [
+          "#/",
+          "#/login",
+          "#/wb/wb-q3-sales",
+          "#/new"
+        ],
+        "browser": "143.0.7499.4",
+        "playwright": "1.57.0"
+      }
+    ],
+    "tests": {
+      "seconds": 921.6,
+      "calls": 6,
+      "cost_cny": 1.068899,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 13
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 24
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 22
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 26
+        }
+      ],
+      "source_contracts": 4,
+      "used": true
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-2-2#contract-1",
+          "REQ-2-2-2#contract-2",
+          "REQ-2-2-2#contract-3",
+          "REQ-2-2-1#contract-4"
+        ],
+        "passing_before": 100,
+        "accepted": true,
+        "gained": [
+          "REQ-2-2-1#contract-4",
+          "REQ-2-2-2#contract-1",
+          "REQ-2-2-2#contract-2",
+          "REQ-2-2-2#contract-3"
+        ],
+        "reason": "4 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 104
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 100
+          },
+          "seconds": 36.2,
+          "source_contracts": {
+            "pass": 4
+          },
+          "failing": [],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "New blank workbook",
+                "action": "new-blank"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-options"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet2",
+                "action": "sheet-options"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/login",
+              "#/wb/wb-q3-sales",
+              "#/new"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 78.4,
+        "cost_cny": 0.06659
+      }
+    ],
+    "problems_after": [],
+    "scenarios_after": {
+      "counts": {
+        "pass": 104
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      },
+      "seconds": 36.2,
+      "source_contracts": {
+        "pass": 4
+      },
+      "failing": [],
+      "invariants": [],
+      "translation": {}
+    },
+    "before_source_review": {
+      "stopped": null,
+      "scenarios_after": {
+        "counts": {
+          "pass": 100
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        },
+        "seconds": 36.7,
+        "source_contracts": {},
+        "failing": [],
+        "invariants": [],
+        "translation": {}
+      },
+      "tests": {
+        "seconds": 921.6,
+        "calls": 6,
+        "cost_cny": 1.068899,
+        "scenarios": 100,
+        "tests": 100,
+        "audit_checks": 0,
+        "audit_errors": 0,
+        "files": [
+          {
+            "file": "t01-REQ-1.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 13
+          },
+          {
+            "file": "t02-REQ-2.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 24
+          },
+          {
+            "file": "t03-REQ-3.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 22
+          },
+          {
+            "file": "t04-REQ-4.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 15
+          },
+          {
+            "file": "t05-REQ-5.spec.cjs",
+            "calls": 1,
+            "finish": "stop",
+            "tests": 26
+          }
+        ],
+        "used": true
+      },
+      "rounds": 1
+    },
+    "source_review": {
+      "proposed": 4,
+      "probes": 4,
+      "results": [
+        {
+          "id": "REQ-2-2-2#contract-1",
+          "status": "fail",
+          "calls": {
+            "deleteColAt": 1,
+            "checkValue": 1,
+            "cellRaw": 2,
+            "validationFor": 1,
+            "parseCoord": 19,
+            "letterToIndex": 19,
+            "parseRange": 2,
+            "coordOf": 10,
+            "indexToLetter": 10,
+            "mapRefs": 8,
+            "shiftSheetExtras": 1,
+            "mapCoordPoint": 4,
+            "mapRangeString": 1,
+            "shiftPivotRanges": 1
+          },
+          "assertions": 3,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n",
+          "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:8:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-sheet/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-2-2-2#contract-2",
+          "status": "fail",
+          "calls": {
+            "deleteColAt": 1,
+            "cellRaw": 3,
+            "parseCoord": 15,
+            "letterToIndex": 16,
+            "coordOf": 11,
+            "indexToLetter": 12,
+            "mapRefs": 9,
+            "shiftSheetExtras": 1,
+            "mapCoordPoint": 2,
+            "shiftPivotRanges": 1
+          },
+          "assertions": 3,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n\n'P4' !== 'Q4'\n",
+          "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'P4' !== 'Q4'\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:8:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-sheet/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-2-2-2#contract-3",
+          "status": "fail",
+          "calls": {
+            "insertColAt": 1,
+            "hiddenRows": 1,
+            "cellRaw": 14,
+            "computeSheet": 1,
+            "coordOf": 26,
+            "indexToLetter": 26,
+            "displayOf": 12,
+            "formatNumber": 3,
+            "parseCoord": 14,
+            "letterToIndex": 14,
+            "mapRefs": 12,
+            "shiftSheetExtras": 1,
+            "mapCoordPoint": 2,
+            "shiftPivotRanges": 1
+          },
+          "assertions": 3,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   2,\n    3,\n+   4\n  ]\n",
+          "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   2,\n    3,\n+   4\n  ]\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:8:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-sheet/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        },
+        {
+          "id": "REQ-2-2-1#contract-4",
+          "status": "fail",
+          "calls": {
+            "deleteRowAt": 1,
+            "checkValue": 1,
+            "cellRaw": 3,
+            "validationFor": 1,
+            "parseCoord": 19,
+            "letterToIndex": 19,
+            "parseRange": 2,
+            "coordOf": 13,
+            "indexToLetter": 13,
+            "mapRefs": 9,
+            "shiftSheetExtras": 1,
+            "mapCoordPoint": 4,
+            "mapRangeString": 1,
+            "shiftPivotRanges": 1
+          },
+          "assertions": 4,
+          "phase": "check",
+          "error_name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n",
+          "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Please enter a number from 0 to 100'\n- null\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:9:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-sheet/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+        }
+      ],
+      "skipped": null,
+      "seconds": 463.9,
+      "calls": 3,
+      "cost_cny": 0.420585
+    }
+  }
+}

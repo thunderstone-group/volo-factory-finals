@@ -1,0 +1,14 @@
+{
+  "app": "contract-repair-github",
+  "judge": "gh99",
+  "counts": {
+    "error": 23,
+    "pass": 69,
+    "fail": 10
+  },
+  "seconds": 181.7,
+  "coverage": {
+    "total": 100,
+    "parsed": 79
+  }
+}

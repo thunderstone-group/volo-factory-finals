@@ -1,0 +1,85 @@
+{
+  "observed_at_utc": "2026-09-30T02:32:46.986131+00:00",
+  "submission_id": "076347b75e67",
+  "mapping_basis": "leaderboard submitted_at matches submission.created_at; both run scores match the leaderboard aggregate",
+  "archive_sha256": "bfddd36cfad339745cf22f142d677ced3b89d039f0c0017885acbfc2b8587e6f",
+  "archive_matches_local_retained_zip": true,
+  "archive_file_count": 18,
+  "leaderboard_team_count": 75,
+  "leaderboard_blacklisted_count": 9,
+  "own_leaderboard_row": {
+    "rank": 5,
+    "username": "VOLO-AI",
+    "model_name": "deepseek-v4-flash",
+    "track": "hackathon",
+    "avg_pass_rate": 52.5,
+    "avg_feature_implementation_rate": 36.6,
+    "total_token_millions": "***",
+    "total_token_cost": "***",
+    "token_cost_currency": "CNY",
+    "cost_efficiency": null,
+    "efficiency_threshold": 80.0,
+    "efficiency_eligible": false,
+    "seniority_label": "junior",
+    "avg_runtime_seconds": 7590,
+    "submission_count": 1,
+    "task_id": null,
+    "task_title": null,
+    "is_complete": true,
+    "score": 59.751714998087095,
+    "score_available": true,
+    "pass_rate": 52.5,
+    "passed_count": 105,
+    "test_total": 200,
+    "total_cost": 11.516979,
+    "expected_cost": 42.0,
+    "cost_ratio": 0.2742137857142857,
+    "score_regime": "reward",
+    "submitted_at": "2026-09-28T09:28:51.481863",
+    "is_blacklisted": true
+  },
+  "blacklisted_teams": [
+    "hxning",
+    "jackyjiang",
+    "rainy",
+    "VOLO-AI",
+    "Hzwuu_u",
+    "fuxing",
+    "KennyLeung",
+    "bzt",
+    "删库跑路小分队"
+  ],
+  "review_reason": null,
+  "review_reason_observability": "No review reason field in fetched leaderboard, submission list or either run detail; frontend renders a fixed tooltip based on is_blacklisted. Both run details were obtained; a transient TLS failure occurred during an earlier read.",
+  "runs": [
+    {
+      "id": "65c9a5df6145",
+      "task": "github",
+      "passed": 24,
+      "failed": 76,
+      "token_count": 5670799,
+      "cost_cny": 7.213724,
+      "status": "FAILED"
+    },
+    {
+      "id": "cbe0e2b43105",
+      "task": "sheet",
+      "passed": 81,
+      "failed": 19,
+      "token_count": 1127844,
+      "cost_cny": 4.303255,
+      "status": "FAILED"
+    }
+  ],
+  "review_findings": [
+    "The downloaded archive contains generator/test-generation/repair code and a generic app scaffold. The inspected scaffold has Home/Items/login demo pages and demo seed data, not a complete GitHub or spreadsheet solution.",
+    "Package contains evaluator-specific conventions in dialect.md and main.py. Some initialization conventions are explicitly in supplied requirements; no official finding or causal link to blacklist is available.",
+    "Project handoff records local evaluation inferred from platform-returned hidden-test intent. The archived participation notice prohibits inferring hidden tests; compliance interpretation requires organizer clarification.",
+    "Saved logs show model calls and repair rounds. Saved trace excerpts are truncated, so no complete end-to-end output provenance audit is claimed."
+  ],
+  "limitations": [
+    "No organizer review report or direct explanation obtained.",
+    "Not an exhaustive security or compliance certification.",
+    "No submission/code was changed and no organizer message was sent."
+  ]
+}

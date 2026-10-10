@@ -1,0 +1,92 @@
+{
+ "results": [
+  [
+   "REQ-1",
+   true,
+   "stop",
+   []
+  ],
+  [
+   "REQ-2",
+   true,
+   "stop",
+   []
+  ],
+  [
+   "REQ-3",
+   true,
+   "stop",
+   []
+  ],
+  [
+   "REQ-4",
+   true,
+   "stop",
+   []
+  ],
+  [
+   "REQ-5",
+   true,
+   "stop",
+   []
+  ]
+ ],
+ "checks": {
+  "REQ-1.spec.cjs": true,
+  "REQ-2.spec.cjs": true,
+  "REQ-3.spec.cjs": true,
+  "REQ-4.spec.cjs": true,
+  "REQ-5.spec.cjs": true,
+  "fixtures.cjs": true
+ },
+ "calls": [
+  {
+   "label": "REQ-4",
+   "seconds": 290.9,
+   "usage": {
+    "prompt_tokens": 18281,
+    "completion_tokens": 30357
+   },
+   "finish": "stop"
+  },
+  {
+   "label": "REQ-5",
+   "seconds": 345.0,
+   "usage": {
+    "prompt_tokens": 18383,
+    "completion_tokens": 39937
+   },
+   "finish": "stop"
+  },
+  {
+   "label": "REQ-1",
+   "seconds": 406.9,
+   "usage": {
+    "prompt_tokens": 18276,
+    "completion_tokens": 46001
+   },
+   "finish": "stop"
+  },
+  {
+   "label": "REQ-2",
+   "seconds": 436.8,
+   "usage": {
+    "prompt_tokens": 18400,
+    "completion_tokens": 52512
+   },
+   "finish": "stop"
+  },
+  {
+   "label": "REQ-3",
+   "seconds": 629.6,
+   "usage": {
+    "prompt_tokens": 18356,
+    "completion_tokens": 67927
+   },
+   "finish": "stop"
+  }
+ ],
+ "cost_cny": 2.4057,
+ "tests": 48,
+ "scenarios": 48
+}

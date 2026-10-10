@@ -1,0 +1,11 @@
+{
+  "finish": "stop",
+  "usage": {
+    "prompt_tokens": 57768,
+    "completion_tokens": 32867
+  },
+  "content_chars": 9563,
+  "task": "github",
+  "seconds": 329.2,
+  "estimated_cost_cny": 0.469107
+}

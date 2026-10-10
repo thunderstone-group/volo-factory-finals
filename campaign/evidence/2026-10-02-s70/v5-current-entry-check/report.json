@@ -1,0 +1,67 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-3-3#entry-1",
+      "name": "Initial visible entry acme-docs",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-4-2-1#entry-1",
+      "name": "Initial visible entry acme-docs",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.1
+    },
+    {
+      "id": "REQ-5-1-2#entry-1",
+      "name": "Initial visible entry Improve onboarding",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  40 |   await page.goto('/');\n  41 |   const name = \"Improve onboarding\";\n> 42 |   await expect.poll(async () => {\n     |   ^\n  43 |     for (const role of ['button','link','tab','menuitem','option']) {\n  44 |       for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n  45 |         if (await item.isVisible()) return true;\n    at ~/projects/arcbench-campaign/evidence/2026-10-02-s70/v5-current-entry-check/suite/",
+      "source": "test(\"REQ-5-1-2#entry-1: Initial visible entry Improve onboarding\", async ({page}) => {\n  await page.goto('/');\n  const name = \"Improve onboarding\";\n  await expect.poll(async () => {\n    for (const role of ['button','link','tab','menuitem','option']) {\n      for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n        if (await item.isVisible()) return true;\n      }\n    }\n    for (const item of await page.getByText(name, {exact: true}).all()) {\n      if (await item.isVisible() && await item.evaluate(el => !!el.closest(\n        'a[href],button,[role=button],[role=link],[role=tab],[role=menuitem],[data-action]:not(form),[onclick]'\n      ))) return true;\n    }\n    return false;\n  }, {message: 'The first WHEN target must be interactive at the stated initial home: ' + name}).toBe(true);\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - searchbox \"Search\" [ref=e13]\n      - link \"Sign in\" [ref=e14] [cursor=pointer]:\n        - /url: \"#/signin\"\n      - link \"Sign up\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/signup\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Home\" [level=1] [ref=e18]\n      - paragraph [ref=e19]: Welcome to the GitHub collaboration platform.\n      - heading \"Organizations\" [level=2] [ref=e20]\n      - article [ref=e21]:\n        - link \"Acme Demo\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - heading \"Repositories\" [level=2] [ref=e23]\n      - article [ref=e24]:\n        - link \"acme-docs\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/r/acme-demo/acme-docs\"\n        - text: Public\n      - article [ref=e26]:\n        - link \"branch-switch-demo\" [ref=e27] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/branch-switch-demo\"\n        - text: Public\n      - article [ref=e28]:\n        - link \"default-branch-demo\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/default-branch-demo\"\n        - text: Public\n      - article [ref=e30]:\n        - link \"file-management-demo\" [ref=e31] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/file-management-demo\"\n        - text: Public\n      - article [ref=e32]:\n        - link \"branch-protection-demo\" [ref=e33] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/branch-protection-demo\"\n        - text: Public\n      - article [ref=e34]:\n        - link \"acme-docs-fork\" [ref=e35] [cursor=pointer]:\n          - /url: \"#/r/fork-user/acme-docs-fork\"\n        - text: Public\n    - complementary [ref=e36]:\n      - button \"Overview\" [ref=e37] [cursor=pointer]\n  - contentinfo [ref=e38]: Footer · GitHub collaboration platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t00-initial-entries.spec.cjs:42",
+      "seconds": 5.0
+    },
+    {
+      "id": "REQ-5-1-2#entry-2",
+      "name": "Initial visible entry Improve onboarding",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  58 |   await page.goto('/');\n  59 |   const name = \"Improve onboarding\";\n> 60 |   await expect.poll(async () => {\n     |   ^\n  61 |     for (const role of ['button','link','tab','menuitem','option']) {\n  62 |       for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n  63 |         if (await item.isVisible()) return true;\n    at ~/projects/arcbench-campaign/evidence/2026-10-02-s70/v5-current-entry-check/suite/",
+      "source": "test(\"REQ-5-1-2#entry-2: Initial visible entry Improve onboarding\", async ({page}) => {\n  await page.goto('/');\n  const name = \"Improve onboarding\";\n  await expect.poll(async () => {\n    for (const role of ['button','link','tab','menuitem','option']) {\n      for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n        if (await item.isVisible()) return true;\n      }\n    }\n    for (const item of await page.getByText(name, {exact: true}).all()) {\n      if (await item.isVisible() && await item.evaluate(el => !!el.closest(\n        'a[href],button,[role=button],[role=link],[role=tab],[role=menuitem],[data-action]:not(form),[onclick]'\n      ))) return true;\n    }\n    return false;\n  }, {message: 'The first WHEN target must be interactive at the stated initial home: ' + name}).toBe(true);\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - searchbox \"Search\" [ref=e13]\n      - link \"Sign in\" [ref=e14] [cursor=pointer]:\n        - /url: \"#/signin\"\n      - link \"Sign up\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/signup\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Home\" [level=1] [ref=e18]\n      - paragraph [ref=e19]: Welcome to the GitHub collaboration platform.\n      - heading \"Organizations\" [level=2] [ref=e20]\n      - article [ref=e21]:\n        - link \"Acme Demo\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - heading \"Repositories\" [level=2] [ref=e23]\n      - article [ref=e24]:\n        - link \"acme-docs\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/r/acme-demo/acme-docs\"\n        - text: Public\n      - article [ref=e26]:\n        - link \"branch-switch-demo\" [ref=e27] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/branch-switch-demo\"\n        - text: Public\n      - article [ref=e28]:\n        - link \"default-branch-demo\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/default-branch-demo\"\n        - text: Public\n      - article [ref=e30]:\n        - link \"file-management-demo\" [ref=e31] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/file-management-demo\"\n        - text: Public\n      - article [ref=e32]:\n        - link \"branch-protection-demo\" [ref=e33] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/branch-protection-demo\"\n        - text: Public\n      - article [ref=e34]:\n        - link \"acme-docs-fork\" [ref=e35] [cursor=pointer]:\n          - /url: \"#/r/fork-user/acme-docs-fork\"\n        - text: Public\n    - complementary [ref=e36]:\n      - button \"Overview\" [ref=e37] [cursor=pointer]\n  - contentinfo [ref=e38]: Footer · GitHub collaboration platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t00-initial-entries.spec.cjs:60",
+      "seconds": 5.0
+    },
+    {
+      "id": "REQ-5-1-2#entry-3",
+      "name": "Initial visible entry Improve onboarding",
+      "file": "t00-initial-entries.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  76 |   await page.goto('/');\n  77 |   const name = \"Improve onboarding\";\n> 78 |   await expect.poll(async () => {\n     |   ^\n  79 |     for (const role of ['button','link','tab','menuitem','option']) {\n  80 |       for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n  81 |         if (await item.isVisible()) return true;\n    at ~/projects/arcbench-campaign/evidence/2026-10-02-s70/v5-current-entry-check/suite/",
+      "source": "test(\"REQ-5-1-2#entry-3: Initial visible entry Improve onboarding\", async ({page}) => {\n  await page.goto('/');\n  const name = \"Improve onboarding\";\n  await expect.poll(async () => {\n    for (const role of ['button','link','tab','menuitem','option']) {\n      for (const item of await page.getByRole(role, {name, exact: true}).all()) {\n        if (await item.isVisible()) return true;\n      }\n    }\n    for (const item of await page.getByText(name, {exact: true}).all()) {\n      if (await item.isVisible() && await item.evaluate(el => !!el.closest(\n        'a[href],button,[role=button],[role=link],[role=tab],[role=menuitem],[data-action]:not(form),[onclick]'\n      ))) return true;\n    }\n    return false;\n  }, {message: 'The first WHEN target must be interactive at the stated initial home: ' + name}).toBe(true);\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [ref=e2]:\n  - banner [ref=e3]:\n    - button \"GitHub\" [ref=e4] [cursor=pointer]:\n      - img [ref=e5]\n    - link \"GitHub\" [ref=e8] [cursor=pointer]:\n      - /url: \"#/\"\n    - navigation \"Main navigation\" [ref=e9]:\n      - link \"Home\" [ref=e10] [cursor=pointer]:\n        - /url: \"#/\"\n    - generic [ref=e11]:\n      - searchbox \"Search\" [ref=e13]\n      - link \"Sign in\" [ref=e14] [cursor=pointer]:\n        - /url: \"#/signin\"\n      - link \"Sign up\" [ref=e15] [cursor=pointer]:\n        - /url: \"#/signup\"\n  - generic [ref=e16]:\n    - main [ref=e17]:\n      - heading \"Home\" [level=1] [ref=e18]\n      - paragraph [ref=e19]: Welcome to the GitHub collaboration platform.\n      - heading \"Organizations\" [level=2] [ref=e20]\n      - article [ref=e21]:\n        - link \"Acme Demo\" [ref=e22] [cursor=pointer]:\n          - /url: \"#/org/acme-demo\"\n      - heading \"Repositories\" [level=2] [ref=e23]\n      - article [ref=e24]:\n        - link \"acme-docs\" [ref=e25] [cursor=pointer]:\n          - /url: \"#/r/acme-demo/acme-docs\"\n        - text: Public\n      - article [ref=e26]:\n        - link \"branch-switch-demo\" [ref=e27] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/branch-switch-demo\"\n        - text: Public\n      - article [ref=e28]:\n        - link \"default-branch-demo\" [ref=e29] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/default-branch-demo\"\n        - text: Public\n      - article [ref=e30]:\n        - link \"file-management-demo\" [ref=e31] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/file-management-demo\"\n        - text: Public\n      - article [ref=e32]:\n        - link \"branch-protection-demo\" [ref=e33] [cursor=pointer]:\n          - /url: \"#/r/alice-dev/branch-protection-demo\"\n        - text: Public\n      - article [ref=e34]:\n        - link \"acme-docs-fork\" [ref=e35] [cursor=pointer]:\n          - /url: \"#/r/fork-user/acme-docs-fork\"\n        - text: Public\n    - complementary [ref=e36]:\n      - button \"Overview\" [ref=e37] [cursor=pointer]\n  - contentinfo [ref=e38]: Footer · GitHub collaboration platform Header · Sidebar · Main content · Footer\n```",
+      "at": "t00-initial-entries.spec.cjs:78",
+      "seconds": 5.0
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 5,
+    "parsed": 5
+  },
+  "seconds": 17.1
+}

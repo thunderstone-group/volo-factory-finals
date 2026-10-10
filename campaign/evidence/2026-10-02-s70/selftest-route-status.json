@@ -1,0 +1,30 @@
+{
+  "url": "https://arcbench-selftest-web.vercel.app",
+  "github_account": "Daily-AC",
+  "login_authorized_by_user": true,
+  "logged_in": true,
+  "available_tasks": [
+    "github-stage-1-req-test",
+    "github-stage-2-req-test",
+    "github-stage-3-req-test"
+  ],
+  "daily_limit": 10,
+  "remaining_observed": 10,
+  "scores_count_on_leaderboard": false,
+  "advertised_feedback": "per-test results, same official image and tests",
+  "upload_contract": {
+    "root": "Dockerfile",
+    "max_mb": 50,
+    "exclude": [
+      "node_modules",
+      ".git",
+      "build outputs"
+    ]
+  },
+  "first_artifact": "selftest-r2-github/official-r2-github-app.zip",
+  "submitted": true,
+  "submission_id": "d210ad11-cc2e-440e-8fb2-637e0163e830",
+  "url_result": "https://arcbench-selftest-web.vercel.app/submissions/d210ad11-cc2e-440e-8fb2-637e0163e830",
+  "status_observed": "queued",
+  "runtime_smoke": "passed"
+}

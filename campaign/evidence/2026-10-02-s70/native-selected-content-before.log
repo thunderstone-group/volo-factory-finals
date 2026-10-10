@@ -1,0 +1,22 @@
+test_options_are_clicked_by_name_and_submit_with_the_form (tests_oneshot.test_scaffold_combobox.ScaffoldComboboxCase) ... FAIL
+
+======================================================================
+FAIL: test_options_are_clicked_by_name_and_submit_with_the_form (tests_oneshot.test_scaffold_combobox.ScaffoldComboboxCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/projects/volo-factory-worktrees/native-selected-value-20261002/tests_oneshot/test_scaffold_combobox.py", line 109, in test_options_are_clicked_by_name_and_submit_with_the_form
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+AssertionError: 1 != 0 : locator.waitFor: Timeout 3000ms exceeded.
+Call log:
+  - waiting for getByRole('combobox', { name: 'Rows', exact: true }).getByText('Select', { exact: true }).first() to be visible
+    11 × locator resolved to hidden <option value="" selected hidden="">Select</option>
+
+    at [eval]:40:59 {
+  name: 'TimeoutError'
+}
+
+
+----------------------------------------------------------------------
+Ran 1 test in 3.766s
+
+FAILED (failures=1)

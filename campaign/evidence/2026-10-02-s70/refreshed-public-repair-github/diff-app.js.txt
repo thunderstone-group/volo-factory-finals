@@ -1,0 +1,121 @@
+--- before/app.js
++++ after/app.js
+@@ -222,7 +222,6 @@
+         : '') +
+       '<p class="hint">' + esc('Branch <current branch name>') + '</p>' +
+       '<p class="hint">' + esc('Create branch: <name>') + '</p>' +
+-      '<p class="hint">' + esc('Examples: Create branch: feature/api-v2 and pw-branch-<unique suffix>.') + '</p>' +
+       '</span>' : '';
+     return '<span class="branch-selector">' +
+       '<button type="button" data-action="branch-open" data-repo="' + esc(repo.id) + '">Branch ' + esc(branch) + '</button>' +
+@@ -357,7 +356,7 @@
+       (err.terms ? '<p class="error" role="alert">' + esc(err.terms) + '</p>' : '') +
+       '<button type="submit">Create account</button>' +
+       '</form>' +
+-      '<p class="hint">' + esc('Example invalid values: not-an-email, short, different. Example account: pw-user-<unique suffix> with email pw-user-1@example.test and password Valid-password-123!.') + '</p>';
++      '<p class="hint">' + esc('Passwords must be 12 to 128 characters and include an uppercase letter, a lowercase letter, a digit and a special character.') + '</p>';
+   }
+ 
+   function forgotScreen() {
+@@ -416,8 +415,7 @@
+       '<input id="org-display" name="display" type="text" placeholder="Display name" aria-label="Display name" value="' + esc(v.display || '') + '">' +
+       (err.display ? '<p class="error" role="alert">' + esc(err.display) + '</p>' : '') +
+       '<button type="submit">Create organization</button>' +
+-      '</form>' +
+-      '<p class="hint">Examples: <span>mobile-guild</span> with display name <span>Mobile Guild</span>; <span>-invalid-organization</span> is not a valid identifier.</p>';
++      '</form>';
+   }
+ 
+   function orgRoute(route) {
+@@ -476,7 +474,6 @@
+     return '<p class="field-note">Membership relation: organization-account-role</p>' +
+       '<p class="hint"><span>' + esc('Member menu <username>') + '</span></p>' +
+       '<p class="hint"><span>' + esc('Remove <username>') + '</span></p>' +
+-      '<p class="hint">unknown-reviewer shows Account not found.</p>' +
+       (owner
+         ? (open
+           ? '<form data-action="add-org-member" data-id="' + esc(org.id) + '">' +
+@@ -512,8 +509,7 @@
+       '<input id="team-desc" name="description" type="text" placeholder="Description" aria-label="Description">' +
+       ARC.combobox({ label: 'Parent team', name: 'parentName', options: ['None'].concat(teams.map((t) => t.name)), value: 'None' }) +
+       '<button type="submit">Create team</button>' +
+-      '</form>' +
+-      '<p class="hint">' + esc('Example team name: mobile-team') + '</p>';
++      '</form>';
+   }
+ 
+   function teamScreen(route, settings) {
+@@ -679,7 +675,6 @@
+       '<p class="commit-meta">' + esc(c.author) + ' · ' + esc(agoTime(c.date)) + ' · ' + esc(c.sha) + '</p>' +
+       (parent ? '<p class="commit-parent">Parent ' + esc(parent.sha) + '</p>' : '') +
+       '<p class="diff-summary">' + additions + ' additions, ' + deletions + ' deletions</p>' +
+-      '<p class="hint">' + esc('Aggregate format: <addition count> additions, <deletion count> deletions') + '</p>' +
+       '<h3>Changed files</h3>' +
+       (c.files || []).map((f) => '<article class="row changed-file" data-id="' + esc(f.path) + '">' +
+         '<p class="file-path">' + esc(f.path) + '</p>' +
+@@ -949,7 +944,6 @@
+     } else if (active === 'files') {
+       body = '<h2>Changed files</h2>' +
+         '<p class="diff-summary">' + additions + ' additions, ' + deletions + ' deletions</p>' +
+-        '<p class="hint">' + esc('Aggregate format: <addition count> additions, <deletion count> deletions') + '</p>' +
+         changed.map((f) => '<article class="row changed-file" data-id="' + esc(f.path) + '">' +
+           '<p class="file-path">' + esc(f.path) + '</p>' +
+           '<p class="line-count">' + (f.additions || 0) + ' additions, ' + (f.deletions || 0) + ' deletions</p>' +
+@@ -1146,7 +1140,6 @@
+       '<label><input type="checkbox" name="readme"> Add a README file</label>' +
+       '<button type="submit">Create repository</button>' +
+       '</form>' +
+-      '<p class="hint">' + esc('Repository created by Playwright') + '</p>' +
+       (ui.repoError ? '<p class="error" role="alert">' + esc(ui.repoError) + '</p>' : '');
+   }
+ 
+@@ -1203,7 +1196,6 @@
+     return '<h1>' + esc(repoLabel(repo)) + '</h1>' +
+       repoNav(repo, 'Code', repoUrl(repo) + '/search/' + encodeURIComponent(q)) +
+       '<h2>Code search</h2>' +
+-      '<p class="hint">' + esc('A query such as no-such-token shows "No code results".') + '</p>' +
+       '<p class="format-hint">src/</p>' +
+       '<input type="text" aria-label="Path filter" placeholder="Path filter" data-change="path-filter" data-id="' + esc(repo.id) + '" value="' + esc(pathPrefix) + '">' +
+       (hits.length
+@@ -1243,8 +1235,7 @@
+       '<label for="cp-confirm">Confirm password</label>' +
+       '<input id="cp-confirm" name="confirm" type="password" placeholder="Confirm password" aria-label="Confirm password">' +
+       '<button type="submit">Update password</button></form>' +
+-      (ui.passwordMessage ? '<p class="success" role="status">' + esc(ui.passwordMessage) + '</p>' : '') +
+-      '<p class="hint">' + esc('Example new passwords: New-password-456! or Required-password-789!; a confirmation of does-not-match is rejected.') + '</p>';
++      (ui.passwordMessage ? '<p class="success" role="status">' + esc(ui.passwordMessage) + '</p>' : '');
+   }
+ 
+   /* ------------------------------------------------------------------ actions */
+@@ -1284,7 +1275,7 @@
+       '<p>Welcome to the collaboration platform.</p>' +
+       (u
+         ? '<p class="workspace-links"><a href="#/new-repo">New repository</a></p>'
+-        : '<p class="auth-links"><a href="#/signup">Sign up</a> <a href="#/forgot">Forgot password</a></p>') +
++        : '<p class="auth-links"><a href="#/signin">Sign in</a> <a href="#/signup">Sign up</a> <a href="#/forgot">Forgot password</a></p>') +
+       '<section><h2>Organizations</h2>' +
+       (st().organizations || []).map((o) => '<article class="row" data-id="' + esc(o.id) + '">' +
+         '<h3><a href="#/org/' + esc(o.id) + '">' + esc(o.name) + '</a></h3>' +
+@@ -1332,10 +1323,6 @@
+   function newFileScreen(repo, branch) {
+     return '<h1>' + esc(repoLabel(repo)) + '</h1>' + repoNav(repo, 'Code') +
+       '<h2>Create new file</h2>' +
+-      '<p class="hint">' + esc('pw-file-<unique suffix>.md') + '</p>' +
+-      '<p class="hint">' + esc('docs/guide.md') + '</p>' +
+-      '<p class="hint">' + esc('Add <file name>') + '</p>' +
+-      '<p class="hint">' + esc('must not be saved') + '</p>' +
+       '<form data-action="commit-file" data-id="' + esc(repo.id) + '" data-branch="' + esc(branch) + '">' +
+       '<label for="nf-name">File name</label>' +
+       '<input id="nf-name" name="path" type="text" placeholder="File name" aria-label="File name">' +
+@@ -1455,8 +1442,10 @@
+     const name = String(ctx.form.name || '').trim();
+     const display = String(ctx.form.display || '').trim();
+     const errors = {};
++    // Identifiers are compared by their case-insensitive slug, so the seeded `Acme Demo` also owns `acme-demo`.
++    const slugOf = (v) => String(v || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+     if (!validIdentifier(name)) errors.name = 'Organization name format is invalid';
+-    else if ((st().organizations || []).some((o) => o.name === name)) errors.name = 'Organization name already exists';
++    else if ((st().organizations || []).some((o) => slugOf(o.name) === slugOf(name))) errors.name = 'Organization name already exists';
+     if (!display) errors.display = 'Display name is required';
+     UI().orgErrors = errors;
+     UI().orgValues = { name: name, display: display };

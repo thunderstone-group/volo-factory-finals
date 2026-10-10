@@ -1,0 +1,82 @@
+/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 32:  7305 Terminated: 15          ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 43/48
+--- timedOut: REQ-2-1-2 S3: 切换工作表时筛选与校验入口保持隔离
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByRole('button', { name: 'Open dropdown for C2', exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('button', { name: 'Open dropdown for C2', exact: true })
+      323 |   await addDropdownRule(page, 'C2', 'C3', 'Open, Closed');
+      324 |   const dropdownC2 = btn(page, 'Open dropdown for C2');
+    > 325 |   await expect(dropdownC2).toBeVisible();
+          |                            ^
+      326 |
+      327 |   await addWorksheet(page, 'Sheet2');
+      328 |   await setCell(page, 'A1', 'Notes');
+--- timedOut: REQ-2-2-1 S5: 插入行时校验规则随原单元格下移
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Please enter a number from 0 to 100', { exact: true })
+      324 |   await expect(cell(page, 'B2')).toHaveText('101');
+      325 |   await setCell(page, 'B3', '101');
+    > 326 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      327 |   await expect(cell(page, 'B3')).toHaveText('50');
+      328 |
+      329 |   await page.reload();
+--- timedOut: REQ-2-2-2 S4: 插入列后调整公式引用并保持计算结果
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'D1', exact: true })
+    Expected: "30"
+    Received: "10"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'D1', exact: true })
+        13 × locator resolved to <div data-r="0" data-c="3" class="cell" data-cell="D1" role="gridcell" aria-label="D1" aria-selected="false" data-sheet="ws_vez1cvq">…</div>
+           - unexpected value "10"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-2-2-2 S5: 插入列时校验规则随原单元格右移
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Please enter a number from 0 to 100', { exact: true })
+      316 |   await expect(cell(page, 'B2')).toHaveText('101');
+      317 |   await setCell(page, 'C2', '101');
+    > 318 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      319 |   await expect(cell(page, 'C2')).toHaveText('50');
+      320 |
+      321 |   await page.reload();
+--- timedOut: REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Please enter a number from 0 to 100', { exact: true })
+      276 |   await pressCtrlV(page);
+      277 |
+    > 278 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      279 |   const original = { B2: 'Ann', C2: '10', B3: 'Bob', C3: '20' };
+      280 |   await expectCells(page, original);
+      281 |   await page.reload();

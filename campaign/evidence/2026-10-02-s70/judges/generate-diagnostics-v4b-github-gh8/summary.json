@@ -1,0 +1,14 @@
+{
+  "app": "generate-diagnostics-v4b-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 64,
+    "error": 16,
+    "fail": 23
+  },
+  "seconds": 180.4,
+  "coverage": {
+    "total": 100,
+    "parsed": 87
+  }
+}

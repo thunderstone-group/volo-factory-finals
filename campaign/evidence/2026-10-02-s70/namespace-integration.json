@@ -1,0 +1,903 @@
+{
+  "purpose": "executor integration, not quality scoring",
+  "probe": {
+    "id": "REQ-4-1-1#contract-20",
+    "requirement": "REQ-4-1-1",
+    "explanation": "Executor integration check: the actual coordinate helpers preserve a valid grid coordinate through a round trip.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "SP.parseCoord",
+        "kind": "function",
+        "alias": "parseCoord"
+      }
+    ],
+    "subject": "parseCoord",
+    "setup": "globalThis.ARC={state:JSON.parse(JSON.stringify(SEED))};",
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "precondition": "assert.equal(SP.coord(0,0),\"A1\");",
+    "check": "const ref=SP.coord(4,5);const rc=SP.parseCoord(ref);assert.equal(rc.r,4);assert.equal(rc.c,5);"
+  },
+  "execution": {
+    "results": [
+      {
+        "id": "REQ-4-1-1#contract-20",
+        "status": "pass",
+        "calls": {
+          "parseCoord": 1,
+          "__source_member_2": 1,
+          "__source_member_3": 1,
+          "__source_member_4": 1,
+          "__source_member_5": 0,
+          "__source_member_6": 0,
+          "__source_member_7": 0,
+          "__source_member_8": 0,
+          "__source_member_9": 0,
+          "__source_member_10": 0,
+          "__source_member_11": 0,
+          "__source_member_12": 0,
+          "__source_member_13": 0,
+          "__source_member_14": 0,
+          "__source_member_15": 0,
+          "__source_member_16": 0,
+          "__source_member_17": 0,
+          "__source_member_18": 0,
+          "__source_member_19": 0,
+          "__source_member_20": 0,
+          "__source_member_21": 0,
+          "__source_member_22": 0,
+          "__source_member_23": 0,
+          "__source_member_24": 0,
+          "__source_member_25": 0,
+          "__source_member_26": 0,
+          "__source_member_27": 0,
+          "__source_member_28": 0,
+          "__source_member_29": 0,
+          "__source_member_30": 0,
+          "__source_member_31": 0,
+          "__source_member_32": 0,
+          "__source_member_33": 0,
+          "__source_member_34": 0,
+          "__source_member_35": 0,
+          "__source_member_36": 0,
+          "__source_member_37": 0,
+          "__source_member_38": 0,
+          "__source_member_39": 0,
+          "__source_member_40": 0,
+          "__source_member_41": 0,
+          "__source_member_42": 0,
+          "__source_member_43": 0,
+          "__source_member_44": 0
+        },
+        "assertions": 2
+      }
+    ],
+    "bindings": [
+      {
+        "id": "REQ-4-1-1#contract-20",
+        "requirement": "REQ-4-1-1",
+        "explanation": "Executor integration check: the actual coordinate helpers preserve a valid grid coordinate through a round trip.",
+        "functions": [
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.parseCoord",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (s) {\n  var m = /^([A-Za-z]+)([0-9]+)$/.exec(String(s == null ? '' : s));\n  if (!m) return null;\n  var c = SP.colNum(m[1]);\n  if (c < 0) return null;\n  return { r: parseInt(m[2], 10) - 1, c: c };\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 33,
+            "member": [
+              "SP",
+              "parseCoord"
+            ],
+            "leaf_name": "parseCoord",
+            "alias": "parseCoord",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP",
+            "kind": "value",
+            "scope": "root",
+            "code": "{}",
+            "callable": false,
+            "mutable": true,
+            "node_type": "ObjectExpression",
+            "line": 15,
+            "alias": "SP",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.colName",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (n) {\n  var s = '';\n  n = n + 1;\n  while (n > 0) { var m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); }\n  return s;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 17,
+            "member": [
+              "SP",
+              "colName"
+            ],
+            "leaf_name": "colName",
+            "alias": "__source_member_2",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.colNum",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (letters) {\n  var s = String(letters).toUpperCase(), n = 0;\n  for (var i = 0; i < s.length; i++) {\n    var v = s.charCodeAt(i) - 64;\n    if (v < 1 || v > 26) return -1;\n    n = n * 26 + v;\n  }\n  return n - 1;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 23,
+            "member": [
+              "SP",
+              "colNum"
+            ],
+            "leaf_name": "colNum",
+            "alias": "__source_member_3",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.coord",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (r, c) { return SP.colName(c) + (r + 1); }",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 32,
+            "member": [
+              "SP",
+              "coord"
+            ],
+            "leaf_name": "coord",
+            "alias": "__source_member_4",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.rangeName",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (rg) {\n  return SP.colName(rg.c1) + (rg.r1 + 1) + ':' + SP.colName(rg.c2) + (rg.r2 + 1);\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 40,
+            "member": [
+              "SP",
+              "rangeName"
+            ],
+            "leaf_name": "rangeName",
+            "alias": "__source_member_5",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.parseRange",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (s) {\n  var parts = String(s == null ? '' : s).split(':');\n  if (parts.length !== 2) return null;\n  var a = SP.parseCoord(parts[0]), b = SP.parseCoord(parts[1]);\n  if (!a || !b) return null;\n  return { r1: Math.min(a.r, b.r), c1: Math.min(a.c, b.c), r2: Math.max(a.r, b.r), c2: Math.max(a.c, b.c) };\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 43,
+            "member": [
+              "SP",
+              "parseRange"
+            ],
+            "leaf_name": "parseRange",
+            "alias": "__source_member_6",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.isNumber",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (s) {\n  var t = String(s == null ? '' : s).trim();\n  if (t === '') return false;\n  return /^[+-]?(\\d+(\\.\\d+)?|\\.\\d+)([eE][+-]?\\d+)?$/.test(t);\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 50,
+            "member": [
+              "SP",
+              "isNumber"
+            ],
+            "leaf_name": "isNumber",
+            "alias": "__source_member_7",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.fmt",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (n) {\n  if (typeof n !== 'number' || !isFinite(n)) return '#NUM!';\n  if (Number.isInteger(n)) return String(n);\n  return String(Math.round(n * 1e10) / 1e10);\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 55,
+            "member": [
+              "SP",
+              "fmt"
+            ],
+            "leaf_name": "fmt",
+            "alias": "__source_member_8",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.stamp",
+            "kind": "method",
+            "scope": "root",
+            "code": "function () {\n  var d = new Date();\n  var p = function (x) { return String(x).length < 2 ? '0' + x : String(x); };\n  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 60,
+            "member": [
+              "SP",
+              "stamp"
+            ],
+            "leaf_name": "stamp",
+            "alias": "__source_member_9",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.workbooks",
+            "kind": "method",
+            "scope": "root",
+            "code": "function () {\n  if (!Array.isArray(ARC.state.workbooks)) ARC.state.workbooks = [];\n  return ARC.state.workbooks;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 66,
+            "member": [
+              "SP",
+              "workbooks"
+            ],
+            "leaf_name": "workbooks",
+            "alias": "__source_member_10",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.wb",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (id) {\n  return SP.workbooks().filter(function (w) { return w.id === id; })[0] || null;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 70,
+            "member": [
+              "SP",
+              "wb"
+            ],
+            "leaf_name": "wb",
+            "alias": "__source_member_11",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.activeSheet",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (wb) {\n  if (!wb || !wb.worksheets || !wb.worksheets.length) return null;\n  return wb.worksheets.filter(function (s) { return s.id === wb.activeSheet; })[0] || wb.worksheets[0];\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 73,
+            "member": [
+              "SP",
+              "activeSheet"
+            ],
+            "leaf_name": "activeSheet",
+            "alias": "__source_member_12",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.sheetById",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (wb, id) {\n  if (!wb || !wb.worksheets) return null;\n  return wb.worksheets.filter(function (s) { return s.id === id; })[0] || null;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 77,
+            "member": [
+              "SP",
+              "sheetById"
+            ],
+            "leaf_name": "sheetById",
+            "alias": "__source_member_13",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.normSel",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet) {\n  var s = (sheet && sheet.sel) || { r: 0, c: 0, r2: 0, c2: 0 };\n  var r = s.r || 0, c = s.c || 0, r2 = (s.r2 == null ? r : s.r2), c2 = (s.c2 == null ? c : s.c2);\n  return { r1: Math.min(r, r2), c1: Math.min(c, c2), r2: Math.max(r, r2), c2: Math.max(c, c2) };\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 81,
+            "member": [
+              "SP",
+              "normSel"
+            ],
+            "leaf_name": "normSel",
+            "alias": "__source_member_14",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.usedRange",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet) {\n  var minR = Infinity, minC = Infinity, maxR = -1, maxC = -1;\n  var cells = (sheet && sheet.cells) || {};\n  for (var coord in cells) {\n    if (!Object.prototype.hasOwnProperty.call(cells, coord)) continue;\n    if (cells[coord] === '' || cells[coord] == null) continue;\n    var p = SP.parseCoord(coord);\n    if (!p) continue;\n    if (p.r < minR) minR = p.r;\n    if (p.c < minC) minC = p.c;\n    if (p.r > maxR) maxR = p.r;\n    if (p.c > maxC) maxC = p.c;\n  }\n  if (maxR < 0) return null;\n  return { r1: minR, c1: minC, r2: maxR, c2: maxC };\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 86,
+            "member": [
+              "SP",
+              "usedRange"
+            ],
+            "leaf_name": "usedRange",
+            "alias": "__source_member_15",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.selectionRange",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet) {\n  var sel = SP.normSel(sheet);\n  if (sel.r1 !== sel.r2 || sel.c1 !== sel.c2) return sel;\n  return SP.usedRange(sheet) || sel;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 102,
+            "member": [
+              "SP",
+              "selectionRange"
+            ],
+            "leaf_name": "selectionRange",
+            "alias": "__source_member_16",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.touch",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (wb) { if (wb) wb.lastUpdated = SP.stamp(); }",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 107,
+            "member": [
+              "SP",
+              "touch"
+            ],
+            "leaf_name": "touch",
+            "alias": "__source_member_17",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.currentWorkbook",
+            "kind": "method",
+            "scope": "root",
+            "code": "function () {\n  var r = ARC.route();\n  if (r.name !== 'workbook') return null;\n  return SP.wb(r.params[0]);\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 108,
+            "member": [
+              "SP",
+              "currentWorkbook"
+            ],
+            "leaf_name": "currentWorkbook",
+            "alias": "__source_member_18",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.cellValue",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, coord, guard) {\n  var cells = (sheet && sheet.cells) || {};\n  var raw = cells[coord];\n  if (raw === undefined || raw === null || raw === '') return { type: 'empty', num: 0, text: '', disp: '' };\n  var s = String(raw);\n  if (s.charAt(0) === '=') {\n    if (guard.indexOf(coord) >= 0) return { type: 'err', disp: '#REF!' };\n    guard.push(coord);\n    var res;\n    try {\n      res = SP.evalFormula(s.slice(1), sheet, guard);\n    } catch (e) {\n      res = { type: 'err', disp: (e && e.message) ? e.message : '#ERROR!' };\n    }\n    guard.pop();\n    return res;\n  }\n  if (SP.isNumber(s)) return { type: 'num', num: Number(s), text: s, disp: s };\n  return { type: 'text', num: NaN, text: s, disp: s };\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 118,
+            "member": [
+              "SP",
+              "cellValue"
+            ],
+            "leaf_name": "cellValue",
+            "alias": "__source_member_19",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.display",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, coord) { return SP.cellValue(sheet, coord, []).disp; }",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 138,
+            "member": [
+              "SP",
+              "display"
+            ],
+            "leaf_name": "display",
+            "alias": "__source_member_20",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.displayMap",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet) {\n  var out = {}, cells = (sheet && sheet.cells) || {};\n  for (var coord in cells) {\n    if (!Object.prototype.hasOwnProperty.call(cells, coord)) continue;\n    out[coord] = SP.cellValue(sheet, coord, []).disp;\n  }\n  return out;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 139,
+            "member": [
+              "SP",
+              "displayMap"
+            ],
+            "leaf_name": "displayMap",
+            "alias": "__source_member_21",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.tokenize",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (expr) {\n  var out = [], i = 0;\n  while (i < expr.length) {\n    var ch = expr[i];\n    if (ch === ' ' || ch === '\\t' || ch === '\\n' || ch === '\\r') { i++; continue; }\n    if ((ch >= '0' && ch <= '9') || ch === '.') {\n      var j = i;\n      while (j < expr.length && ((expr[j] >= '0' && expr[j] <= '9') || expr[j] === '.')) j++;\n      out.push({ t: 'num', v: parseFloat(expr.slice(i, j)) });\n      i = j;\n      continue;\n    }\n    if (/[A-Za-z_]/.test(ch)) {\n      var k = i;\n      while (k < expr.length && /[A-Za-z0-9_]/.test(expr[k])) k++;\n      out.push({ t: 'name', v: expr.slice(i, k) });\n      i = k;\n      continue;\n    }\n    if ('+-*/():,'.indexOf(ch) >= 0) { out.push({ t: 'op', v: ch }); i++; continue; }\n    if (ch === '#') {\n      var h = i;\n      while (h < expr.length && '+-*/(),'.indexOf(expr[h]) < 0) h++;\n      out.push({ t: 'err', v: expr.slice(i, h).toUpperCase() });\n      i = h;\n      continue;\n    }\n    throw new CalcError('#ERROR!');\n  }\n  return out;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 148,
+            "member": [
+              "SP",
+              "tokenize"
+            ],
+            "leaf_name": "tokenize",
+            "alias": "__source_member_22",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.evalFormula",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (expr, sheet, guard) {\n  var tokens = SP.tokenize(String(expr));\n  var pos = 0;\n\n  function peek() { return tokens[pos]; }\n  function next() { return tokens[pos++]; }\n\n  function numOf(v) {\n    if (!v) throw new CalcError('#ERROR!');\n    if (v.kind === 'num') return v.num;\n    if (v.kind === 'empty') return 0;\n    throw new CalcError('#ERROR!');\n  }\n\n  function cellToValue(ref) {\n    if (ref.r < 0 || ref.c < 0 || ref.r > 5000 || ref.c > 200) throw new CalcError('#REF!');\n    var cv = SP.cellValue(sheet, SP.coord(ref.r, ref.c), guard);\n    if (cv.type === 'err') throw new CalcError(cv.disp);\n    if (cv.type === 'empty') return { kind: 'num', num: 0 };\n    if (cv.type === 'num') return { kind: 'num', num: cv.num };\n    return { kind: 'text', text: cv.text };\n  }\n\n  function collectNumbers(args) {\n    var nums = [], count = 0;\n    for (var a = 0; a < args.length; a++) {\n      var arg = args[a];\n      if (arg.kind === 'range') {\n        for (var r = arg.r1; r <= arg.r2; r++) {\n          for (var c = arg.c1; c <= arg.c2; c++) {\n            var cv = SP.cellValue(sheet, SP.coord(r, c), guard);\n            if (cv.type === 'err') throw new CalcError(cv.disp);\n            if (cv.type === 'num') { nums.push(cv.num); count++; }\n          }\n        }\n      } else if (arg.kind === 'num') { nums.push(arg.num); count++; }\n    }\n    return { nums: nums, count: count };\n  }\n\n  function applyFunction(name, args) {\n    if (['SUM', 'AVERAGE', 'COUNT', 'MIN', 'MAX'].indexOf(name) < 0) throw new CalcError('#NAME?');\n    var got = collectNumbers(args);\n    var nums = got.nums;\n    if (name === 'COUNT') return { kind: 'num', num: got.count };\n    if (!nums.length) {\n      if (name === 'SUM') return { kind: 'num', num: 0 };\n      if (name === 'MIN' || name === 'MAX') return { kind: 'num', num: 0 };\n      throw new CalcError('#DIV/0!');\n    }\n    var total = 0;\n    for (var i = 0; i < nums.length; i++) total += nums[i];\n    if (name === 'SUM') return { kind: 'num', num: total };\n    if (name === 'AVERAGE') return { kind: 'num', num: total / nums.length };\n    if (name === 'MIN') return { kind: 'num', num: Math.min.apply(null, nums) };\n    return { kind: 'num', num: Math.max.apply(null, nums) };\n  }\n\n  function parseFactor() {\n    var t = next();\n    if (!t) throw new CalcError('#ERROR!');\n    if (t.t === 'num') return { kind: 'num', num: t.v };\n    if (t.t === 'err') throw new CalcError(t.v || '#REF!');\n    if (t.t === 'op' && t.v === '(') {\n      var v = parseExpr();\n      var close = next();\n      if (!close || close.t !== 'op' || close.v !== ')') throw new CalcError('#ERROR!');\n      return v;\n    }\n    if (t.t === 'op' && t.v === '-') return { kind: 'num', num: -numOf(parseFactor()) };\n    if (t.t === 'op' && t.v === '+') return parseFactor();\n    if (t.t === 'name') {\n      var after = peek();\n      if (after && after.t === 'op' && after.v === '(') {\n        pos++;\n        return callFunction(t.v.toUpperCase());\n      }\n      var ref = SP.parseCoord(t.v);\n      if (!ref) throw new CalcError('#NAME?');\n      var colon = peek();\n      if (colon && colon.t === 'op' && colon.v === ':') {\n        pos++;\n        var t2 = next();\n        if (!t2 || t2.t !== 'name') throw new CalcError('#ERROR!');\n        var ref2 = SP.parseCoord(t2.v);\n        if (!ref2) throw new CalcError('#REF!');\n        return {\n          kind: 'range',\n          r1: Math.min(ref.r, ref2.r), c1: Math.min(ref.c, ref2.c),\n          r2: Math.max(ref.r, ref2.r), c2: Math.max(ref.c, ref2.c)\n        };\n      }\n      return cellToValue(ref);\n    }\n    throw new CalcError('#ERROR!');\n  }\n\n  function callFunction(name) {\n    var args = [];\n    if (peek() && peek().t === 'op' && peek().v === ')') { pos++; }\n    else {\n      for (;;) {\n        args.push(parseExpr());\n        var t = next();\n        if (!t) throw new CalcError('#ERROR!');\n        if (t.t === 'op' && t.v === ',') continue;\n        if (t.t === 'op' && t.v === ')') break;\n        throw new CalcError('#ERROR!');\n      }\n    }\n    return applyFunction(name, args);\n  }\n\n  function parseTerm() {\n    var v = parseFactor();\n    for (;;) {\n      var t = peek();\n      if (t && t.t === 'op' && (t.v === '*' || t.v === '/')) {\n        pos++;\n        var r = parseFactor();\n        var a = numOf(v), b = numOf(r);\n        if (t.v === '*') v = { kind: 'num', num: a * b };\n        else { if (b === 0) throw new CalcError('#DIV/0!'); v = { kind: 'num', num: a / b }; }\n      } else return v;\n    }\n  }\n\n  function parseExpr() {\n    var v = parseTerm();\n    for (;;) {\n      var t = peek();\n      if (t && t.t === 'op' && (t.v === '+' || t.v === '-')) {\n        pos++;\n        var r = parseTerm();\n        var a = numOf(v), b = numOf(r);\n        v = { kind: 'num', num: t.v === '+' ? a + b : a - b };\n      } else return v;\n    }\n  }\n\n  var result = parseExpr();\n  if (pos < tokens.length) throw new CalcError('#ERROR!');\n  return { type: 'num', num: numOf(result), disp: SP.fmt(numOf(result)) };\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 180,
+            "member": [
+              "SP",
+              "evalFormula"
+            ],
+            "leaf_name": "evalFormula",
+            "alias": "__source_member_23",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.remapRefs",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (formula, remapRow, remapCol) {\n  var s = String(formula);\n  if (s.charAt(0) !== '=') return s;\n  var body = s.slice(1), bad = false;\n  var out = body.replace(/([A-Za-z]{1,3})([0-9]{1,7})/g, function (m, letters, digits, offset, str) {\n    var after = str.charAt(offset + m.length);\n    if (after === '(' || /[A-Za-z0-9_]/.test(after)) return m;\n    var c = SP.colNum(letters);\n    var r = parseInt(digits, 10) - 1;\n    if (c < 0) return m;\n    var nr = remapRow ? remapRow(r) : r;\n    var nc = remapCol ? remapCol(c) : c;\n    if (nr == null || nc == null || nr < 0 || nc < 0) { bad = true; return m; }\n    return SP.colName(nc) + (nr + 1);\n  });\n  if (bad) return '=#REF!';\n  return '=' + out;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 326,
+            "member": [
+              "SP",
+              "remapRefs"
+            ],
+            "leaf_name": "remapRefs",
+            "alias": "__source_member_24",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.moveFormula",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (raw, dr, dc) {\n  if (String(raw).charAt(0) !== '=') return raw;\n  return SP.remapRefs(raw, function (r) { return r + dr; }, function (c) { return c + dc; });\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 344,
+            "member": [
+              "SP",
+              "moveFormula"
+            ],
+            "leaf_name": "moveFormula",
+            "alias": "__source_member_25",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.insertRows",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, from, count) {\n  var cells = sheet.cells || {}, out = {};\n  for (var coord in cells) {\n    if (!Object.prototype.hasOwnProperty.call(cells, coord)) continue;\n    var p = SP.parseCoord(coord);\n    if (!p) continue;\n    var r = p.r >= from ? p.r + count : p.r;\n    var raw = String(cells[coord]);\n    out[SP.coord(r, p.c)] = raw.charAt(0) === '='\n      ? SP.remapRefs(raw, function (rr) { return rr >= from ? rr + count : rr; }, null)\n      : raw;\n  }\n  sheet.cells = out;\n  sheet.validations = (sheet.validations || []).map(function (v) {\n    var rg = SP.parseRange(v.range);\n    if (!rg) return v;\n    var r1 = rg.r1 >= from ? rg.r1 + count : rg.r1;\n    var r2 = rg.r2 >= from ? rg.r2 + count : rg.r2;\n    return Object.assign({}, v, { range: SP.rangeName({ c1: rg.c1, c2: rg.c2, r1: r1, r2: r2 }) });\n  });\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 350,
+            "member": [
+              "SP",
+              "insertRows"
+            ],
+            "leaf_name": "insertRows",
+            "alias": "__source_member_26",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.deleteRows",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, at, count) {\n  var cells = sheet.cells || {}, out = {};\n  for (var coord in cells) {\n    if (!Object.prototype.hasOwnProperty.call(cells, coord)) continue;\n    var p = SP.parseCoord(coord);\n    if (!p) continue;\n    if (p.r >= at && p.r < at + count) continue;\n    var r = p.r >= at + count ? p.r - count : p.r;\n    var raw = String(cells[coord]);\n    out[SP.coord(r, p.c)] = raw.charAt(0) === '='\n      ? SP.remapRefs(raw, function (rr) {\n        if (rr >= at && rr < at + count) return null;\n        return rr >= at + count ? rr - count : rr;\n      }, null)\n      : raw;\n  }\n  sheet.cells = out;\n  sheet.validations = (sheet.validations || []).filter(function (v) {\n    var rg = SP.parseRange(v.range);\n    return !(rg && rg.r1 >= at && rg.r2 < at + count);\n  }).map(function (v) {\n    var rg = SP.parseRange(v.range);\n    if (!rg) return v;\n    var r1 = rg.r1 >= at + count ? rg.r1 - count : rg.r1;\n    var r2 = rg.r2 >= at + count ? rg.r2 - count : rg.r2;\n    return Object.assign({}, v, { range: SP.rangeName({ c1: rg.c1, c2: rg.c2, r1: r1, r2: r2 }) });\n  });\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 371,
+            "member": [
+              "SP",
+              "deleteRows"
+            ],
+            "leaf_name": "deleteRows",
+            "alias": "__source_member_27",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.insertCols",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, from, count) {\n  var cells = sheet.cells || {}, out = {};\n  for (var coord in cells) {\n    if (!Object.prototype.hasOwnProperty.call(cells, coord)) continue;\n    var p = SP.parseCoord(coord);\n    if (!p) continue;\n    var c = p.c >= from ? p.c + count : p.c;\n    var raw = String(cells[coord]);\n    out[SP.coord(p.r, c)] = raw.charAt(0) === '='\n      ? SP.remapRefs(raw, null, function (cc) { return cc >= from ? cc + count : cc; })\n      : raw;\n  }\n  sheet.cells = out;\n  sheet.validations = (sheet.validations || []).map(function (v) {\n    var rg = SP.parseRange(v.range);\n    if (!rg) return v;\n    var c1 = rg.c1 >= from ? rg.c1 + count : rg.c1;\n    var c2 = rg.c2 >= from ? rg.c2 + count : rg.c2;\n    return Object.assign({}, v, { range: SP.rangeName({ r1: rg.r1, r2: rg.r2, c1: c1, c2: c2 }) });\n  });\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 399,
+            "member": [
+              "SP",
+              "insertCols"
+            ],
+            "leaf_name": "insertCols",
+            "alias": "__source_member_28",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.deleteCols",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, at, count) {\n  var cells = sheet.cells || {}, out = {};\n  for (var coord in cells) {\n    if (!Object.prototype.hasOwnProperty.call(cells, coord)) continue;\n    var p = SP.parseCoord(coord);\n    if (!p) continue;\n    if (p.c >= at && p.c < at + count) continue;\n    var c = p.c >= at + count ? p.c - count : p.c;\n    var raw = String(cells[coord]);\n    out[SP.coord(p.r, c)] = raw.charAt(0) === '='\n      ? SP.remapRefs(raw, null, function (cc) {\n        if (cc >= at && cc < at + count) return null;\n        return cc >= at + count ? cc - count : cc;\n      })\n      : raw;\n  }\n  sheet.cells = out;\n  sheet.validations = (sheet.validations || []).filter(function (v) {\n    var rg = SP.parseRange(v.range);\n    return !(rg && rg.c1 >= at && rg.c2 < at + count);\n  }).map(function (v) {\n    var rg = SP.parseRange(v.range);\n    if (!rg) return v;\n    var c1 = rg.c1 >= at + count ? rg.c1 - count : rg.c1;\n    var c2 = rg.c2 >= at + count ? rg.c2 - count : rg.c2;\n    return Object.assign({}, v, { range: SP.rangeName({ r1: rg.r1, r2: rg.r2, c1: c1, c2: c2 }) });\n  });\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 420,
+            "member": [
+              "SP",
+              "deleteCols"
+            ],
+            "leaf_name": "deleteCols",
+            "alias": "__source_member_29",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.ruleFor",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, coord) {\n  var p = SP.parseCoord(coord);\n  if (!p) return null;\n  var rules = (sheet && sheet.validations) || [];\n  for (var i = 0; i < rules.length; i++) {\n    var rg = SP.parseRange(rules[i].range);\n    if (!rg) continue;\n    if (p.r >= rg.r1 && p.r <= rg.r2 && p.c >= rg.c1 && p.c <= rg.c2) return rules[i];\n  }\n  return null;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 450,
+            "member": [
+              "SP",
+              "ruleFor"
+            ],
+            "leaf_name": "ruleFor",
+            "alias": "__source_member_30",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.validate",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (rule, value) {\n  if (!rule) return null;\n  var v = String(value == null ? '' : value);\n  if (v === '') return null;\n  if (rule.type === 'dropdown') {\n    var allowed = rule.values || [];\n    if (allowed.indexOf(v.trim()) < 0) {\n      return 'Please select one of the following values: ' + allowed.join(', ');\n    }\n    return null;\n  }\n  if (rule.type === 'number') {\n    var n = Number(v);\n    if (isNaN(n) || n < rule.min || n > rule.max) {\n      if (rule.min === 0 && rule.max === 100) return 'Please enter a number from 0 to 100';\n      return 'Please enter a number between ' + rule.min + ' and ' + rule.max;\n    }\n  }\n  return null;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 461,
+            "member": [
+              "SP",
+              "validate"
+            ],
+            "leaf_name": "validate",
+            "alias": "__source_member_31",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.setCell",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, coord, value) {\n  var v = String(value == null ? '' : value);\n  if (v === '') { delete sheet.cells[coord]; return true; }\n  var rule = SP.ruleFor(sheet, coord);\n  if (rule) {\n    var msg = SP.validate(rule, v);\n    if (msg) { ARC.notify(msg); return false; }\n  }\n  sheet.cells[coord] = v;\n  return true;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 481,
+            "member": [
+              "SP",
+              "setCell"
+            ],
+            "leaf_name": "setCell",
+            "alias": "__source_member_32",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.matchFilter",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (st, val) {\n  var v = String(val == null ? '' : val);\n  if (st.values && st.values.length) { if (st.values.indexOf(v) < 0) return false; }\n  var cond = st.condition;\n  if (cond && cond.type) {\n    var need = cond.value == null ? '' : String(cond.value);\n    if (cond.type === 'Text contains') {\n      if (v.toLowerCase().indexOf(need.toLowerCase()) < 0) return false;\n    } else if (cond.type === 'Greater than') {\n      var n = Number(v);\n      if (isNaN(n) || n <= Number(need)) return false;\n    } else if (cond.type === 'Before') {\n      var a = Date.parse(v), b = Date.parse(need);\n      if (isNaN(a) || isNaN(b) || !(a < b)) return false;\n    } else if (cond.type === 'Is empty') {\n      if (v !== '') return false;\n    } else if (cond.type === 'Is not empty') {\n      if (v === '') return false;\n    }\n  }\n  return true;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 494,
+            "member": [
+              "SP",
+              "matchFilter"
+            ],
+            "leaf_name": "matchFilter",
+            "alias": "__source_member_33",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.hiddenRows",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, cells) {\n  var hidden = {};\n  (sheet.filters || []).forEach(function (f) {\n    var range = SP.parseRange(f.range);\n    if (!range) return;\n    var headers = [];\n    for (var c = range.c1; c <= range.c2; c++) headers.push(cells[SP.coord(range.r1, c)] || '');\n    for (var r = range.r1 + 1; r <= range.r2; r++) {\n      for (var key in (f.cols || {})) {\n        if (!Object.prototype.hasOwnProperty.call(f.cols, key)) continue;\n        var ci = headers.indexOf(key);\n        if (ci < 0) continue;\n        var st = f.cols[key];\n        if (!st) continue;\n        var val = cells[SP.coord(r, range.c1 + ci)] || '';\n        if (!SP.matchFilter(st, val)) { hidden[r] = true; break; }\n      }\n    }\n  });\n  return hidden;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 516,
+            "member": [
+              "SP",
+              "hiddenRows"
+            ],
+            "leaf_name": "hiddenRows",
+            "alias": "__source_member_34",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.isDate",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (s) {\n  var t = String(s == null ? '' : s);\n  return /^\\d{4}-\\d{1,2}-\\d{1,2}/.test(t) && !isNaN(Date.parse(t));\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 537,
+            "member": [
+              "SP",
+              "isDate"
+            ],
+            "leaf_name": "isDate",
+            "alias": "__source_member_35",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.compareKeys",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (a, b) {\n  var an = SP.isNumber(a), bn = SP.isNumber(b);\n  if (an && bn) return Number(a) - Number(b);\n  if (SP.isDate(a) && SP.isDate(b)) return Date.parse(a) - Date.parse(b);\n  var as = String(a), bs = String(b);\n  if (as === bs) return 0;\n  return as < bs ? -1 : 1;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 541,
+            "member": [
+              "SP",
+              "compareKeys"
+            ],
+            "leaf_name": "compareKeys",
+            "alias": "__source_member_36",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.sortRange",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, range, col, startRow, desc) {\n  var rowsIdx = [];\n  for (var r = startRow; r <= range.r2; r++) rowsIdx.push(r);\n  var data = rowsIdx.map(function (row) {\n    var line = {};\n    for (var c = range.c1; c <= range.c2; c++) line[c] = sheet.cells[SP.coord(row, c)];\n    return line;\n  });\n  var keys = rowsIdx.map(function (row) { return SP.display(sheet, SP.coord(row, col)); });\n  var order = rowsIdx.map(function (x, i) { return i; });\n  order.sort(function (i, j) {\n    var c = SP.compareKeys(keys[i], keys[j]);\n    return desc ? -c : c;\n  });\n  order.forEach(function (src, dst) {\n    var target = rowsIdx[dst];\n    for (var c2 = range.c1; c2 <= range.c2; c2++) {\n      var v = data[src][c2];\n      var coord = SP.coord(target, c2);\n      if (v === undefined || v === '') delete sheet.cells[coord];\n      else sheet.cells[coord] = v;\n    }\n  });\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 549,
+            "member": [
+              "SP",
+              "sortRange"
+            ],
+            "leaf_name": "sortRange",
+            "alias": "__source_member_37",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.parseCSV",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (text) {\n  var s = String(text == null ? '' : text);\n  var rows = [], row = [], field = '', i = 0, inQuotes = false, fieldStart = true;\n  while (i < s.length) {\n    var ch = s[i];\n    if (inQuotes) {\n      if (ch === '\"') {\n        if (s[i + 1] === '\"') { field += '\"'; i += 2; continue; }\n        inQuotes = false; i++; continue;\n      }\n      field += ch; i++; continue;\n    }\n    if (ch === '\"' && fieldStart) { inQuotes = true; fieldStart = false; i++; continue; }\n    if (ch === ',') { row.push(field); field = ''; fieldStart = true; i++; continue; }\n    if (ch === '\\n') { row.push(field); rows.push(row); row = []; field = ''; fieldStart = true; i++; continue; }\n    if (ch === '\\r') { i++; continue; }\n    field += ch; fieldStart = false; i++;\n  }\n  if (inQuotes) throw new Error('invalid csv');\n  row.push(field);\n  if (row.length > 1 || row[0] !== '') rows.push(row);\n  if (!rows.length) throw new Error('invalid csv');\n  return rows;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 575,
+            "member": [
+              "SP",
+              "parseCSV"
+            ],
+            "leaf_name": "parseCSV",
+            "alias": "__source_member_38",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.toCSV",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (rows) {\n  return rows.map(function (line) {\n    return line.map(function (v) {\n      var s = String(v == null ? '' : v);\n      if (/[\",\\n\\r]/.test(s)) return '\"' + s.replace(/\"/g, '\"\"') + '\"';\n      return s;\n    }).join(',');\n  }).join('\\n');\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 599,
+            "member": [
+              "SP",
+              "toCSV"
+            ],
+            "leaf_name": "toCSV",
+            "alias": "__source_member_39",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.exportActive",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (wb, sheet) {\n  var used = SP.usedRange(sheet);\n  if (!used) return '';\n  var rows = [];\n  for (var r = used.r1; r <= used.r2; r++) {\n    var line = [];\n    for (var c = used.c1; c <= used.c2; c++) line.push(SP.display(sheet, SP.coord(r, c)));\n    rows.push(line);\n  }\n  return SP.toCSV(rows);\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 608,
+            "member": [
+              "SP",
+              "exportActive"
+            ],
+            "leaf_name": "exportActive",
+            "alias": "__source_member_40",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.rangeHeaders",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (sheet, rangeStr) {\n  var range = SP.parseRange(rangeStr);\n  if (!range || !sheet) return [];\n  var out = [];\n  for (var c = range.c1; c <= range.c2; c++) out.push(SP.display(sheet, SP.coord(range.r1, c)) || SP.colName(c));\n  return out;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 621,
+            "member": [
+              "SP",
+              "rangeHeaders"
+            ],
+            "leaf_name": "rangeHeaders",
+            "alias": "__source_member_41",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.aggregate",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (values, method) {\n  if (method === 'COUNT') {\n    var n = 0;\n    for (var i = 0; i < values.length; i++) if (String(values[i]) !== '') n++;\n    return n;\n  }\n  var nums = [];\n  for (var j = 0; j < values.length; j++) {\n    var v = String(values[j] == null ? '' : values[j]).trim();\n    if (v !== '' && SP.isNumber(v)) nums.push(Number(v));\n  }\n  if (!nums.length) return 0;\n  var total = 0;\n  for (var k = 0; k < nums.length; k++) total += nums[k];\n  return method === 'AVERAGE' ? total / nums.length : total;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 628,
+            "member": [
+              "SP",
+              "aggregate"
+            ],
+            "leaf_name": "aggregate",
+            "alias": "__source_member_42",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.firstUnused",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (wb, prefix) {\n  var n = 1;\n  var names = wb.worksheets.map(function (s) { return s.name; });\n  while (names.indexOf(prefix + n) >= 0) n++;\n  return prefix + n;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 644,
+            "member": [
+              "SP",
+              "firstUnused"
+            ],
+            "leaf_name": "firstUnused",
+            "alias": "__source_member_43",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          },
+          {
+            "file": "frontend/public/app.js",
+            "name": "SP.computePivot",
+            "kind": "method",
+            "scope": "root",
+            "code": "function (wb, ps) {\n  var p = ps.pivot;\n  if (!p) return true;\n  var src = SP.sheetById(wb, p.sourceSheetId);\n  if (!src) { ARC.notify('Pivot field is no longer available. Select a new field.'); return false; }\n  var range = SP.parseRange(p.range);\n  if (!range) { ARC.notify('Pivot field is no longer available. Select a new field.'); return false; }\n  var headers = SP.rangeHeaders(src, p.range);\n  var missing = false;\n  [p.rows, p.columns, p.values].forEach(function (f) {\n    if (f && headers.indexOf(f) < 0) missing = true;\n  });\n  if (missing) { ARC.notify('Pivot field is no longer available. Select a new field.'); return false; }\n  var out = {};\n  if (!p.rows || !p.values) { /* nothing configured yet */ }\n  else {\n    var rowIdx = headers.indexOf(p.rows);\n    var valIdx = headers.indexOf(p.values);\n    var colIdx = p.columns ? headers.indexOf(p.columns) : -1;\n    var records = [];\n    var anyNumeric = false;\n    for (var r = range.r1 + 1; r <= range.r2; r++) {\n      var rowKey = SP.display(src, SP.coord(r, range.c1 + rowIdx));\n      var value = SP.display(src, SP.coord(r, range.c1 + valIdx));\n      var colKey = colIdx >= 0 ? SP.display(src, SP.coord(r, range.c1 + colIdx)) : '';\n      if (value !== '' && SP.isNumber(value)) anyNumeric = true;\n      records.push({ rowKey: rowKey, colKey: colKey, value: value });\n    }\n    if ((p.summarize === 'SUM' || p.summarize === 'AVERAGE') && !anyNumeric) {\n      ARC.notify('Value field requires numeric values');\n      return false;\n    }\n    var rowKeys = [], colKeys = [];\n    records.forEach(function (rec) {\n      if (rowKeys.indexOf(rec.rowKey) < 0) rowKeys.push(rec.rowKey);\n      if (colIdx >= 0 && colKeys.indexOf(rec.colKey) < 0) colKeys.push(rec.colKey);\n    });\n    out['A1'] = p.rows;\n    if (colIdx >= 0) {\n      colKeys.forEach(function (ck, i) { out[SP.coord(0, 1 + i)] = ck; });\n      out[SP.coord(0, 1 + colKeys.length)] = 'Grand Total';\n      rowKeys.forEach(function (rk, ri) {\n        out[SP.coord(1 + ri, 0)] = rk;\n        var rowTotal = [];\n        colKeys.forEach(function (ck, ci) {\n          var vals = records.filter(function (x) { return x.rowKey === rk && x.colKey === ck; }).map(function (x) { return x.value; });\n          out[SP.coord(1 + ri, 1 + ci)] = SP.fmt(SP.aggregate(vals, p.summarize));\n          rowTotal = rowTotal.concat(vals);\n        });\n        out[SP.coord(1 + ri, 1 + colKeys.length)] = SP.fmt(SP.aggregate(rowTotal, p.summarize));\n      });\n      var totalRow = 1 + rowKeys.length;\n      out[SP.coord(totalRow, 0)] = 'Grand Total';\n      colKeys.forEach(function (ck, ci) {\n        var vals = records.filter(function (x) { return x.colKey === ck; }).map(function (x) { return x.value; });\n        out[SP.coord(totalRow, 1 + ci)] = SP.fmt(SP.aggregate(vals, p.summarize));\n      });\n      out[SP.coord(totalRow, 1 + colKeys.length)] = SP.fmt(SP.aggregate(records.map(function (x) { return x.value; }), p.summarize));\n    } else {\n      out['B1'] = p.summarize + ' of ' + p.values;\n      rowKeys.forEach(function (rk, ri) {\n        out[SP.coord(1 + ri, 0)] = rk;\n        var vals = records.filter(function (x) { return x.rowKey === rk; }).map(function (x) { return x.value; });\n        out[SP.coord(1 + ri, 1)] = SP.fmt(SP.aggregate(vals, p.summarize));\n      });\n      var tr = 1 + rowKeys.length;\n      out[SP.coord(tr, 0)] = 'Grand Total';\n      out[SP.coord(tr, 1)] = SP.fmt(SP.aggregate(records.map(function (x) { return x.value; }), p.summarize));\n    }\n  }\n  ps.cells = out;\n  return true;\n}",
+            "callable": true,
+            "mutable": true,
+            "node_type": "FunctionExpression",
+            "line": 650,
+            "member": [
+              "SP",
+              "computePivot"
+            ],
+            "leaf_name": "computePivot",
+            "alias": "__source_member_44",
+            "source_sha256": "1f12797539fc2c1129df9055efc52b906a312db7e5bf9bb17500181b84c461a7"
+          }
+        ],
+        "subject": "parseCoord",
+        "setup": "globalThis.ARC={state:JSON.parse(JSON.stringify(SEED))};",
+        "initializers": [
+          {
+            "file": "frontend/public/seed.js",
+            "code": "// Seed data. Every record the requirement names exists here verbatim, at startup, in the shared\n// store: one workbook `Q3 Sales` with `Sheet1`, `Sheet2` and their seeded values.\nwindow.SEED = {\n  session: null,\n  ui: {},\n  workbooks: [\n    {\n      id: 'wb-q3-sales',\n      name: 'Q3 Sales',\n      lastUpdated: '2024-09-18 10:15',\n      activeSheet: 'sheet-1',\n      worksheets: [\n        {\n          id: 'sheet-1',\n          name: 'Sheet1',\n          cells: {\n            A1: 'Region', B1: 'Sales', C1: 'Status',\n            A2: 'East', B2: '1200', C2: 'Open',\n            A3: 'North', B3: '800', C3: 'Closed',\n            A4: 'South', B4: '700', C4: 'Open'\n          },\n          sel: { r: 0, c: 0, r2: 0, c2: 0 },\n          validations: [],\n          filters: []\n        },\n        {\n          id: 'sheet-2',\n          name: 'Sheet2',\n          cells: {\n            A1: 'Item', B1: 'Qty',\n            A2: 'Pen', B2: '4',\n            A8: '2', B8: '3', C8: '=A8+B8', D8: '=C8*2'\n          },\n          sel: { r: 0, c: 0, r2: 0, c2: 0 },\n          validations: [],\n          filters: []\n        }\n      ]\n    }\n  ]\n};\n"
+          }
+        ],
+        "precondition": "assert.equal(SP.coord(0,0),\"A1\");",
+        "check": "const ref=SP.coord(4,5);const rc=SP.parseCoord(ref);assert.equal(rc.r,4);assert.equal(rc.c,5);",
+        "requirement_text": "Users enter formulas beginning with an equals sign through the grid or formula bar in REQ-3-1-1. Formulas must support at least numeric constants, parentheses, addition, subtraction, multiplication, division, A1-style references within the same worksheet, and SUM, AVERAGE, COUNT, MIN, and MAX over contiguous ranges; cross-worksheet references are not required. The grid displays results calculated from the current source data, and when a formula cell is selected the formula bar displays the original expression entered by the user; both persist after refresh. Function names are case-insensitive; aggregate functions ignore empty cells, COUNT counts only numeric cells, and SUM/AVERAGE/MIN/MAX use only numeric cells and do not treat blanks as zero.\nPage reference:\n![image](reference/basic-formulas.png)\n"
+      }
+    ]
+  }
+}

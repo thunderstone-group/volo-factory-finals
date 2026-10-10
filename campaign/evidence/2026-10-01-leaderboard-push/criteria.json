@@ -1,0 +1,29 @@
+{
+  "written_at": "2026-10-01T23:05:40.601837+08:00",
+  "candidate": "exp/behavior-coverage-20261001",
+  "baseline_package": "bfddd36cfad339745cf22f142d677ced3b89d039f0c0017885acbfc2b8587e6f",
+  "hypothesis": "A second read of public requirement descriptions and existing tests finds uncovered state transitions and behavioural variants, without weakening the existing suite.",
+  "inputs": "Published requirements and frozen requirement-written tests only; no inferred hidden intent.",
+  "pilot": [
+    "sheet REQ-3 and REQ-5",
+    "github REQ-2 and REQ-6"
+  ],
+  "gates": [
+    "Original tests preserved; every added test cites its atomic requirement description verbatim; no skipped or focused additions.",
+    "At least two distinct public requirement defects detected across the frozen generated apps that the old tests missed; manually verify the claimed failures in application code or a focused replay.",
+    "At least 75 percent of added tests reach a pass or an application failure, rather than their own code error; remaining errors must be investigated.",
+    "Run one independent complete generation per task before formal upload; reject whole-application regressions and compare with fixed local judges.",
+    "First formal batch: two paired submissions at most; compare official score with S 59.7517, retain every failure and actual charge."
+  ],
+  "initial_budget_caps_cny": {
+    "practice": 80,
+    "official_first_batch": 40
+  },
+  "remaining_at_start_cny": {
+    "practice": 474.072673,
+    "official": 234.623313
+  },
+  "deadline_notice": "User supplied organizer announcement: 2026-10-03 23:59 local; generic competition metadata is stale.",
+  "formal_batch_design": "One frozen baseline paired submission, then one candidate paired submission if local gates pass. Formal submissions use credential_mode=official_evaluation and the platform creates one temporary key per run; local work uses only the separate practice key.",
+  "accounting_update": "2026-10-01 23:28: live authenticated competition page explicitly confirms a temporary key per formal run. Existing run billing_mode is a generic self_funded field even for known ranked official runs, so use saved submission credential_mode and actual team/practice settlement. Practice 472.869426 equals initial 474.072673 minus the four pilot calls (1.203247). Parallel work uses distinct credentials; never share the same self-funded key across official measurements."
+}

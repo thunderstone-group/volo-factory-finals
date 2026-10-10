@@ -1,0 +1,90 @@
+test_a_kept_round_after_a_focused_one_goes_back_to_the_whole_list (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 2, "passing_before": 1, "counts_after": {"fail": 2, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 2, "accepted": true, "failing_before": 2, "passing_before": 1, "counts_after": {"pass": 2, "fail": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "1 more scenario(s) pass"}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 1, "passing_before": 2, "counts_after": {"pass": 2, "fail": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 3, "accepted": 1, "stopped": "repair call limit reached (3)", "counts_after": {"pass": 2, "fail": 1}, "failing": ["REQ-2"], "errors": [], "seconds": 0.2, "repair_cny": 0.002}
+ok
+test_a_lost_test_that_passes_alone_and_in_order_is_flaky (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 3, "passing_before": 1, "counts_after": {"pass": 3, "fail": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "2 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (1)", "counts_after": {"pass": 3, "fail": 1}, "failing": ["REQ-3"], "errors": [], "seconds": 0.0, "repair_cny": 0.0007}
+ok
+test_a_lost_test_that_passes_alone_but_fails_in_order_stays_lost (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 3, "passing_before": 1, "counts_after": null, "seconds": 0.0, "cost_cny": 0.00067, "reason": "the change broke 1 passing scenario(s): REQ-8, and fixed only 2"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 3, "pass": 1}, "failing": ["REQ-1", "REQ-2", "REQ-3"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_a_passing_test_the_changed_run_never_reached_is_lost (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": null, "seconds": 0.0, "cost_cny": 0.00067, "reason": "the change broke 1 passing scenario(s): REQ-8, and fixed only 1"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 1, "pass": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.0, "repair_cny": 0.0007}
+ok
+test_a_repair_that_breaks_parsing_gets_one_follow_up_in_the_same_round (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 1, "counts_after": {"pass": 3}, "seconds": 0.1, "cost_cny": 0.00134, "reason": "2 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 3}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0013}
+ok
+test_a_repair_that_fixes_some_and_breaks_others_gets_one_follow_up_that_can_save_it (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 2, "counts_after": {"pass": 3, "fail": 1}, "seconds": 0.1, "cost_cny": 0.00134, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (2)", "counts_after": {"pass": 3, "fail": 1}, "failing": ["REQ-2"], "errors": [], "seconds": 0.1, "repair_cny": 0.0013}
+ok
+test_a_repair_that_fixes_three_per_lost_test_is_kept (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 3, "passing_before": 1, "counts_after": {"pass": 3, "fail": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "3 more scenario(s) pass, 1 lost"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (1)", "counts_after": {"pass": 3, "fail": 1}, "failing": ["REQ-4"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_a_repair_that_loses_a_test_is_discarded_below_three_gains_per_loss (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 3, "passing_before": 1, "counts_after": null, "seconds": 0.1, "cost_cny": 0.00067, "reason": "the change broke 1 passing scenario(s): REQ-4, and fixed only 2"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 3, "pass": 1}, "failing": ["REQ-1", "REQ-2", "REQ-3"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_a_repair_that_only_gains_is_kept (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 3, "passing_before": 1, "counts_after": {"pass": 4}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "3 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 4}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_a_repair_whose_every_search_missed_gets_one_follow_up_in_the_same_round (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 1, "counts_after": {"pass": 3}, "seconds": 0.0, "cost_cny": 0.00134, "reason": "2 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 3}, "failing": [], "errors": [], "seconds": 0.0, "repair_cny": 0.0013}
+ok
+test_a_round_the_model_never_answered_does_not_count_toward_the_discard_limit (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": null, "seconds": 0.0, "cost_cny": 0.0, "reason": "model HTTP 400"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 4, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 5, "accepted": false, "failing_before": 1, "passing_before": 1, "counts_after": {"fail": 1, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 5, "accepted": 0, "stopped": "4 repairs in a row were discarded", "counts_after": {"fail": 1, "pass": 1}, "failing": ["REQ-1"], "errors": [], "seconds": 0.4, "repair_cny": 0.0027}
+ok
+test_after_a_discard_each_round_takes_one_failing_requirement_until_every_one_had_a_round (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 2, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 3, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 4, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 5, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 6, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair round {"round": 7, "accepted": false, "failing_before": 6, "passing_before": 1, "counts_after": {"fail": 6, "pass": 1}, "seconds": 0.0, "cost_cny": 0.00067, "reason": "no failing scenario passes after the change"}
+[oneshot] repair end {"rounds": 7, "accepted": 0, "stopped": "4 repairs in a row were discarded", "counts_after": {"fail": 6, "pass": 1}, "failing": ["REQ-1", "REQ-2", "REQ-3", "REQ-4", "REQ-5", "REQ-6"], "errors": [], "seconds": 0.4, "repair_cny": 0.0047}
+ok
+test_literal_inventory_does_not_add_a_penalty_to_written_verdicts (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 6, "passing_before": 1, "counts_after": {"pass": 7}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "6 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 7}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_literal_inventory_does_not_reject_an_executed_small_gain (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 1, "counts_after": {"pass": 3}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "2 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": null, "counts_after": {"pass": 3}, "failing": [], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_source_repair_still_rejects_regressions_outside_its_targets (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": false, "failing_before": 2, "passing_before": 1, "counts_after": null, "seconds": 0.1, "cost_cny": 0.00067, "reason": "the change broke 1 passing scenario(s): protected, and fixed only 1"}
+[oneshot] repair end {"rounds": 1, "accepted": 0, "stopped": "repair call limit reached (1)", "counts_after": {"fail": 2, "pass": 1}, "failing": ["old-failure", "new-contract"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_source_repair_stops_after_its_targets_pass_and_keeps_other_failures_visible (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 2, "passing_before": 1, "counts_after": {"fail": 1, "pass": 2}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "1 more scenario(s) pass"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "requested source checks pass", "counts_after": {"fail": 1, "pass": 2}, "failing": ["old-failure"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_tests_a_shared_helper_blocked_count_as_gained_when_they_pass (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair round {"round": 1, "accepted": true, "failing_before": 1, "passing_before": 1, "counts_after": {"pass": 3, "fail": 1}, "seconds": 0.1, "cost_cny": 0.00067, "reason": "3 more scenario(s) pass, 1 lost"}
+[oneshot] repair end {"rounds": 1, "accepted": 1, "stopped": "repair call limit reached (1)", "counts_after": {"pass": 3, "fail": 1}, "failing": ["REQ-4"], "errors": [], "seconds": 0.1, "repair_cny": 0.0007}
+ok
+test_unjudged_source_target_is_not_reported_as_fixed (tests_oneshot.test_testgen.RepairLoopCase) ... [oneshot] repair end {"rounds": 0, "accepted": 0, "stopped": "requested source checks are unjudged", "counts_after": {"fail": 1, "error": 1, "pass": 1}, "failing": ["old-failure"], "errors": ["new-contract"], "seconds": 0.0, "repair_cny": 0}
+ok
+test_canonical_requirement_and_schema_bounds (tests_oneshot.test_source_contracts.ContractIntegrationCase) ... ok
+test_contract_only_recheck_never_accidentally_runs_all_browser_tests (tests_oneshot.test_source_contracts.ContractIntegrationCase) ... ok
+test_fixture_errors_do_not_count_as_repair_gains (tests_oneshot.test_source_contracts.ContractIntegrationCase) ... ok
+test_unavailable_diagnostics_preserve_the_browser_result (tests_oneshot.test_source_contracts.ContractIntegrationCase) ... ok
+test_ambiguous_bindings_and_paths_outside_app_are_errors (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_bad_precondition_is_unjudged_not_a_product_failure (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_cross_namespace_constants_are_not_mistaken_for_application_bugs (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_missing_runtime_alias_reports_the_actual_declared_path (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_mocking_the_subject_or_missing_context_is_unjudged (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_namespace_assignments_use_actual_helpers_values_and_receiver (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_nested_object_methods_and_direct_namespace_calls_are_instrumented (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_precondition_calls_and_assertions_cannot_certify_the_check (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_pure_functions_need_no_external_setup (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_qualified_object_method_keeps_its_real_receiver_and_helpers (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_qualified_owner_does_not_select_another_objects_same_named_method (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_rebinds_exact_changed_source_and_links_actual_dependencies (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_two_stage_review_executes_feedback_and_keeps_app_immutable (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_unqualified_duplicate_namespace_members_are_not_guessed (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_valid_long_dependency_chain_is_not_cut_off_after_25_links (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_window_qualified_owner_extensions_use_the_actual_assignment (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 7.574s
+
+OK

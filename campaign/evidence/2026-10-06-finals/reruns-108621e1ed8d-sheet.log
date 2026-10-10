@@ -1,0 +1,9 @@
+10-08 13:00 start 1ffe96dd698a
+10-08 13:17 done 1ffe96dd698a PASSED passed 30 failed 0 sec 941
+10-08 13:17 start ee035e3d3066
+10-08 13:38 done ee035e3d3066 PASSED passed 27 failed 3 sec 1171
+10-08 13:38 start e43c9dc61728
+10-08 14:07 done e43c9dc61728 PASSED passed 27 failed 3 sec 1428
+10-08 14:07 start 54637f65a199
+10-08 14:24 done 54637f65a199 CANCELLED passed 0 failed 0 sec None
+10-08 14:24 loop end n=4

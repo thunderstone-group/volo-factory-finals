@@ -1,0 +1,124 @@
+{
+  "at": "2026-10-02T11:02:37.936651+08:00",
+  "kind": "bounded official paired experiment",
+  "package_sha256": "8ef69d0cd5e8e2081d7e66145b9a3b6bd22ea45dc6cf52131535bca93126b04a",
+  "source_commit": "e53024c",
+  "model": "deepseek-v4-flash-vision-exp",
+  "tasks": [
+    "hackathon--github",
+    "hackathon--sheet"
+  ],
+  "requirements": {
+    "hackathon--github/requirements.yaml": "bdc17d23265a6b1948aec150e69d0b2accfa37db4c569305c97be7ff7f3b0b8f",
+    "hackathon--github-stage-1/requirements.yaml": "a5f347673348eb9502286640f1eb62a54836ffed6787cdd302173226d7810e79",
+    "hackathon--sheet/requirements.yaml": "9cddf67be50748106289ed158648629a6c50c30a490d0eda5bd570c557440b96"
+  },
+  "new_public_stage": "github-stage-1 newly published; explicit original task pair preserves original scoring route",
+  "active_runs_before_upload": 0,
+  "official_balance_before": 220.786673,
+  "practice_balance_before": 420.511753,
+  "local_validation": [
+    {
+      "task": "github",
+      "judge_exit": 0,
+      "scores": [
+        {
+          "app": "generate-controls-v3-github",
+          "judge": "gh99",
+          "counts": {
+            "error": 15,
+            "pass": 72,
+            "fail": 14
+          },
+          "seconds": 155.9,
+          "coverage": {
+            "total": 100,
+            "parsed": 86
+          }
+        },
+        {
+          "app": "generate-controls-v3-github",
+          "judge": "gh8",
+          "counts": {
+            "pass": 65,
+            "error": 13,
+            "fail": 24
+          },
+          "seconds": 169.8,
+          "coverage": {
+            "total": 100,
+            "parsed": 89
+          }
+        }
+      ]
+    },
+    {
+      "task": "sheet",
+      "judge_exit": 0,
+      "scores": [
+        {
+          "app": "generate-controls-v3-sheet",
+          "judge": "g99",
+          "counts": {
+            "pass": 92,
+            "fail": 8
+          },
+          "seconds": 65.8,
+          "coverage": {
+            "total": 100,
+            "parsed": 100
+          }
+        },
+        {
+          "app": "generate-controls-v3-sheet",
+          "judge": "cov99n-arm",
+          "counts": {
+            "pass": 96,
+            "fail": 4
+          },
+          "seconds": 61.0,
+          "coverage": {
+            "total": 100,
+            "parsed": 100
+          }
+        }
+      ]
+    }
+  ],
+  "calibrated_github": [
+    {
+      "application": "generate-controls-v3-github",
+      "judge": "gh99",
+      "counts": {
+        "error": 15,
+        "pass": 74,
+        "fail": 12
+      },
+      "seconds": 154.7
+    },
+    {
+      "application": "generate-controls-v3-github",
+      "judge": "gh8",
+      "counts": {
+        "pass": 67,
+        "error": 13,
+        "fail": 22
+      },
+      "seconds": 169.0
+    }
+  ],
+  "checks": {
+    "oneshot_run": 267,
+    "passed": 264,
+    "optional_skipped": 3,
+    "source_secret_findings": 0,
+    "package_secret_findings": 0
+  },
+  "limitations": [
+    "GitHub source counterexamples all unjudged due unresolved actual owner reconstruction.",
+    "GitHub own tests incorrectly classify an unavailable assertion API as product failures, wasting repair attempts.",
+    "One GitHub repair discarded after observed local EADDRINUSE; one model attempt has unknown usage.",
+    "Local independent scores are diagnostic and are not official score predictions."
+  ],
+  "decision": "Test the exact fresh-validated v3 package without conflating subsequent checker fixes. Do not promote based on local scores. Existing authorized official credits; no recharge."
+}

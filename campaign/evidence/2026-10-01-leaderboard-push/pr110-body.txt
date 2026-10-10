@@ -1,0 +1,23 @@
+Generated acceptance suites miss explicit behavior, while some static checks reject valid helpers or misclassify data as control names. This candidate adds a requirements-only audit with bounded, source-quoted checks; preserves the original tests; and supplies actual failure-page context to repairs. It also waits for a complete draft before writing tests, serializes calls within a task, retains malformed-stream diagnostics, and uses verified Vision/GLM prices for budgets.
+
+Two defects reproduced from real generation traces are fixed: existing assertion helpers now count as assertions, and the phrase "application entry point" no longer classifies nearby data as control names. These guards remain heuristics, not proof of test semantics.
+
+The official experiment did not improve the paired result:
+
+| Task | Previous best same-submission pair | Candidate c2a2b32a | Actual cost |
+|---|---:|---:|---:|
+| GitHub | 24/100 | [27/100](https://arc-bench.com/runs/47d482ac1890) | CNY 3.019351 |
+| Sheet | 81/100 | [73/100](https://arc-bench.com/runs/6f78f5bdce60) | CNY 4.026317 |
+
+Submission 1b6b453f30dc used deepseek-v4-flash-vision-exp and cost CNY 7.045668 in total. The board retains the previous overall best S 59.7517. The later guard fixes and GLM price entry are absent from that submitted archive; no official uplift is claimed for them. Keep this PR draft, with no promotion to main.
+
+Validation and diagnosis:
+
+- One-shot: 248 tests run, 245 passed, 3 optional browser-readiness skips. Legacy: 226 run, 214 passed, 12 optional integration skips. The subsequent price-only update matches the live catalogue and passes the targeted cost regression.
+- Replaying captured real responses recovers 11 helper-based audit checks without model calls. Browser replay: local Vision Sheet 11/11, old baseline 10/11, official Sheet 10/11.
+- The exact official applications score GitHub 69 / 66 and Sheet 89 / 93 under fixed independent requirement-written judges, despite official 27 / 73. Those judges were never supplied to generation or repair. This validates an oracle gap, not an improvement.
+- GitHub self-checks left 13 scenarios unjudged. Exact delivered business functions also reproduce a public-requirement defect: a new approval does not replace the reviewer's previous effective Request changes. The recovered Sheet check exposes a conflict between the default value allow-list and the Is empty condition.
+- The GLM full-task request and a one-field low-effort comparison both ended at 16,384 reasoning-only output tokens, with no application; they provide no model-quality result.
+- Candidate, diff, staged evidence, and commit secret scans found no leaks.
+
+Evidence: docs/evidence/2026-10-02-validation-guards.json, docs/evidence/2026-10-02-github-official-r1.json, and docs/evidence/2026-10-02-paired-official-r1.json. Roadmap 4.35 prioritizes test classification, prerequisite state construction, and state-transition invariants before another paid full comparison.

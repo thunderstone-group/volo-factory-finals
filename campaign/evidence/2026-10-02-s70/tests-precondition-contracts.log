@@ -1,0 +1,24 @@
+test_canonical_requirement_and_schema_bounds (tests_oneshot.test_source_contracts.ContractIntegrationCase) ... ok
+test_contract_only_recheck_never_accidentally_runs_all_browser_tests (tests_oneshot.test_source_contracts.ContractIntegrationCase) ... ok
+test_fixture_errors_do_not_count_as_repair_gains (tests_oneshot.test_source_contracts.ContractIntegrationCase) ... ok
+test_unavailable_diagnostics_preserve_the_browser_result (tests_oneshot.test_source_contracts.ContractIntegrationCase) ... ok
+test_ambiguous_bindings_and_paths_outside_app_are_errors (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_bad_precondition_is_unjudged_not_a_product_failure (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_cross_namespace_constants_are_not_mistaken_for_application_bugs (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_missing_runtime_alias_reports_the_actual_declared_path (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_mocking_the_subject_or_missing_context_is_unjudged (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_namespace_assignments_use_actual_helpers_values_and_receiver (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_nested_object_methods_and_direct_namespace_calls_are_instrumented (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_precondition_calls_and_assertions_cannot_certify_the_check (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_pure_functions_need_no_external_setup (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_qualified_object_method_keeps_its_real_receiver_and_helpers (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_qualified_owner_does_not_select_another_objects_same_named_method (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_rebinds_exact_changed_source_and_links_actual_dependencies (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_two_stage_review_executes_feedback_and_keeps_app_immutable (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_unqualified_duplicate_namespace_members_are_not_guessed (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+test_window_qualified_owner_extensions_use_the_actual_assignment (tests_oneshot.test_source_contracts.SourceContractCase) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 3.257s
+
+OK

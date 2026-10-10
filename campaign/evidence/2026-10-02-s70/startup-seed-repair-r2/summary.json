@@ -1,0 +1,101 @@
+{
+  "finish": "stop",
+  "skipped_hunks": [],
+  "existing_records_preserved": true,
+  "added": {
+    "users": 0,
+    "organizations": 0,
+    "orgMembers": 0,
+    "teams": 0,
+    "teamMembers": 0,
+    "repositories": 0,
+    "grants": 0,
+    "branches": 0,
+    "commits": 0,
+    "files": 0,
+    "labels": 0,
+    "milestones": 0,
+    "issues": 0,
+    "comments": 0,
+    "reactions": 0,
+    "activities": 0,
+    "pulls": 1,
+    "reviews": 0,
+    "reviewComments": 0,
+    "reviewerRequests": 0,
+    "checks": 1,
+    "protectionRules": 0
+  },
+  "results": [
+    {
+      "id": "REQ-6-5#contract-2",
+      "status": "error",
+      "calls": {
+        "mergeBlocked": 0
+      },
+      "assertions": 4,
+      "phase": "precondition",
+      "error_name": "AssertionError",
+      "message": "Expected values to be strictly equal:\n\n4 !== 3\n",
+      "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n4 !== 3\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:6:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:75:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+    }
+  ],
+  "operator_controls": [
+    {
+      "id": "REQ-6-5#contract-81",
+      "status": "fail",
+      "calls": {
+        "roleFor": 20,
+        "orgFor": 8,
+        "byId": 10,
+        "st": 39,
+        "orgMemberOf": 8,
+        "directRole": 15,
+        "teamIdsFor": 6
+      },
+      "assertions": 1,
+      "phase": "check",
+      "error_name": "AssertionError",
+      "message": "The actual startup accounts have no Maintain permission on any repository",
+      "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: The actual startup accounts have no Maintain permission on any repository\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:3:92\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+    },
+    {
+      "id": "REQ-6-5#contract-82",
+      "status": "pass",
+      "calls": {
+        "mergeBlocked": 2,
+        "protectionFor": 2,
+        "st": 9,
+        "hasRequestChanges": 2,
+        "approvalCount": 2,
+        "branchHead": 2
+      },
+      "assertions": 3
+    }
+  ],
+  "seconds": 122.6,
+  "usage": {
+    "calls": 1,
+    "draft_call_limit": 1,
+    "repair_call_limit": 0,
+    "completed_calls": 1,
+    "failed_calls": 0,
+    "failure_limit": 1,
+    "refused_calls": 0,
+    "known_prompt_tokens": 101489,
+    "prompt_tokens": 101489,
+    "known_completion_tokens": 25624,
+    "completion_tokens": 25624,
+    "unknown_usage_calls": [],
+    "estimated_cost_cny": 0.203985,
+    "estimated_repair_cost_cny": 0,
+    "repair_cny_limit": 10.0,
+    "side_calls": 0,
+    "fallback_model": null,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 1
+    },
+    "billing_status": "tokens_reported_cost_not_estimated"
+  },
+  "scope": "Seed-only controlled repair. Operator controls and independent browser judges were not supplied to the model."
+}

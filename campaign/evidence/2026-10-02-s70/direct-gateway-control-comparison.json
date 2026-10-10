@@ -1,0 +1,33 @@
+{
+  "same_request_sha256_calls": [],
+  "default_transport_failed_calls": 5,
+  "physical_interface_transport": {
+    "interface": "en0",
+    "resolved_ip": "189.1.235.72",
+    "request_sha256": "cbfc1c8abca93f22717fed256d9893f939fe71247e0742f662f752affff983e4",
+    "request_bytes": 466192,
+    "http_status": 200,
+    "curl_exit": 0,
+    "seconds": 420.699,
+    "received_bytes": 19164108
+  },
+  "physical_interface_outcome": {
+    "completed_calls": 1,
+    "failed_calls": 0,
+    "github_fixed_checks": {
+      "pass": 108,
+      "fail": 3
+    }
+  },
+  "second_physical_interface_control": {
+    "interface": "en0",
+    "resolved_ip": "189.1.235.72",
+    "request_sha256": "b9a4a77048bfb5d01737febf852539175d3aed4d35acd453f9b49dca206ecc38",
+    "request_bytes": 405354,
+    "http_status": 200,
+    "curl_exit": 0,
+    "seconds": 248.552,
+    "received_bytes": 17702491
+  },
+  "scope": "Per-process physical-interface control, no global network settings or agent-package changes; route and HTTP stack both differ."
+}

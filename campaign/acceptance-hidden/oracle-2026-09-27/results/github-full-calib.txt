@@ -1,0 +1,21 @@
+github-7-95ec6880ee7f            hidden   7  oracle  24/100  {'pass': 24, 'timedOut': 44, 'failed': 32}
+github-11-7e3f4dba7736           hidden  11  oracle  25/100  {'pass': 25, 'timedOut': 74, 'failed': 1}
+github-13-5450c3c63fe0           hidden  13  oracle  29/98  {'pass': 29, 'timedOut': 68, 'failed': 1}
+github-14-d58e50066c0a           hidden  14  oracle  23/96  {'pass': 23, 'timedOut': 70, 'failed': 3}
+github-16-e53edcaca334           hidden  16  oracle  30/100  {'timedOut': 70, 'pass': 30}
+github-19-d34e9b03b172           hidden  19  oracle  68/100  {'pass': 68, 'timedOut': 31, 'failed': 1}
+github-20-3f31a036e933           hidden  20  oracle  64/100  {'pass': 64, 'timedOut': 32, 'failed': 4}
+github-21-559002e4dade           hidden  21  oracle  72/100  {'pass': 72, 'failed': 3, 'timedOut': 25}
+github-21-5b0946d978cf           hidden  21  oracle  77/100  {'pass': 77, 'timedOut': 18, 'failed': 5}
+github-21-5cbff8ffc75c           hidden  21  oracle  69/100  {'pass': 69, 'timedOut': 30, 'failed': 1}
+github-22-564563986f7f           hidden  22  oracle  77/100  {'pass': 77, 'failed': 8, 'timedOut': 15}
+github-22-6dd494f9556b           hidden  22  oracle  78/100  {'pass': 78, 'timedOut': 19, 'failed': 3}
+github-23-b95608a40de6           hidden  23  oracle  73/100  {'pass': 73, 'timedOut': 27}
+github-24-1f0760580523           hidden  24  oracle  64/100  {'pass': 64, 'timedOut': 33, 'failed': 3}
+github-24-433d9936fb07           hidden  24  oracle  73/100  {'pass': 73, 'timedOut': 22, 'failed': 5}
+github-24-4dc11acce4d1           hidden  24  oracle  76/100  {'pass': 76, 'timedOut': 18, 'failed': 6}
+github-24-99a2bc046345           hidden  24  oracle  75/100  {'pass': 75, 'timedOut': 20, 'failed': 5}
+github-25-4310823c83f3           hidden  25  oracle  75/100  {'pass': 75, 'timedOut': 24, 'failed': 1}
+spearman 0.724 MAE 40.1 mean diff (oracle-hidden) 40.1
+github-11-7e3f4dba7736 agreement 86 / 100 hidden-pass&oracle-pass 11 hidden-pass&oracle-fail 0 hidden-fail&ora
+github-13-5450c3c63fe0 agreement 81 / 100 hidden-pass&oracle-pass 12 hidden-pass&oracle-fail 0 hidden-fail&ora

@@ -1,0 +1,123 @@
+{
+  "kind": "testgen",
+  "scenarios": [
+    {
+      "id": "REQ-4-2-1#audit-1",
+      "name": "dependent formulas recalculate after a row insertion",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-4-2-1#audit-2",
+      "name": "formulas in another worksheet stay unchanged when source values change",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-1-2#audit-1",
+      "name": "copying a formula downward adjusts relative row references",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-4-1-1#audit-1",
+      "name": "aggregates ignore empty and non-numeric cells",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-4-2-2#audit-1",
+      "name": "an indirect circular reference shows #REF! and can be fixed",
+      "file": "t04-REQ-4.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.3
+    },
+    {
+      "id": "REQ-5-1-1#audit-1",
+      "name": "a filter still hides its nonmatching row after the same range is sorted",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.6
+    },
+    {
+      "id": "REQ-5-1-2#audit-1",
+      "name": "the \"Is empty\" condition hides every row whose field has a value",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    },
+    {
+      "id": "REQ-5-1-2#audit-2",
+      "name": "pivot summarization still includes rows hidden by a filter",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.7
+    },
+    {
+      "id": "REQ-5-2-1#audit-1",
+      "name": "saving a modified numeric rule makes the new limits effective immediately",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "fail",
+      "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"50\"\nReceived: \"40\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div role=\"gridcell\" aria-label=\"B2\" data-coord=\"B2\" aria-selected=\"true\" class=\"cell selected\" data-action=\"select-cell\">…</div>\n      - unexpected value \"40\"\n\n\n  18 |\n  19 | async function expectCell(page, coord, value) {\n> 20 |   await expect(cell(page, coord)).toHaveText(value);\n     |                                   ^\n  21 | }\n  22 |\n  23 | async function setCell(page, coord, valu",
+      "source": "test('REQ-5-2-1#audit-1: saving a modified numeric rule makes the new limits effective immediately', async ({ page }) => {\n  await newBlankWorkbook(page);\n  await setCell(page, 'B2', '40');\n  await saveNumberRule(page, 'B2', 'B3', '0', '100');\n\n  await selectRange(page, 'B2', 'B3');\n  const dlg = await openValidationDialog(page);\n  await expect(dlg.getByRole('textbox', { name: 'Minimum', exact: true })).toHaveValue('0');\n  await expect(dlg.getByRole('textbox', { name: 'Maximum', exact: true })).toHaveValue('100');\n  await dlg.getByRole('textbox', { name: 'Maximum', exact: true }).fill('50');\n  await dlg.getByRole('button', { name: 'Save', exact: true }).click();\n  await expect(dlg).toBeHidden();\n\n  // successful save leaves the existing cell value untouched\n  await expectCell(page, 'B2', '40');\n\n  // the new maximum is effective immediately: 60 is rejected, 50 is the accepted boundary\n  await setCell(page, 'B2', '60');\n  await expectCell(page, 'B2', '40');\n  await setCell(page, 'B2', '50');\n  await expectCell(page, 'B2', '50');\n});",
+      "page_snapshot": "# Page snapshot\n\n```yaml\n- generic [active] [ref=e1]:\n  - generic [ref=e2]:\n    - banner [ref=e3]:\n      - button \"Sheets\" [ref=e4] [cursor=pointer]:\n        - img [ref=e5]\n      - link \"Sheets\" [ref=e8] [cursor=pointer]:\n        - /url: \"#/\"\n      - navigation \"Main navigation\" [ref=e9]:\n        - link \"Home\" [ref=e10] [cursor=pointer]:\n          - /url: \"#/\"\n      - generic [ref=e12]: Guest\n    - generic [ref=e13]:\n      - main [ref=e14]:\n        - generic [ref=e15]:\n          - heading \"Untitled workbook\" [level=1] [ref=e16]\n          - generic [ref=e17]: \"Last updated: Oct 2, 2026, 2:28 AM\"\n          - button \"Rename workbook\" [ref=e18] [cursor=pointer]\n        - generic [ref=e19]:\n          - button \"Undo\" [ref=e20] [cursor=pointer]\n          - button \"Redo\" [disabled] [ref=e21] [cursor=pointer]\n          - button \"Export CSV\" [ref=e22] [cursor=pointer]\n          - button \"Data\" [ref=e23] [cursor=pointer]\n          - generic [ref=e24]:\n            - generic [ref=e25]: Formula bar\n            - textbox \"Formula bar\" [ref=e26]: \"40\"\n        - tablist \"Worksheets\" [ref=e27]:\n          - generic [ref=e28]:\n            - tab \"Sheet1\" [selected] [ref=e29] [cursor=pointer]\n            - button \"Worksheet options for Sheet1\" [ref=e30] [cursor=pointer]: ⋯\n          - button \"Add worksheet\" [ref=e31] [cursor=pointer]\n        - grid \"Worksheet grid\" [ref=e33]:\n          - row \"A B C D E F G H\" [ref=e34]:\n            - columnheader [ref=e35]\n            - columnheader \"A\" [ref=e36]\n\n... page content omitted ...\nref=e150]\n            - gridcell \"D11\" [ref=e151]\n            - gridcell \"E11\" [ref=e152]\n            - gridcell \"F11\" [ref=e153]\n            - gridcell \"G11\" [ref=e154]\n            - gridcell \"H11\" [ref=e155]\n          - row \"12 A12 B12 C12 D12 E12 F12 G12 H12\" [ref=e156]:\n            - rowheader \"12\" [ref=e157]\n            - gridcell \"A12\" [ref=e158]\n            - gridcell \"B12\" [ref=e159]\n            - gridcell \"C12\" [ref=e160]\n            - gridcell \"D12\" [ref=e161]\n            - gridcell \"E12\" [ref=e162]\n            - gridcell \"F12\" [ref=e163]\n            - gridcell \"G12\" [ref=e164]\n            - gridcell \"H12\" [ref=e165]\n      - complementary [ref=e166]:\n        - button \"Navigate\" [ref=e167] [cursor=pointer]\n    - contentinfo [ref=e168]: Footer Header · Sidebar · Main content · Footer\n  - status [ref=e170]:\n    - generic [ref=e171]: \"Please select one of the following values:\"\n```",
+      "at": "t05-REQ-5.spec.cjs:20",
+      "seconds": 5.5
+    },
+    {
+      "id": "REQ-5-3-1#audit-1",
+      "name": "COUNT shows 0 for a row/column combination with no record",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.5
+    },
+    {
+      "id": "REQ-5-3-1#audit-2",
+      "name": "COUNT over a text value field counts records without failing",
+      "file": "t05-REQ-5.spec.cjs",
+      "steps": [],
+      "status": "pass",
+      "observation": "",
+      "source": "",
+      "seconds": 0.4
+    }
+  ],
+  "invariants": [],
+  "coverage": {
+    "total": 11,
+    "parsed": 11
+  },
+  "seconds": 11.6
+}

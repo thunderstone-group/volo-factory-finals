@@ -1,0 +1,11 @@
+{
+  "source_official_run": "4666c04f629e",
+  "changed_business_files": [],
+  "changed_shell_file": "frontend/public/index.html",
+  "change": "always-on route observer panel; no application state writes, no test detection, no routing behavior change",
+  "quality_scores_not_comparable": true,
+  "purpose": "Identify the actual pathname/hash at organizer Stage3 failure screenshots",
+  "package": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/official-github-route-diagnostic/route-diagnostic-app.zip",
+  "sha256": "0c2bb51b7be90e4787fa786a9d9f6db04f154e2fb9e39f647990711495771d85",
+  "bytes": 40442
+}

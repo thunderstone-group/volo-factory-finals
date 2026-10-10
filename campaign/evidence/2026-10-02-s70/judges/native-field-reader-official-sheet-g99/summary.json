@@ -1,0 +1,13 @@
+{
+  "app": "native-field-reader-official-sheet",
+  "judge": "g99",
+  "counts": {
+    "pass": 87,
+    "fail": 13
+  },
+  "seconds": 91.4,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

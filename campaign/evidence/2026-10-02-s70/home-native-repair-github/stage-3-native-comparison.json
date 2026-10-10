@@ -1,0 +1,8 @@
+[
+  {
+    "title": "REQ-6-2-2-compare-branches.spec.ts REQ-6-2-2: Compare Branches Before Opening a Pull Request - Scenario 1",
+    "before": false,
+    "after": true,
+    "error": null
+  }
+]

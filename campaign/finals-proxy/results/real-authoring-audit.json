@@ -1,0 +1,14 @@
+{
+  "github": {
+    "scenario_count": 30,
+    "spec_count": 30,
+    "exact_titles_and_step_comments": true,
+    "all_seed_provisioning_owned_by_application": true
+  },
+  "sheet": {
+    "scenario_count": 30,
+    "spec_count": 30,
+    "exact_titles_and_step_comments": true,
+    "all_seed_provisioning_owned_by_application": true
+  }
+}

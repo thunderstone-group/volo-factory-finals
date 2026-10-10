@@ -1,0 +1,13 @@
+{
+  "task": "sheet",
+  "judge": "g99",
+  "counts": {
+    "fail": 8,
+    "error": 97,
+    "pass": 1
+  },
+  "seconds": 549.7,
+  "unavailable": null,
+  "model_calls": 0,
+  "final_delivery": false
+}

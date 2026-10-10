@@ -1,0 +1,15 @@
+Generated acceptance suites can pass while missing explicit requirement behavior, and interrupted drafts can still spend money generating tests for an application that never arrives.
+
+This candidate adds a requirements-only coverage audit that appends bounded, source-quoted checks without rewriting the original tests. It waits for a complete draft before writing tests, serializes model calls within a task, and gives repairs bounded Playwright failure-page context. It also records actual malformed stream frames and uses the published Vision model price instead of the conservative unknown-model estimate.
+
+Validation:
+- 245 one-shot tests: 242 passed, 3 optional browser-readiness checks skipped. The relevant report and real-browser tests passed.
+- 226 legacy tests executed, with 12 optional integrations skipped; no legacy code changed.
+- Four real pilot calls produced 18 grounded additions after validation. Frozen-app replay found two source-confirmed defect classes; navigation assumptions in two other tests prompted stricter instructions.
+- The full Kimi candidate was rejected by fixed independent judges (29 / 25 versus the frozen baseline's 90 / 88), at materially higher estimated cost.
+- Captured a real truncated SSE frame and added a regression. A same-request curl/Python comparison later completed on both clients, so no alternate transport dependency was added.
+- Secret scans of the candidate and new commits found no leaks.
+
+Draft status: the frozen baseline evaluation pair was cancelled after repeated incomplete streams. There is no new official score or generalization claim. Exact-package independent Vision trials on both tasks are running; promotion requires independent local checks and an official paired result.
+
+Evidence and continuation state are recorded in `docs/evidence/2026-10-02-coverage-pilot.json` and `docs/SESSION_HANDOFF.md`. Coverage auditing is enabled in this isolated candidate and has not been merged into main.

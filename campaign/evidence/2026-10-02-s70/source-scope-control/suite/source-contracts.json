@@ -1,0 +1,48 @@
+{
+  "probes": [
+    {
+      "id": "REQ-2-2-1#contract-1",
+      "requirement": "REQ-2-2-1",
+      "explanation": "REQ-2-2-1 requires that after a row insert/delete the grid, filter views and validation stay consistent and that 'filters continue to apply to the original data region' (REQ-5-1-2 defines a filter condition as constraining one source column). In this app a filter condition is stored under the absolute column index it constrains (rowHidden tests displayed(sheet, r, Number(key)); 'Create filter'/'Apply' write String(columnIndex)), but shiftCells re-keys those condition keys with the position on the axis being shifted, so a *row* operation renumbers (and on deletion can drop) *columns*. Inserting one row above row 2 therefore moves the 'Status contains Open' condition from column C to column D, which is empty: the records that match (East/Open, South/Open) are hidden too, and on row deletion a key equal to a deleted row index is `continue`d away entirely. Fixture uses the actual seeded workbook shape (Q3 Sales / Sheet1: headers Region,Sales,Status in row 1 and records East/1200/Open, North/800/Closed, South/700/Open) with the filter region A1:C6 that the app's own 'Create filter' action produces from that selection, plus one status condition; the preconditions show the untouched filter hiding exactly the Closed record. Cells are moved with shiftCells itself (no fixture pre-shift), and rowHidden is the app's real predicate used by grid rendering.",
+      "functions": [
+        {
+          "file": "frontend/public/app.js",
+          "name": "shiftCells",
+          "kind": "function",
+          "alias": "shiftCells"
+        },
+        {
+          "file": "frontend/public/app.js",
+          "name": "rowHidden",
+          "kind": "function",
+          "alias": "rowHidden"
+        }
+      ],
+      "initializers": [],
+      "subject": "shiftCells",
+      "setup": "globalThis.ARC = { state: { data: { workbooks: [] } } };\nglobalThis.SHEET = {\n  id: 'q3-s1', name: 'Sheet1', rowCount: 20, colCount: 12,\n  seedRange: { r1: 0, c1: 0, r2: 5, c2: 2 },\n  cells: {\n    A1: 'Region', B1: 'Sales', C1: 'Status',\n    A2: 'East', B2: '1200', C2: 'Open',\n    A3: 'North', B3: '800', C3: 'Closed',\n    A4: 'South', B4: '700', C4: 'Open'\n  },\n  sel: { r1: 0, c1: 0, r2: 0, c2: 0 },\n  rules: [],\n  filter: { r1: 0, c1: 0, r2: 5, c2: 2, conds: { '2': { type: 'condition', op: 'contains', value: 'Open' } } },\n  pivot: null\n};\nglobalThis.WB = { id: 'wb-q3sales', name: 'Q3 Sales', updatedAt: '2024-09-30 09:15', activeSheet: 'q3-s1', sheets: [SHEET] };\nARC.state.data.workbooks = [WB];",
+      "precondition": "assert.strictEqual(rowHidden(SHEET, 1), false);\nassert.strictEqual(rowHidden(SHEET, 2), true);\nassert.strictEqual(rowHidden(SHEET, 3), false);",
+      "check": "shiftCells(SHEET, 'row', 1, 1, false);\nassert.strictEqual(SHEET.cells.A3, 'East');\nassert.strictEqual(SHEET.cells.C3, 'Open');\nassert.strictEqual(SHEET.cells.A5, 'South');\nassert.strictEqual(rowHidden(SHEET, 2), false);\nassert.strictEqual(rowHidden(SHEET, 3), true);\nassert.strictEqual(rowHidden(SHEET, 4), false);",
+      "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n"
+    },
+    {
+      "id": "REQ-4-1-2#contract-1",
+      "requirement": "REQ-4-1-2",
+      "explanation": "REQ-4-1-2 (with REQ-3-2-1) requires that if a copy offset moves a relative reference outside the worksheet bounds, the target formula bar displays =#REF!. offsetFormula is exactly the transform the app's paste writer applies to every moved cell (ARC.onPaste maps offsetFormula over the copied raw block, and the stored string is what the formula bar shows), and it only emits #REF! for references pushed to a negative row/column: an offset that goes past the last column/row leaves the text untouched, so the pasted cell's formula bar shows a reference such as =G1 while the app's own evaluator (evaluateCell bounds check against sheet.rowCount/colCount) reports #REF! for that position - the bar/grid inconsistency the requirement forbids, and it does not use the app's own un-preservable-reference token '#REF!' that adjustRefs produces and evalFormula recognises. Fixture is a default blank worksheet as created by 'New blank workbook' (blankSheet uses DEFAULT_COLS = 6 and DEFAULT_ROWS = 20, i.e. columns A-F, rows 1-20), so the copy of A1/B1 by one column (F1 -> G1) and the copy of A20 down by one row are outside this worksheet. Preconditions are purely in-bounds and absolute-reference controls, so they document that the transform is otherwise correct and that the bounds are the source's own defaults.",
+      "functions": [
+        {
+          "file": "frontend/public/app.js",
+          "name": "offsetFormula",
+          "kind": "function",
+          "alias": "offsetFormula"
+        }
+      ],
+      "initializers": [],
+      "subject": "offsetFormula",
+      "setup": "globalThis.SHEET = {\n  id: 'blank-1', name: 'Sheet1', rowCount: 20, colCount: 6,\n  cells: {}, sel: { r1: 0, c1: 0, r2: 0, c2: 0 }, rules: [], filter: null, pivot: null\n};",
+      "precondition": "assert.strictEqual(SHEET.colCount, 6);\nassert.strictEqual(SHEET.rowCount, 20);\nassert.strictEqual(offsetFormula('=C1', 0, 1), '=D1');\nassert.strictEqual(offsetFormula('=C1', 0, -1), '=B1');\nassert.strictEqual(offsetFormula('=A20', -1, 0), '=A19');\nassert.strictEqual(offsetFormula('=$F$1', 0, 1), '=$F$1');",
+      "check": "const right = offsetFormula('=F1', 0, 1);\nconst down = offsetFormula('=A20', 1, 0);\nassert.strictEqual(right, '=#REF!');\nassert.strictEqual(down, '=#REF!');",
+      "requirement_text": "When a formula cell is copied through REQ-3-2-1 to another location in the same worksheet, relative row and column references in the target formula bar change according to the target offset while absolute references remain unchanged; the source formula and result remain unchanged, the target grid displays the result based on the new references, and the state persists after refresh. If the offset moves a relative reference outside the worksheet bounds, the target formula bar displays =#REF! and the grid displays #REF!.\n"
+    }
+  ]
+}

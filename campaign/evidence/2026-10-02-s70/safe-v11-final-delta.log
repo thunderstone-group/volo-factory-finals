@@ -1,0 +1,19 @@
+test_controls_retain_their_scopes_and_optional_layout_is_not_injected (tests_oneshot.test_scaffold_duplicates.ScaffoldDuplicatesCase) ... ok
+test_menu_item_can_replace_its_popover_without_detaching_the_new_controls (tests_oneshot.test_scaffold_controls.NativeControlTests) ... ok
+test_native_controls_do_not_trigger_their_record_action (tests_oneshot.test_scaffold_controls.NativeControlTests) ... ok
+test_nested_popover_host_inherits_record_id_and_respects_explicit_overrides (tests_oneshot.test_scaffold_controls.NativeControlTests) ... ok
+test_sidebar_merges_identical_destinations_without_losing_distinct_entries (tests_oneshot.test_scaffold_controls.NativeControlTests) ... ok
+test_a_dropped_location_comes_back_from_the_rules (tests_oneshot.test_scenario_translate.CoverageCase) ... ok
+test_aria_states_belong_to_roles_that_support_them (tests_oneshot.test_scenario_translate.CoverageCase) ... ok
+test_the_scenario_names_must_all_be_used (tests_oneshot.test_scenario_translate.CoverageCase) ... ok
+test_no_key_failed_call_and_broken_reply (tests_oneshot.test_scenario_translate.TranslateCase) ... ok
+test_one_call_for_all_unparsed_scenarios_then_the_cache (tests_oneshot.test_scenario_translate.TranslateCase) ... ok
+test_run_merges_accepted_translations_and_can_be_switched_off (tests_oneshot.test_scenario_translate.TranslateCase) ... ok
+test_a_valid_translation_becomes_executor_ops (tests_oneshot.test_scenario_translate.ValidateCase) ... ok
+test_a_value_typed_earlier_may_be_named_later_and_open_is_added_first (tests_oneshot.test_scenario_translate.ValidateCase) ... ok
+test_invented_names_unknown_steps_and_missing_checks_are_rejected (tests_oneshot.test_scenario_translate.ValidateCase) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 2.792s
+
+OK

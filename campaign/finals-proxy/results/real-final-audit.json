@@ -1,0 +1,101 @@
+{
+  "old_frozen_manifests_unchanged": {
+    "github": "569f6719e9eed44a28365ef64c036c75d0405df2010cdb1e34f8f0093a92e83b",
+    "sheet": "1278fbd112df8a197a60558401b9c1ad70cd1d7fe04c0722ad2e6cf538541d99",
+    "github-prose": "1db2869b83ce7a28c6ad0edbd427ce142211dfed9ce31352ad3c209d9d083e79",
+    "sheet-prose": "f0f56de4e8e0dc3a6c4d82c1fcaa7ea8463c6986218e58466d4033060678a5f9"
+  },
+  "old_reference_apps_unchanged": {
+    "github": "6a6363710cfd20068a93e8e9ca5208d437759f82bdea9a2ab92a2b9af884a318",
+    "sheet": "d95a204e528af77fd8ee46bd901997817546123cc24c120d295d9399d053667d"
+  },
+  "tasks": {
+    "github-real": {
+      "requirements_sha256": "f1f73b4190831cef37669f9e919edde50cd0bc7ad02b888e6dab617094921754",
+      "helper_sha256": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+      "scenario_count": 30,
+      "freeze_sha256": "86cd07417db35c3aadfb2442e7d4d40f1170b9938f3dde54fa441f47943d4757",
+      "baseline_application_unchanged": true,
+      "baseline_passed": 3,
+      "reference_application_sha256": "0142a24bf030aaf38c380fd413fc78424ec8f629f0aa17fef53d7586e4a77e5b",
+      "proxy_runs": [
+        {
+          "passed": 30,
+          "total": 30,
+          "wall_seconds": 64.332
+        },
+        {
+          "passed": 30,
+          "total": 30,
+          "wall_seconds": 60.033
+        }
+      ],
+      "regression": {
+        "v6-fixed-independent": {
+          "baseline": {
+            "pass": 107,
+            "fail": 4
+          },
+          "reference": {
+            "pass": 107,
+            "fail": 4
+          },
+          "seconds": 211.8,
+          "previously_passing_cases_lost": [],
+          "newly_passing_cases": []
+        }
+      }
+    },
+    "sheet-real": {
+      "requirements_sha256": "7a2ee0a9d81317bcc3f92fd627effae0c510412b891ab6c79896c4517b139962",
+      "helper_sha256": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+      "scenario_count": 30,
+      "freeze_sha256": "286434e4199e8eae707dabcab992e57dbf9669e33ca4e153eb1f30b46c2ed8b4",
+      "baseline_application_unchanged": true,
+      "baseline_passed": 0,
+      "reference_application_sha256": "ff74377113a89cb485bb77b9ec36a81cb8cad4132e655dcf16ab6ba40a3401cf",
+      "proxy_runs": [
+        {
+          "passed": 30,
+          "total": 30,
+          "wall_seconds": 73.648
+        },
+        {
+          "passed": 30,
+          "total": 30,
+          "wall_seconds": 74.183
+        }
+      ],
+      "regression": {
+        "g99": {
+          "baseline": {
+            "pass": 66,
+            "fail": 9,
+            "error": 26
+          },
+          "reference": {
+            "pass": 66,
+            "fail": 9,
+            "error": 26
+          },
+          "seconds": 413.7,
+          "previously_passing_cases_lost": [],
+          "newly_passing_cases": []
+        },
+        "cov99n-arm": {
+          "baseline": {
+            "pass": 96,
+            "fail": 4
+          },
+          "reference": {
+            "pass": 96,
+            "fail": 4
+          },
+          "seconds": 252.7,
+          "previously_passing_cases_lost": [],
+          "newly_passing_cases": []
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+cov99n-arm {"counts": {"pass": 96, "fail": 4}, "seconds": 67.2, "unavailable": null, "model_calls": 0}
+g99 {"counts": {"pass": 66, "fail": 9, "error": 26}, "seconds": 204.0, "unavailable": null, "model_calls": 0}

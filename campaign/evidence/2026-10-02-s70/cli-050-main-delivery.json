@@ -1,0 +1,24 @@
+{
+  "version": "0.5.0",
+  "main_sha": "4d3eefcac692e5d14ecc6a1393cb8d6b130b00f5",
+  "merged_pull_requests": [
+    9,
+    11,
+    12
+  ],
+  "test_count": 132,
+  "tests_passed": true,
+  "installed_from": "git+https://github.com/thunderstone-group/arcbench-cli.git@main",
+  "doctor_ok": true,
+  "official_registration_read": true,
+  "selftest_result_id": "2c6f10f5-6b47-4d1a-bb2e-635286017ce6",
+  "selftest_result": {
+    "status": "failed",
+    "passed": 28,
+    "total": 41
+  },
+  "selftest_counts_on_leaderboard": false,
+  "local_worktrees": "~/projects/arcbench-cli  4d3eefc [main]",
+  "main_remote_divergence": "0\t0",
+  "fleet_scan_violations": 0
+}

@@ -1,0 +1,9 @@
+{
+  "status": "failed",
+  "error": "model stream failed (StreamError)",
+  "model": "deepseek-v4-flash-vision-exp",
+  "max_tokens": 16384,
+  "seconds": 376.1,
+  "prompt_chars": 6011,
+  "estimated_cost_cny": 0.022503
+}

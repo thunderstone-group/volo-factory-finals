@@ -1,0 +1,12 @@
+{
+  "task": "github",
+  "judge": "v6-fixed",
+  "counts": {
+    "pass": 32,
+    "fail": 53,
+    "error": 31
+  },
+  "seconds": 363.5,
+  "unavailable": null,
+  "model_calls": 0
+}

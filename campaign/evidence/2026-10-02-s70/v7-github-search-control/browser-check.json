@@ -1,0 +1,6 @@
+{
+  "results": [
+    "matching file and reload retain the actual matched text",
+    "absent query retains its value and empty results on repeat"
+  ]
+}

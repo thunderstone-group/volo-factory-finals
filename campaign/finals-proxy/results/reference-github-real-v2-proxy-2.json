@@ -1,0 +1,309 @@
+{
+  "task": "github-real",
+  "app_dir": "~/projects/arcbench-campaign/finals-proxy/reference/github-real-app",
+  "app_sha256": "ddbe06b7ca24497d0eb0e47361328c52607387fbc109a06490634da70c659dcc",
+  "frozen_manifest_sha256": "83356a686697d29c9d12649bc37e6d0b25ef9eea13eebf121ed2740cea290133",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 1",
+      "file": "01-REQ-1-1-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2746,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 2",
+      "file": "02-REQ-1-1-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1861,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 3",
+      "file": "03-REQ-1-1-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1820,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1",
+      "file": "04-REQ-1-1-2-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1613,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 2",
+      "file": "05-REQ-1-1-2-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1579,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 3",
+      "file": "06-REQ-1-1-2-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1600,
+      "error": null
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 1",
+      "file": "07-REQ-1-4-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1803,
+      "error": null
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 2",
+      "file": "08-REQ-1-4-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3319,
+      "error": null
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 3",
+      "file": "09-REQ-1-4-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3382,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 1",
+      "file": "10-REQ-2-1-2-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1957,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 2",
+      "file": "11-REQ-2-1-2-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1833,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 3",
+      "file": "12-REQ-2-1-2-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1842,
+      "error": null
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 1",
+      "file": "13-REQ-2-4-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1833,
+      "error": null
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 2",
+      "file": "14-REQ-2-4-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1953,
+      "error": null
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 3",
+      "file": "15-REQ-2-4-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1717,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 1",
+      "file": "16-REQ-3-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1490,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 2",
+      "file": "17-REQ-3-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1422,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 3",
+      "file": "18-REQ-3-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1428,
+      "error": null
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 1",
+      "file": "19-REQ-3-5-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2119,
+      "error": null
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 2",
+      "file": "20-REQ-3-5-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1832,
+      "error": null
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 3",
+      "file": "21-REQ-3-5-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1979,
+      "error": null
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 1",
+      "file": "22-REQ-4-3-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1592,
+      "error": null
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 2",
+      "file": "23-REQ-4-3-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1626,
+      "error": null
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 3",
+      "file": "24-REQ-4-3-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1778,
+      "error": null
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 1",
+      "file": "25-REQ-4-5-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2324,
+      "error": null
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 2",
+      "file": "26-REQ-4-5-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1737,
+      "error": null
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 3",
+      "file": "27-REQ-4-5-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1920,
+      "error": null
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 1",
+      "file": "28-REQ-5-5-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1953,
+      "error": null
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 2",
+      "file": "29-REQ-5-5-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3934,
+      "error": null
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 3",
+      "file": "30-REQ-5-5-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 3753,
+      "error": null
+    }
+  ],
+  "requirements_file": "github-real/requirements/requirements.yaml",
+  "requirements_sha256": "f1f73b4190831cef37669f9e919edde50cd0bc7ad02b888e6dab617094921754",
+  "test_task": "github-real",
+  "test_source_manifest_sha256": "83356a686697d29c9d12649bc37e6d0b25ef9eea13eebf121ed2740cea290133",
+  "test_files_sha256": {
+    "tests/01-REQ-1-1-1-scenario-1.spec.ts": "6c4ea11ed9f5ff71598218dddc212cfe560d26f4d7091124e98a484accb889b6",
+    "tests/02-REQ-1-1-1-scenario-2.spec.ts": "b24fea6e800da2fc3b5b72b117be16a4d3f714632f142922bbcdb098733ac41e",
+    "tests/03-REQ-1-1-1-scenario-3.spec.ts": "cf4465ac6d20a7eb3517a9104a7597b6b8a50395f4457552256ce4c96ceac8f6",
+    "tests/04-REQ-1-1-2-scenario-1.spec.ts": "aa5da7969f2cf7af0d21b055abc708e398995744f66a9956c5e9091dd591466a",
+    "tests/05-REQ-1-1-2-scenario-2.spec.ts": "e3a101fa8359d4729039d3f0cd18ceb3ae81c47b229c3e32ab4511c553a4ba32",
+    "tests/06-REQ-1-1-2-scenario-3.spec.ts": "0047fc4c2c788119087bbdd4fab386b02abc66db42dd5a1500069fa5fdd69c6a",
+    "tests/07-REQ-1-4-scenario-1.spec.ts": "817ec035d73718f255724810756c7232b6c7f58778f1ff599c7d842ab5b61a1e",
+    "tests/08-REQ-1-4-scenario-2.spec.ts": "15d423e2e091d64d34c3b993299568b6e2575729ce653c9d80d676673a24f133",
+    "tests/09-REQ-1-4-scenario-3.spec.ts": "700dd05ccc52ecff92ce985fd090492be8b94951e8761f31f37269717d3e43a8",
+    "tests/10-REQ-2-1-2-scenario-1.spec.ts": "b384faedf875054dc18978280bdad042d06283659676c67e2183c13aa8855200",
+    "tests/11-REQ-2-1-2-scenario-2.spec.ts": "9c48e8f0a86f722b8623ea65bb5ea982bbc309ce34fe18173f33dae0e921d6a4",
+    "tests/12-REQ-2-1-2-scenario-3.spec.ts": "e74bcf65fb07095f9376e6ea7334c235b7ee0ea5a4ebc7b49878cf1c52949e02",
+    "tests/13-REQ-2-4-scenario-1.spec.ts": "cf896f58160e605ce737abb2260f1b39adf8a95f1055d9f9d190112ae703bf14",
+    "tests/14-REQ-2-4-scenario-2.spec.ts": "2b91540eac8ec7a9e07a8a1d18af5b6303b12777f5f0f1d8f33f3c37db5a7b76",
+    "tests/15-REQ-2-4-scenario-3.spec.ts": "13532d315411024e85e297c6901fc2e9f14a54bfc6305acaa7299203d926e04a",
+    "tests/16-REQ-3-1-scenario-1.spec.ts": "88c92d2bd1997a7449a4cccc455a430f185c6a6bc479e395db6db63c14d154e3",
+    "tests/17-REQ-3-1-scenario-2.spec.ts": "adb6ff467aaad5176ae4c62d2e0a4123ddfc7c77b666bb62341bf195fb3769e1",
+    "tests/18-REQ-3-1-scenario-3.spec.ts": "1cc66437249307910194d854be38cad149c74127e91727ff7aef4919054b5aa6",
+    "tests/19-REQ-3-5-scenario-1.spec.ts": "779b46ed8322c3a8e19e065113d3deb3c2b21d603f420828e0cb72b99791986e",
+    "tests/20-REQ-3-5-scenario-2.spec.ts": "f4500a8a632bae36f55a37579d91305a3c3c9f4870c3ecfa5886bc0c381fe88b",
+    "tests/21-REQ-3-5-scenario-3.spec.ts": "467805f0fcf207f5f929ab285ed3c7223a751654e86b38d44daa781cf565c32d",
+    "tests/22-REQ-4-3-1-scenario-1.spec.ts": "aa8b4642554d8eea6954c7ea2b80c78eff9f5276f96b99e6a88914deee65038b",
+    "tests/23-REQ-4-3-1-scenario-2.spec.ts": "bcfeec399d619b96909c0b423b1ed6ceb1a6bad384a126ce291d1da61f3530dc",
+    "tests/24-REQ-4-3-1-scenario-3.spec.ts": "46b44eff1984eca4881fe5e564f1749af703a670084e8e74b619c2ca31c9d7f4",
+    "tests/25-REQ-4-5-scenario-1.spec.ts": "b7f7b6b83a2129c4ce962df4a418c466a10413a272810213f102c0fbb0bb21a5",
+    "tests/26-REQ-4-5-scenario-2.spec.ts": "ccc1da739b4ebf7c71b56014b4a1d7855fc4df5d9ead144d0b95089089fa7dac",
+    "tests/27-REQ-4-5-scenario-3.spec.ts": "0e2668d986059d16eadc362af90b34a46b584abdd8e4b3629130fa9d376900ca",
+    "tests/28-REQ-5-5-scenario-1.spec.ts": "1209b9c2eb9cc3fb1dbd7822d3642f2a0b880ce4f73935937edd39ef5071bad3",
+    "tests/29-REQ-5-5-scenario-2.spec.ts": "c156f606f593d8afb262f76dafe49f13de90a8c10aec73c1ae39d68b08bec363",
+    "tests/30-REQ-5-5-scenario-3.spec.ts": "bd266a0e8992485a46d3e3e6b3242a834d7cf1b8512979ec3dcf4574ea5fa071",
+    "tests/evolution-navigation.ts": "e82f8ce4188d13ebd86f726953f1056ea3998cdf7cef08daf0a62daed9a30b67",
+    "tests/helpers.ts": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+    "tests/interactions.ts": "c5cbee7c657d27dbd7ac99e62d280ed6721d29c53bedd9bb10e1c7c8d8f2c1d1"
+  },
+  "test_suite_sha256": "3294909cebc79978e654b9f5575ad3998cc759544431a2348f1c8faddf478f02",
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 64.862,
+  "container_exit_code": 0,
+  "passed": 30,
+  "failed": 0,
+  "total": 30,
+  "wall_seconds": 68.583
+}

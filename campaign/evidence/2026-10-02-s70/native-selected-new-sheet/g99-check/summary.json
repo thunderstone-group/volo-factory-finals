@@ -1,0 +1,11 @@
+{
+  "app": "new-sheet",
+  "judge": "g99",
+  "counts": {
+    "pass": 90,
+    "fail": 10
+  },
+  "seconds": 81.2,
+  "model_api_calls": 0,
+  "unavailable": null
+}

@@ -1,0 +1,1477 @@
+id: ROOT
+name: Github Finals Proxy Evolution Prose
+type: FOLDER
+description: |-
+  This product extends the participant's selected GitHub collaboration application. Repository browsing, sign-in, organization membership, file management, issues and pull requests retain their existing behavior except where an atomic change below extends it. The additional work concerns issue discovery, repository metadata, discussions and review. Real-time collaboration, Actions, Packages, Wiki, project boards, notification delivery and external Git remote protocols remain outside the product's scope.
+
+  Values described as existing accounts, repositories, branches, files, issues, labels, milestones, pull requests or reviews are predefined seed data. The system provisions these before the scenarios begin. Each scenario starts at the home page in a fresh unauthenticated browser session and uses its own EV-suffixed repository and records. Scenarios can be performed independently and in any order against the same running application; they must not depend on resetting another scenario's data. The original accounts are reused with their documented credentials, which these scenarios do not change. Saved application data remains available when the user navigates away or refreshes.
+
+  Unless an atomic requirement permits more than one navigation role, quoted user-interface wording is the exact English accessible name; the role, scope and observable-state rules of the atomic requirement are authoritative. Existing permission relationships remain operation-specific. Implementations may choose their framework, storage and page-entry format without depending on a private setup API.
+dependencies: []
+children:
+- id: EV-1.1
+  name: Filter issues with combined qualifiers
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-1-1
+  dependencies:
+  - REQ-5-1-1
+  description: |-
+    Users can narrow the repository's issue list with a combined query instead of searching only for words in a title. On the Issues page, the “Issues” region presents the “Search issues” searchbox and the “Issue titles” list. The query accepts `is:open`, `is:closed`, `label:<name>` and `author:<username>` together; every condition must match. A status qualifier takes precedence over the currently selected status tab, while words without a qualifier continue to match the issue title. Matching titles are shown newest first, and excluded issues must not remain as result links. Refreshing this page retains the query and its matching results.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Filter issues with combined qualifiers
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.1` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. Issues are `Bug EV-1.1` (Closed, label bug, author
+        issue-editor), `Open EV-1.1` (Open, bug, issue-editor), and `Other EV-1.1` (Closed, docs, issue-commenter).
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.1` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.1”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.1” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and enters `is:closed label:bug author:issue-editor` in the visibly
+        labeled “Search issues” field.
+    - keyword: THEN
+      content: The “Issue titles” list in the “Issues” region shows `Bug EV-1.1`, in that reading order,
+        with no additional entries. The “Open EV-1.1” link does not appear in the “Issues” region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Issue titles” list in the “Issues” region shows `Bug EV-1.1`, in that reading order,
+        with no additional entries.
+- id: EV-1.2
+  name: Sort the filtered issue list
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-1-1
+  dependencies:
+  - REQ-5-1-1
+  description: |-
+    Users can change the reading order of the issues they have already filtered. The “Issue sort” combobox on the Issues page offers “Newest” and “Oldest”; choosing an order changes the “Issue titles” list inside the “Issues” region without changing any issue. The order applies to the filtered result set, not to a separate unfiltered list. After refresh, the selector and the displayed titles still agree with the saved choice. Changing the selection again immediately shows the opposite chronological order.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Selecting an option uses the labeled combobox; when collapsed, the selector displays only its selected option.
+  scenarios:
+  - name: Sort the filtered issue list
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.2` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. Open issues `First EV-1.2`, `Second EV-1.2`, `Third
+        EV-1.2` were created on 2030-01-01, 2030-01-02 and 2030-01-03 respectively, with no other issues.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.2` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.2”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.2” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and selects the “Oldest” option in the “Issue sort” combobox in
+        the “Issues” region.
+    - keyword: THEN
+      content: The “Issue titles” list in the “Issues” region shows `First EV-1.2`, then `Second EV-1.2`,
+        then `Third EV-1.2`, in that reading order, with no additional entries.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Issue sort” combobox in the “Issues” region shows “Oldest” as its selected option.
+    - keyword: WHEN
+      content: The user selects the “Newest” option in the “Issue sort” combobox in the “Issues” region.
+    - keyword: THEN
+      content: The “Issue titles” list in the “Issues” region shows `Third EV-1.2`, then `Second EV-1.2`,
+        then `First EV-1.2`, in that reading order, with no additional entries.
+- id: EV-1.3
+  name: Filter draft pull requests by author
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-6-2-1
+  dependencies:
+  - REQ-6-2-1
+  description: |-
+    The Pull requests page supports finding drafts belonging to a particular author. Its “Pull requests” region provides the “Search pull requests” searchbox, and the visible result titles form the “Pull request titles” list. The search understands `is:draft`, `is:open` and `author:<username>`; conditions entered together are combined with AND. A draft is distinct from a ready Open pull request, even though both are unmerged. Filtering changes only the visible results, and refreshing the page preserves the query and the same matching pull-request links.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Filter draft pull requests by author
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.3` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. PRs are `Draft EV-1.3` (Draft, pr-author), `Ready
+        EV-1.3` (Open, pr-author), and `Other EV-1.3` (Draft, pr-contributor); all compare feature to
+        main.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.3` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.3”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.3” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Pull requests” and enters `is:draft author:pr-author` in the visibly labeled
+        “Search pull requests” field.
+    - keyword: THEN
+      content: The “Pull request titles” list in the “Pull requests” region shows `Draft EV-1.3`, in that
+        reading order, with no additional entries.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Pull request titles” list in the “Pull requests” region shows `Draft EV-1.3`, in that
+        reading order, with no additional entries.
+- id: EV-1.4
+  name: Close an issue as not planned
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-4
+  dependencies:
+  - REQ-5-4
+  description: |-
+    The issue-closing workflow lets an authorized user explain that work will not be pursued. On the issue detail page, the “Issue” region has a “Close reason” combobox with “Completed” selected by default and “Not planned” as the other choice. Clicking the “Close issue” button still saves immediately, but now saves the chosen reason along with Closed status. A not-planned closure displays “Closed as not planned” as its status message. Clicking “Reopen issue” restores Open and removes that closure reason. These changes survive refresh, preserve the issue description and other existing data, and retain the original operation-specific permission rules.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Selecting an option uses the labeled combobox; when collapsed, the selector displays only its selected option. A status or alert carries its complete visible message as its accessible name.
+  scenarios:
+  - name: Close an issue as not planned
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.4` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Declined EV-1.4` is Open, with description `Keep
+        this description.` and no closure reason. The system also pre-provisions the original verified
+        account `repo-admin` has email `repo-admin@example.test` and password `Valid-password-123!`. Its
+        credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.4` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.4”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.4” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Declined EV-1.4”.
+    - keyword: THEN
+      content: The “Declined EV-1.4” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user selects the “Not planned” option in the “Close reason” combobox in the “Issue”
+        region and clicks the “Close issue” button in the “Issue” region.
+    - keyword: THEN
+      content: The complete text `Closed as not planned` appears visibly once in the “Issue” region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The complete text `Closed as not planned` appears visibly once in the “Issue” region. The
+        complete text `Keep this description.` appears visibly once in the “Issue” region.
+    - keyword: WHEN
+      content: The user clicks the “Reopen issue” button in the “Issue” region.
+    - keyword: THEN
+      content: The complete text `Open` appears visibly once in the “Issue” region. The “Closed as not
+        planned” status does not appear in the “Issue” region.
+- id: EV-1.5
+  name: Preview a Markdown issue comment
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-2-3
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    A user who may comment can inspect Markdown before publishing an issue comment. The comment editor in the “Issue” region has “Preview” and “Write” buttons beside the visibly labeled “Comment” field. Preview renders emphasis and other supported Markdown in the “Comment preview” region while keeping the draft unpublished. Write returns to the same editable draft. Only clicking the “Comment” submit button publishes the comment, once, into the “Discussion” region. The saved comment remains available after refresh; changing editor modes by itself must not add a discussion entry.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Preview a Markdown issue comment
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.5` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Preview EV-1.5` is Open and has no comments. The
+        system also pre-provisions the original verified account `issue-commenter` has email `issue-commenter@example.test`
+        and password `Valid-password-123!`. Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-commenter` in the visibly labeled “Username or
+        email” field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks
+        the “Sign in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.5` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.5”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.5” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Preview EV-1.5”.
+    - keyword: THEN
+      content: The “Preview EV-1.5” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `**Reviewed** carefully.` in the visibly labeled “Comment” field and clicks
+        the “Preview” button in the “Issue” region.
+    - keyword: THEN
+      content: The complete text `Reviewed` appears visibly once in the “Comment preview” region.
+    - keyword: WHEN
+      content: The user clicks the “Write” button in the “Issue” region.
+    - keyword: THEN
+      content: The “Comment” field  displays the saved value `**Reviewed** carefully.`.
+    - keyword: WHEN
+      content: The user clicks the “Comment” button in the “Issue” region and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `Reviewed carefully.` appears visibly once in the “Discussion” region.
+- id: EV-1.6
+  name: Preview a Markdown file before committing
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-4
+  dependencies:
+  - REQ-4-4
+  description: |-
+    A contributor creating a Markdown file can preview the document before committing it. The existing new-file editor retains its “File name”, “File contents” and “Commit message” fields and “Commit changes” submission. The “Preview file” button renders the draft in the “File preview” region, including Markdown headings, without creating a file or commit. “Edit file” returns to the retained contents. Committing then uses the original path validation, commit-message validation and write permissions, and the saved file can be reopened or refreshed with the same path and contents.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. In multiline code literals below, `\n` denotes a newline character.
+  scenarios:
+  - name: Preview a Markdown file before committing
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.6` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. main contains README.md with `Initial file`. docs/guide.md
+        does not exist. The system also pre-provisions the original verified account `file-contributor`
+        has email `file-contributor@example.test` and password `Valid-password-123!`. Its credentials
+        are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `file-contributor` in the visibly labeled “Username or
+        email” field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks
+        the “Sign in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.6` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.6”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.6” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Add file”, opens “Create new file”, enters `docs/guide.md` in the visibly
+        labeled “File name” field, enters `# Guide EV-1.6\n\n**Useful** documentation.` in the visibly
+        labeled “File contents” field, and clicks the “Preview file” button.
+    - keyword: THEN
+      content: The “Guide EV-1.6” heading appears once and is visible in the “File preview” region.
+    - keyword: WHEN
+      content: The user clicks the “Edit file” button.
+    - keyword: THEN
+      content: The “File contents” field  displays the saved value `# Guide EV-1.6\n\n**Useful** documentation.`.
+    - keyword: WHEN
+      content: The user enters `Add guide EV-1.6` in the visibly labeled “Commit message” field, clicks
+        the “Commit changes” button, and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `docs/guide.md` appears visibly once.
+- id: EV-1.7
+  name: Convert an open pull request to draft
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-6-2-4
+  dependencies:
+  - REQ-6-2-4
+  description: |-
+    An author can move an unmerged Open pull request back to Draft when it needs further work. The detail page's “Pull request” region offers “Convert to draft” to that author. Clicking it opens the “Convert to draft” confirmation dialog; its confirmation button has the same wording. Confirmation saves Draft without changing the title, description or source and target branches. The draft state survives refresh and keeps “Merge pull request” visibly disabled. The existing “Ready for review” workflow remains available to restore Open.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Checking, selection and pressed states are exposed through their native or ARIA state as well as the visible interface.
+  scenarios:
+  - name: Convert an open pull request to draft
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.7` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Draft conversion EV-1.7` is an Open PR by pr-author
+        comparing feature-ev-1.7 to main, with description `Work in progress.` and no merge conflicts.
+        The system also pre-provisions the original verified account `pr-author` has email `pr-author@example.test`
+        and password `Valid-password-123!`. Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `pr-author` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.7` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.7”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.7” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Pull requests” and opens “Draft conversion EV-1.7”.
+    - keyword: THEN
+      content: The “Draft conversion EV-1.7” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Convert to draft” button in the “Pull request” region.
+    - keyword: THEN
+      content: The “Convert to draft” dialog appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Convert to draft” button in the “Convert to draft” dialog and refreshes
+        the current page.
+    - keyword: THEN
+      content: The complete text `Draft` appears visibly once in the “Pull request” region. The “Merge
+        pull request” button remains visible and is disabled in the “Pull request” region. The complete
+        text `Work in progress.` appears visibly once in the “Pull request” region.
+- id: EV-1.8
+  name: Switch the pull request diff layout
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-6-3-2
+  dependencies:
+  - REQ-6-3-2
+  description: |-
+    Readers inspecting “Files changed” can choose how a pull-request diff is displayed. The “Diff layout” combobox offers “Unified” and “Split”, and its selection survives refresh without modifying the pull request or its files. Split places the old source text in the “Before” region and the new source text in the “After” region. Unified instead uses the “Unified diff” region, with removed and added lines carrying their minus and plus prefixes. Switching layouts keeps the same changed text and continues to support the original read-only diff workflow.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Selecting an option uses the labeled combobox; when collapsed, the selector displays only its selected option.
+  scenarios:
+  - name: Switch the pull request diff layout
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.8` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Layout EV-1.8` is Open, with one changed file src/message.txt
+        replacing `hello before` with `hello after`.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.8` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.8”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.8” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Pull requests” and opens “Layout EV-1.8”.
+    - keyword: THEN
+      content: The “Layout EV-1.8” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Files changed” and selects the “Split” option in the “Diff layout” combobox.
+    - keyword: THEN
+      content: The complete text `hello before` appears visibly once in the “Before” region. The complete
+        text `hello after` appears visibly once in the “After” region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Diff layout” combobox  shows “Split” as its selected option.
+    - keyword: WHEN
+      content: The user selects the “Unified” option in the “Diff layout” combobox.
+    - keyword: THEN
+      content: The complete text `-hello before` appears visibly once in the “Unified diff” region. The
+        complete text `+hello after` appears visibly once in the “Unified diff” region.
+- id: EV-1.9
+  name: Search labels before applying one
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-3-2
+  dependencies:
+  - REQ-5-3-2
+  description: |-
+    An issue manager can find a label before applying it. Opening the “Labels” button in the “Issue” region reveals the repository's existing label options and a visibly labeled “Filter labels” textbox. Typing filters those options immediately and ignores letter case, so a nonmatching label is no longer offered while the filter is active. Selecting an exact matching label keeps the original immediate-save behavior: there is no additional Save action, and the selected label remains in the issue's metadata after refresh.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Search labels before applying one
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.9` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Label search EV-1.9` is Open and unlabeled. Repository
+        labels are bug, documentation and enhancement. The system also pre-provisions the original verified
+        account `issue-editor` has email `issue-editor@example.test` and password `Valid-password-123!`.
+        Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-editor` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.9` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.9”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.9” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Label search EV-1.9”.
+    - keyword: THEN
+      content: The “Label search EV-1.9” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Labels” button in the “Issue” region and enters `DOC` in the visibly
+        labeled “Filter labels” field.
+    - keyword: THEN
+      content: The “documentation” option appears once and is visible. The “bug” option does not appear.
+    - keyword: WHEN
+      content: The user selects the “documentation” option and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `documentation` appears visibly once in the “Issue” region.
+- id: EV-1.10
+  name: Swap comparison branches
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-6-2-2
+  dependencies:
+  - REQ-6-2-2
+  description: |-
+    The branch comparison page provides a “Swap branches” button alongside the existing “Base” and “Compare” comboboxes. Clicking it exchanges their current choices without writing either branch. The user can then click “Compare changes” to inspect that direction of comparison. The “Comparison summary” region identifies the selected base and compare branches using the wording shown in the scenario, and this comparison remains visible after refresh. The original comparison validation and pull-request creation workflow continue to apply.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Selecting an option uses the labeled combobox; when collapsed, the selector displays only its selected option.
+  scenarios:
+  - name: Swap comparison branches
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-1.10` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. main and feature-ev-1.10 are distinct branches with
+        differences; file src/compare.txt differs between them. The system also pre-provisions the original
+        verified account `pr-contributor` has email `pr-contributor@example.test` and password `Valid-password-123!`.
+        Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `pr-contributor` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-1.10` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-1.10”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-1.10” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Pull requests”, opens “New pull request”, selects the “main” option in
+        the “Base” combobox, selects the “feature-ev-1.10” option in the “Compare” combobox, and clicks
+        the “Swap branches” button.
+    - keyword: THEN
+      content: The “Base” combobox  shows “feature-ev-1.10” as its selected option. The “Compare” combobox  shows
+        “main” as its selected option.
+    - keyword: WHEN
+      content: The user clicks the “Compare changes” button.
+    - keyword: THEN
+      content: 'The complete text `base: feature-ev-1.10; compare: main` appears visibly once in the “Comparison
+        summary” region.'
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: 'The complete text `base: feature-ev-1.10; compare: main` appears visibly once in the “Comparison
+        summary” region.'
+- id: EV-2.1
+  name: Star and unstar a repository
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-3
+  - REQ-1-1-2
+  description: |-
+    A signed-in user can star any readable repository from its overview. Clicking the “Star” button adds that account to the repository's stars and changes the available action to “Unstar”. The “Repository social” region displays the count of distinct starring accounts, using `1 star` for one account and `0 stars` when there are none. Refreshing preserves both the count and the current account's action. Unstar removes only that account's star, and the reduced count and restored Star action also persist.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Star and unstar a repository
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.1` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. This repository has no stars. The system also pre-provisions
+        the original verified account `repo-owner` has email `repo-owner@example.test` and password `Valid-password-123!`.
+        Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-owner` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.1` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.1”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.1” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Star” button.
+    - keyword: THEN
+      content: The complete text `1 star` appears visibly once in the “Repository social” region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Unstar” button appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Unstar” button and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `0 stars` appears visibly once in the “Repository social” region. The
+        “Star” button appears once and is visible.
+- id: EV-2.2
+  name: Keep stars specific to each account
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.1
+  description: |-
+    Repository stars belong to individual accounts. If one user stars a repository and signs out, the star remains in the repository's aggregate count. A different signed-in reader sees that count in the “Repository social” region but still has the “Star” button unless that reader has independently starred the repository. Returning to the first account restores its “Unstar” action and leaves the total unchanged. The account switches in this scenario use the ordinary sign-out confirmation and sign-in pages; they do not reset repository records.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Keep stars specific to each account
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.2` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. This repository has no stars. The system also pre-provisions
+        the original verified account `repo-owner` has email `repo-owner@example.test` and password `Valid-password-123!`.
+        Its credentials are never changed by these scenarios. The system also pre-provisions the original
+        verified account `issue-viewer` has email `issue-viewer@example.test` and password `Valid-password-123!`.
+        Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-owner` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.2` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.2”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.2” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Star” button, clicks the “Account menu” button, and opens “Sign out”.
+    - keyword: THEN
+      content: The “Sign out” dialog appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Confirm sign out” button in the “Sign out” dialog.
+    - keyword: THEN
+      content: The “Sign in” link appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-viewer` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.2` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.2”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.2” heading appears once and is visible. The “Star” button
+        appears once and is visible. The complete text `1 star` appears visibly once in the “Repository
+        social” region.
+    - keyword: WHEN
+      content: The user clicks the “Account menu” button and opens “Sign out”.
+    - keyword: THEN
+      content: The “Sign out” dialog appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Confirm sign out” button in the “Sign out” dialog.
+    - keyword: THEN
+      content: The “Sign in” link appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-owner` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.2` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.2”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.2” heading appears once and is visible. The “Unstar” button
+        appears once and is visible. The complete text `1 star` appears visibly once in the “Repository
+        social” region.
+- id: EV-2.3
+  name: Edit repository topics
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-3
+  description: |-
+    A repository administrator can maintain the topics displayed in the overview's “About” region. “Edit topics” opens the “Edit topics” dialog, where “Topics” is a visibly labeled text field accepting comma-separated entries and “Save” submits the change. Saving trims surrounding spaces, removes duplicates and converts topic names to lowercase; a topic name consists of lowercase letters, digits and hyphens. The resulting “Topics” list preserves the saved reading order. Leaving the repository and finding it again shows the same list, without creating separate topic copies for repeated input.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Edit repository topics
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.3` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. This repository has no topics. The system also pre-provisions
+        the original verified account `repo-admin` has email `repo-admin@example.test` and password `Valid-password-123!`.
+        Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.3` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.3”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.3” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Edit topics” button, enters `TypeScript, docs, typescript` in the
+        visibly labeled “Topics” field in the “Edit topics” dialog, and clicks the “Save” button in the
+        “Edit topics” dialog.
+    - keyword: THEN
+      content: The “Topics” list in the “About” region shows `typescript`, then `docs`, in that reading
+        order, with no additional entries.
+    - keyword: WHEN
+      content: The user returns to the application home page, enters `evolution-EV-2.3` in the visibly
+        labeled “Search” field, presses `Enter` in “Search”, and opens “evolution-EV-2.3”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.3” heading appears once and is visible. The “Topics” list
+        in the “About” region shows `typescript`, then `docs`, in that reading order, with no additional
+        entries.
+- id: EV-2.4
+  name: Restrict topic editing to administrators
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.3
+  description: |-
+    A user with Read permission can inspect the repository topics but cannot change them. The overview's “About” region continues to show the saved “Topics” list in its existing order. The “Edit topics” button is absent for that reader, rather than offering an operation that fails only after submission. Refreshing does not reveal the editing control or hide the readable topic metadata.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Restrict topic editing to administrators
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.4` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. Topics are api and docs. The system also pre-provisions
+        the original verified account `issue-viewer` has email `issue-viewer@example.test` and password
+        `Valid-password-123!`. Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-viewer` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.4` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.4”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.4” heading appears once and is visible. The “Topics” list
+        in the “About” region shows `api`, then `docs`, in that reading order, with no additional entries.
+        The “Edit topics” button does not appear.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Edit topics” button does not appear.
+- id: EV-2.5
+  name: Archive a repository
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-4
+  description: |-
+    A repository administrator can archive an active repository from Settings and General. Clicking “Archive repository” opens the “Archive repository” dialog, which asks for the exact “Repository name” before the administrator clicks “Archive”. A successful confirmation persists Archived state and displays “Archived” in the “Repository status” region. Repository contents then become read-only, including issue creation, but existing issues remain readable. After refresh the archive marker is still present; opening Issues still shows the existing issue, while no “New issue” link or button is available.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. A status or alert carries its complete visible message as its accessible name.
+  scenarios:
+  - name: Archive a repository
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.5` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. The repository is active with one Open issue `Preserved
+        EV-2.5`. The system also pre-provisions the original verified account `repo-admin` has email `repo-admin@example.test`
+        and password `Valid-password-123!`. Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.5` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.5”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.5” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Settings”, opens “General”, clicks the “Archive repository” button, enters
+        `evolution-EV-2.5` in the visibly labeled “Repository name” field in the “Archive repository”
+        dialog, clicks the “Archive” button in the “Archive repository” dialog, and refreshes the current
+        page.
+    - keyword: THEN
+      content: The complete text `Archived` appears visibly once in the “Repository status” region.
+    - keyword: WHEN
+      content: The user opens “Issues”.
+    - keyword: THEN
+      content: The “Preserved EV-2.5” link appears once and is visible. The “New issue” link does not
+        appear. The “New issue” button does not appear.
+- id: EV-2.6
+  name: Read an archived repository as a visitor
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.5
+  description: |-
+    Archiving a public repository does not remove public read access. A visitor can open its overview, see the “Archived” marker in the “Repository status” region and follow an existing issue entry. The issue's title and saved description remain readable in the “Issue” region after refresh. Mutation controls, including “Close issue”, are absent for the visitor; archiving also leaves “New issue” unavailable. Reading the archived issue does not change its content or status.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. A status or alert carries its complete visible message as its accessible name.
+  scenarios:
+  - name: Read an archived repository as a visitor
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.6` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. The repository is archived with Open issue `Read
+        only EV-2.6`, description `Historical discussion.`.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.6` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.6”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.6” heading appears once and is visible. The complete text
+        `Archived` appears visibly once in the “Repository status” region.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Read only EV-2.6”.
+    - keyword: THEN
+      content: The “Read only EV-2.6” heading appears once and is visible. The complete text `Historical
+        discussion.` appears visibly once in the “Issue” region. The “Close issue” button does not appear
+        in the “Issue” region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The complete text `Historical discussion.` appears visibly once in the “Issue” region.
+- id: EV-2.7
+  name: Create a repository label
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-3-2
+  description: |-
+    Administrators can add repository labels from the Labels page reached through Issues. “New label” opens the “New label” dialog with “Label name”, “Description” and “Color” fields and a “Create label” button. The name must be unique in the repository, and Color is a six-digit hexadecimal color value. Successful creation saves the label as a region identified by its name, where its description is readable. The same label is offered by the “Labels” picker on an issue in the “Issue” region. Applying it and refreshing retain the new label relationship.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Create a repository label
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.7` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. No label named priority-ev-2.7 exists; issue `Apply
+        EV-2.7` is Open and unlabeled. The system also pre-provisions the original verified account `repo-admin`
+        has email `repo-admin@example.test` and password `Valid-password-123!`. Its credentials are never
+        changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.7` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.7”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.7” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues”, opens “Labels”, clicks the “New label” button, enters `priority-ev-2.7`
+        in the visibly labeled “Label name” field in the “New label” dialog, enters `Ship this first.`
+        in the visibly labeled “Description” field in the “New label” dialog, enters `#ff8800` in the
+        visibly labeled “Color” field in the “New label” dialog, clicks the “Create label” button in the
+        “New label” dialog, and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `Ship this first.` appears visibly once in the “priority-ev-2.7” region.
+    - keyword: WHEN
+      content: The user opens “Issues”, opens “Apply EV-2.7”, clicks the “Labels” button in the “Issue”
+        region, selects the “priority-ev-2.7” option, and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `priority-ev-2.7` appears visibly once in the “Issue” region.
+- id: EV-2.8
+  name: Rename an applied repository label
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.7
+  description: |-
+    Administrators can rename a repository label that is already applied to an issue. On the Labels page, the label's own named region provides an “Edit” button, which opens the “Edit label” dialog. Editing “Label name” and “Description” and clicking “Save” updates the existing label record. Every issue association follows the rename atomically; it must not keep a second label with the old name. After refresh, the label's region uses its new name, and opening the linked issue shows that same name in the “Issue” region.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Rename an applied repository label
+    steps:
+    - keyword: GIVEN
+      content: 'The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.8` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. Label old-ev-2.8 with description `Old description`
+        and color #aaaaaa is applied to `Linked EV-2.8`. The system also pre-provisions the original verified
+        account `repo-admin` has email `repo-admin@example.test` and password `Valid-password-123!`. Its
+        credentials are never changed by these scenarios.'
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.8` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.8”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.8” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues”, opens “Labels”, clicks the “Edit” button in the “old-ev-2.8” region,
+        enters `renamed-ev-2.8` in the visibly labeled “Label name” field in the “Edit label” dialog,
+        enters `New description` in the visibly labeled “Description” field in the “Edit label” dialog,
+        clicks the “Save” button in the “Edit label” dialog, and refreshes the current page.
+    - keyword: THEN
+      content: The “renamed-ev-2.8” region appears once and is visible. The “old-ev-2.8” region does not
+        appear.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Linked EV-2.8”.
+    - keyword: THEN
+      content: The complete text `renamed-ev-2.8` appears visibly once in the “Issue” region.
+- id: EV-2.9
+  name: Create a milestone with a due date
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-3-3
+  description: |-
+    Administrators can create a milestone on the Milestones page reached through Issues. The “New milestone” dialog is opened by “New milestone” and provides “Title”, “Description” and “Due date”; the date uses `YYYY-MM-DD`. “Create milestone” saves the record, and the milestone appears in a region identified by its title with the saved due date. It also becomes an option in an issue's “Milestone” picker. Selecting it saves the issue relationship immediately, and refreshing the issue keeps the milestone visible in the “Issue” region.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Create a milestone with a due date
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.9` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. No milestone named `Release EV-2.9` exists. `Schedule
+        EV-2.9` is an Open issue without a milestone. The system also pre-provisions the original verified
+        account `repo-admin` has email `repo-admin@example.test` and password `Valid-password-123!`. Its
+        credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.9` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.9”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.9” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues”, opens “Milestones”, clicks the “New milestone” button, enters
+        `Release EV-2.9` in the visibly labeled “Title” field in the “New milestone” dialog, enters `October
+        delivery` in the visibly labeled “Description” field in the “New milestone” dialog, enters `2030-10-31`
+        in the visibly labeled “Due date” field in the “New milestone” dialog, clicks the “Create milestone”
+        button in the “New milestone” dialog, and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `2030-10-31` appears visibly once in the “Release EV-2.9” region.
+    - keyword: WHEN
+      content: The user opens “Issues”, opens “Schedule EV-2.9”, clicks the “Milestone” button in the
+        “Issue” region, selects the “Release EV-2.9” option, and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `Release EV-2.9` appears visibly once in the “Issue” region.
+- id: EV-2.10
+  name: Close and reopen a milestone
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.9
+  description: |-
+    An administrator can close a milestone and later reopen it from the Milestones page. Each milestone is displayed in a region identified by its title. For an open milestone, “Close milestone” saves Closed and replaces that operation with “Reopen milestone”; reopening saves Open. Both transitions survive refresh and leave the title, description, due date and linked issues unchanged. The milestone is not deleted or recreated by either operation.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Close and reopen a milestone
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-2.10` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. Milestone `Cycle EV-2.10` is Open, due 2030-12-01,
+        with description `Preserve scope`. The system also pre-provisions the original verified account
+        `repo-admin` has email `repo-admin@example.test` and password `Valid-password-123!`. Its credentials
+        are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-2.10` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-2.10”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-2.10” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues”, opens “Milestones”, clicks the “Close milestone” button in the
+        “Cycle EV-2.10” region, and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `Closed` appears visibly once in the “Cycle EV-2.10” region.
+    - keyword: WHEN
+      content: The user clicks the “Reopen milestone” button in the “Cycle EV-2.10” region and refreshes
+        the current page.
+    - keyword: THEN
+      content: The complete text `Open` appears visibly once in the “Cycle EV-2.10” region. The complete
+        text `Preserve scope` appears visibly once in the “Cycle EV-2.10” region.
+- id: EV-3.1
+  name: Lock an issue conversation
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    A repository administrator can stop ordinary commenting on an issue without removing the discussion. In the “Issue” region, “Lock conversation” opens the “Lock conversation” dialog with a “Lock reason” combobox and “Lock” confirmation. Saving records the selected reason and displays a persistent status such as “Locked: Off-topic”. Ordinary Write users can still read the issue and its existing discussion, but no “Comment” submission is available until an administrator unlocks it. Signing out and opening the issue as another writer must respect the saved lock.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Selecting an option uses the labeled combobox; when collapsed, the selector displays only its selected option.
+  scenarios:
+  - name: Lock an issue conversation
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.1` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Lock EV-3.1` is Open and unlocked, with description
+        `Retain context.`. The system also pre-provisions the original verified account `repo-admin` has
+        email `repo-admin@example.test` and password `Valid-password-123!`. Its credentials are never
+        changed by these scenarios. The system also pre-provisions the original verified account `issue-commenter`
+        has email `issue-commenter@example.test` and password `Valid-password-123!`. Its credentials are
+        never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.1` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.1”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.1” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Lock EV-3.1”.
+    - keyword: THEN
+      content: The “Lock EV-3.1” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Lock conversation” button in the “Issue” region, selects the “Off-topic”
+        option in the “Lock reason” combobox in the “Lock conversation” dialog, clicks the “Lock” button
+        in the “Lock conversation” dialog, and refreshes the current page.
+    - keyword: THEN
+      content: 'The complete text `Locked: Off-topic` appears visibly once in the “Issue” region.'
+    - keyword: WHEN
+      content: The user clicks the “Account menu” button and opens “Sign out”.
+    - keyword: THEN
+      content: The “Sign out” dialog appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Confirm sign out” button in the “Sign out” dialog.
+    - keyword: THEN
+      content: The “Sign in” link appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-commenter` in the visibly labeled “Username or
+        email” field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks
+        the “Sign in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.1` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.1”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.1” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Lock EV-3.1”.
+    - keyword: THEN
+      content: The “Lock EV-3.1” heading appears once and is visible. The “Comment” button does not appear
+        in the “Issue” region. The complete text `Retain context.` appears visibly once in the “Issue”
+        region.
+- id: EV-3.2
+  name: Deny issue locking to a read user
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-3.1
+  description: |-
+    Conversation locks are managed only by repository administrators. A Read user opening the issue detail page can read the saved description in the “Issue” region, but neither “Lock conversation” nor “Unlock conversation” is available as a button. Refreshing the issue keeps the same read-only access. This restriction does not alter the issue's content or imply that a Read account may acquire lock-management permission from another role.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Deny issue locking to a read user
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.2` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Lock permission EV-3.2` is Open, unlocked, with
+        description `Readable content.`. The system also pre-provisions the original verified account
+        `issue-viewer` has email `issue-viewer@example.test` and password `Valid-password-123!`. Its credentials
+        are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-viewer` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.2` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.2”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.2” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Lock permission EV-3.2”.
+    - keyword: THEN
+      content: The “Lock permission EV-3.2” heading appears once and is visible. The complete text `Readable
+        content.` appears visibly once in the “Issue” region. The “Lock conversation” button does not
+        appear in the “Issue” region. The “Unlock conversation” button does not appear in the “Issue”
+        region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Lock conversation” button does not appear in the “Issue” region.
+- id: EV-3.3
+  name: Pin an issue to the repository list
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-1-1
+  - REQ-5-1-2
+  description: |-
+    An administrator can draw attention to an existing issue by clicking “Pin issue” in the “Issue” region. The repository's Issues page displays pinned issues above its ordinary results, in a separate “Pinned issues” region. Its “Pinned issue titles” list follows the order in which issues were pinned. Leaving the repository, returning through its normal entry and reopening Issues preserves the pin and the list entry. Pinning changes the repository's pin relationship, not the underlying issue or its discussion.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Pin an issue to the repository list
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.3` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Pinned EV-3.3` is Open and unpinned; no other issue
+        is pinned. The system also pre-provisions the original verified account `repo-admin` has email
+        `repo-admin@example.test` and password `Valid-password-123!`. Its credentials are never changed
+        by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.3` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.3”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.3” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Pinned EV-3.3”.
+    - keyword: THEN
+      content: The “Pinned EV-3.3” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Pin issue” button in the “Issue” region, returns to the application
+        home page, enters `evolution-EV-3.3` in the visibly labeled “Search” field, presses `Enter` in
+        “Search”, and opens “evolution-EV-3.3”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.3” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues”.
+    - keyword: THEN
+      content: The “Pinned issue titles” list in the “Pinned issues” region shows `Pinned EV-3.3`, in
+        that reading order, with no additional entries.
+- id: EV-3.4
+  name: Unpin an issue without deleting it
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-3.3
+  description: |-
+    An administrator can remove an existing issue pin by clicking “Unpin issue” in the “Issue” region. The detail page then offers “Pin issue” again, including after refresh. Returning to the Issues page shows that the title has left the “Pinned issue titles” list in the “Pinned issues” region; when no pins remain, that list is still visible but empty. The ordinary “Issues” region continues to provide the issue's link and discussion. Unpinning must not delete the issue.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Unpin an issue without deleting it
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.4` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Unpin EV-3.4` is Open and pinned, with description
+        `Keep this issue.`. The system also pre-provisions the original verified account `repo-admin`
+        has email `repo-admin@example.test` and password `Valid-password-123!`. Its credentials are never
+        changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `repo-admin` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.4` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.4”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.4” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Unpin EV-3.4”.
+    - keyword: THEN
+      content: The “Unpin EV-3.4” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Unpin issue” button in the “Issue” region and refreshes the current
+        page.
+    - keyword: THEN
+      content: The “Pin issue” button appears once and is visible in the “Issue” region.
+    - keyword: WHEN
+      content: The user opens “Issues”.
+    - keyword: THEN
+      content: The “Pinned issue titles” list in the “Pinned issues” region remains visible with no entries.
+        The “Unpin EV-3.4” link appears once and is visible in the “Issues” region.
+- id: EV-3.5
+  name: Toggle a thumbs-up reaction
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-1-2
+  description: |-
+    Any signed-in reader can add or remove a thumbs-up reaction to an issue. The “Thumbs up” button in the “Issue” region exposes whether the current account has pressed it. The separate “Reaction count” region shows the number of distinct reacting accounts, including `1 reaction` and `0 reactions`. A first click adds the account, and refresh preserves both its pressed state and the count. Clicking again removes that same account's reaction instead of adding another record.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Checking, selection and pressed states are exposed through their native or ARIA state as well as the visible interface.
+  scenarios:
+  - name: Toggle a thumbs-up reaction
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.5` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `React EV-3.5` is Open with no reactions. The system
+        also pre-provisions the original verified account `issue-viewer` has email `issue-viewer@example.test`
+        and password `Valid-password-123!`. Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-viewer` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.5` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.5”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.5” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “React EV-3.5”.
+    - keyword: THEN
+      content: The “React EV-3.5” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Thumbs up” button in the “Issue” region.
+    - keyword: THEN
+      content: The “Thumbs up” button remains visible and is pressed in the “Issue” region. The complete
+        text `1 reaction` appears visibly once in the “Reaction count” region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Thumbs up” button remains visible and is pressed in the “Issue” region.
+    - keyword: WHEN
+      content: The user clicks the “Thumbs up” button in the “Issue” region.
+    - keyword: THEN
+      content: The complete text `0 reactions` appears visibly once in the “Reaction count” region.
+- id: EV-3.6
+  name: Create and use a saved reply
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    A signed-in user can maintain reusable replies through “Saved replies” in the account menu. “New saved reply” opens the “Saved reply” dialog, whose “Reply title” and “Reply body” fields are stored by “Save” for that account. On an issue, “Insert saved reply” offers the user's saved reply titles as selectable options. Choosing one fills the “Comment” field in the “Issue” region but does not publish anything. Clicking “Comment” then publishes the body through the existing comment workflow, and refresh preserves it in “Discussion”.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Create and use a saved reply
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.6` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Reply EV-3.6` is Open with no comments. issue-commenter
+        has no saved reply `Thanks EV-3.6`. The system also pre-provisions the original verified account
+        `issue-commenter` has email `issue-commenter@example.test` and password `Valid-password-123!`.
+        Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-commenter` in the visibly labeled “Username or
+        email” field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks
+        the “Sign in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.6` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.6”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.6” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Account menu” button, opens “Saved replies”, clicks the “New saved
+        reply” button, enters `Thanks EV-3.6` in the visibly labeled “Reply title” field in the “Saved
+        reply” dialog, enters `Thanks for the reproducible example.` in the visibly labeled “Reply body”
+        field in the “Saved reply” dialog, clicks the “Save” button in the “Saved reply” dialog, returns
+        to the application home page, enters `evolution-EV-3.6` in the visibly labeled “Search” field,
+        presses `Enter` in “Search”, and opens “evolution-EV-3.6”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.6” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Reply EV-3.6”.
+    - keyword: THEN
+      content: The “Reply EV-3.6” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Insert saved reply” button in the “Issue” region and selects the “Thanks
+        EV-3.6” option.
+    - keyword: THEN
+      content: The “Comment” field  displays the saved value `Thanks for the reproducible example.`.
+    - keyword: WHEN
+      content: The user clicks the “Comment” button in the “Issue” region and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `Thanks for the reproducible example.` appears visibly once in the “Discussion”
+        region.
+- id: EV-3.7
+  name: Edit an authored issue comment
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    A discussion comment's author can revise its body. The discussion article is identified as “Comment by <username>” and offers “Edit comment” to its author. This opens the “Edit comment” dialog, where the visibly labeled “Comment body” field initially contains the saved text. “Save comment” replaces that body while retaining the original author and adds an “Edited” indicator. After refresh the updated text and indicator remain in the same article, while the editing form has closed and “Save comment” is no longer present.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Edit an authored issue comment
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.7` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Edit comment EV-3.7` has exactly one comment with
+        body `Original comment EV-3.7`, by issue-commenter, whose article accessible name is `Comment
+        by issue-commenter`. The system also pre-provisions the original verified account `issue-commenter`
+        has email `issue-commenter@example.test` and password `Valid-password-123!`. Its credentials are
+        never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-commenter` in the visibly labeled “Username or
+        email” field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks
+        the “Sign in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.7` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.7”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.7” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Edit comment EV-3.7”.
+    - keyword: THEN
+      content: The “Edit comment EV-3.7” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Edit comment” button in the “Comment by issue-commenter” article,
+        enters `Revised comment EV-3.7` in the visibly labeled “Comment body” field in the “Edit comment”
+        dialog, clicks the “Save comment” button in the “Edit comment” dialog, and refreshes the current
+        page.
+    - keyword: THEN
+      content: The complete text `Revised comment EV-3.7` appears visibly once in the “Comment by issue-commenter”
+        article. The complete text `Edited` appears visibly once in the “Comment by issue-commenter” article.
+        The “Save comment” button does not appear.
+- id: EV-3.8
+  name: Confirm deletion of an authored comment
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-3
+  description: |-
+    A comment's author can remove it through a confirmation dialog. The “Comment by <username>” discussion article provides “Delete comment”, opening the “Delete comment” dialog. Clicking “Cancel” leaves the complete comment in the “Discussion” region. Repeating the operation and clicking “Delete” removes only that comment. After refresh its article remains absent, while the issue's own description is still readable in the “Issue” region.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Confirm deletion of an authored comment
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.8` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Delete comment EV-3.8` has description `Keep the
+        issue body.` and one issue-commenter comment `Disposable EV-3.8` in article `Comment by issue-commenter`.
+        The system also pre-provisions the original verified account `issue-commenter` has email `issue-commenter@example.test`
+        and password `Valid-password-123!`. Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-commenter` in the visibly labeled “Username or
+        email” field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks
+        the “Sign in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.8` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.8”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.8” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Delete comment EV-3.8”.
+    - keyword: THEN
+      content: The “Delete comment EV-3.8” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Delete comment” button in the “Comment by issue-commenter” article
+        and clicks the “Cancel” button in the “Delete comment” dialog.
+    - keyword: THEN
+      content: The complete text `Disposable EV-3.8` appears visibly once in the “Discussion” region.
+    - keyword: WHEN
+      content: The user clicks the “Delete comment” button in the “Comment by issue-commenter” article,
+        clicks the “Delete” button in the “Delete comment” dialog, and refreshes the current page.
+    - keyword: THEN
+      content: The “Comment by issue-commenter” article does not appear in the “Discussion” region. The
+        complete text `Keep the issue body.` appears visibly once in the “Issue” region.
+- id: EV-3.9
+  name: Complete an issue task-list item
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-5-2-2
+  description: |-
+    Markdown tasks in an issue description are interactive for users with Write permission. A task beginning with `- [ ]` is rendered as an unchecked checkbox labeled with its task text, while `- [x]` represents a completed task. The “Issue” region shows the number of completed tasks and the total. Toggling one checkbox updates both the saved Markdown and that progress, preserves every other task and surrounding text, and survives refresh. The existing “Edit issue description” operation still opens the “Issue description” field, allowing the saved newline-separated task text to be read.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Checking, selection and pressed states are exposed through their native or ARIA state as well as the visible interface. In multiline code literals below, `\n` denotes a newline character.
+  scenarios:
+  - name: Complete an issue task-list item
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.9` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Checklist EV-3.9` has description `- [ ] Add tests\n-
+        [ ] Update docs` and no completed tasks. The system also pre-provisions the original verified
+        account `issue-editor` has email `issue-editor@example.test` and password `Valid-password-123!`.
+        Its credentials are never changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `issue-editor` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.9` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.9”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.9” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Issues” and opens “Checklist EV-3.9”.
+    - keyword: THEN
+      content: The “Checklist EV-3.9” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user checks the “Add tests” checkbox in the “Issue” region.
+    - keyword: THEN
+      content: The complete text `1 of 2 tasks complete` appears visibly once in the “Issue” region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Add tests” checkbox remains visible and is checked in the “Issue” region. The “Update
+        docs” checkbox remains visible and is unchecked in the “Issue” region.
+    - keyword: WHEN
+      content: The user clicks the “Edit issue description” button in the “Issue” region.
+    - keyword: THEN
+      content: The “Issue description” field  displays the saved value `- [x] Add tests\n- [ ] Update
+        docs`.
+- id: EV-3.10
+  name: Resolve and reopen a review thread
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-6-3-3
+  description: |-
+    A review participant or the pull-request author can resolve an individual review conversation. Under “Files changed”, each thread is a region identified by its thread title. “Resolve conversation” marks that thread “Resolved” and changes the available operation to “Unresolve conversation”. The saved resolution survives refresh and leaves every comment readable. Unresolving also persists and restores “Resolve conversation”. These actions do not change the pull-request status or any approval decision.
+
+    The repository is reached through the global “Search” field: the visitor submits its seeded name with Enter and opens the matching entry. Its overview identifies it with an owner/name heading. This operation uses the existing repository context and preserves the original access rules. When sign-in is required below, the visitor opens “Sign in”, fills the visibly labeled “Username or email” and masked “Password” inputs, and submits the “Sign in” button. The signed-in workspace provides the “Account menu” button. Account switches follow “Sign out” and confirm through “Confirm sign out” in the “Sign out” dialog. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Resolve and reopen a review thread
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The system pre-provisions the public repository `evolution-EV-3.10` owned by repo-admin. The original
+        account repo-admin has Admin permission; issue-editor, issue-commenter, file-contributor and pr-contributor
+        have Write permission; issue-viewer and pr-viewer have Read permission; pr-author may manage its
+        own PRs and pr-reviewer may review non-authored PRs. main is the default branch. All records in
+        this scenario belong only to this repository. `Resolve EV-3.10` is an Open PR by pr-author. Files
+        changed contains unresolved thread `Thread EV-3.10` with pr-reviewer comment `Handle the empty
+        case.` on src/search.ts. The system also pre-provisions the original verified account `pr-reviewer`
+        has email `pr-reviewer@example.test` and password `Valid-password-123!`. Its credentials are never
+        changed by these scenarios.
+    - keyword: WHEN
+      content: The user opens “Sign in”, enters `pr-reviewer` in the visibly labeled “Username or email”
+        field, enters `Valid-password-123!` in the visibly labeled “Password” field, and clicks the “Sign
+        in” button.
+    - keyword: THEN
+      content: The “Account menu” button appears once and is visible.
+    - keyword: WHEN
+      content: The user enters `evolution-EV-3.10` in the visibly labeled “Search” field, presses `Enter`
+        in “Search”, and opens “evolution-EV-3.10”.
+    - keyword: THEN
+      content: The “repo-admin/evolution-EV-3.10” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Pull requests” and opens “Resolve EV-3.10”.
+    - keyword: THEN
+      content: The “Resolve EV-3.10” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user opens “Files changed”, clicks the “Resolve conversation” button in the “Thread
+        EV-3.10” region, and refreshes the current page.
+    - keyword: THEN
+      content: The complete text `Resolved` appears visibly once in the “Thread EV-3.10” region. The complete
+        text `Handle the empty case.` appears visibly once in the “Thread EV-3.10” region.
+    - keyword: WHEN
+      content: The user clicks the “Unresolve conversation” button in the “Thread EV-3.10” region and
+        refreshes the current page.
+    - keyword: THEN
+      content: The “Resolve conversation” button appears once and is visible in the “Thread EV-3.10” region.

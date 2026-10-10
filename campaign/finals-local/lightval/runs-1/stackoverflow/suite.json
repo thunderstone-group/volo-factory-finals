@@ -1,0 +1,29 @@
+{
+ "files": [
+  {
+   "file": "t00-light.spec.cjs",
+   "scenarios": [
+    "EV-1.1",
+    "EV-1.2",
+    "EV-2.1",
+    "EV-2.2",
+    "EV-3.1",
+    "EV-3.2"
+   ],
+   "calls": 0,
+   "tests": [
+    "EV-1.1: Search using operators",
+    "EV-1.2: Sort answers by newest",
+    "EV-2.1: Copy a question share link",
+    "EV-2.2: Follow a question",
+    "EV-3.1: Start a bounty",
+    "EV-3.2: Flag a question"
+   ],
+   "compiler": "light"
+  }
+ ],
+ "scenarios": 6,
+ "tests": 6,
+ "seconds": 0,
+ "prerequisites": ""
+}

@@ -1,0 +1,14 @@
+{
+  "app": "dependency-build-pilot-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 61,
+    "error": 16,
+    "fail": 27
+  },
+  "seconds": 181.0,
+  "coverage": {
+    "total": 100,
+    "parsed": 88
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "baseline_run": "25b501ef-3a15-4af6-9ac8-b0c6110b3126",
+  "control_run": "d1af2bb6-86d2-45a5-9c48-52ac6f03c4b5",
+  "before": 23,
+  "after": 27,
+  "total": 29,
+  "gained": [
+    "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 1",
+    "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 2",
+    "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 3",
+    "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 4"
+  ],
+  "lost": [],
+  "scope": "Application diagnostic only; no agent score change"
+}

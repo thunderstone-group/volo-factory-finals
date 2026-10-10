@@ -1,0 +1,44 @@
+/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 32:  9458 Terminated: 15          ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 45/48
+--- timedOut: REQ-2-2-1 S5: 插入行时校验规则随原单元格下移
+    Test timeout of 10000ms exceeded.
+    Error: locator.fill: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog', { name: 'Data validation', exact: true }).getByRole('textbox', { name: 'Minimum', exact: true })
+      136 |   const dlg = dialog(page, 'Data validation');
+      137 |   await choose(page, dlg, 'Rule type', 'Number range');
+    > 138 |   await dlg.getByRole('textbox', { name: 'Minimum', exact: true }).fill(String(min));
+          |                                                                    ^
+      139 |   await dlg.getByRole('textbox', { name: 'Maximum', exact: true }).fill(String(max));
+      140 |   await btn(dlg, 'Save').click();
+      141 |   await expect(dlg).toBeHidden();
+        at addNumberRule (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:138:68)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/19-REQ-2-2-1.spec.cjs:317:3
+--- timedOut: REQ-2-2-2 S5: 插入列时校验规则随原单元格右移
+    Test timeout of 10000ms exceeded.
+    Error: locator.fill: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog', { name: 'Data validation', exact: true }).getByRole('textbox', { name: 'Minimum', exact: true })
+      136 |   const dlg = dialog(page, 'Data validation');
+      137 |   await choose(page, dlg, 'Rule type', 'Number range');
+    > 138 |   await dlg.getByRole('textbox', { name: 'Minimum', exact: true }).fill(String(min));
+          |                                                                    ^
+      139 |   await dlg.getByRole('textbox', { name: 'Maximum', exact: true }).fill(String(max));
+      140 |   await btn(dlg, 'Save').click();
+      141 |   await expect(dlg).toBeHidden();
+        at addNumberRule (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:138:68)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/20-REQ-2-2-2.spec.cjs:309:3
+--- timedOut: REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态
+    Test timeout of 10000ms exceeded.
+    Error: locator.fill: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog', { name: 'Data validation', exact: true }).getByRole('textbox', { name: 'Minimum', exact: true })
+      136 |   const dlg = dialog(page, 'Data validation');
+      137 |   await choose(page, dlg, 'Rule type', 'Number range');
+    > 138 |   await dlg.getByRole('textbox', { name: 'Minimum', exact: true }).fill(String(min));
+          |                                                                    ^
+      139 |   await dlg.getByRole('textbox', { name: 'Maximum', exact: true }).fill(String(max));
+      140 |   await btn(dlg, 'Save').click();
+      141 |   await expect(dlg).toBeHidden();
+        at addNumberRule (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:138:68)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:271:3

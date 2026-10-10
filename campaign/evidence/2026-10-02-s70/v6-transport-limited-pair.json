@@ -1,0 +1,725 @@
+{
+  "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb",
+  "classification": "transport-limited generation, not a completed repair trajectory",
+  "results": {
+    "github": {
+      "finished": {
+        "task": "github",
+        "exit": 0,
+        "seconds": 1486.8,
+        "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb"
+      },
+      "usage": {
+        "billing_status": "unknown",
+        "calls": 6,
+        "calls_by_model": {
+          "deepseek-v4-flash-vision-exp": 4,
+          "kimi-k2.7-code-highspeed": 2
+        },
+        "completed_calls": 1,
+        "completion_tokens": null,
+        "draft_call_limit": 4,
+        "estimated_cost_cny": 1.136304,
+        "estimated_repair_cost_cny": 0.0,
+        "failed_calls": 5,
+        "failure_limit": 5,
+        "fallback_model": null,
+        "known_completion_tokens": 109392,
+        "known_prompt_tokens": 56998,
+        "prompt_tokens": null,
+        "refused_calls": 0,
+        "repair_call_limit": 24,
+        "repair_cny_limit": 10.0,
+        "side_calls": 6,
+        "unknown_usage_calls": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "scenarios_after": {
+        "counts": {
+          "pass": 49,
+          "fail": 32,
+          "error": 33
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 81
+        },
+        "seconds": 366.8,
+        "source_contracts": {},
+        "failing": [
+          {
+            "id": "REQ-5-1-1#entry-1",
+            "observation": "Error: The first WHEN target must be interactive at the stated initial home: Issues\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  58 |   await page.goto('/');\n  59 |   const name = \"Issues\";\n> 60 |   await expect.poll(async () => {\n     |   ^\n  61 |     for (const role of ['button','link"
+          },
+          {
+            "id": "REQ-5-1-1#entry-2",
+            "observation": "Error: The first WHEN target must be interactive at the stated initial home: Issues\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  76 |   await page.goto('/');\n  77 |   const name = \"Issues\";\n> 78 |   await expect.poll(async () => {\n     |   ^\n  79 |     for (const role of ['button','link"
+          },
+          {
+            "id": "REQ-5-1-2#entry-1",
+            "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  94 |   await page.goto('/');\n  95 |   const name = \"Improve onboarding\";\n> 96 |   await expect.poll(async () => {\n     |   ^\n  97 |     for (const"
+          },
+          {
+            "id": "REQ-5-1-2#entry-2",
+            "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  112 |   await page.goto('/');\n  113 |   const name = \"Improve onboarding\";\n> 114 |   await expect.poll(async () => {\n      |   ^\n  115 |     for ("
+          },
+          {
+            "id": "REQ-5-1-2#entry-3",
+            "observation": "Error: The first WHEN target must be interactive at the stated initial home: Improve onboarding\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  130 |   await page.goto('/');\n  131 |   const name = \"Improve onboarding\";\n> 132 |   await expect.poll(async () => {\n      |   ^\n  133 |     for ("
+          },
+          {
+            "id": "REQ-6-2-1#entry-1",
+            "observation": "Error: The first WHEN target must be interactive at the stated initial home: Pull requests\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  148 |   await page.goto('/');\n  149 |   const name = \"Pull requests\";\n> 150 |   await expect.poll(async () => {\n      |   ^\n  151 |     for (const role"
+          },
+          {
+            "id": "REQ-6-2-1#entry-2",
+            "observation": "Error: The first WHEN target must be interactive at the stated initial home: Pull requests\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  166 |   await page.goto('/');\n  167 |   const name = \"Pull requests\";\n> 168 |   await expect.poll(async () => {\n      |   ^\n  169 |     for (const role"
+          },
+          {
+            "id": "REQ-6-3-1#entry-1",
+            "observation": "Error: The first WHEN target must be interactive at the stated initial home: Overview onboarding PR\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  184 |   await page.goto('/');\n  185 |   const name = \"Overview onboarding PR\";\n> 186 |   await expect.poll(async () => {\n      |   ^\n  187 |  "
+          },
+          {
+            "id": "REQ-2-2-2",
+            "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('bob-reviewer', { exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByText('bob-reviewer', { exact: true })\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n\n\n  199 |\n  200 |   // THEN: the member disappears immediately and stay"
+          },
+          {
+            "id": "REQ-2-2-3",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Add member', exact: true }).first()\n\n\n  232 |\n  233 |   // WHEN: add new-member with the Member role.\n> 234 |   await page.getByRole('button', { name: 'Add member', exact: true }).first().click();\n      |                                                                               ^\n  235 "
+          },
+          {
+            "id": "REQ-2-2-3#2",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Add member', exact: true }).first()\n\n\n  265 |\n  266 |   // WHEN: submit an existing member, then an unknown username.\n> 267 |   await page.getByRole('button', { name: 'Add member', exact: true }).first().click();\n      |                                                                       "
+          },
+          {
+            "id": "REQ-2-3",
+            "observation": "Blocked by helper:t02-REQ-2.spec.cjs:50 (shared with 1 other test(s))."
+          },
+          {
+            "id": "REQ-2-3#2",
+            "observation": "Blocked by helper:t02-REQ-2.spec.cjs:50 (shared with 1 other test(s))."
+          },
+          {
+            "id": "REQ-3-1",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  42 |\n  43 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 44 "
+          },
+          {
+            "id": "REQ-3-1#2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  57 |\n  58 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 59 "
+          },
+          {
+            "id": "REQ-3-1#3",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  70 |\n  71 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 72 "
+          },
+          {
+            "id": "REQ-3-1#4",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  81 |\n  82 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true });\n> 83 "
+          },
+          {
+            "id": "REQ-3-2-1",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Repository created by Playwright').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Repository created by Playwright').first()\n\n\n  110 |   await expect(page.getByRole('heading', { name: new RegExp(name) }).first()).toBeVisible();\n "
+          },
+          {
+            "id": "REQ-3-2-3",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Copied', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Copied', { exact: true }).first()\n\n\n  186 |   await page.getByRole('button', { name: /copy/i }).first().click();\n  187 |\n> 188 |   await expect(page.getByTe"
+          },
+          {
+            "id": "REQ-3-2-3#2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Copied', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Copied', { exact: true }).first()\n\n\n  202 |   await page.getByRole('button', { name: /copy/i }).first().click();\n  203 |\n> 204 |   await expect(page.getByTe"
+          },
+          {
+            "id": "REQ-3-4",
+            "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Code', exact: true }).first()\n\n\n  235 |\n  236 |   // back to the repository overview to read its visibility marker\n> 237 |   await page.getByRole('link', { name: 'Code', exact: true }).first().click();\n      |                                                                       ^\n  238 |   a"
+          },
+          {
+            "id": "REQ-4-1",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-2-1",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-2-2",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-2-3",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-2-3#2",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-2-3#3",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-2-3#4",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-3-1",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-3-1#2",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-3-2",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-3-2#2",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-3-3",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-3-3#2",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-4",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-4-4#2",
+            "observation": "Blocked by helper:t04-REQ-4.spec.cjs:29 (shared with 14 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-1",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-1#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-2#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-2#3",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-1",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-1#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-2#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-3",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-3#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-3",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-4",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-5-4#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:25 (shared with 15 other test(s))."
+          },
+          {
+            "id": "REQ-6-2-2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/commit/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/commit/i).first()\n\n\n  207 |\n  208 |   await expect(page.getByText('src/search.ts', { exact: true }).first()).toBeVisible();\n> 209 |   await expect(page.getByText(/commit/i)"
+          },
+          {
+            "id": "REQ-6-2-4",
+            "observation": "Error: expect(locator).toBeDisabled() failed\n\nLocator: getByRole('button', { name: 'Merge pull request', exact: true })\nExpected: disabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true })\n\n\n  289 |   await expect(page.getByRole('heading', { name: title, exact: true }"
+          },
+          {
+            "id": "REQ-6-2-4#2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/ready for review/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/ready for review/i).first()\n\n\n  304 |   await expect(page.getByText('draft-feature', { exact: true }).first()).toBeVisible();\n  305 |   await expect(page.getByTex"
+          },
+          {
+            "id": "REQ-6-3-1",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i).first()\n\n\n  321 |\n  322 |   await clickNamed(page, 'Files changed');\n> 323 |   await expect(page.getByText(/changed files/i).first()).toBeVisible();"
+          },
+          {
+            "id": "REQ-6-3-1#3",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changed files/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changed files/i).first()\n\n\n  343 |   await clickNamed(page, 'Files changed');\n  344 |   await expect(page.getByRole('heading', { name: 'Overview onboarding PR', exac"
+          },
+          {
+            "id": "REQ-6-3-3",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('PW review comment muqvpxzxm04v', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('PW review comment muqvpxzxm04v', { exact: true })\n\n\n  370 |   await clickNamed(page, 'Add single comment');\n  371 |\n> 372 |   await expect(p"
+          },
+          {
+            "id": "REQ-6-3-3#2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('PW pending comment muqvq2eznxeb', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('PW pending comment muqvq2eznxeb', { exact: true })\n\n\n  387 |   await clickNamed(page, 'Start a review');\n  388 |\n> 389 |   await expect(pag"
+          },
+          {
+            "id": "REQ-6-3-4",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/approved/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/approved/i).first()\n\n\n  405 |   await clickNamed(page, 'Submit review');\n  406 |\n> 407 |   await expect(page.getByText(/approved/i).first()).toBeVisible();\n      |       "
+          },
+          {
+            "id": "REQ-6-3-4#2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText(/changes requested/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText(/changes requested/i).first()\n\n\n  420 |   await clickNamed(page, 'Submit review');\n  421 |\n> 422 |   await expect(page.getByText(/changes requested/i).first()).to"
+          },
+          {
+            "id": "REQ-6-5",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator:  getByText('Create a merge commit', { exact: true }).first()\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Create a merge commit', { exact: true }).first()\n    9 × locator resolved to <option>Create a merge commit</option>\n      - unexpected value \"hidden\"\n"
+          },
+          {
+            "id": "helper:t02-REQ-2.spec.cjs:50",
+            "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  48 | // Open a readable repository through the top global search control.\n  49 | async function openRepository(page, name) {\n> 50 |   await page.getByRole('searchbox', { name: 'Search', exact: true }).fill(name);\n     |                                          "
+          },
+          {
+            "id": "helper:t04-REQ-4.spec.cjs:29",
+            "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true }).first()\n\n\n  27 | async function openRepository(page, repoName) {\n  28 |   const search = page.getByRole('searchbox', { name: 'Search', exact: true }).first();\n> 29 |   await search.fill(repoName);\n     |                ^\n  30 |   await search.press('Enter');\n  31 |"
+          },
+          {
+            "id": "helper:t05-REQ-5.spec.cjs:25",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('searchbox', { name: 'Search', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n\n\n  23 | async function openRepository(page, repoName) {\n  24 |   const search = page.getByRole('sea"
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "transport_errors": [
+        {
+          "call": 2,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.013,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 3,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.015,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 4,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.028,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 5,
+          "model": "kimi-k2.7-code-highspeed",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.013,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 6,
+          "model": "kimi-k2.7-code-highspeed",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.021,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        }
+      ]
+    },
+    "sheet": {
+      "finished": {
+        "task": "sheet",
+        "exit": 0,
+        "seconds": 1516.8,
+        "package_sha256": "2490d023dc27f1938372a7ad65918808c40ab691b006bf8c483bf6591e6918eb"
+      },
+      "usage": {
+        "billing_status": "unknown",
+        "calls": 6,
+        "calls_by_model": {
+          "deepseek-v4-flash-vision-exp": 4,
+          "kimi-k2.7-code-highspeed": 2
+        },
+        "completed_calls": 1,
+        "completion_tokens": null,
+        "draft_call_limit": 4,
+        "estimated_cost_cny": 4.099032,
+        "estimated_repair_cost_cny": 2.91662,
+        "failed_calls": 5,
+        "failure_limit": 5,
+        "fallback_model": null,
+        "known_completion_tokens": 86323,
+        "known_prompt_tokens": 63688,
+        "prompt_tokens": null,
+        "refused_calls": 0,
+        "repair_call_limit": 24,
+        "repair_cny_limit": 10.0,
+        "side_calls": 5,
+        "unknown_usage_calls": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "scenarios_after": {
+        "counts": {
+          "pass": 68,
+          "fail": 9,
+          "error": 24
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 77
+        },
+        "seconds": 200.5,
+        "source_contracts": {},
+        "failing": [
+          {
+            "id": "REQ-1-3-2#4",
+            "observation": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Array [\n    \"Region\",\n-   \"\",\n+   \"Sales\",\n    \"left\",\n    \"\",\n    \"right\",\n  ]\n\n  465 |   // Empty cells inside the used range are preserved in row/column order.\n  466 |   const rows = parseCsv(text);\n> 467 |   expect(rows[0]).toEqual(['Region', '', 'left', '', 'right']);\n      |                   ^\n  4"
+          },
+          {
+            "id": "REQ-2-1-3#2",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet1', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet1', exact: true })\n\n\n  300 |     page.getByText('Worksheet name cannot be empty', { exact: true })\n  301 |   ).toBeVisible();\n> 302"
+          },
+          {
+            "id": "REQ-2-1-3#3",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet2', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet2', exact: true })\n\n\n  321 |     page.getByText('Worksheet name already exists', { exact: true })\n  322 |   ).toBeVisible();\n> 323 "
+          },
+          {
+            "id": "REQ-2-1-4#4",
+            "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('dialog', { name: 'Delete worksheet', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('dialog', { name: 'Delete worksheet', exact: true })\n\n\n  404 |   await clickMenuItem(page, 'Delete');\n  405 |   const del = page.getByRole("
+          },
+          {
+            "id": "REQ-3-2-1#3",
+            "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByLabel('Formula bar', { exact: true })\nExpected: \"=$D$1+1\"\nReceived: \"=D1+1\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByLabel('Formula bar', { exact: true })\n    9 × locator resolved to <input type=\"text\" data-ref=\"F2\" value=\"=D1+1\" id=\"formula-bar\" name=\"formulaBar\" autocomplete=\""
+          },
+          {
+            "id": "REQ-4-1-2",
+            "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByRole('textbox', { name: 'Formula bar', exact: true })\nExpected: \"=$A$12+B14\"\nReceived: \"=A12+B14\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByRole('textbox', { name: 'Formula bar', exact: true })\n    9 × locator resolved to <input type=\"text\" data-ref=\"D14\" id=\"formula-bar\" value=\""
+          },
+          {
+            "id": "REQ-4-2-2#5",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'D16', exact: true })\nExpected: \"#REF!\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'D16', exact: true "
+          },
+          {
+            "id": "REQ-5-1-1",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Region\"\nReceived: \"10\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div class=\"gc\" data-r=\"0\" data-c=\"0\" data-cell=\"1\" data-ref=\"A1\" tabindex=\"-1\" role=\""
+          },
+          {
+            "id": "REQ-5-1-1#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-1#3",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-1#4",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-1#5",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-1#6",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-2#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-2#3",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-2#4",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-1-2#5",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-1",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-1#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-1#4",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-1#5",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-2-1#6",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1#2",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1#3",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1#4",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1#5",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1#6",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1#7",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1#8",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "REQ-5-3-1#9",
+            "observation": "Blocked by helper:t05-REQ-5.spec.cjs:57 (shared with 23 other test(s))."
+          },
+          {
+            "id": "helper:t05-REQ-5.spec.cjs:57",
+            "observation": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"true\"\nReceived: \"false\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div class=\"gc\" data-r=\"0\" data-c=\"0\" data-cell=\"1\" data-ref=\"A1\" tabindex="
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "transport_errors": [
+        {
+          "call": 2,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 10.011,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 3,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "StreamError",
+          "error_detail": "malformed SSE event",
+          "elapsed_seconds": 7.37,
+          "stream_observation": {
+            "received_bytes": 153950,
+            "sse_events": 470,
+            "content_chars": 0,
+            "reasoning_chars": 1562
+          },
+          "event_error": "JSONDecodeError: Unterminated string starting at: line 1 column 23 (char 22)",
+          "invalid_sse_event": "{\"choices\":[{\"delta\":{\"c"
+        },
+        {
+          "call": 4,
+          "model": "deepseek-v4-flash-vision-exp",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.193,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 5,
+          "model": "kimi-k2.7-code-highspeed",
+          "error_type": "StreamError",
+          "error_detail": "stream ended without completion markers",
+          "elapsed_seconds": 127.849,
+          "stream_observation": {
+            "received_bytes": 3815613,
+            "sse_events": 14784,
+            "content_chars": 0,
+            "reasoning_chars": 59486
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        },
+        {
+          "call": 6,
+          "model": "kimi-k2.7-code-highspeed",
+          "error_type": "URLError",
+          "error_detail": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1129)>",
+          "elapsed_seconds": 5.02,
+          "stream_observation": {
+            "received_bytes": 0,
+            "sse_events": 0,
+            "content_chars": 0,
+            "reasoning_chars": 0
+          },
+          "event_error": null,
+          "invalid_sse_event": null
+        }
+      ]
+    }
+  },
+  "calibration": {
+    "github-official46": {
+      "case": "github-official46",
+      "counts": {
+        "pass": 99,
+        "fail": 12
+      },
+      "entry_checks": {
+        "pass": 3,
+        "fail": 8
+      },
+      "ordinary_checks": {
+        "pass": 96,
+        "fail": 4
+      },
+      "seconds": 100.6,
+      "unavailable": null,
+      "model_api_calls": 0
+    },
+    "github-controlled73": {
+      "case": "github-controlled73",
+      "counts": {
+        "pass": 107,
+        "fail": 4
+      },
+      "entry_checks": {
+        "pass": 11
+      },
+      "ordinary_checks": {
+        "pass": 96,
+        "fail": 4
+      },
+      "seconds": 58.1,
+      "unavailable": null,
+      "model_api_calls": 0
+    },
+    "sheet-official80": {
+      "case": "sheet-official80",
+      "counts": {
+        "pass": 88,
+        "fail": 5,
+        "error": 8
+      },
+      "entry_checks": {},
+      "ordinary_checks": {
+        "pass": 88,
+        "fail": 5,
+        "error": 8
+      },
+      "seconds": 96.2,
+      "unavailable": null,
+      "model_api_calls": 0
+    }
+  },
+  "recovery": {
+    "github": "v6-transport-recovery-github",
+    "runtime": "Python 3.12",
+    "repair_call_limit": 1,
+    "estimated_repair_cny_limit": 1,
+    "fallback_model_disabled": true,
+    "state": "running"
+  },
+  "official_submission_unchanged": "f56d97c2fdb1"
+}

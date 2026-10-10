@@ -1,0 +1,1209 @@
+{
+  "executed": true,
+  "problems": [
+    "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Worksheet options for \" shares worksheet with a field label",
+    "2 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “Item/Qty” appears only as `(Item/Qty with Pen/4 plus the`; “Pen/4” appears only as `(Item/Qty with Pen/4 plus the`",
+    "41 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"Last updated: <last updated value>\", \"the requested workflow,the requested workflow page entry the requested workflow\", \"A1=Region\", \"the requested workflow\", \"the requested workflow,the requested workflow\", \"the requested workflow UTF-8 CSV,the requested workflow\", \"the requested workflow CSV the requested workflow,the requested workflow\", \"the requested workflow CSV,the requested workflow\", \"the requested workflow Sheet1 the requested workflow\", \"Worksheet options for <worksheet name>\", \"the requested workflow Sheet2,the requested workflow\", \"the requested workflow SheetN the requested workflow\", \"the requested workflow, the requested workflow\", \"<target worksheet name>\", \"the requested workflow 3 the requested workflow,the requested workflow\", \"the requested workflow B the requested workflow,the requested workflow\", \"Edit <cell coordinate>\", \"A1:B2\", \"D1:E2\", \"Escape the requested workflow,the requested workflow\", \"the requested workflow B2 the requested workflow,the requested workflow\", \"the requested workflow A1 the requested workflow\", \"the requested workflow C3 the requested workflow\", \"the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow\", \"A1=2\", \"B1=3\", \"=A1+B1\", \"=C1*2\", \"the requested workflow Sales the requested workflow,the requested workflow\", \"the requested workflow ISO the requested workflow\", \"Filter <header text>\", \"the requested workflow, the requested workflow,the requested workflow\", \"CSV the requested workflow\", \"Open dropdown for <cell coordinate>\", \"Please select one of the following values: <comma-separated allowed values>\", \"Please enter a number between <minimum> and <maximum>\", \"the requested workflow A1:A2 the requested workflow,the requested workflow\", \"Source range: <cell range>\", \"<summarization method> of <value field>\", \"the requested workflow COUNT the requested workflow\", \"AVERAGE the requested workflow\""
+  ],
+  "vocabulary_missing": 41,
+  "scenarios": {
+    "counts": {
+      "pass": 89,
+      "fail": 13
+    },
+    "coverage": {
+      "total": 100,
+      "parsed": 100
+    },
+    "seconds": 94.1,
+    "source_contracts": {
+      "fail": 2
+    },
+    "failing": [
+      {
+        "id": "REQ-3-1-1",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selec"
+      },
+      {
+        "id": "REQ-3-1-1#2",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"Pen\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"0\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected"
+      },
+      {
+        "id": "REQ-3-1-1#4",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"8\"\nReceived: \"2400\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\""
+      },
+      {
+        "id": "REQ-3-1-2",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-3-1-2#2",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-3-1-2#4",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-3-1-2#5",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-3-2-1",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    2 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+      },
+      {
+        "id": "REQ-3-2-1#3",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+      },
+      {
+        "id": "REQ-3-2-1#4",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-5-3-1#7",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid' }).getByRole('gridcell', { name: 'A5', exact: true })\nExpected: \"Grand Total\"\nReceived: \"South\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid' }).getByRole('gridcell', { name: 'A5', exact: true })\n    9 × locato"
+      },
+      {
+        "id": "REQ-2-2-1#contract-1",
+        "status": "fail",
+        "observation": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "id": "REQ-4-1-2#contract-1",
+        "status": "fail",
+        "observation": "Expected values to be strictly equal:\n\n'=G1' !== '=#REF!'\n"
+      }
+    ],
+    "invariants": [],
+    "translation": {}
+  },
+  "repair": {
+    "accepted": false,
+    "reason": "no failing scenario passes after the change"
+  },
+  "browser_before": [
+    {
+      "executed": true,
+      "diagnostic_only": true,
+      "errors": [],
+      "page_errors": [],
+      "actions": [
+        {
+          "scope": "page",
+          "name": "Sheets",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "New blank workbook",
+          "action": "new-workbook"
+        },
+        {
+          "scope": "page",
+          "name": "Worksheet options for Sheet1",
+          "action": "ws-menu"
+        },
+        {
+          "scope": "page-popover",
+          "name": "Rename",
+          "action": "ws-rename"
+        },
+        {
+          "scope": "dialog",
+          "name": "Save",
+          "action": ""
+        },
+        {
+          "scope": "page",
+          "name": "Sheets",
+          "action": "arc:nav"
+        },
+        {
+          "scope": "page",
+          "name": "Sheets",
+          "action": "arc:nav"
+        }
+      ],
+      "screens": [
+        "#/",
+        "#/workbook/wb-q3sales",
+        "#/new"
+      ],
+      "browser": "143.0.7499.4",
+      "playwright": "1.57.0"
+    }
+  ],
+  "tests": {
+    "seconds": 757.6,
+    "calls": 5,
+    "cost_cny": 0.794749,
+    "scenarios": 100,
+    "tests": 100,
+    "audit_checks": 0,
+    "audit_errors": 0,
+    "files": [
+      {
+        "file": "t01-REQ-1.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 13
+      },
+      {
+        "file": "t02-REQ-2.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 24
+      },
+      {
+        "file": "t03-REQ-3.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 22
+      },
+      {
+        "file": "t04-REQ-4.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 15
+      },
+      {
+        "file": "t05-REQ-5.spec.cjs",
+        "calls": 1,
+        "finish": "stop",
+        "tests": 26
+      }
+    ],
+    "source_contracts": 2,
+    "used": true
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "fatal": 0,
+      "failing": [
+        "REQ-3-1-1",
+        "REQ-3-1-1#2",
+        "REQ-3-1-1#4",
+        "REQ-3-1-2",
+        "REQ-3-1-2#2",
+        "REQ-3-1-2#4",
+        "REQ-3-1-2#5",
+        "REQ-3-2-1",
+        "REQ-3-2-1#3",
+        "REQ-3-2-1#4",
+        "REQ-5-3-1#7",
+        "REQ-2-2-1#contract-1",
+        "REQ-4-1-2#contract-1"
+      ],
+      "passing_before": 89,
+      "accepted": true,
+      "first_try": {
+        "reason": "the change broke 29 passing scenario(s): REQ-1-1-1, REQ-1-1-1#2, REQ-1-2-2#2, REQ-1-3-2#4, REQ-5-1-1, REQ-5-1-1#2, REQ-5-1-1#3, REQ-5-1-1#4, REQ-5-1-1#5, REQ-5-1-1#6, REQ-5-1-2, REQ-5-1-2#2, and fixed only 12",
+        "gained": 12,
+        "lost": 29
+      },
+      "follow_up": "regression",
+      "follow_up_finish": "stop",
+      "gained": [
+        "REQ-2-2-1#contract-1",
+        "REQ-4-1-2#contract-1",
+        "REQ-5-3-1#7"
+      ],
+      "reason": "3 more scenario(s) pass",
+      "scenarios": {
+        "counts": {
+          "pass": 92,
+          "fail": 10
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        },
+        "seconds": 88.9,
+        "source_contracts": {
+          "pass": 2
+        },
+        "failing": [
+          {
+            "id": "REQ-3-1-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-1-1#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"Pen\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"0\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected"
+          },
+          {
+            "id": "REQ-3-1-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"8\"\nReceived: \"2400\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\""
+          },
+          {
+            "id": "REQ-3-1-2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#5",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-2-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#3",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "browser_after": [
+        {
+          "executed": true,
+          "diagnostic_only": true,
+          "errors": [],
+          "page_errors": [],
+          "actions": [
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "New blank workbook",
+              "action": "new-workbook"
+            },
+            {
+              "scope": "page",
+              "name": "Worksheet options for Sheet1",
+              "action": "ws-menu"
+            },
+            {
+              "scope": "page-popover",
+              "name": "Rename",
+              "action": "ws-rename"
+            },
+            {
+              "scope": "dialog",
+              "name": "Save",
+              "action": ""
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            }
+          ],
+          "screens": [
+            "#/",
+            "#/workbook/wb-q3sales",
+            "#/new"
+          ],
+          "browser": "143.0.7499.4",
+          "playwright": "1.57.0"
+        }
+      ],
+      "files": [
+        "frontend/public/app.js"
+      ],
+      "replied": true,
+      "seconds": 983.7,
+      "cost_cny": 0.548411
+    },
+    {
+      "round": 2,
+      "fatal": 0,
+      "failing": [
+        "REQ-3-1-1",
+        "REQ-3-1-1#2",
+        "REQ-3-1-1#4",
+        "REQ-3-1-2",
+        "REQ-3-1-2#2",
+        "REQ-3-1-2#4",
+        "REQ-3-1-2#5",
+        "REQ-3-2-1",
+        "REQ-3-2-1#3",
+        "REQ-3-2-1#4"
+      ],
+      "passing_before": 92,
+      "accepted": false,
+      "gained": [],
+      "reason": "no failing scenario passes after the change",
+      "scenarios": {
+        "counts": {
+          "pass": 92,
+          "fail": 10
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        },
+        "seconds": 88.7,
+        "source_contracts": {
+          "pass": 2
+        },
+        "failing": [
+          {
+            "id": "REQ-3-1-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-1-1#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"Pen\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"0\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected"
+          },
+          {
+            "id": "REQ-3-1-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"8\"\nReceived: \"2400\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\""
+          },
+          {
+            "id": "REQ-3-1-2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#5",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-2-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    2 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#3",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "browser_after": [
+        {
+          "executed": true,
+          "diagnostic_only": true,
+          "errors": [],
+          "page_errors": [],
+          "actions": [
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "New blank workbook",
+              "action": "new-workbook"
+            },
+            {
+              "scope": "page",
+              "name": "Worksheet options for Sheet1",
+              "action": "ws-menu"
+            },
+            {
+              "scope": "page-popover",
+              "name": "Rename",
+              "action": "ws-rename"
+            },
+            {
+              "scope": "dialog",
+              "name": "Save",
+              "action": ""
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            }
+          ],
+          "screens": [
+            "#/",
+            "#/workbook/wb-q3sales",
+            "#/new"
+          ],
+          "browser": "143.0.7499.4",
+          "playwright": "1.57.0"
+        }
+      ],
+      "replied": true,
+      "seconds": 637.8,
+      "cost_cny": 0.488942
+    },
+    {
+      "round": 3,
+      "fatal": 0,
+      "failing": [
+        "REQ-3-1-1",
+        "REQ-3-1-1#2",
+        "REQ-3-1-1#4",
+        "REQ-3-1-2",
+        "REQ-3-1-2#2",
+        "REQ-3-1-2#4",
+        "REQ-3-1-2#5",
+        "REQ-3-2-1",
+        "REQ-3-2-1#3",
+        "REQ-3-2-1#4"
+      ],
+      "passing_before": 92,
+      "accepted": false,
+      "focus": [
+        "REQ-3-1-1",
+        "REQ-3-1-1#2",
+        "REQ-3-1-1#4"
+      ],
+      "first_try": {
+        "reason": "the change broke 30 passing scenario(s): REQ-1-1-1, REQ-1-1-1#2, REQ-1-2-2#2, REQ-1-3-2#4, REQ-5-1-1, REQ-5-1-1#2, REQ-5-1-1#3, REQ-5-1-1#4, REQ-5-1-1#5, REQ-5-1-1#6, REQ-5-1-2, REQ-5-1-2#2, and fixed only 10",
+        "gained": 10,
+        "lost": 30
+      },
+      "follow_up": "regression",
+      "follow_up_finish": "stop",
+      "gained": [],
+      "reason": "no failing scenario passes after the change",
+      "scenarios": {
+        "counts": {
+          "pass": 92,
+          "fail": 10
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        },
+        "seconds": 88.8,
+        "source_contracts": {
+          "pass": 2
+        },
+        "failing": [
+          {
+            "id": "REQ-3-1-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-1-1#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"Pen\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"0\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected"
+          },
+          {
+            "id": "REQ-3-1-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"8\"\nReceived: \"2400\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\""
+          },
+          {
+            "id": "REQ-3-1-2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#5",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-2-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    2 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#3",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "browser_after": [
+        {
+          "executed": true,
+          "diagnostic_only": true,
+          "errors": [],
+          "page_errors": [],
+          "actions": [
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "New blank workbook",
+              "action": "new-workbook"
+            },
+            {
+              "scope": "page",
+              "name": "Worksheet options for Sheet1",
+              "action": "ws-menu"
+            },
+            {
+              "scope": "page-popover",
+              "name": "Rename",
+              "action": "ws-rename"
+            },
+            {
+              "scope": "dialog",
+              "name": "Save",
+              "action": ""
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            }
+          ],
+          "screens": [
+            "#/",
+            "#/workbook/wb-q3sales",
+            "#/new"
+          ],
+          "browser": "143.0.7499.4",
+          "playwright": "1.57.0"
+        }
+      ],
+      "replied": true,
+      "seconds": 945.0,
+      "cost_cny": 0.454393
+    },
+    {
+      "round": 4,
+      "fatal": 0,
+      "failing": [
+        "REQ-3-1-1",
+        "REQ-3-1-1#2",
+        "REQ-3-1-1#4",
+        "REQ-3-1-2",
+        "REQ-3-1-2#2",
+        "REQ-3-1-2#4",
+        "REQ-3-1-2#5",
+        "REQ-3-2-1",
+        "REQ-3-2-1#3",
+        "REQ-3-2-1#4"
+      ],
+      "passing_before": 92,
+      "accepted": false,
+      "focus": [
+        "REQ-3-1-2",
+        "REQ-3-1-2#2",
+        "REQ-3-1-2#4",
+        "REQ-3-1-2#5"
+      ],
+      "gained": [],
+      "lost": [
+        "REQ-1-1-1"
+      ],
+      "reason": "the change broke 1 passing scenario(s): REQ-1-1-1, and fixed none",
+      "scenarios": {
+        "counts": {
+          "fail": 11,
+          "pass": 91
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        },
+        "seconds": 88.8,
+        "source_contracts": {
+          "pass": 2
+        },
+        "failing": [
+          {
+            "id": "REQ-1-1-1",
+            "status": "fail",
+            "observation": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"Last updated: 2024-09-25 09:00\"\nReceived: \"Last updated: 2024-09-30 09:15\"\n\n  84 |   const editorUpdated = lastUpdatedText(page);\n  85 |   await expect(editorUpdated).toBeVisible();\n> 86 |   expect((await editorUpdated.textContent()).trim()).toBe(homeUpdatedValue);\n     |                                                      ^"
+          },
+          {
+            "id": "REQ-3-1-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-1-1#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"Pen\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"0\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected"
+          },
+          {
+            "id": "REQ-3-1-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"8\"\nReceived: \"2400\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\""
+          },
+          {
+            "id": "REQ-3-1-2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#5",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-2-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    - locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selecte"
+          },
+          {
+            "id": "REQ-3-2-1#3",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "browser_after": [
+        {
+          "executed": true,
+          "diagnostic_only": true,
+          "errors": [],
+          "page_errors": [],
+          "actions": [
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "New blank workbook",
+              "action": "new-workbook"
+            },
+            {
+              "scope": "page",
+              "name": "Worksheet options for Sheet1",
+              "action": "ws-menu"
+            },
+            {
+              "scope": "page-popover",
+              "name": "Rename",
+              "action": "ws-rename"
+            },
+            {
+              "scope": "dialog",
+              "name": "Save",
+              "action": ""
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Worksheet options for Sheet1",
+              "action": "ws-menu"
+            },
+            {
+              "scope": "page-popover",
+              "name": "Rename",
+              "action": "ws-rename"
+            },
+            {
+              "scope": "dialog",
+              "name": "Save",
+              "action": ""
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            }
+          ],
+          "screens": [
+            "#/",
+            "#/workbook/wb-items",
+            "#/workbook/wb-q3sales",
+            "#/new"
+          ],
+          "browser": "143.0.7499.4",
+          "playwright": "1.57.0"
+        }
+      ],
+      "replied": true,
+      "seconds": 318.7,
+      "cost_cny": 0.213428
+    },
+    {
+      "round": 5,
+      "fatal": 0,
+      "failing": [
+        "REQ-3-1-1",
+        "REQ-3-1-1#2",
+        "REQ-3-1-1#4",
+        "REQ-3-1-2",
+        "REQ-3-1-2#2",
+        "REQ-3-1-2#4",
+        "REQ-3-1-2#5",
+        "REQ-3-2-1",
+        "REQ-3-2-1#3",
+        "REQ-3-2-1#4"
+      ],
+      "passing_before": 92,
+      "accepted": false,
+      "focus": [
+        "REQ-3-2-1",
+        "REQ-3-2-1#3",
+        "REQ-3-2-1#4"
+      ],
+      "gained": [],
+      "reason": "no failing scenario passes after the change",
+      "scenarios": {
+        "counts": {
+          "pass": 92,
+          "fail": 10
+        },
+        "coverage": {
+          "total": 100,
+          "parsed": 100
+        },
+        "seconds": 88.9,
+        "source_contracts": {
+          "pass": 2
+        },
+        "failing": [
+          {
+            "id": "REQ-3-1-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-1-1#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"Pen\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"0\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected"
+          },
+          {
+            "id": "REQ-3-1-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"8\"\nReceived: \"2400\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\""
+          },
+          {
+            "id": "REQ-3-1-2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#2",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-1-2#5",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          },
+          {
+            "id": "REQ-3-2-1",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#3",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+          },
+          {
+            "id": "REQ-3-2-1#4",
+            "status": "fail",
+            "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+          }
+        ],
+        "invariants": [],
+        "translation": {}
+      },
+      "browser_after": [
+        {
+          "executed": true,
+          "diagnostic_only": true,
+          "errors": [],
+          "page_errors": [],
+          "actions": [
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "New blank workbook",
+              "action": "new-workbook"
+            },
+            {
+              "scope": "page",
+              "name": "Worksheet options for Sheet1",
+              "action": "ws-menu"
+            },
+            {
+              "scope": "page-popover",
+              "name": "Rename",
+              "action": "ws-rename"
+            },
+            {
+              "scope": "dialog",
+              "name": "Save",
+              "action": ""
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            },
+            {
+              "scope": "page",
+              "name": "Sheets",
+              "action": "arc:nav"
+            }
+          ],
+          "screens": [
+            "#/",
+            "#/workbook/wb-q3sales",
+            "#/new"
+          ],
+          "browser": "143.0.7499.4",
+          "playwright": "1.57.0"
+        }
+      ],
+      "replied": true,
+      "seconds": 235.1,
+      "cost_cny": 0.125731
+    }
+  ],
+  "stopped": "4 repairs in a row were discarded",
+  "problems_after": [],
+  "scenarios_after": {
+    "counts": {
+      "pass": 92,
+      "fail": 10
+    },
+    "coverage": {
+      "total": 100,
+      "parsed": 100
+    },
+    "seconds": 88.9,
+    "source_contracts": {
+      "pass": 2
+    },
+    "failing": [
+      {
+        "id": "REQ-3-1-1",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selec"
+      },
+      {
+        "id": "REQ-3-1-1#2",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"Pen\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"0\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected"
+      },
+      {
+        "id": "REQ-3-1-1#4",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"8\"\nReceived: \"2400\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\""
+      },
+      {
+        "id": "REQ-3-1-2",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-3-1-2#2",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-3-1-2#4",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-3-1-2#5",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      },
+      {
+        "id": "REQ-3-2-1",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+      },
+      {
+        "id": "REQ-3-2-1#3",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+      },
+      {
+        "id": "REQ-3-2-1#4",
+        "status": "fail",
+        "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+      }
+    ],
+    "invariants": [],
+    "translation": {}
+  },
+  "before_source_review": {
+    "stopped": "4 repairs in a row were discarded",
+    "scenarios_after": {
+      "counts": {
+        "pass": 89,
+        "fail": 11
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 100
+      },
+      "seconds": 94.2,
+      "source_contracts": {},
+      "failing": [
+        {
+          "id": "REQ-3-1-1",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selec"
+        },
+        {
+          "id": "REQ-3-1-1#2",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"Pen\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n    9 × locator resolved to <div data-r=\"1\" data-c=\"0\" data-cell=\"A2\" role=\"gridcell\" aria-label=\"A2\" aria-selected"
+        },
+        {
+          "id": "REQ-3-1-1#4",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"8\"\nReceived: \"2400\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selected=\""
+        },
+        {
+          "id": "REQ-3-1-2",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+        },
+        {
+          "id": "REQ-3-1-2#2",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+        },
+        {
+          "id": "REQ-3-1-2#4",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+        },
+        {
+          "id": "REQ-3-1-2#5",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+        },
+        {
+          "id": "REQ-3-2-1",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    2 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+        },
+        {
+          "id": "REQ-3-2-1#3",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"3\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-selec"
+        },
+        {
+          "id": "REQ-3-2-1#4",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nReceived: \"Region\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div data-r=\"0\" data-c=\"0\" class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A"
+        },
+        {
+          "id": "REQ-5-3-1#7",
+          "status": "fail",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid' }).getByRole('gridcell', { name: 'A5', exact: true })\nExpected: \"Grand Total\"\nReceived: \"South\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid' }).getByRole('gridcell', { name: 'A5', exact: true })\n    9 × locato"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "tests": {
+      "seconds": 757.6,
+      "calls": 5,
+      "cost_cny": 0.794749,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 13
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 24
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 22
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 26
+        }
+      ],
+      "used": true
+    },
+    "rounds": 10
+  },
+  "source_review": {
+    "proposed": 3,
+    "probes": 2,
+    "results": [
+      {
+        "id": "REQ-2-2-1#contract-1",
+        "status": "fail",
+        "calls": {
+          "shiftCells": 1,
+          "rowHidden": 1,
+          "matchCond": 1,
+          "displayed": 1,
+          "coord": 13,
+          "indexToCol": 13,
+          "parseCoord": 12,
+          "colToIndex": 12,
+          "shiftRect": 1,
+          "workbooks": 1
+        },
+        "assertions": 4,
+        "phase": "check",
+        "error_name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\ntrue !== false\n",
+        "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\ntrue !== false\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-repair-evidence-v8-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:7:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-repair-evidence-v8-sheet/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+      },
+      {
+        "id": "REQ-4-1-2#contract-1",
+        "status": "fail",
+        "calls": {
+          "offsetFormula": 2,
+          "colToIndex": 2,
+          "indexToCol": 2
+        },
+        "assertions": 1,
+        "phase": "check",
+        "error_name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n'=G1' !== '=#REF!'\n",
+        "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'=G1' !== '=#REF!'\n\n    at Proxy.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-repair-evidence-v8-sheet/agent/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:5:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-repair-evidence-v8-sheet/agent/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+      }
+    ],
+    "skipped": null,
+    "seconds": 3844.8,
+    "calls": 9,
+    "cost_cny": 2.429485
+  }
+}

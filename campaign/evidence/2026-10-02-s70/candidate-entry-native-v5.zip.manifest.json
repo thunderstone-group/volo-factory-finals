@@ -1,0 +1,112 @@
+{
+  "files": {
+    "contract_bindings.cjs": {
+      "bytes": 4426,
+      "sha256": "18fe42b15324f4ae0cdf1a252989c2304faee1a55928f478a60be591499e119a"
+    },
+    "contract_runner.cjs": {
+      "bytes": 4847,
+      "sha256": "5fce9ff14e5c8f2406352ba9bcb0c04737174878574352fdf4880888d29ad53f"
+    },
+    "dialect.md": {
+      "bytes": 16251,
+      "sha256": "57d194e458cef0d4127120a033a6f101737d45fffed49c53af5456735e7c3975"
+    },
+    "main.py": {
+      "bytes": 173922,
+      "sha256": "a438685fe42e196f21b62b957c73cd48bbaad6354a93aab88f87f1071f3970d6"
+    },
+    "requirements.txt": {
+      "bytes": 69,
+      "sha256": "05952bef1c3e375aaada3c27ac8c08b54a11a5265b5aba98821780a6c4a2d61b"
+    },
+    "scaffold/README.md": {
+      "bytes": 5541,
+      "sha256": "ac3e9a060efd13317bf84f3636dee23356ac4ca119737ed336a6f4c69575b566"
+    },
+    "scaffold/backend/package.json": {
+      "bytes": 113,
+      "sha256": "b1fe25bf751c12b876e9724f4fa56261ddcce1e9a382198b6c2aab24989b8827"
+    },
+    "scaffold/backend/server.js": {
+      "bytes": 4096,
+      "sha256": "34587009e4df0fa1d47832fd1a6c3b10c242dc8bb5642c673d3e1efd9be810c9"
+    },
+    "scaffold/frontend/package.json": {
+      "bytes": 166,
+      "sha256": "04eac1a1c988c3325ea4eac086ee9621b74a988e94cec3a898c51682e9900978"
+    },
+    "scaffold/frontend/public/app.js": {
+      "bytes": 3810,
+      "sha256": "dac2a4eceac5fb540e71ab2ed2163f7df68a2b2258463c3ebb04282700b2afcb"
+    },
+    "scaffold/frontend/public/index.html": {
+      "bytes": 722,
+      "sha256": "fd5e8a14e338cba860ebf753c1e5467e62f766037e759bca0023e8d20da9e25d"
+    },
+    "scaffold/frontend/public/lib/arc.js": {
+      "bytes": 30718,
+      "sha256": "c98584e246ab1b9abeedc5e112f67581e07a9fe7d4f694345d5d1aec84bbce51"
+    },
+    "scaffold/frontend/public/seed.js": {
+      "bytes": 367,
+      "sha256": "bde945342c59bdc6f89899e5aff1d19eaacb86dc6b411b0e87abda28710f0f0e"
+    },
+    "scaffold/frontend/public/styles.css": {
+      "bytes": 3114,
+      "sha256": "ff83798d8ca43113a186d52b6eac208fc60e0c978d5bdeadc95616989eeed215"
+    },
+    "scenario_check.cjs": {
+      "bytes": 29025,
+      "sha256": "be92a7ab5d6af7e948149f97a2c75ccfda9396067f43eef0764499e07c9a3ad9"
+    },
+    "scenario_check.py": {
+      "bytes": 27412,
+      "sha256": "937aeff76a8132378ae0c6be21ba8fdc1ea13588c320da261ebc04a3adc2738b"
+    },
+    "scenario_translate.py": {
+      "bytes": 35926,
+      "sha256": "54d03d7fc2fe3da5469043992779aeb5976136e1b5d277a5d9fcb28e95f44117"
+    },
+    "scenarios.py": {
+      "bytes": 91545,
+      "sha256": "22030622a68bb4449ed24cd8be943a595d5a958e547665237bd582fc39e1265a"
+    },
+    "semantic_probe.cjs": {
+      "bytes": 24565,
+      "sha256": "517c209512b201140ca85a9210a7044d028a883e576068ca87eb84492a332238"
+    },
+    "source_contracts.py": {
+      "bytes": 21566,
+      "sha256": "91654b75d538803a96462c118adf07a1060a9771c1f439ed60480fc026f2e926"
+    },
+    "testgen.py": {
+      "bytes": 63746,
+      "sha256": "82b361435a58b075b9d9650b6951757ad883b9c10153b073f23e6d2bb35cd3a0"
+    }
+  },
+  "imported_from": {
+    "files": {
+      "dialect.md": {
+        "bytes": 5299,
+        "sha256": "03d76d74e739f4975fa98d9bf5cb2fd882d4789471a497885602c35df1285d55"
+      },
+      "main.py": {
+        "bytes": 13406,
+        "sha256": "46077d46b689f1d3914ed6bc70b8c62e9aaf562382113e2c04dc972958ba0a2c"
+      },
+      "requirements.txt": {
+        "bytes": 15,
+        "sha256": "af1d882a2cc1717c9da20d96d963d2bf7f83b28f2a191612a17599e0e44ff3a5"
+      }
+    },
+    "origin": "oneshot-lab/arc-package",
+    "origin_files_untracked": true,
+    "origin_git_head": "a15036778e1eee9314ecd5b6fb6e4cb79b0a1010"
+  },
+  "package_bytes": 544483,
+  "package_sha256": "e4a76b801595686de7c93d25cb2a8b45f4c9b39b8ae312dcb0df59379bf204a4",
+  "schema_version": 1,
+  "source_hash_scheme": "sha256 of UTF-8 JSON files object; sorted keys; compact separators",
+  "source_sha256": "41d077c296d084db81a0b1b0bd06bd6f9e60cf875600c5eaa2fe9b94e9591a9a"
+}

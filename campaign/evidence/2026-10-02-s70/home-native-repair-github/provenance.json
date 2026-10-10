@@ -1,0 +1,8 @@
+{
+  "source_application": "home-entry-repair-github/application",
+  "delta": "only generic ARC native-select helper and picker styling",
+  "business_code_and_seed_unchanged": true,
+  "package_sha256": "525bb211aae17971e4f6f4a068b05c48719a3a22f925e55fce8d8c242c27b0fb",
+  "package": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/home-native-repair-github/home-native-app.zip",
+  "bytes": 40400
+}

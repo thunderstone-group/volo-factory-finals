@@ -1,0 +1,10 @@
+[
+  {
+    "path": "hackathon--github/requirements.yaml",
+    "sha256": "bdc17d23265a6b1948aec150e69d0b2accfa37db4c569305c97be7ff7f3b0b8f"
+  },
+  {
+    "path": "hackathon--sheet/requirements.yaml",
+    "sha256": "9cddf67be50748106289ed158648629a6c50c30a490d0eda5bd570c557440b96"
+  }
+]

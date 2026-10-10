@@ -1,0 +1,42 @@
+[
+  {
+    "application": "owner-repair-github",
+    "judge": "gh99",
+    "counts": {
+      "error": 20,
+      "pass": 62,
+      "fail": 20
+    },
+    "seconds": 186.6
+  },
+  {
+    "application": "owner-repair-github",
+    "judge": "gh8",
+    "counts": {
+      "pass": 66,
+      "error": 13,
+      "fail": 23
+    },
+    "seconds": 159.0
+  },
+  {
+    "application": "control-repair-github",
+    "judge": "gh99",
+    "counts": {
+      "error": 19,
+      "pass": 65,
+      "fail": 18
+    },
+    "seconds": 175.2
+  },
+  {
+    "application": "control-repair-github",
+    "judge": "gh8",
+    "counts": {
+      "pass": 67,
+      "error": 13,
+      "fail": 22
+    },
+    "seconds": 153.5
+  }
+]

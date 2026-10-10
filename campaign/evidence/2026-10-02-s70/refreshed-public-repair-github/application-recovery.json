@@ -1,0 +1,111 @@
+{
+  "applied_core_partial_hunk_policy": true,
+  "new_model_calls": 0,
+  "changed_paths": [
+    "frontend/public/seed.js",
+    "frontend/public/app.js"
+  ],
+  "skipped_hunks": [
+    "EDIT frontend/public/app.js hunk 1: SEARCH matches nothing (it starts `'<h1>Reset password</h1>' +`); the current lines there are:\n  function resetScreen() {\n    const ui = UI();\n    return '<h1>Reset password</h1>' +\n      '<p class=\"code-note\">Verification code: <strong>123456</strong></p>' +\n      '<p class=\"hint\">' + esc('Enter the fixed verification code 123456; the invalid code 000000 is rejected. Example replacement password: Replacement-password-456!') + '</p>' +\n      '<form class=\"auth-form\" data-action=\"reset-password\">' +\n      '<label for=\"rp-code\">Verification code</label>' +\n      '<input id=\"rp-code\" name=\"code\" type=\"text\" placeholder=\"Verification code\" aria-label=\"Verification code\">' +\n      '<label for=\"rp-new\">New password</label>' +\n      '<input id=\"rp-new\" name=\"password\" type=\"password\" placeholder=\"New password\" aria-label=\"New password\">' +\n      '<label for=\"rp-confirm\">Confirm password</label>' +\n      '<input id=\"rp-confirm\" name=\"confirm\" type=\"password\" placeholder=\"Confirm password\" aria-label=\"Confirm password\">' +\n      '<button type=\"submit\">Reset password</button>' +\n      '</form>' +\n"
+  ],
+  "syntax_checks": "passed",
+  "added_records": {
+    "users": 33,
+    "organizations": 0,
+    "orgMembers": 5,
+    "teams": 1,
+    "teamMembers": 0,
+    "repositories": 6,
+    "grants": 19,
+    "branches": 9,
+    "commits": 8,
+    "files": 11,
+    "labels": 0,
+    "milestones": 0,
+    "issues": 8,
+    "comments": 0,
+    "reactions": 0,
+    "activities": 0,
+    "pulls": 11,
+    "reviews": 1,
+    "reviewComments": 0,
+    "reviewerRequests": 0,
+    "checks": 3,
+    "protectionRules": 0
+  },
+  "modified_existing_records": [
+    {
+      "collection": "users",
+      "id": "u2"
+    },
+    {
+      "collection": "teams",
+      "id": "t1"
+    },
+    {
+      "collection": "teams",
+      "id": "t3"
+    },
+    {
+      "collection": "repositories",
+      "id": "r3"
+    },
+    {
+      "collection": "repositories",
+      "id": "r4"
+    },
+    {
+      "collection": "grants",
+      "id": "g6"
+    },
+    {
+      "collection": "branches",
+      "id": "b5"
+    },
+    {
+      "collection": "branches",
+      "id": "b6"
+    },
+    {
+      "collection": "files",
+      "id": "f1"
+    },
+    {
+      "collection": "files",
+      "id": "f2"
+    },
+    {
+      "collection": "files",
+      "id": "f4"
+    },
+    {
+      "collection": "files",
+      "id": "f5"
+    },
+    {
+      "collection": "files",
+      "id": "f6"
+    },
+    {
+      "collection": "files",
+      "id": "f7"
+    },
+    {
+      "collection": "files",
+      "id": "f8"
+    },
+    {
+      "collection": "files",
+      "id": "f9"
+    },
+    {
+      "collection": "files",
+      "id": "f10"
+    },
+    {
+      "collection": "pulls",
+      "id": "p3"
+    }
+  ],
+  "note": "Initial external wrapper rejected any skipped hunk; replay now uses standard agent parser semantics and preserves the skipped diagnostic. No response or source manually corrected."
+}

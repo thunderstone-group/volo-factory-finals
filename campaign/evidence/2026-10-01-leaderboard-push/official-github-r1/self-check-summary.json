@@ -1,0 +1,67 @@
+{
+  "counts": {
+    "pass": 112,
+    "error": 13
+  },
+  "coverage": {
+    "total": 125,
+    "parsed": 112
+  },
+  "seconds": 111.0,
+  "failing": [
+    {
+      "id": "REQ-3-1",
+      "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "REQ-3-1#3",
+      "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "REQ-3-1#4",
+      "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "REQ-3-2-2",
+      "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "REQ-3-2-3",
+      "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "REQ-3-3",
+      "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "REQ-3-2-3#audit-1",
+      "observation": "The test used the name 'alice-dev/acme-docs', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "REQ-4-3-3#2",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-3-3",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-3-3#2",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-3-4",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-3-4#2",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    },
+    {
+      "id": "REQ-6-5",
+      "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+    }
+  ],
+  "invariants": [],
+  "translation": {}
+}

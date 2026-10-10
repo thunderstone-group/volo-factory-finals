@@ -1,0 +1,18 @@
+{
+  "task": "github-real",
+  "label": "main9293-s1",
+  "package_sha256": "9293a25162e8e2dd205901cc3fb25f047eea918980dd5dffe6723efa7ac32fa6",
+  "agent_env": [],
+  "exit": 0,
+  "seconds": 1569.0,
+  "proxy": {
+    "exit": 1,
+    "tail": "efccb60574945212a8d82bfdf8802de0eb3d867f2a14\", \"tests/22-REQ-4-3-1-scenario-1.spec.ts\": \"06071f1ef336b4ff005e8e8781c1ab651ded0f22301438785af15f2ae45e7a7c\", \"tests/23-REQ-4-3-1-scenario-2.spec.ts\": \"53e9358f188e4a1e0eacbe760cf3dc9e2626d37fe18a2414028385beae5a423d\", \"tests/24-REQ-4-3-1-scenario-3.spec.ts\": \"d8cc3335fd72fe345bd1f89799594903f99dee89a3f4ef6bd87a5cdb2c6c2a13\", \"tests/25-REQ-4-5-scenario-1.spec.ts\": \"cb0e24e790f868ba5014d0e9d832bc4e271b91a35bbda89f2ff92563263aa57a\", \"tests/26-REQ-4-5-scenario-2.spec.ts\": \"d3e9d57ab3fa5018289d59c559be71b435e4e2947926ca2e4978f1d683433337\", \"tests/27-REQ-4-5-scenario-3.spec.ts\": \"93a470bc29bd3be95d61ede0a86381d6f58cf2e679901e6ffd357cd7595bd3d8\", \"tests/28-REQ-5-5-scenario-1.spec.ts\": \"f050ebfe6b4f9432b0d9312d17b044d87280695189b6b152a02b9a6d15660bba\", \"tests/29-REQ-5-5-scenario-2.spec.ts\": \"c868553ce93825eb54c3c2b8444667b887a15dbd8cb96cfc2d102b5189cbffd6\", \"tests/30-REQ-5-5-scenario-3.spec.ts\": \"bd266a0e8992485a46d3e3e6b3242a834d7cf1b8512979ec3dcf4574ea5fa071\", \"tests/helpers.ts\": \"f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3\", \"tests/interactions.ts\": \"8a6faa41fb82e413e3006168afc8d9a833799dafd659700bd6e5a908d7991514\"}, \"test_suite_sha256\": \"7a863c2bd464ebe256d087547c348cdd384a3e7ad9dd922a4977246eb7e94fb7\", \"image_id\": \"sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de\", \"suite_duration_seconds\": 116.563, \"container_exit_code\": 1, \"passed\": 24, \"failed\": 6, \"total\": 30, \"wall_seconds\": 120.337}\n",
+    "report": "~/projects/arcbench-campaign/finals-proxy/results/local/github-real-main9293-s1-proxy.json"
+  },
+  "regression": {
+    "exit": 0,
+    "tail": "{\"summaries\": {\"v6-fixed-independent\": {\"counts\": {\"pass\": 107, \"fail\": 4}, \"seconds\": 197.6, \"unavailable\": null}}, \"task\": \"github\", \"app_dir\": \"~/projects/arcbench-campaign/finals-local/runs/github-real-main9293-s1/workspace\", \"wall_seconds\": 198.089, \"app_sha256\": \"d538b6c5a8c37b457755f38bfc256000c1687e352f911ca91b09df7471eac310\", \"original_requirements_sha256\": \"9480921cb3b7ffdc5f32cb76011ecc1d5bf9bfbf2cba38e3a092355ac88a54f8\", \"suite_sha256\": {\"v6-fixed-independent\": \"28456b7cdd76edcd2427997421d57d4f26b42051eff68cf3b05e7404f9958609\"}, \"image_id\": \"sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de\"}\n",
+    "report": "~/projects/arcbench-campaign/finals-proxy/results/local/github-real-main9293-s1-regression.json"
+  }
+}

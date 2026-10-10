@@ -1,0 +1,16 @@
+{
+  "docker_build": "passed",
+  "health": {
+    "code": 200,
+    "message": "Backend Ready"
+  },
+  "index_served": true,
+  "asset_source_hashes": {
+    "app.js": "c853843e74e3f7e9bd043559a8c7b76344cdb7e06a470878c099b4517a22b60f",
+    "seed.js": "2dff259a1dda61dea31fb2a35f06d49a22a9e942a84ea8115089f764266e5fd5",
+    "lib/arc.js": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14",
+    "styles.css": "ee41f57c97516187b528f4b726333d60d45737b3a8c5b4216096918904f552e0"
+  },
+  "initial_user_count": 37,
+  "container_removed": true
+}

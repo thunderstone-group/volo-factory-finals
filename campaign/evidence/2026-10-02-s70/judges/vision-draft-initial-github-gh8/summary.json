@@ -1,0 +1,14 @@
+{
+  "app": "vision-draft-initial-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 44,
+    "error": 20,
+    "fail": 40
+  },
+  "seconds": 265.7,
+  "coverage": {
+    "total": 100,
+    "parsed": 84
+  }
+}

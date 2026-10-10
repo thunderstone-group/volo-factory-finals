@@ -1,0 +1,308 @@
+{
+  "task": "sheet-real",
+  "app_dir": "~/projects/arcbench-campaign/finals-proxy/calibration/apps/official-sheet",
+  "app_sha256": "3b712617134fea45ab129ef965f3084892147c5768f2ee38cbaa844aec87cb2e",
+  "frozen_manifest_sha256": "8d7d36e69c26eec483ca2a9340c3c206aae18ddd37a1a41d75263ea380c052ff",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "REQ-1-2-2 - trim and persist an available workbook name",
+      "file": "01-REQ-1-2-2-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2465,
+      "error": null
+    },
+    {
+      "name": "REQ-1-2-2 - reject a case-insensitive duplicate workbook name",
+      "file": "02-REQ-1-2-2-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1820,
+      "error": null
+    },
+    {
+      "name": "REQ-1-2-2 - reject a workbook name longer than 80 characters",
+      "file": "03-REQ-1-2-2-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1737,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-3 - trim and persist an available worksheet name",
+      "file": "04-REQ-2-1-3-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2017,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-3 - reject a worksheet name differing only by case",
+      "file": "05-REQ-2-1-3-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1990,
+      "error": null
+    },
+    {
+      "name": "REQ-2-1-3 - reject a worksheet name longer than 50 characters",
+      "file": "06-REQ-2-1-3-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1895,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1-1 - clear a text cell with Delete",
+      "file": "07-REQ-3-1-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1689,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1-1 - clear a formula and recalculate its dependent result",
+      "file": "08-REQ-3-1-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1849,
+      "error": null
+    },
+    {
+      "name": "REQ-3-1-1 - clear every cell in a selected rectangular range",
+      "file": "09-REQ-3-1-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1955,
+      "error": null
+    },
+    {
+      "name": "REQ-5-1-2 - save a two-condition filter view",
+      "file": "10-REQ-5-1-2-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10118,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Create filter', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Create filter', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/10-REQ-5-1-2-scenario-1.spec.ts:13:15"
+    },
+    {
+      "name": "REQ-5-1-2 - apply a persisted saved filter view",
+      "file": "11-REQ-5-1-2-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2659,
+      "error": null
+    },
+    {
+      "name": "REQ-5-1-2 - reject and delete a saved filter view",
+      "file": "12-REQ-5-1-2-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10093,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('dialog').filter({ has: getByLabel('Filter view name', { exact: true }) }).getByRole('button', { name: 'Close', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('dialog').filter({ has: getByLabel('Filter view name', { exact: true }) }).getByRole('button', { name: 'Close', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/12-REQ-5-1-2-scenario-3.spec.ts:19:15"
+    },
+    {
+      "name": "REQ-5-2-1 - show a custom numeric error from the formula bar",
+      "file": "13-REQ-5-2-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10155,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Capacity must be from 25 to 75\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  13 |   await fill(page, 'Formula bar', \"88\"); await field(page, 'Formula bar').press('Enter');\n  14 |   // THEN: The exact message \"Capacity must be from 25 to 75\" is visible, J6 remains `37`, and the same result occurs after refresh when entering `88` through \"Formula bar\".\n> 15 |   await expect(page.getByRole('alert')).toContainText('Capacity must be from 25 to 75');\n     |                                         ^\n  16 |   await visible(named(page, 'gridcell', \"J6\")); await expect(named(page, 'gridcell', \"J6\")).toHaveText(\"37\");\n  17 |   await page.reload();\n  18 |   await visible(named(page, \"gridcell\", \"J6\")); await named(page, \"gridcell\", \"J6\").click();\n    at /proxy/sheet-real/tests/13-REQ-5-2-1-scenario-1.spec.ts:15:41"
+    },
+    {
+      "name": "REQ-5-2-1 - show a custom dropdown error from the grid",
+      "file": "14-REQ-5-2-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10152,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Choose a queue state\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  12 |   await visible(named(page, 'gridcell', 'K8')); await named(page, 'gridcell', 'K8').dblclick(); await page.locator(':focus').fill('Paused'); await page.locator(':focus').press('Enter');\n  13 |   // THEN: The exact message \"Choose a queue state\" is visible; K8 remains `Ready`, and after refresh the same invalid grid entry is rejected with the same message.\n> 14 |   await expect(page.getByRole('alert')).toContainText('Choose a queue state');\n     |                                         ^\n  15 |   await visible(named(page, 'gridcell', \"K8\")); await expect(named(page, 'gridcell', \"K8\")).toContainText(\"Ready\");\n  16 |   await page.reload();\n  17 |   await visible(named(page, 'gridcell', 'K8')); await named(page, 'gridcell', 'K8').dblclick(); await page.locator(':focus').fill('Paused'); await page.locator(':focus').press('Enter');\n    at /proxy/sheet-real/tests/14-REQ-5-2-1-scenario-2.spec.ts:14:41"
+    },
+    {
+      "name": "REQ-5-2-1 - persist an updated custom error message",
+      "file": "15-REQ-5-2-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10181,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('alert')\nExpected substring: \"Allocate between 25 and 75\"\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" with timeout 10000ms\n  - waiting for getByRole('alert')\n\n\n  16 |   await fill(page, 'Formula bar', \"24\"); await field(page, 'Formula bar').press('Enter');\n  17 |   // THEN: The exact message \"Allocate between 25 and 75\" is visible, L4 remains `42`, and reopening \"Data validation\" after refresh shows the same \"Error message\" value.\n> 18 |   await expect(page.getByRole('alert')).toContainText('Allocate between 25 and 75');\n     |                                         ^\n  19 |   await visible(named(page, 'gridcell', \"L4\")); await expect(named(page, 'gridcell', \"L4\")).toHaveText(\"42\");\n  20 |   await page.reload();\n  21 |   await visible(named(page, \"gridcell\", \"L4\")); await named(page, \"gridcell\", \"L4\").click();\n    at /proxy/sheet-real/tests/15-REQ-5-2-1-scenario-3.spec.ts:18:41"
+    },
+    {
+      "name": "REQ-6-1-1 - freeze the first row",
+      "file": "16-REQ-6-1-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2150,
+      "error": null
+    },
+    {
+      "name": "REQ-6-1-1 - freeze the first column",
+      "file": "17-REQ-6-1-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1818,
+      "error": null
+    },
+    {
+      "name": "REQ-6-1-1 - freeze both row and column panes",
+      "file": "18-REQ-6-1-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1792,
+      "error": null
+    },
+    {
+      "name": "REQ-6-2-1 - find the next matching cell",
+      "file": "19-REQ-6-2-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2043,
+      "error": null
+    },
+    {
+      "name": "REQ-6-2-1 - replace all matching text in the active worksheet",
+      "file": "20-REQ-6-2-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2064,
+      "error": null
+    },
+    {
+      "name": "REQ-6-2-1 - replace only exact-case matches",
+      "file": "21-REQ-6-2-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2096,
+      "error": null
+    },
+    {
+      "name": "REQ-7-1-1 - create a named range and use it in a formula",
+      "file": "22-REQ-7-1-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10105,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('dialog', { name: 'Named ranges', exact: true }).getByRole('button', { name: 'Close', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('dialog', { name: 'Named ranges', exact: true }).getByRole('button', { name: 'Close', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/22-REQ-7-1-1-scenario-1.spec.ts:18:15"
+    },
+    {
+      "name": "REQ-7-1-1 - reject an invalid named range name",
+      "file": "23-REQ-7-1-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2554,
+      "error": null
+    },
+    {
+      "name": "REQ-7-1-1 - update an existing named range",
+      "file": "24-REQ-7-1-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2267,
+      "error": null
+    },
+    {
+      "name": "REQ-7-2-1 - apply a numeric threshold format",
+      "file": "25-REQ-7-2-1-scenario-1.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2117,
+      "error": null
+    },
+    {
+      "name": "REQ-7-2-1 - apply a text-match format",
+      "file": "26-REQ-7-2-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2148,
+      "error": null
+    },
+    {
+      "name": "REQ-7-2-1 - edit and delete a conditional formatting rule",
+      "file": "27-REQ-7-2-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2234,
+      "error": null
+    },
+    {
+      "name": "REQ-8-1-1 - create and persist a cell note",
+      "file": "28-REQ-8-1-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10108,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D8', exact: true }).getByRole('button', { name: 'Open note for D8', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('gridcell', { name: 'D8', exact: true }).getByRole('button', { name: 'Open note for D8', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/28-REQ-8-1-1-scenario-1.spec.ts:17:15"
+    },
+    {
+      "name": "REQ-8-1-1 - edit an existing cell note",
+      "file": "29-REQ-8-1-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10166,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'F6', exact: true }).getByRole('button', { name: 'Open note for F6', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('gridcell', { name: 'F6', exact: true }).getByRole('button', { name: 'Open note for F6', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/29-REQ-8-1-1-scenario-2.spec.ts:12:15"
+    },
+    {
+      "name": "REQ-8-1-1 - delete an existing cell note",
+      "file": "30-REQ-8-1-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10167,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'J3', exact: true }).getByRole('button', { name: 'Open note for J3', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('gridcell', { name: 'J3', exact: true }).getByRole('button', { name: 'Open note for J3', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/sheet-real/tests/helpers.ts:5:73)\n    at button (/proxy/sheet-real/tests/helpers.ts:10:112)\n    at /proxy/sheet-real/tests/30-REQ-8-1-1-scenario-3.spec.ts:12:15"
+    }
+  ],
+  "requirements_file": "sheet-real/requirements/requirements.yaml",
+  "requirements_sha256": "7a2ee0a9d81317bcc3f92fd627effae0c510412b891ab6c79896c4517b139962",
+  "test_task": "sheet-real",
+  "test_source_manifest_sha256": "8d7d36e69c26eec483ca2a9340c3c206aae18ddd37a1a41d75263ea380c052ff",
+  "test_files_sha256": {
+    "tests/01-REQ-1-2-2-scenario-1.spec.ts": "22b442c793332ac06efe4725914a2f8c12e80b0095abdea846da885d30d37294",
+    "tests/02-REQ-1-2-2-scenario-2.spec.ts": "1726c7e163db3a83922c5d32ade3c2a08c5b7e5c80102afdebe2df07623863e4",
+    "tests/03-REQ-1-2-2-scenario-3.spec.ts": "26f8a113b350f92c1553043e72192baeac888b95b5ad5b0949fbe88043db6a4c",
+    "tests/04-REQ-2-1-3-scenario-1.spec.ts": "633d6ee13cf715202225c4e02447d314c1fea2ddc8eb1f4c553a5ed6b3d6e2eb",
+    "tests/05-REQ-2-1-3-scenario-2.spec.ts": "0e5cb05506238117357efe4fd45cba0d18ad6e1d690b1a08968795f5abdf002f",
+    "tests/06-REQ-2-1-3-scenario-3.spec.ts": "d1635a44cff77d23016368994531e4e5ddcae50995144981b79ddaaeb227c0b0",
+    "tests/07-REQ-3-1-1-scenario-1.spec.ts": "987fe76bbc96b267b97debfa015f805e91171534d291f975774bf6a89f73a408",
+    "tests/08-REQ-3-1-1-scenario-2.spec.ts": "49ca079338258611c3004911f7cf81ff982abad4bf6c6c4e84c41e70ce6adff2",
+    "tests/09-REQ-3-1-1-scenario-3.spec.ts": "fe2790c16fcff937c024210f08c630953d6e4ab85faa6a7e1632e61a648860f7",
+    "tests/10-REQ-5-1-2-scenario-1.spec.ts": "71ace5c99bd0cb9a206ec5a0914481180b3e3a9303613f4a4dfb654fc9e0347c",
+    "tests/11-REQ-5-1-2-scenario-2.spec.ts": "d9556e7023a9f82d1aecc7b04d8f20253d19f56577de6185ab73d371387c795b",
+    "tests/12-REQ-5-1-2-scenario-3.spec.ts": "e03655b340a7c7b7fd8c62b310305d372394d9ad648dda9d0f45e47867da5b7d",
+    "tests/13-REQ-5-2-1-scenario-1.spec.ts": "b71959f8bcaa0deaee57d03cae1a4605be072e5107e694e798c4efe16b7bd81c",
+    "tests/14-REQ-5-2-1-scenario-2.spec.ts": "502e546515f5205a759a4731f63003c684fafc8315cdba9cfdefcab00e7fcbe7",
+    "tests/15-REQ-5-2-1-scenario-3.spec.ts": "703ff566909c68fd6a6507bcaf947b4f942992ec2ad5a392ed91d5602dd0ac4f",
+    "tests/16-REQ-6-1-1-scenario-1.spec.ts": "9ea10f6b23c3eac4656fddbd845a5b95d1b9df74dea5224c4e209f5255ccdd03",
+    "tests/17-REQ-6-1-1-scenario-2.spec.ts": "3cfd7a51ef679626f5738ba2ecf58d49df381f25b1cdd548722ac0d34cf20153",
+    "tests/18-REQ-6-1-1-scenario-3.spec.ts": "417120e583927b50684b8848d5a6bd4c740ec8066d74ef1cc3f0dfe3235c4a09",
+    "tests/19-REQ-6-2-1-scenario-1.spec.ts": "34b0b7e41926318d2b6a519263d8e3d4c0408be8c21a9394c30ba3923fe8a601",
+    "tests/20-REQ-6-2-1-scenario-2.spec.ts": "86c7ca294cbb129bcd93b39496914b2ff5352bca7720be9a1cbc4c0de72286d1",
+    "tests/21-REQ-6-2-1-scenario-3.spec.ts": "85602ceb44daf6d620731e4980cbd70bc3d3dfb608dd23b44ba194b9d6e7ae5b",
+    "tests/22-REQ-7-1-1-scenario-1.spec.ts": "196fa2d4289503927235ca6be765b509a377094b9c00d22607fcaa8271a390c3",
+    "tests/23-REQ-7-1-1-scenario-2.spec.ts": "fcdb636930e68f822802b0aa28513a4330ee2046995abda7dbcaa11347be4e4b",
+    "tests/24-REQ-7-1-1-scenario-3.spec.ts": "e16da85a62f6518bd2f96a1b0b83735f7f9de961a0d20e91ce8da11cd24a217d",
+    "tests/25-REQ-7-2-1-scenario-1.spec.ts": "a720f03516136e57b1ae7694fedb16f10556819964e926fdeeac0c99bc82a32f",
+    "tests/26-REQ-7-2-1-scenario-2.spec.ts": "4181f19b3e67b240613cae268029bc33324906601fcdcc0e8a983b5a0b8f015b",
+    "tests/27-REQ-7-2-1-scenario-3.spec.ts": "033257c89c1380f5f0ad25679fb7d06e09f8ea13225f024c8d8f7f547caa13d4",
+    "tests/28-REQ-8-1-1-scenario-1.spec.ts": "8dd3882ddedaa49b9202a96c21be1952c2794bc78188e1c57283c70fd0bcf893",
+    "tests/29-REQ-8-1-1-scenario-2.spec.ts": "a71644039e73a62ce38e802992980a9fba5d1b0f771a402fff1ce16b1ba995bc",
+    "tests/30-REQ-8-1-1-scenario-3.spec.ts": "db223aceade9072bb2a69c427f008bf8d65cd8c83c98ad1e38a4c68fa0200d4a",
+    "tests/helpers.ts": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+    "tests/interactions.ts": "8a6faa41fb82e413e3006168afc8d9a833799dafd659700bd6e5a908d7991514"
+  },
+  "test_suite_sha256": "e29fdfff08b3567849e713b95580dd92fa806487a49134753a5fc5d906ac34de",
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 150.018,
+  "container_exit_code": 1,
+  "passed": 21,
+  "failed": 9,
+  "total": 30,
+  "wall_seconds": 153.685
+}

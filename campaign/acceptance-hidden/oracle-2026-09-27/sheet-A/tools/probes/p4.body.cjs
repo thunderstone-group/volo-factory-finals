@@ -1,0 +1,38 @@
+const selected = (page) => page.getByRole('gridcell', { selected: true }).evaluateAll((els) => els.map((e) => e.getAttribute('aria-label')));
+test('probe drag variants', async ({ page }) => {
+  test.setTimeout(40000);
+  await createWorkbook(page);
+  const a = cell(page, 'A1'); const b = cell(page, 'B3');
+  const ra = await a.boundingBox(); const rb = await b.boundingBox();
+  console.log('Q0 boxes', JSON.stringify(ra), JSON.stringify(rb));
+  await page.mouse.move(ra.x + ra.width / 2, ra.y + ra.height / 2);
+  await page.mouse.down();
+  const ra2 = await a.boundingBox(); const rb2 = await b.boundingBox();
+  console.log('Q1 boxes after down', JSON.stringify(ra2), JSON.stringify(rb2));
+  await page.mouse.move(rb2.x + rb2.width / 2, rb2.y + rb2.height / 2, { steps: 6 });
+  await page.mouse.up();
+  console.log('Q2 manual recomputed steps6 =', JSON.stringify(await selected(page)));
+  await cell(page, 'D5').click();
+  await cell(page, 'A1').dragTo(cell(page, 'B3'), { steps: 5 });
+  console.log('Q3 dragTo steps5 =', JSON.stringify(await selected(page)));
+  await cell(page, 'D5').click();
+  await cell(page, 'A1').dragTo(cell(page, 'B3'));
+  console.log('Q4 dragTo steps1 =', JSON.stringify(await selected(page)));
+});
+test('probe validation via grid editor', async ({ page }) => {
+  test.setTimeout(40000);
+  await createWorkbook(page);
+  await setCells(page, [['B1', 'Score'], ['B2', '50']]);
+  await expect(cell(page, 'B2')).toHaveText('50');
+  await addNumberRule(page, 'B2', 'B2', 0, 100);
+  await cell(page, 'B2').click();
+  await dataMenu(page, 'Data validation');
+  const dlg = dialog(page, 'Data validation');
+  console.log('Q5 reopened dialog text =', JSON.stringify((await dlg.innerText()).replace(/\n+/g, ' | ')));
+  const vals = await dlg.locator('input, select').evaluateAll((els) => els.map((e) => `${e.getAttribute('aria-label') || e.id || e.name}=${e.value}`));
+  console.log('Q6 reopened dialog values =', JSON.stringify(vals));
+  await page.keyboard.press('Escape');
+  await editInGrid(page, 'B2', '101').catch((e) => console.log('Q7 editInGrid error', String(e).slice(0, 200)));
+  await page.waitForTimeout(300);
+  console.log('Q8 after grid 101 B2 =', JSON.stringify(await cell(page, 'B2').innerText()), (await page.locator('body').innerText()).includes('Please') ? 'HAS Please msg' : 'no msg');
+});

@@ -1,0 +1,192 @@
+/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 32: 47431 Terminated: 15          ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 36/48
+--- timedOut: REQ-1-3-2 S1: 导出活动工作表的计算结果与特殊文本，且刷新后原数据不变
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'E2', exact: true })
+    Expected: "4"
+    Received: "0"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'E2', exact: true })
+        13 × locator resolved to <div class="cell" data-id="E2" tabindex="-1" role="gridcell" aria-label="E2" data-coord="E2" aria-selected="false">…</div>
+           - unexpected value "0"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-1-3-2 S2: 导出公式结果不会改写原公式或活动工作表
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'C1', exact: true })
+    Expected: "5"
+    Received: "2"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'C1', exact: true })
+        13 × locator resolved to <div class="cell" data-id="C1" tabindex="-1" role="gridcell" aria-label="C1" data-coord="C1" aria-selected="false">…</div>
+           - unexpected value "2"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-2-1-2 S2: 切换工作表时恢复公式原文并隔离普通值
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'C1', exact: true })
+    Expected: "5"
+    Received: "2"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'C1', exact: true })
+        13 × locator resolved to <div data-id="C1" tabindex="-1" role="gridcell" aria-label="C1" data-coord="C1" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "2"
+      294 |   await createWorkbook(page);
+      295 |   await setCells(page, [['A1', '2'], ['B1', '3'], ['C1', '=A1+B1']]);
+    > 296 |   await expect(cell(page, 'C1')).toHaveText('5');
+          |                                  ^
+      297 |   await cell(page, 'C1').click();
+--- timedOut: REQ-2-2-1 S2: 删除第 3 行后后续数据上移，重新打开后顺序保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator: getByRole('gridcell', { name: 'A4', exact: true })
+    Expected: ""
+    Error: element(s) not found
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'A4', exact: true })
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+      71 |
+      72 | async function expectFormula(page, ref, value) {
+--- timedOut: REQ-2-2-1 S4: 插入行后调整公式引用并保持计算结果
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'A4', exact: true })
+    Expected: "30"
+    Received: "0"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'A4', exact: true })
+        13 × locator resolved to <div data-id="A4" tabindex="-1" role="gridcell" aria-label="A4" data-coord="A4" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "0"
+      310 |   await createWorkbook(page);
+      311 |   await setCells(page, [['A1', 'Qty'], ['A2', '10'], ['A3', '20'], ['A4', '=A2+A3']]);
+    > 312 |   await expect(cell(page, 'A4')).toHaveText('30');
+          |                                  ^
+      313 |
+--- timedOut: REQ-2-2-2 S2: 删除公式直接引用的 B 列后显示引用错误，重新打开后保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'C2', exact: true })
+    Expected: "20"
+    Received: "0"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'C2', exact: true })
+        13 × locator resolved to <div data-id="C2" tabindex="-1" role="gridcell" aria-label="C2" data-coord="C2" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "0"
+      277 |   await createWorkbook(page, name);
+      278 |   await setCells(page, [['A1', 'Unit price'], ['B1', 'Quantity'], ['C1', 'Total'], ['A2', '10'], ['B2', '2'], ['C2', '=A2*B2']]);
+    > 279 |   await expect(cell(page, 'C2')).toHaveText('20');
+          |                                  ^
+      280 |
+--- timedOut: REQ-2-2-2 S4: 插入列后调整公式引用并保持计算结果
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'C1', exact: true })
+    Expected: "30"
+    Received: "10"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'C1', exact: true })
+        13 × locator resolved to <div data-id="C1" tabindex="-1" role="gridcell" aria-label="C1" data-coord="C1" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "10"
+      302 |   await createWorkbook(page);
+      303 |   await setCells(page, [['A1', '10'], ['B1', '20'], ['C1', '=A1+B1']]);
+    > 304 |   await expect(cell(page, 'C1')).toHaveText('30');
+          |                                  ^
+      305 |
+--- timedOut: REQ-3-1-1 S1: 通过公式栏提交单元格值，依赖公式重算并持久化
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'C1', exact: true })
+    Expected: "5"
+    Received: "1"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'C1', exact: true })
+        13 × locator resolved to <div data-id="C1" tabindex="-1" role="gridcell" aria-label="C1" data-coord="C1" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "1"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-3-1-1 S2: Escape 取消网格内未提交编辑，刷新后保留原值
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+    Expected: "Saved value"
+    Received: "Unsaved value"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+        13 × locator resolved to <div data-id="A1" tabindex="-1" role="gridcell" aria-label="A1" data-coord="A1" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "Unsaved value"
+      292 |
+      293 |   await page.reload();
+    > 294 |   await expect(cell(page, 'A1')).toHaveText('Saved value');
+          |                                  ^
+      295 |   await expectFormula(page, 'A1', 'Saved value');
+--- timedOut: REQ-3-1-1 S3: 通过网格提交文本、数字、布尔值、日期文本和公式
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'A5', exact: true })
+    Expected: "84"
+    Received: "0"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'A5', exact: true })
+        13 × locator resolved to <div data-id="A5" tabindex="-1" role="gridcell" aria-label="A5" data-coord="A5" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "0"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-3-1-1 S4: 在更深的单元格位置提交公式并在刷新后保持
+    Test timeout of 10000ms exceeded.
+    Error: locator.dblclick: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('gridcell', { name: 'F12', exact: true })
+      59 | // Double-click a grid cell, type into the inline editor "Edit <ref>", commit with Enter.
+      60 | async function editInGrid(page, ref, value) {
+    > 61 |   await cell(page, ref).dblclick();
+         |                         ^
+      62 |   const editor = page.getByRole('textbox', { name: `Edit ${ref}`, exact: true });
+      63 |   await editor.fill(value);
+      64 |   await editor.press('Enter');
+        at editInGrid (/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:61:25)
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/21-REQ-3-1-1.spec.cjs:325:9
+--- timedOut: REQ-3-1-2 S3: 右键粘贴替换目标公式并重算依赖项
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'C1', exact: true })
+    Expected: "11"
+    Received: "1"
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'C1', exact: true })
+        13 × locator resolved to <div data-id="C1" tabindex="-1" role="gridcell" aria-label="C1" data-coord="C1" aria-selected="true" class="cell selected">…</div>
+           - unexpected value "1"
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }

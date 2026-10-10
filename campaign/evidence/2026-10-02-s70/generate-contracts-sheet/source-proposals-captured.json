@@ -1,0 +1,106 @@
+[
+  {
+    "id": "REQ-1-3-1#contract-1",
+    "requirement": "REQ-1-3-1",
+    "explanation": "REQ-1-3-1 requires the CSV importer to parse data in the original row and column order and to handle commas enclosed in double quotes. SP.parseCSV deletes the field that immediately precedes a quoted field whenever that field is numeric (row.pop()), so for the record 'East,1200,\"Open,Open\"' the numeric field 1200 is dropped and the quoted field slides from column C into column B. The fixture is a valid CSV row with a numeric text field followed by a quoted field containing a comma - exactly the case the requirement names - and the simpler control row proves the parser works for plain input.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "parseCSV",
+        "kind": "method",
+        "alias": "parseCSV"
+      }
+    ],
+    "initializers": [],
+    "subject": "parseCSV",
+    "setup": "",
+    "precondition": "assert.deepStrictEqual(parseCSV('Item,Qty'), [['Item','Qty']], 'control: plain CSV still parses one field per column');",
+    "check": "var rows = parseCSV('East,1200,\"Open,Open\"'); assert.deepStrictEqual(rows, [['East','1200','Open,Open']], 'the numeric field and the quoted field must both survive in their original columns');"
+  },
+  {
+    "id": "REQ-2-2-2#contract-1",
+    "requirement": "REQ-2-2-2",
+    "explanation": "REQ-2-2-2 requires that after columns are inserted the filter still applies to the adjusted region, and REQ-2-2 requires filter views to remain consistent with the moved data. SP.insertCols remaps cells, formula references, validation rules and pivot source ranges, but never remaps sheet.filters[].range. Once the filtered data shifts right, the stored filter range no longer contains the filtered header, SP.hiddenRows can no longer resolve the 'Sales' key and every row becomes visible. The fixture is the startup workbook with only an explicit filter added over its own header row, and the precondition proves the filter hides the right records before the transition.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "insertCols",
+        "kind": "method",
+        "alias": "insertCols"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "hiddenRows",
+        "kind": "method",
+        "alias": "hiddenRows"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "displayMap",
+        "kind": "method",
+        "alias": "displayMap"
+      }
+    ],
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "subject": "insertCols",
+    "setup": "window.ARC = window.ARC || {}; ARC.state = ARC.state || {}; ARC.state.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks)); ARC.state.ui = {}; ARC.state.workbooks[0].worksheets[0].filters = [{ id: 'f1', range: 'A1:B4', cols: { Sales: { values: ['800'] } } }]; window.sheet = ARC.state.workbooks[0].worksheets[0];",
+    "precondition": "var hidden = hiddenRows(sheet, displayMap(sheet)); assert.strictEqual(hidden[1], true, 'East/1200 is filtered out before the operation'); assert.strictEqual(hidden[3], true, 'South/700 is filtered out before the operation'); assert.ok(!hidden[2], 'North/800 stays visible before the operation');",
+    "check": "insertCols(sheet, 0, 1); var hidden = hiddenRows(sheet, displayMap(sheet)); assert.strictEqual(hidden[1], true, 'the Sales filter must still hide the non-matching records after the source columns shift right');"
+  },
+  {
+    "id": "REQ-4-1-1#contract-1",
+    "requirement": "REQ-4-1-1",
+    "explanation": "REQ-4-1-1 requires aggregate functions to ignore empty cells and COUNT to count only numeric cells. When the argument is a single A1-style reference to an empty cell, SP.cellValue reports the cell as empty but the formula engine converts that reference to numeric 0 before collecting arguments, so '=COUNT(A1)' counts the blank cell and the grid shows 1 instead of 0. The precondition shows the same aggregate correctly counts a numeric cell, so the fixture is a valid worksheet and the difference is not a parsing problem.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "display",
+        "kind": "method",
+        "alias": "display"
+      }
+    ],
+    "initializers": [],
+    "subject": "display",
+    "setup": "window.sheet = { id: 's1', name: 'Sheet1', cells: { C1: '=COUNT(A1)' } };",
+    "precondition": "assert.strictEqual(display({ cells: { A1: '5', D1: '=COUNT(A1)' } }, 'D1'), '1', 'control: COUNT counts a numeric cell');",
+    "check": "assert.strictEqual(display(sheet, 'C1'), '0', 'COUNT must not count an empty cell as a numeric value');"
+  },
+  {
+    "id": "REQ-3-2-2#contract-1",
+    "requirement": "REQ-3-2-2",
+    "explanation": "REQ-3-2-2 requires undo to restore grid values, row/column structure and rule ranges from before the operation. Validation rules live in ARC.state.ui, outside the workbook snapshot that pushHistory/doUndo store, while SP.insertRows rewrites their ranges in place. Undoing a row insertion therefore restores the cells but leaves the 0-to-100 rule on the shifted range A2:A4, so A1 (which was constrained before the operation) is no longer constrained. The precondition establishes the valid starting state (data in A1:A3 plus the rule covering A1).",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "insertRows",
+        "kind": "method",
+        "alias": "insertRows"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "ruleFor",
+        "kind": "method",
+        "alias": "ruleFor"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "pushHistory",
+        "kind": "function",
+        "alias": "pushHistory"
+      },
+      {
+        "file": "frontend/public/app.js",
+        "name": "doUndo",
+        "kind": "function",
+        "alias": "doUndo"
+      }
+    ],
+    "initializers": [],
+    "subject": "doUndo",
+    "setup": "window.ARC = window.ARC || {}; ARC.state = ARC.state || {}; ARC.state.ui = { rules: { 'wb-1/sheet-1': [ { id: 'v1', range: 'A1:A3', type: 'number', min: 0, max: 100 } ] } }; ARC.state.workbooks = [{ id: 'wb-1', name: 'W', lastUpdated: '2024-01-01 00:00', activeSheet: 'sheet-1', worksheets: [{ id: 'sheet-1', name: 'Sheet1', cells: { A1: '1', A2: '2', A3: '3' }, sel: { r: 0, c: 0, r2: 0, c2: 0 }, validations: [], filters: [] }] }]; ARC.route = function () { return { name: 'workbook', params: ['wb-1'] }; }; ARC.save = function () {}; ARC.render = function () {}; ARC.notify = function () {};",
+    "precondition": "var wb = ARC.state.workbooks[0]; assert.strictEqual(wb.worksheets[0].cells['A1'], '1'); assert.ok(ruleFor(wb.worksheets[0], 'A1'), 'A1 is constrained by the 0-to-100 rule before the operation');",
+    "check": "var wb = ARC.state.workbooks[0]; pushHistory(wb); insertRows(wb.worksheets[0], 0, 1); doUndo(); var after = ARC.state.workbooks[0].worksheets[0]; assert.strictEqual(after.cells['A1'], '1', 'undo restores the grid values'); assert.ok(ruleFor(after, 'A1'), 'undo must also restore the validation rule range so A1 stays constrained');"
+  }
+]

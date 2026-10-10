@@ -1,0 +1,37 @@
+Listing tests:
+  01-REQ-1-1-1-scenario-1.spec.ts:7:5 › REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 1
+  02-REQ-1-1-1-scenario-2.spec.ts:7:5 › REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 2
+  03-REQ-1-1-1-scenario-3.spec.ts:7:5 › REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 3
+  04-REQ-1-1-2-scenario-1.spec.ts:7:5 › REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1
+  05-REQ-1-1-2-scenario-2.spec.ts:7:5 › REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 2
+  06-REQ-1-1-2-scenario-3.spec.ts:7:5 › REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 3
+  07-REQ-1-4-scenario-1.spec.ts:8:5 › REQ-1-4: Manage Active Browser Sessions - Scenario 1
+  08-REQ-1-4-scenario-2.spec.ts:8:5 › REQ-1-4: Manage Active Browser Sessions - Scenario 2
+  09-REQ-1-4-scenario-3.spec.ts:8:5 › REQ-1-4: Manage Active Browser Sessions - Scenario 3
+  10-REQ-2-1-2-scenario-1.spec.ts:8:5 › REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 1
+  11-REQ-2-1-2-scenario-2.spec.ts:8:5 › REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 2
+  12-REQ-2-1-2-scenario-3.spec.ts:8:5 › REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 3
+  13-REQ-2-4-scenario-1.spec.ts:8:5 › REQ-2-4: View Organization Audit Log - Scenario 1
+  14-REQ-2-4-scenario-2.spec.ts:8:5 › REQ-2-4: View Organization Audit Log - Scenario 2
+  15-REQ-2-4-scenario-3.spec.ts:8:5 › REQ-2-4: View Organization Audit Log - Scenario 3
+  16-REQ-3-1-scenario-1.spec.ts:7:5 › REQ-3-1: Search for and Locate Repositories - Evolution Scenario 1
+  17-REQ-3-1-scenario-2.spec.ts:7:5 › REQ-3-1: Search for and Locate Repositories - Evolution Scenario 2
+  18-REQ-3-1-scenario-3.spec.ts:7:5 › REQ-3-1: Search for and Locate Repositories - Evolution Scenario 3
+  19-REQ-3-5-scenario-1.spec.ts:8:5 › REQ-3-5: Archive and Restore a Repository - Scenario 1
+  20-REQ-3-5-scenario-2.spec.ts:8:5 › REQ-3-5: Archive and Restore a Repository - Scenario 2
+  21-REQ-3-5-scenario-3.spec.ts:8:5 › REQ-3-5: Archive and Restore a Repository - Scenario 3
+  22-REQ-4-3-1-scenario-1.spec.ts:8:5 › REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 1
+  23-REQ-4-3-1-scenario-2.spec.ts:8:5 › REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 2
+  24-REQ-4-3-1-scenario-3.spec.ts:8:5 › REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 3
+  25-REQ-4-5-scenario-1.spec.ts:8:5 › REQ-4-5: Create and View Repository Releases - Scenario 1
+  26-REQ-4-5-scenario-2.spec.ts:8:5 › REQ-4-5: Create and View Repository Releases - Scenario 2
+  27-REQ-4-5-scenario-3.spec.ts:8:5 › REQ-4-5: Create and View Repository Releases - Scenario 3
+  28-REQ-5-5-scenario-1.spec.ts:8:5 › REQ-5-5: Add and Remove Issue Reactions - Scenario 1
+  29-REQ-5-5-scenario-2.spec.ts:7:5 › REQ-5-5: Add and Remove Issue Reactions - Scenario 2
+  30-REQ-5-5-scenario-3.spec.ts:7:5 › REQ-5-5: Add and Remove Issue Reactions - Scenario 3
+Total: 30 tests in 30 files
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

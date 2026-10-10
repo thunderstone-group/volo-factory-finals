@@ -1,0 +1,10 @@
+{
+  "application": "dependency-build-pilot-github",
+  "judge": "gh8",
+  "counts": {
+    "pass": 62,
+    "error": 16,
+    "fail": 26
+  },
+  "seconds": 180.7
+}

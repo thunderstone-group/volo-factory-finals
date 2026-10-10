@@ -1,0 +1,14 @@
+{
+  "app": "startup-seed-repair-r2",
+  "judge": "gh99",
+  "counts": {
+    "error": 20,
+    "pass": 65,
+    "fail": 16
+  },
+  "seconds": 173.0,
+  "coverage": {
+    "total": 100,
+    "parsed": 81
+  }
+}

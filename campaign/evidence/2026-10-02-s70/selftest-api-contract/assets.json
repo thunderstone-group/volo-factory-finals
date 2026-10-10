@@ -1,0 +1,51 @@
+[
+  {
+    "asset": "/_next/static/immutable/chunks/1elt33vgv_ey1.js",
+    "bytes": 176575,
+    "api_paths": []
+  },
+  {
+    "asset": "/_next/static/immutable/chunks/1kfylnicuy4ef.js",
+    "bytes": 229617,
+    "api_paths": []
+  },
+  {
+    "asset": "/_next/static/immutable/chunks/turbopack-3pc2c7t3qps7h.js",
+    "bytes": 9718,
+    "api_paths": []
+  },
+  {
+    "asset": "/_next/static/immutable/chunks/0phv4x3t_hb0a.js",
+    "bytes": 14522,
+    "api_paths": []
+  },
+  {
+    "asset": "/_next/static/immutable/chunks/1tg49gfcrxrig.js",
+    "bytes": 50363,
+    "api_paths": [
+      "/api/auth",
+      "/api/auth/signin?",
+      "/api/submissions"
+    ]
+  },
+  {
+    "asset": "/_next/static/immutable/chunks/1asoniqfjgjve.js",
+    "bytes": 529,
+    "api_paths": []
+  },
+  {
+    "asset": "/_next/static/immutable/chunks/2k1uexaaovmij.js",
+    "bytes": 3923,
+    "api_paths": []
+  },
+  {
+    "asset": "/_next/static/immutable/chunks/0c0hxoamwjsbw.js",
+    "bytes": 112541,
+    "api_paths": []
+  },
+  {
+    "asset": "/_next/static/immutable/chunks/3ct445roejjkh.js",
+    "bytes": 23556,
+    "api_paths": []
+  }
+]

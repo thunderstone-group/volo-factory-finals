@@ -1,0 +1,10 @@
+{
+  "main_commit": "505044ecf4fd7bb69c9330247b0f7b43b72d5848",
+  "package": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v11-main.zip",
+  "sha256": "cd0f596905b202bd5b79c040e7478ed65c204d51fb0c59c02c23beacc59baa5c",
+  "same_as_tested_candidate": true,
+  "pr": "https://github.com/thunderstone-group/volo-factory/pull/118",
+  "merged": true,
+  "development_branch_and_worktree_removed": true,
+  "formal_submission_replaced": false
+}

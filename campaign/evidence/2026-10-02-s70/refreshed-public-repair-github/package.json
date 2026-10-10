@@ -1,0 +1,9 @@
+{
+  "zip": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/refreshed-public-repair-github/refreshed-public-repair-app.zip",
+  "sha256": "80b28837dd42c41259700c4de98e1b1c0c6cd969a3a947ef3ef531da1b34801f",
+  "bytes": 42433,
+  "source": "one real Vision repair from current full public requirements + organizer Stage1 error feedback",
+  "partial_hunk_application": true,
+  "known_skipped_hunks": 1,
+  "official_agent_package": false
+}

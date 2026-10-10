@@ -1,0 +1,91 @@
+{
+  "observed_at": "2026-10-01T13:10:43.870930+00:00",
+  "scope": "Local diagnostics, no official scoring; UI effects stubbed for generated domain-function probes; real Chromium with an in-memory HTTP state fixture for scaffold probe. No candidate source changed.",
+  "probes": [
+    {
+      "id": "github_fresh_approval",
+      "source": "acceptance-hidden/oracle-2026-09-27/apps/github-24-65c9a5df6145/template/frontend/public/app.js",
+      "method": "Execute original submit-review action and hasApproval in Node vm",
+      "observed": {
+        "stored_decision": "Approve",
+        "hasApproval": false
+      },
+      "expected": {
+        "hasApproval": true
+      },
+      "public_requirement": "REQ-6-1, REQ-6-3-4"
+    },
+    {
+      "id": "github_stale_review",
+      "method": "Call original hasRequestChanges with a Request changes on an old commit and Approve on current commit",
+      "observed": true,
+      "expected": false,
+      "public_requirement": "REQ-6-1"
+    },
+    {
+      "id": "github_merge_commit",
+      "method": "Execute original confirm-merge action",
+      "observed": {
+        "pr_state": "Merged",
+        "base_head": "c1",
+        "files_changed": true
+      },
+      "expected": "A new merge commit is created and the branch head points to it",
+      "public_requirement": "REQ-6-5"
+    },
+    {
+      "id": "sheet_stable_sort",
+      "source": "acceptance-hidden/oracle-2026-09-27/apps/sheet-81-cbe0e2b43105/template/frontend/public/app.js",
+      "method": "Execute original apply-sort with two equal sort keys and distinct row identifiers",
+      "observed": {
+        "ascending": [
+          "first",
+          "second"
+        ],
+        "descending": [
+          "second",
+          "first"
+        ]
+      },
+      "expected": {
+        "descending": [
+          "first",
+          "second"
+        ]
+      },
+      "public_requirement": "REQ-5-1-1"
+    },
+    {
+      "id": "sheet_formula_edit_locality",
+      "method": "Execute original commitFormula on B2 and C2 with old value 123 and new formula =1+1",
+      "observed": {
+        "B2_edit_neighbor_changed": false,
+        "C2_edit_neighbor_changed": true,
+        "D2_after_C2_edit": "123"
+      },
+      "expected": "Only the edited cell changes",
+      "public_requirement": "REQ-3-1-1"
+    },
+    {
+      "id": "scaffold_stale_tab_save",
+      "source": "volo-factory/oneshot/scaffold/frontend/public/lib/arc.js",
+      "method": "Two real Chromium contexts load the same state; first appends first-save and saves; second appends second-save without navigation and saves",
+      "observed": {
+        "after_first": [
+          "initial",
+          "first-save"
+        ],
+        "after_second": [
+          "initial",
+          "second-save"
+        ]
+      },
+      "expected": [
+        "initial",
+        "first-save",
+        "second-save"
+      ],
+      "limitation": "Confirmed state-loss mechanism; not attributed to any specific hidden failure."
+    }
+  ]
+}

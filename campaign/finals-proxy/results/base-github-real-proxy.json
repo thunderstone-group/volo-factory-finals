@@ -1,0 +1,308 @@
+{
+  "task": "github-real",
+  "app_dir": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/v7-official-github-79/application",
+  "app_sha256": "72c64d2452f809b5fdb4d317192b0b81da475360ef55ea9d0232d434adb8d4d5",
+  "frozen_manifest_sha256": "86cd07417db35c3aadfb2442e7d4d40f1170b9938f3dde54fa441f47943d4757",
+  "image": "gyataro/arcbench-runner:local-base",
+  "settings": {
+    "workers": 1,
+    "fullyParallel": false,
+    "timeout_ms": 10000,
+    "expect_timeout_ms": 10000,
+    "retries": 0,
+    "trace": "off",
+    "baseURL": "http://127.0.0.1:3000",
+    "server_instances": 1,
+    "context_per_test": "fresh",
+    "reset_between_tests": false
+  },
+  "subset": null,
+  "tests": [
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 1",
+      "file": "01-REQ-1-1-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10091,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByLabel('Username or email', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByLabel('Username or email', { exact: true })\n    11 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/01-REQ-1-1-1-scenario-1.spec.ts:23:16"
+    },
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 2",
+      "file": "02-REQ-1-1-1-scenario-2.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 2119,
+      "error": null
+    },
+    {
+      "name": "REQ-1-1-1: Register a New GitHub Account - Evolution Scenario 3",
+      "file": "03-REQ-1-1-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10024,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('Username already exists', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByText('Username already exists', { exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at text (/proxy/github-real/tests/helpers.ts:26:65)\n    at /proxy/github-real/tests/03-REQ-1-1-1-scenario-3.spec.ts:23:13"
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 1",
+      "file": "04-REQ-1-1-2-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10091,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('evo-login-case', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByText('evo-login-case', { exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at text (/proxy/github-real/tests/helpers.ts:26:65)\n    at /proxy/github-real/tests/04-REQ-1-1-2-scenario-1.spec.ts:16:13"
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 2",
+      "file": "05-REQ-1-1-2-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10102,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('evo-login-case', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByText('evo-login-case', { exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at text (/proxy/github-real/tests/helpers.ts:26:65)\n    at /proxy/github-real/tests/05-REQ-1-1-2-scenario-2.spec.ts:16:13"
+    },
+    {
+      "name": "REQ-1-1-2: Sign In with an Existing Account - Evolution Scenario 3",
+      "file": "06-REQ-1-1-2-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1906,
+      "error": null
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 1",
+      "file": "07-REQ-1-4-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10031,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Account menu', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Account menu', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at button (/proxy/github-real/tests/helpers.ts:10:112)\n    at /proxy/github-real/tests/07-REQ-1-4-scenario-1.spec.ts:15:15"
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 2",
+      "file": "08-REQ-1-4-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10084,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('evo-session-owner-s2', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByText('evo-session-owner-s2', { exact: true })\n    10 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at text (/proxy/github-real/tests/helpers.ts:26:65)\n    at /proxy/github-real/tests/08-REQ-1-4-scenario-2.spec.ts:19:13"
+    },
+    {
+      "name": "REQ-1-4: Manage Active Browser Sessions - Scenario 3",
+      "file": "09-REQ-1-4-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10082,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('evo-session-owner-s3', { exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByText('evo-session-owner-s3', { exact: true })\n    10 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at text (/proxy/github-real/tests/helpers.ts:26:65)\n    at /proxy/github-real/tests/09-REQ-1-4-scenario-3.spec.ts:19:13"
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 1",
+      "file": "10-REQ-2-1-2-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10088,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Account menu', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Account menu', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at button (/proxy/github-real/tests/helpers.ts:10:112)\n    at /proxy/github-real/tests/10-REQ-2-1-2-scenario-1.spec.ts:15:15"
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 2",
+      "file": "11-REQ-2-1-2-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10089,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Account menu', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Account menu', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at button (/proxy/github-real/tests/helpers.ts:10:112)\n    at /proxy/github-real/tests/11-REQ-2-1-2-scenario-2.spec.ts:15:15"
+    },
+    {
+      "name": "REQ-2-1-2: Create an Organization After Authentication - Evolution Scenario 3",
+      "file": "12-REQ-2-1-2-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10090,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Account menu', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Account menu', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at button (/proxy/github-real/tests/helpers.ts:10:112)\n    at /proxy/github-real/tests/12-REQ-2-1-2-scenario-3.spec.ts:15:15"
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 1",
+      "file": "13-REQ-2-4-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10095,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Account menu', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Account menu', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at button (/proxy/github-real/tests/helpers.ts:10:112)\n    at /proxy/github-real/tests/13-REQ-2-4-scenario-1.spec.ts:15:15"
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 2",
+      "file": "14-REQ-2-4-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10092,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Account menu', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Account menu', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at button (/proxy/github-real/tests/helpers.ts:10:112)\n    at /proxy/github-real/tests/14-REQ-2-4-scenario-2.spec.ts:15:15"
+    },
+    {
+      "name": "REQ-2-4: View Organization Audit Log - Scenario 3",
+      "file": "15-REQ-2-4-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10085,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Account menu', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('button', { name: 'Account menu', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at button (/proxy/github-real/tests/helpers.ts:10:112)\n    at /proxy/github-real/tests/15-REQ-2-4-scenario-3.spec.ts:15:15"
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 1",
+      "file": "16-REQ-3-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10093,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evo-search-catalog-s1', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evo-search-catalog-s1', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/16-REQ-3-1-scenario-1.spec.ts:12:16"
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 2",
+      "file": "17-REQ-3-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10086,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evo-search-notebook-s2', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evo-search-notebook-s2', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/17-REQ-3-1-scenario-2.spec.ts:13:16"
+    },
+    {
+      "name": "REQ-3-1: Search for and Locate Repositories - Evolution Scenario 3",
+      "file": "18-REQ-3-1-scenario-3.spec.ts",
+      "status": "pass",
+      "playwright_status": "passed",
+      "duration_ms": 1798,
+      "error": null
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 1",
+      "file": "19-REQ-3-5-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10031,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/19-REQ-3-5-scenario-1.spec.ts:15:16"
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 2",
+      "file": "20-REQ-3-5-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10094,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/20-REQ-3-5-scenario-2.spec.ts:15:16"
+    },
+    {
+      "name": "REQ-3-5: Archive and Restore a Repository - Scenario 3",
+      "file": "21-REQ-3-5-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10090,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/21-REQ-3-5-scenario-3.spec.ts:15:16"
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 1",
+      "file": "22-REQ-4-3-1-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10093,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evo-branch-switch-s1', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evo-branch-switch-s1', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/22-REQ-4-3-1-scenario-1.spec.ts:13:16"
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 2",
+      "file": "23-REQ-4-3-1-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10084,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evo-branch-switch-s2', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evo-branch-switch-s2', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/23-REQ-4-3-1-scenario-2.spec.ts:13:16"
+    },
+    {
+      "name": "REQ-4-3-1: List and Switch Repository Branches - Evolution Scenario 3",
+      "file": "24-REQ-4-3-1-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10087,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evo-branch-switch-s3', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evo-branch-switch-s3', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/24-REQ-4-3-1-scenario-3.spec.ts:13:16"
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 1",
+      "file": "25-REQ-4-5-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10093,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/25-REQ-4-5-scenario-1.spec.ts:15:16"
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 2",
+      "file": "26-REQ-4-5-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10085,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: 'evo-release-repository-s2', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('link', { name: 'evo-release-repository-s2', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/26-REQ-4-5-scenario-2.spec.ts:13:16"
+    },
+    {
+      "name": "REQ-4-5: Create and View Repository Releases - Scenario 3",
+      "file": "27-REQ-4-5-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10089,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/27-REQ-4-5-scenario-3.spec.ts:15:16"
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 1",
+      "file": "28-REQ-5-5-scenario-1.spec.ts",
+      "status": "fail",
+      "playwright_status": "timedOut",
+      "duration_ms": 10089,
+      "error": "Test timeout of 10000ms exceeded.\nError: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('searchbox', { name: 'Search', exact: true })\nExpected: 1\nReceived: 0\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 10000ms\n  - waiting for getByRole('searchbox', { name: 'Search', exact: true })\n    12 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n   at helpers.ts:5\n\n  3 | export const named = (scope: Scope, role: Parameters<Scope['getByRole']>[0], name: string) => scope.getByRole(role, { name, exact: true });\n  4 | export const field = (scope: Scope, name: string) => scope.getByLabel(name, { exact: true });\n> 5 | export async function visible(locator: Locator) { await expect(locator).toHaveCount(1); await expect(locator).toBeVisible(); }\n    |                                                                         ^\n  6 | export async function activate(scope: Scope, name: string) {\n  7 |   const control = named(scope, 'link', name).or(named(scope, 'button', name));\n  8 |   await visible(control); await expect(control).toBeEnabled(); await control.click();\n    at visible (/proxy/github-real/tests/helpers.ts:5:73)\n    at /proxy/github-real/tests/28-REQ-5-5-scenario-1.spec.ts:15:16"
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 2",
+      "file": "29-REQ-5-5-scenario-2.spec.ts",
+      "status": "fail",
+      "playwright_status": "failed",
+      "duration_ms": 2327,
+      "error": "Error: No public UI link found for the pre-provisioned issue Evo reaction issue s2\n\n   at interactions.ts:50\n\n  48 |     if(await issue.count()) { await visible(issue); await issue.click(); await visible(page.getByRole('heading').filter({hasText:title})); return; }\n  49 |   }\n> 50 |   throw new Error('No public UI link found for the pre-provisioned issue '+title);\n     |         ^\n  51 | }\n  52 |\n    at openPublicIssue (/proxy/github-real/tests/interactions.ts:50:9)\n    at /proxy/github-real/tests/29-REQ-5-5-scenario-2.spec.ts:15:3"
+    },
+    {
+      "name": "REQ-5-5: Add and Remove Issue Reactions - Scenario 3",
+      "file": "30-REQ-5-5-scenario-3.spec.ts",
+      "status": "fail",
+      "playwright_status": "failed",
+      "duration_ms": 2299,
+      "error": "Error: No public UI link found for the pre-provisioned issue Evo reaction issue s3\n\n   at interactions.ts:50\n\n  48 |     if(await issue.count()) { await visible(issue); await issue.click(); await visible(page.getByRole('heading').filter({hasText:title})); return; }\n  49 |   }\n> 50 |   throw new Error('No public UI link found for the pre-provisioned issue '+title);\n     |         ^\n  51 | }\n  52 |\n    at openPublicIssue (/proxy/github-real/tests/interactions.ts:50:9)\n    at /proxy/github-real/tests/30-REQ-5-5-scenario-3.spec.ts:11:3"
+    }
+  ],
+  "requirements_file": "github-real/requirements/requirements.yaml",
+  "requirements_sha256": "f1f73b4190831cef37669f9e919edde50cd0bc7ad02b888e6dab617094921754",
+  "test_task": "github-real",
+  "test_source_manifest_sha256": "86cd07417db35c3aadfb2442e7d4d40f1170b9938f3dde54fa441f47943d4757",
+  "test_files_sha256": {
+    "tests/01-REQ-1-1-1-scenario-1.spec.ts": "a8fbd98883fd50ab8457653e09ede0cd62f4e29afc2d4161fb6688a1209dd42d",
+    "tests/02-REQ-1-1-1-scenario-2.spec.ts": "52c136e6fcf78b85a57ff36a622e80c1e21668603b9f4868ad92eb0faabaaef2",
+    "tests/03-REQ-1-1-1-scenario-3.spec.ts": "59ded0e4849401e39cc9c9d1e0b9f04d9caa782770bd0aa6f1e27a191d00c315",
+    "tests/04-REQ-1-1-2-scenario-1.spec.ts": "d06a93aa84ac1e110747894b862335d8c931e3bd681172524e77d523f19df773",
+    "tests/05-REQ-1-1-2-scenario-2.spec.ts": "d086bdc51f30df15e1337f93483d326253280e7ea094eabe568ebb550b00b5f9",
+    "tests/06-REQ-1-1-2-scenario-3.spec.ts": "0f5f360e5ffab1e6e81a7a45932324adb779f3a19e424c712dcad535707b74e7",
+    "tests/07-REQ-1-4-scenario-1.spec.ts": "b75790dd84f6a3ad7759bb59933889492770d8eb464a6b08cc2337648b4e4077",
+    "tests/08-REQ-1-4-scenario-2.spec.ts": "6a3da7b6b346c5d5c4091449f17cfce5f886d9f29c330bfdf57a5078ddaae24f",
+    "tests/09-REQ-1-4-scenario-3.spec.ts": "559484b94f4a9ac301d650879ba2139191a9959c4b86ff495a9b79d87c14995b",
+    "tests/10-REQ-2-1-2-scenario-1.spec.ts": "a1305d32a00148606f58833f82d9c64e2507bcad581de86bacb2674bdb694ab3",
+    "tests/11-REQ-2-1-2-scenario-2.spec.ts": "e673c0c1aaa60a06adb54d9d847e2127008cba003caae7e92f86f41c62d2dbc8",
+    "tests/12-REQ-2-1-2-scenario-3.spec.ts": "3c8a974f20f70795b8ab747703e6cdaaa18f75f5e5ad414abb2e76383526bdc5",
+    "tests/13-REQ-2-4-scenario-1.spec.ts": "0b94ac51d2395a304030fd3079aef1587feef4e1c766f0bd806d03b34597be1d",
+    "tests/14-REQ-2-4-scenario-2.spec.ts": "56d03a849bb0025e1de0bddf29ca254edc6bec529bf0b36196289017468b741e",
+    "tests/15-REQ-2-4-scenario-3.spec.ts": "b2ace16b686131f7df8d9c1e610a23f20639e5174bb0c76e60ce87eb4603155a",
+    "tests/16-REQ-3-1-scenario-1.spec.ts": "88c92d2bd1997a7449a4cccc455a430f185c6a6bc479e395db6db63c14d154e3",
+    "tests/17-REQ-3-1-scenario-2.spec.ts": "adb6ff467aaad5176ae4c62d2e0a4123ddfc7c77b666bb62341bf195fb3769e1",
+    "tests/18-REQ-3-1-scenario-3.spec.ts": "1cc66437249307910194d854be38cad149c74127e91727ff7aef4919054b5aa6",
+    "tests/19-REQ-3-5-scenario-1.spec.ts": "9d6c1d43956387e79f77f8434cc134e498852a73b8582dad92e4b23a8c8eb9ca",
+    "tests/20-REQ-3-5-scenario-2.spec.ts": "97ff468bef3f2cc83e3f183bb6b566a0c83e8a1490bc0048ff5605fee19f5fe7",
+    "tests/21-REQ-3-5-scenario-3.spec.ts": "3704ed23d60f859b299befccb60574945212a8d82bfdf8802de0eb3d867f2a14",
+    "tests/22-REQ-4-3-1-scenario-1.spec.ts": "06071f1ef336b4ff005e8e8781c1ab651ded0f22301438785af15f2ae45e7a7c",
+    "tests/23-REQ-4-3-1-scenario-2.spec.ts": "53e9358f188e4a1e0eacbe760cf3dc9e2626d37fe18a2414028385beae5a423d",
+    "tests/24-REQ-4-3-1-scenario-3.spec.ts": "d8cc3335fd72fe345bd1f89799594903f99dee89a3f4ef6bd87a5cdb2c6c2a13",
+    "tests/25-REQ-4-5-scenario-1.spec.ts": "cb0e24e790f868ba5014d0e9d832bc4e271b91a35bbda89f2ff92563263aa57a",
+    "tests/26-REQ-4-5-scenario-2.spec.ts": "d3e9d57ab3fa5018289d59c559be71b435e4e2947926ca2e4978f1d683433337",
+    "tests/27-REQ-4-5-scenario-3.spec.ts": "93a470bc29bd3be95d61ede0a86381d6f58cf2e679901e6ffd357cd7595bd3d8",
+    "tests/28-REQ-5-5-scenario-1.spec.ts": "f050ebfe6b4f9432b0d9312d17b044d87280695189b6b152a02b9a6d15660bba",
+    "tests/29-REQ-5-5-scenario-2.spec.ts": "c868553ce93825eb54c3c2b8444667b887a15dbd8cb96cfc2d102b5189cbffd6",
+    "tests/30-REQ-5-5-scenario-3.spec.ts": "bd266a0e8992485a46d3e3e6b3242a834d7cf1b8512979ec3dcf4574ea5fa071",
+    "tests/helpers.ts": "f03e8ec158701a005a48a7931522b0a5be517a9de5d68a517aba5f8586efa0d3",
+    "tests/interactions.ts": "8a6faa41fb82e413e3006168afc8d9a833799dafd659700bd6e5a908d7991514"
+  },
+  "test_suite_sha256": "7a863c2bd464ebe256d087547c348cdd384a3e7ad9dd922a4977246eb7e94fb7",
+  "image_id": "sha256:40e003ed470dbd4c120b9019876ba77303d38dc8b34be7f6e313fe0563dd14de",
+  "suite_duration_seconds": 309.981,
+  "container_exit_code": 1,
+  "passed": 3,
+  "failed": 27,
+  "total": 30,
+  "wall_seconds": 313.897
+}

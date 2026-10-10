@@ -1,0 +1,1 @@
+{"run_id":"5d3438cb9865","console":"[2026-10-02 15:43:04] [generation-agent.stderr] [oneshot] call 2 failed; bounded retry in 30 s\n[2026-10-02 15:49:54] [generation-agent.stderr] [oneshot] deepseek-v4-flash-vision-exp failed 3 times; this call is retried on kimi-k2.7-code-highspeed","stderr":"","next_offset":817,"last_event_id":null}

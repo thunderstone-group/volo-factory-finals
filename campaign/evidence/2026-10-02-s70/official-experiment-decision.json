@@ -1,0 +1,45 @@
+{
+  "at": "2026-10-02T07:31:18.293172+08:00",
+  "kind": "bounded official experiment, not mainline promotion",
+  "goal": "same official complete pair S >= 70",
+  "package_sha256": "c5832d5275a76144c3f5e60ad3482d2d442ae1bf468accd1557c91107ca68820",
+  "source_commit": "a86222a",
+  "model": "deepseek-v4-flash-vision-exp",
+  "requirements": {
+    "hackathon--github/requirements.yaml": "bdc17d23265a6b1948aec150e69d0b2accfa37db4c569305c97be7ff7f3b0b8f",
+    "hackathon--sheet/requirements.yaml": "9cddf67be50748106289ed158648629a6c50c30a490d0eda5bd570c557440b96"
+  },
+  "active_runs_before_upload": 0,
+  "official_balance_before": 227.577645,
+  "local_evidence": {
+    "v1_github": [
+      67,
+      71
+    ],
+    "v1_sheet": [
+      91,
+      90
+    ],
+    "v2_sheet": [
+      90,
+      95
+    ],
+    "v2_github": "still running",
+    "v1_sheet_source_review": "aborted by overly strict empty-setup validation; exact raw proposals now execute as four failing public-rule counterexamples",
+    "v2_sheet_source_checks": "three fail to pass with all original 100 UI scenarios retained"
+  },
+  "latest_changes": "Generic namespace extraction, cross-namespace constants, and legal empty setup. Generation and browser-repair files unchanged from local v1/v2.",
+  "validation_boundary": "The exact v2c ZIP has targeted tests and real-source replay, but has not had a complete fresh local trajectory. V1 Sheet missed the predeclared independent sum gate by one; v2 Sheet passes it. No mixed local pair is claimed as a score or successful same-package control.",
+  "gate_deviation_reason": "Use one already-authorized formal experiment to measure the true objective after reproducible checker fixes. Local proxy scores have a large known gap to official results; another full random generation is less informative than a bounded official pair. Do not promote or claim improvement until the official result.",
+  "checks": {
+    "source_regressions_passed": 14,
+    "package_name_checks_passed": 2,
+    "last_broad_oneshot_run": 259,
+    "last_broad_oneshot_passed": 256,
+    "last_broad_oneshot_skipped": 3,
+    "legacy_passed": 214,
+    "legacy_skipped": 12,
+    "latest_zip_secret_scan_findings": 0
+  },
+  "budget": "Existing authorized formal funds, within the first 40 CNY internal tranche; no purchase or recharge."
+}

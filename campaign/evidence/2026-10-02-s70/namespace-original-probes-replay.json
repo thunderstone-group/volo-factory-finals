@@ -1,0 +1,78 @@
+{
+  "github": {
+    "before": [
+      {
+        "id": "REQ-6-1#contract-1",
+        "status": "fail"
+      },
+      {
+        "id": "REQ-6-3-4#contract-1",
+        "status": "fail"
+      },
+      {
+        "id": "REQ-3-2-1#contract-1",
+        "status": "fail"
+      },
+      {
+        "id": "REQ-5-2-2#contract-1",
+        "status": "fail"
+      }
+    ],
+    "after": [
+      {
+        "id": "REQ-6-1#contract-1",
+        "status": "pass"
+      },
+      {
+        "id": "REQ-6-3-4#contract-1",
+        "status": "pass"
+      },
+      {
+        "id": "REQ-3-2-1#contract-1",
+        "status": "pass"
+      },
+      {
+        "id": "REQ-5-2-2#contract-1",
+        "status": "pass"
+      }
+    ]
+  },
+  "sheet": {
+    "before": [
+      {
+        "id": "REQ-2-2-2#contract-1",
+        "status": "fail"
+      },
+      {
+        "id": "REQ-2-2-1#contract-2",
+        "status": "fail"
+      },
+      {
+        "id": "REQ-4-1-2#contract-3",
+        "status": "fail"
+      },
+      {
+        "id": "REQ-4-2-2#contract-4",
+        "status": "fail"
+      }
+    ],
+    "after": [
+      {
+        "id": "REQ-2-2-2#contract-1",
+        "status": "pass"
+      },
+      {
+        "id": "REQ-2-2-1#contract-2",
+        "status": "pass"
+      },
+      {
+        "id": "REQ-4-1-2#contract-3",
+        "status": "pass"
+      },
+      {
+        "id": "REQ-4-2-2#contract-4",
+        "status": "pass"
+      }
+    ]
+  }
+}

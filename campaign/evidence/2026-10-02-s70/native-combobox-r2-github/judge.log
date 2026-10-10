@@ -1,0 +1,2 @@
+{"app": "native-combobox-r2-github", "judge": "gh99", "counts": {"error": 20, "pass": 66, "fail": 15}, "seconds": 172.4, "coverage": {"total": 100, "parsed": 81}}
+{"app": "native-combobox-r2-github", "judge": "gh8", "counts": {"pass": 64, "error": 14, "fail": 24}, "seconds": 180.9, "coverage": {"total": 100, "parsed": 88}}

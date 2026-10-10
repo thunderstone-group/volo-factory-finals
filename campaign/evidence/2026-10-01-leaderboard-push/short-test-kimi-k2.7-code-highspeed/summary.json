@@ -1,0 +1,14 @@
+{
+  "status": "completed",
+  "finish": "stop",
+  "usage": {
+    "prompt_tokens": 1222,
+    "completion_tokens": 13863
+  },
+  "response_chars": 5189,
+  "model": "kimi-k2.7-code-highspeed",
+  "max_tokens": 16384,
+  "seconds": 63.4,
+  "prompt_chars": 6011,
+  "estimated_cost_cny": 0.764488
+}

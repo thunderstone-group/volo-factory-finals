@@ -1,0 +1,1 @@
+{"status": "failed", "error": "model stream failed (StreamError)", "model": "qwen3.7-plus", "max_tokens": 16384, "seconds": 437.4, "prompt_chars": 6011, "estimated_cost_cny": 0.22963}

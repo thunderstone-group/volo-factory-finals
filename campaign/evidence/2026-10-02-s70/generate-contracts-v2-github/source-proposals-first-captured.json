@@ -1,0 +1,82 @@
+[
+  {
+    "id": "REQ-6-1#contract-1",
+    "requirement": "REQ-6-1",
+    "explanation": "REQ-6-1 states that any valid Request changes blocks merging and that a blocked PR keeps only a non-actionable merge control. The fixture uses the seeded Open PR acme-docs#1 (base main, current compare commit c-acme-3) whose branch protection enables both rules; the required `test` check is set to success and a valid non-author approval from bob-reviewer exists, while dana-dev — added with the minimal Write grant needed for the scenario — has a non-stale 'Changes requested' review on the current compare commit. The handler that renders the merge area (APP.pullSidebar) derives eligibility from the approval count alone, so it renders an enabled Merge pull request control although a valid Request changes review blocks the merge.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "APP.pullSidebar",
+        "kind": "method",
+        "alias": "pullSidebar"
+      }
+    ],
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "subject": "pullSidebar",
+    "setup": "window.ARC = window.ARC || {}; if (!ARC.state || !ARC.state.repos || !ARC.state.pulls) { ARC.state = JSON.parse(JSON.stringify(window.SEED || {})); } ARC.state.ui = ARC.state.ui || {}; ARC.state.grants = ARC.state.grants || []; ARC.state.reviews = ARC.state.reviews || []; if (typeof ARC.currentUser !== 'function') { ARC.currentUser = function () { var id = ARC.state.session; if (!id) return null; return (ARC.state.users || []).filter(function (u) { return u.id === id; })[0] || null; }; } ARC.state.session = 'u-alice'; ARC.state.grants.push({ id: 'g-probe-dana', repo: 'r-acme-docs', subjectType: 'user', subject: 'u-dana', role: 'Write', created: '2024-03-02T10:00:00Z' }); ARC.state.reviews.push({ id: 'rv-probe-dana', pr: 'p-1', reviewer: 'u-dana', commit: 'c-acme-3', state: 'Changes requested', summary: 'Please rework the search flow.', time: '2024-03-02T12:00:00Z', stale: false }); ARC.state.checks = [{ id: 'ck-probe', pr: 'p-1', commit: 'c-acme-3', status: 'success', setter: 'u-alice', time: '2024-03-02T13:00:00Z' }];",
+    "precondition": "var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0]; var pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0]; assert(repo && pr, 'seeded repository acme-docs and pull request p-1 exist'); assert(pr.status === 'open' && pr.base === 'main' && pr.compareCommit === 'c-acme-3', 'p-1 is Open and targets main at compare commit c-acme-3'); var prot = ARC.state.protections.filter(function (p) { return p.repo === repo.id && p.branch === 'main'; })[0]; assert(prot && prot.approval === true && prot.check === true, 'main is protected with Require 1 approval and Require status check test'); var ck = ARC.state.checks.filter(function (c) { return c.pr === pr.id && c.commit === pr.compareCommit; })[0]; assert(ck && ck.status === 'success', 'the required test check of the current compare commit is success'); var approvals = ARC.state.reviews.filter(function (r) { return r.pr === pr.id && r.commit === pr.compareCommit && !r.stale && r.state === 'Approved' && r.reviewer !== pr.author; }); assert(approvals.length === 1, 'one valid non-author approval exists for the current compare commit'); var blocking = ARC.state.reviews.filter(function (r) { return r.pr === pr.id && r.commit === pr.compareCommit && !r.stale && r.state === 'Changes requested'; }); assert(blocking.length === 1, 'one valid Request changes review exists for the current compare commit'); assert(APP.canAdmin(repo, ARC.currentUser()) === true, 'the signed-in organization Owner acts with repository Admin permission and may merge');",
+    "check": "var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0]; var pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0]; var html = pullSidebar.call(APP, repo, pr); assert(typeof html === 'string' && html.length > 0, 'the pull request sidebar renders'); assert(!/data-action=\"merge-pr\"/.test(html), 'a valid Request changes review on the current compare commit blocks merging, so no actionable Merge pull request control may be offered');"
+  },
+  {
+    "id": "REQ-6-5#contract-1",
+    "requirement": "REQ-6-5",
+    "explanation": "REQ-6-5 requires that when the target branch is protected each enabled rule is enforced independently, so an Open PR with a valid non-author approval but a `test` check that is not success must stay blocked (non-actionable Merge pull request control plus the unmet-condition explanation). The seeded PR acme-docs#1 targets protected main with both Require 1 approval and Require status check test enabled; bob-reviewer's approval is valid and non-stale for the current compare commit c-acme-3, while the seeded check record for that same commit is still 'pending'. APP.pullSidebar never reads the check rule when computing merge eligibility, so it renders an enabled Merge pull request control for a PR that the protection rule requires to be blocked.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "APP.pullSidebar",
+        "kind": "method",
+        "alias": "pullSidebar"
+      }
+    ],
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "subject": "pullSidebar",
+    "setup": "window.ARC = window.ARC || {}; if (!ARC.state || !ARC.state.repos || !ARC.state.pulls) { ARC.state = JSON.parse(JSON.stringify(window.SEED || {})); } ARC.state.ui = ARC.state.ui || {}; if (typeof ARC.currentUser !== 'function') { ARC.currentUser = function () { var id = ARC.state.session; if (!id) return null; return (ARC.state.users || []).filter(function (u) { return u.id === id; })[0] || null; }; } ARC.state.session = 'u-alice';",
+    "precondition": "var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0]; var pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0]; assert(repo && pr, 'seeded repository acme-docs and pull request p-1 exist'); assert(pr.status === 'open' && pr.base === 'main' && pr.compareCommit === 'c-acme-3', 'p-1 is Open and targets main at compare commit c-acme-3'); var prot = ARC.state.protections.filter(function (p) { return p.repo === repo.id && p.branch === 'main'; })[0]; assert(prot && prot.approval === true && prot.check === true, 'main is protected with Require 1 approval and Require status check test'); var ck = ARC.state.checks.filter(function (c) { return c.pr === pr.id && c.commit === pr.compareCommit; })[0]; assert(ck && ck.status !== 'success', 'the required test check of the current compare commit is not success'); var approvals = ARC.state.reviews.filter(function (r) { return r.pr === pr.id && r.commit === pr.compareCommit && !r.stale && r.state === 'Approved' && r.reviewer !== pr.author; }); assert(approvals.length === 1, 'one valid non-author approval exists for the current compare commit'); var blocking = ARC.state.reviews.filter(function (r) { return r.pr === pr.id && r.commit === pr.compareCommit && !r.stale && r.state === 'Changes requested'; }); assert(blocking.length === 0, 'no valid Request changes review exists, so only the status-check rule is unmet'); assert(APP.canAdmin(repo, ARC.currentUser()) === true, 'the signed-in organization Owner acts with repository Admin permission and may merge');",
+    "check": "var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0]; var pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0]; var html = pullSidebar.call(APP, repo, pr); assert(typeof html === 'string' && html.length > 0, 'the pull request sidebar renders'); assert(!/data-action=\"merge-pr\"/.test(html), 'with Require status check test enabled and test not success, the merge control must be disabled / non-actionable');"
+  },
+  {
+    "id": "REQ-5-3-1#contract-1",
+    "requirement": "REQ-5-3-1",
+    "explanation": "REQ-5-3-1 defines assignable members as accounts holding at least Triage permission on the current repository and states that non-assignable users do not appear in the results. In the seed, carol-reader is a member of organization acme-demo but holds only a direct Read grant on acme-docs (her only team is frontend-child, which has no grant, and team hierarchy does not propagate), so the application's own predicate APP.canTriage(repo, carol-reader) is false, while bob-reviewer (direct Write) and the signed-in Owner are eligible. APP.assigneePicker, the picker actually used by the issue detail page, selects candidates by organization membership instead of repository permission, so it offers carol-reader as an assignable option.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "APP.assigneePicker",
+        "kind": "method",
+        "alias": "assigneePicker"
+      }
+    ],
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "subject": "assigneePicker",
+    "setup": "window.ARC = window.ARC || {}; if (!ARC.state || !ARC.state.repos || !ARC.state.issues) { ARC.state = JSON.parse(JSON.stringify(window.SEED || {})); } ARC.state.ui = ARC.state.ui || {}; ARC.state.ui.assigneeQuery = ''; if (typeof ARC.currentUser !== 'function') { ARC.currentUser = function () { var id = ARC.state.session; if (!id) return null; return (ARC.state.users || []).filter(function (u) { return u.id === id; })[0] || null; }; } ARC.state.session = 'u-alice'; ARC.route = function () { return { name: 'repos', params: ['acme-demo', 'acme-docs', 'issues', '1'] }; };",
+    "precondition": "var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0]; var issue = ARC.state.issues.filter(function (i) { return i.repo === repo.id && i.number === 1; })[0]; var carol = ARC.state.users.filter(function (u) { return u.username === 'carol-reader'; })[0]; var bob = ARC.state.users.filter(function (u) { return u.username === 'bob-reviewer'; })[0]; assert(repo && issue && carol && bob, 'seeded repository acme-docs, issue 1 and the two accounts exist'); assert(ARC.state.memberships.some(function (m) { return m.org === repo.owner && m.user === carol.id; }), 'carol-reader is an organization member, so membership alone would include her'); assert(APP.canTriage(repo, carol) === false, 'carol-reader has below-Triage (Read) permission on the repository'); assert(APP.canTriage(repo, bob) === true, 'bob-reviewer has Triage-or-higher (Write) permission on the repository'); assert(APP.canTriage(repo, ARC.currentUser()) === true, 'the signed-in organization Owner may assign participants');",
+    "check": "var html = assigneePicker.call(APP); assert(typeof html === 'string' && html.indexOf('role=\"option\"') >= 0, 'the assignee picker renders selectable options'); assert(html.indexOf('>bob-reviewer<') >= 0, 'eligible bob-reviewer is offered as a control'); assert(html.indexOf('carol-reader') < 0, 'carol-reader holds only Read permission on the repository and must not be offered as an assignable member');"
+  },
+  {
+    "id": "REQ-6-3-3#contract-1",
+    "requirement": "REQ-6-3-3",
+    "explanation": "REQ-6-3-3 requires that a draft started with Start a review stays pending — it is shown to its author with 'Pending review' but is not made public before review submission. The fixture uses the seeded public Open PR acme-docs#1 viewed by its author account alice-dev (an organization Owner, and a different account from the commenter bob-reviewer), and contains one already-published inline comment plus one unsubmitted (published:false) inline comment by bob-reviewer anchored to the same current compare commit c-acme-3. APP.pullFiles, the real Files-changed renderer, lists every inline record for the PR without any author or publication check, so bob-reviewer's unsubmitted draft body is rendered to alice-dev and is therefore public before submission.",
+    "functions": [
+      {
+        "file": "frontend/public/app.js",
+        "name": "APP.pullFiles",
+        "kind": "method",
+        "alias": "pullFiles"
+      }
+    ],
+    "initializers": [
+      "frontend/public/seed.js"
+    ],
+    "subject": "pullFiles",
+    "setup": "window.ARC = window.ARC || {}; if (!ARC.state || !ARC.state.repos || !ARC.state.pulls) { ARC.state = JSON.parse(JSON.stringify(window.SEED || {})); } ARC.state.ui = ARC.state.ui || {}; if (typeof ARC.currentUser !== 'function') { ARC.currentUser = function () { var id = ARC.state.session; if (!id) return null; return (ARC.state.users || []).filter(function (u) { return u.id === id; })[0] || null; }; } ARC.state.session = 'u-alice'; ARC.state.inline = [{ id: 'ic-probe-published', pr: 'p-1', path: 'src/search.ts', commit: 'c-acme-3', line: 1, author: 'u-bob', body: 'Published review note', published: true, created: '2024-03-02T11:00:00Z' }, { id: 'ic-probe-pending', pr: 'p-1', path: 'src/search.ts', commit: 'c-acme-3', line: 2, author: 'u-bob', body: 'Unsubmitted draft note', published: false, created: '2024-03-02T12:00:00Z' }];",
+    "precondition": "var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0]; var pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0]; assert(repo && pr, 'seeded repository acme-docs and pull request p-1 exist'); assert(pr.status === 'open' && pr.author === 'u-alice', 'p-1 is Open and authored by alice-dev, the signed-in account'); var bob = ARC.state.users.filter(function (u) { return u.username === 'bob-reviewer'; })[0]; assert(bob && bob.id !== pr.author, 'bob-reviewer is a different account from the pull-request author'); var pending = ARC.state.inline.filter(function (c) { return c.pr === pr.id && c.published === false && c.author === bob.id; }); assert(pending.length === 1 && pending[0].body === 'Unsubmitted draft note', 'bob-reviewer has exactly one unsubmitted pending review draft'); var submitted = ARC.state.inline.filter(function (c) { return c.pr === pr.id && c.published === true; }); assert(submitted.length === 1, 'one submitted inline comment exists as a control'); assert(ARC.state.ui.lineEditor === undefined, 'no line editor is open');",
+    "check": "var repo = ARC.state.repos.filter(function (r) { return r.id === 'r-acme-docs'; })[0]; var pr = ARC.state.pulls.filter(function (p) { return p.id === 'p-1'; })[0]; var html = pullFiles.call(APP, repo, pr); assert(typeof html === 'string' && html.length > 0, 'the Files changed view renders'); assert(html.indexOf('Published review note') >= 0, 'a submitted inline comment is visible (control)'); assert(html.indexOf('Unsubmitted draft note') < 0, 'an unsubmitted pending review draft must not be public to other accounts before review submission');"
+  }
+]

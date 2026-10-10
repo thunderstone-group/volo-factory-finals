@@ -1,0 +1,1 @@
+{"changed": ["t02-REQ-2.spec.cjs"], "before": {"pass": 91, "error": 9}, "after": {"pass": 93, "error": 7}, "seconds": 80.1, "estimated_cost_cny": 0.03365668, "scope": "Same frozen app, public requirements and actual invalid-API feedback only; no independent judges in prompt."}

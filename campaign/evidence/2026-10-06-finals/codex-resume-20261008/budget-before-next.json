@@ -1,0 +1,13 @@
+{
+  "competition_id": "hackathon-evolution",
+  "competition_type": "official",
+  "registered": true,
+  "can_confirm": false,
+  "team_id": "e24813ae8c4b47e889558a87a1aeb09b",
+  "team_name": "这一次能赢吗？",
+  "is_team_leader": true,
+  "initial_budget_cny": 200.0,
+  "remaining_budget_cny": 47.943357,
+  "currency": "CNY",
+  "message": "Your team is confirmed for this competition."
+}

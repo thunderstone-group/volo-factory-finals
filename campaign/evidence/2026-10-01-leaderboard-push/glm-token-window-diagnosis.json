@@ -1,0 +1,66 @@
+{
+  "observed_at": "2026-10-02T03:01:41.165818+08:00",
+  "baseline": [
+    {
+      "call": 1,
+      "status": "completed",
+      "finish_reason": "length",
+      "usage": {
+        "prompt_tokens": 81411,
+        "completion_tokens": 16384
+      },
+      "elapsed_seconds": 299.428,
+      "stream_observation": {
+        "received_bytes": 1573385,
+        "sse_events": 6229,
+        "content_chars": 0,
+        "reasoning_chars": 67986
+      },
+      "request_sha256": "fd7c2bb50d4f2aef1d30f95d65e1b7ca3981f91f70983f89a43e1674e11260e4"
+    },
+    {
+      "call": 2,
+      "status": "failed",
+      "finish_reason": null,
+      "usage": {},
+      "elapsed_seconds": 141.915,
+      "stream_observation": {
+        "received_bytes": 468339,
+        "sse_events": 1855,
+        "content_chars": 0,
+        "reasoning_chars": 20402
+      },
+      "request_sha256": "fd7c2bb50d4f2aef1d30f95d65e1b7ca3981f91f70983f89a43e1674e11260e4"
+    }
+  ],
+  "baseline_requested_max_tokens": 131072,
+  "changed_request": {
+    "baseline_sha256": "fd7c2bb50d4f2aef1d30f95d65e1b7ca3981f91f70983f89a43e1674e11260e4",
+    "modified_sha256": "3a5f7dbff7be658f7a6b00892cac1e83c28a632e274c555f95245bc9c353d259",
+    "only_changed_field": "reasoning_effort",
+    "value": "low",
+    "max_tokens": 131072,
+    "temperature": 0.0
+  },
+  "low_effort_result": {
+    "status": "completed",
+    "finish_reason": "length",
+    "usage": {
+      "prompt_tokens": 81411,
+      "completion_tokens": 16384
+    },
+    "content_chars": 0,
+    "file_markers": 0,
+    "seconds": 260.6,
+    "estimated_cost_cny": 0.06460144,
+    "model": "glm-5.3-flash",
+    "reasoning_effort": "low"
+  },
+  "official_documentation": [
+    "https://docs.z.ai/guides/vlm/glm-5.3-flash",
+    "https://docs.z.ai/api-reference/llm/chat-completion"
+  ],
+  "documentation_facts": "GLM 5.3 Flash documents a 128K output maximum, forced thinking, and low/high/max reasoning_effort.",
+  "decision": "Stop repeated full-task GLM calls under this configuration. Both completed samples ended at 16384 tokens with no content, so there is no application to judge.",
+  "limits": "These responses do not prove a universal gateway cap or a model quality ranking. The second default attempt was operator interrupted. The server may ignore parameters or apply a route-specific limit; its configuration is not visible."
+}

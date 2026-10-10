@@ -1,0 +1,13 @@
+{
+  "app": "native-select-official-sheet",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 87,
+    "fail": 13
+  },
+  "seconds": 109.5,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

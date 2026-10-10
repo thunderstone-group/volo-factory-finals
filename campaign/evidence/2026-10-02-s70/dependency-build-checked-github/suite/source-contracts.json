@@ -1,0 +1,364 @@
+{
+ "proposed": [
+  {
+   "id": "REQ-4-4#contract-1",
+   "requirement": "REQ-4-4",
+   "explanation": "REQ-4-4 requires a new file path to be rejected when it 'must not conflict with an existing file or directory on the current branch', and a rejected submission must not change files, branch head or commit history. On the seeded repository alice-dev/acme-docs the branch main already contains 'src/search.ts', so 'src' is an existing directory on that branch. The editor's validation only compares against exact file paths, so submitting File name 'src' creates a file plus a commit at a path that collides with the existing directory, instead of reporting the invalid path. The fixture is valid: the repository is public, alice-dev owns it (repository Admin), branch main exists with the seeded files, no file named 'src' exists, and the control submission with a unique path through the same action succeeds.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.actions.do-save-file",
+     "kind": "method",
+     "alias": "saveFile"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "saveFile",
+   "setup": "var A = window.ARC = window.ARC || {};\nif (!A.esc) A.esc = function (v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); };\nif (!A.uid) { var seq = 0; A.uid = function (p) { seq += 1; return String(p || 'x') + '-' + seq; }; }\nif (!A.state || !A.state.users) A.state = JSON.parse(JSON.stringify(window.SEED));\nif (!A.save) A.save = function () {};\nif (!A.render) A.render = function () {};\nif (!A.navigate) A.navigate = function () {};\nif (!A.notify) A.notify = function () {};\nif (!A.openDialog) A.openDialog = function () {};\nif (!A.closeDialog) A.closeDialog = function () {};\nif (!A.openPopover) A.openPopover = function () {};\nif (!A.closePopover) A.closePopover = function () {};\nif (!A.combobox) A.combobox = function () { return ''; };\nif (!A.currentUser) A.currentUser = function () { var s = A.state; return s.session ? (s.users.filter(function (u) { return u.id === s.session; })[0] || null) : null; };\nA.state.session = 'u-alice';",
+   "precondition": "var s = ARC.state;\nassert.strictEqual(s.session, 'u-alice', 'signed in as alice-dev');\nassert.ok(s.repositories.some(function (r) { return r.id === 'r-acme-docs' && r.ownerType === 'user' && r.ownerId === 'u-alice' && r.visibility === 'Public'; }), 'a public personal repository owned by the signed-in user');\nassert.ok(s.files.some(function (f) { return f.repoId === 'r-acme-docs' && f.branch === 'main' && f.path === 'src/search.ts'; }), 'src/search.ts exists on main, so src is an existing directory on that branch');\nassert.ok(!s.files.some(function (f) { return f.repoId === 'r-acme-docs' && f.branch === 'main' && f.path === 'src'; }), 'no file named src exists on main yet');",
+   "check": "var filesMain = function (p) { return ARC.state.files.filter(function (f) { return f.repoId === 'r-acme-docs' && f.branch === 'main' && f.path === p; }).length; };\nvar commitsMain = function () { return ARC.state.commits.filter(function (c) { return c.repoId === 'r-acme-docs' && c.branch === 'main'; }).length; };\nsaveFile({ el: { dataset: { repo: 'r-acme-docs', branch: 'main', path: '' } }, form: { 'fe-name': 'pw-file-control.md', 'fe-contents': 'control content', 'fe-message': 'Add pw-file-control.md' } });\nassert.strictEqual(filesMain('pw-file-control.md'), 1, 'control: a valid unique path still creates a file');\nvar before = commitsMain();\nsaveFile({ el: { dataset: { repo: 'r-acme-docs', branch: 'main', path: '' } }, form: { 'fe-name': 'src', 'fe-contents': 'must not be saved', 'fe-message': 'Add src' } });\nassert.strictEqual(filesMain('src'), 0, 'a file path conflicting with the existing src/ directory must be rejected as an invalid path');\nassert.strictEqual(commitsMain(), before, 'the rejected submission must not add a commit');",
+   "requirement_text": "This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-1 (Browse Repository Files and Directories) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes. The file editor is the form opened from Edit or Add file on the Code page; the user edits file content at a path on the current branch and submits it. Only Write, Maintain, Admin, or organization Owner may submit; Read and Triage may only view. A single submission stores the file-path and content change, commit message, author, parent commit, and target branch as one indivisible record and moves the target branch to point to that new commit. A new or renamed file path must not be empty, must not begin with `/`, must not contain a `..` path segment, and must not conflict with an existing file or directory on the current branch; the commit message must contain 1–72 non-empty characters after trimming leading and trailing whitespace. If the path conflicts, content validation fails, the commit message is noncompliant, the branch is protected, or persistence fails, the page displays the reason and does not change the file, branch head, or commit history. An invalid path displays “Invalid file path”, and an empty commit message displays “Commit message is required”. From the writable Code page, the unique “Add file” button opens the “Create new file” menuitem. The editor has a field labeled “File name”, a textbox named “File contents”, an initially empty field labeled “Commit message”, and a “Commit changes” button. Creating a unique file such as `pw-file-<unique suffix>.md` with nonempty text and a message such as `Add <file name>` immediately opens a view displaying the exact saved content. Its “Commits” link opens history displaying the exact submitted message. Submitting `../invalid.md` with content `must not be saved` and no commit message reports the invalid path and/or required message and changes neither files nor history. The example content is ordinary text, not a forbidden content value by itself; rejection follows from the invalid path or missing message.\n\nScreenshot reference:\n![image](reference/github-web-file-editor.png)"
+  },
+  {
+   "id": "REQ-6-6#contract-1",
+   "requirement": "REQ-6-6",
+   "explanation": "REQ-6-6 states that a merged pull request is terminal: 'Merged is terminal, the page does not display close or reopen operations, and the server rejects status changes.' The reopen-pr handler performs no terminal-state check, so invoking it for a Merged pull request rewrites the persisted status to Open, which also makes the PR mergeable/closeable again. The fixture is valid: rd-p1 (seed title 'Improve onboarding', authored by the signed-in account alice-dev, repository acme-docs which is public and readable) is already in the legitimately persisted Merged state, no branch or commit has been changed for it, and the control shows the same handler correctly reopens an ordinary Closed pull request authored by the same user, so the arguments and actor satisfy every prerequisite.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.actions.reopen-pr",
+     "kind": "method",
+     "alias": "reopenPR"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "reopenPR",
+   "setup": "var A = window.ARC = window.ARC || {};\nif (!A.esc) A.esc = function (v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); };\nif (!A.uid) { var seq = 0; A.uid = function (p) { seq += 1; return String(p || 'x') + '-' + seq; }; }\nif (!A.state || !A.state.users) A.state = JSON.parse(JSON.stringify(window.SEED));\nif (!A.save) A.save = function () {};\nif (!A.render) A.render = function () {};\nif (!A.navigate) A.navigate = function () {};\nif (!A.notify) A.notify = function () {};\nif (!A.openDialog) A.openDialog = function () {};\nif (!A.closeDialog) A.closeDialog = function () {};\nif (!A.openPopover) A.openPopover = function () {};\nif (!A.closePopover) A.closePopover = function () {};\nif (!A.combobox) A.combobox = function () { return ''; };\nif (!A.currentUser) A.currentUser = function () { var s = A.state; return s.session ? (s.users.filter(function (u) { return u.id === s.session; })[0] || null) : null; };\nA.state.session = 'u-alice';\nARC.state.pullRequests.filter(function (p) { return p.id === 'rd-p1'; })[0].status = 'Merged';",
+   "precondition": "var s = ARC.state;\nvar merged = s.pullRequests.filter(function (p) { return p.id === 'rd-p1'; })[0];\nvar closed = s.pullRequests.filter(function (p) { return p.id === 'rd-p2'; })[0];\nassert.ok(s.repositories.some(function (r) { return r.id === 'r-acme-docs' && r.visibility === 'Public'; }), 'both pull requests live in the readable seeded repository acme-docs');\nassert.ok(merged && merged.status === 'Merged' && merged.author === 'alice-dev', 'rd-p1 is already merged and was authored by the signed-in user');\nassert.ok(closed && closed.status === 'Closed' && closed.author === 'alice-dev', 'rd-p2 is a closed pull request authored by the signed-in user');\nassert.strictEqual(s.session, 'u-alice', 'signed in as the pull request author');",
+   "check": "var statusOf = function (id) { return ARC.state.pullRequests.filter(function (p) { return p.id === id; })[0].status; };\nreopenPR({ el: { dataset: { pr: 'rd-p2' } } });\nassert.strictEqual(statusOf('rd-p2'), 'Open', 'control: the author reopens an ordinary closed pull request');\nreopenPR({ el: { dataset: { pr: 'rd-p1' } } });\nassert.strictEqual(statusOf('rd-p1'), 'Merged', 'Merged is terminal: the server must reject status changes for a merged pull request');",
+   "requirement_text": "The PR page provides Close pull request and Reopen pull request as buttons for authorized users. Close pull request immediately sets Closed without an extra confirmation dialog, then Reopen pull request immediately restores Open. After reload, Close pull request is available again. For a viewer who is neither author nor Maintain/Admin/Owner, both controls are absent, rather than merely disabled or rejected after activation. Seed data supplies the author and a separate Read viewer, an authored Open PR for the close/reopen cycle, and a separate Open PR readable by that viewer for permission validation. When the proposed change should not proceed, the PR author, Maintain, Admin, or organization Owner may close an unmerged Open or Draft PR without merging; the same roles may reopen a Closed PR as Open. The system stores the status, operator, and time and records the transition, while keeping the PR discussion, reviews, diff, and branch references viewable; closing or reopening must not update any branch. Merged is terminal, the page does not display close or reopen operations, and the server rejects status changes. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-2-3 (Create a Pull Request from Comparison Results) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-5-4#contract-1",
+   "requirement": "REQ-5-4",
+   "explanation": "REQ-5-4 and the REQ-5 role lists are explicit that status changes are restricted to Triage, Maintain, Admin (or organization Owner): 'Write and Read users may only view the status' and 'the server rejects their submissions'. The issue status handler applies no role check at all, and the surrounding permission helper treats the roles as a cumulative ladder (a Write collaborator satisfies the >= Triage test), so a Write-only collaborator can close the seeded Open issue 'Improve onboarding'. The fixture is valid: bob-reviewer holds exactly one direct Write grant on the public seeded repository acme-docs (personal repository of alice-dev, so no organization-Owner path applies), holds no team membership and no higher grant, the target issue rd-i1 is Open, and the control shows the same handler closes an issue for a repository Admin.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.actions.close-issue",
+     "kind": "method",
+     "alias": "closeIssue"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "closeIssue",
+   "setup": "var A = window.ARC = window.ARC || {};\nif (!A.esc) A.esc = function (v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); };\nif (!A.uid) { var seq = 0; A.uid = function (p) { seq += 1; return String(p || 'x') + '-' + seq; }; }\nif (!A.state || !A.state.users) A.state = JSON.parse(JSON.stringify(window.SEED));\nif (!A.save) A.save = function () {};\nif (!A.render) A.render = function () {};\nif (!A.navigate) A.navigate = function () {};\nif (!A.notify) A.notify = function () {};\nif (!A.openDialog) A.openDialog = function () {};\nif (!A.closeDialog) A.closeDialog = function () {};\nif (!A.openPopover) A.openPopover = function () {};\nif (!A.closePopover) A.closePopover = function () {};\nif (!A.combobox) A.combobox = function () { return ''; };\nif (!A.currentUser) A.currentUser = function () { var s = A.state; return s.session ? (s.users.filter(function (u) { return u.id === s.session; })[0] || null) : null; };\nA.state.session = 'u-bob';",
+   "precondition": "var s = ARC.state;\nassert.strictEqual(s.session, 'u-bob', 'signed in as bob-reviewer');\nassert.ok(s.repositories.some(function (r) { return r.id === 'r-acme-docs' && r.ownerType === 'user' && r.ownerId === 'u-alice'; }), 'acme-docs is a personal repository owned by alice-dev, so no organization-owner path applies to bob');\nassert.ok(s.grants.some(function (g) { return g.repoId === 'r-acme-docs' && g.subjectType === 'user' && g.subjectId === 'u-bob' && g.role === 'Write'; }), 'bob holds a direct Write grant on the target repository');\nassert.ok(!s.grants.some(function (g) { return g.repoId === 'r-acme-docs' && g.subjectType === 'user' && g.subjectId === 'u-bob' && g.role !== 'Write'; }), 'bob has no other direct grant on the repository');\nassert.ok(!s.teamMembers.some(function (tm) { return tm.userId === 'u-bob'; }), 'bob has no team membership that could raise his effective role');\nassert.strictEqual(s.issues.filter(function (i) { return i.id === 'rd-i1'; })[0].status, 'Open', 'the target issue is Open');",
+   "check": "var statusOf = function (id) { return ARC.state.issues.filter(function (i) { return i.id === id; })[0].status; };\nARC.state.session = 'u-alice';\ncloseIssue({ el: { dataset: { issue: 'rd-i3' } }, data: { issue: 'rd-i3' } });\nassert.strictEqual(statusOf('rd-i3'), 'Closed', 'control: a repository Admin (owner) closes an issue');\nARC.state.session = 'u-bob';\ncloseIssue({ el: { dataset: { issue: 'rd-i1' } }, data: { issue: 'rd-i1' } });\nassert.strictEqual(statusOf('rd-i1'), 'Open', 'only Triage, Maintain or Admin may change issue status; a Write-only collaborator must be rejected');",
+   "requirement_text": "Only users with Triage, Maintain, or Admin may close or reopen an issue from the issue detail view; Write and Read users may only view the status. The system stores the Open or Closed status, operator, and time, records the transition in activity history, and shows it to subsequent viewers; the status transition must not modify the title, description, comments, labels, assignees, or milestone. The closable seed issue starts Open. The detail page offers a “Close issue” button when Open and a “Reopen issue” button when Closed; activating either immediately saves the change without an additional confirmation. Closing displays Closed status and a “Closed issue” activity, and reopening displays Open status. After reopening and reload the “Close issue” button is available again. On the separate protected issue, the Read viewer sees neither close nor reopen button; hiding both controls is required, in addition to rejecting unauthorized requests. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-5-1-2 (View an Issue and Its Discussion); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-3-1#contract-1",
+   "requirement": "REQ-3-1",
+   "explanation": "REQ-3-1 requires repository search to display the matching repositories the user is authorized to view, each with owner/name metadata (the metadata exists precisely because several repositories may share a name). The search screen builds its result list from a visibility helper that de-duplicates by repository name alone, so when the seeded personal repository alice-dev/acme-docs and the seeded organization repository Acme Demo/acme-docs both match the query 'acme-docs', the organization repository is silently dropped and cannot be opened from search even though the user has Read permission on it. The fixture is valid: both repositories are Public seed records with the identical name 'acme-docs' (different owners), the signed-in account is alice-dev (owner of one, organization Owner of the other), and the query is the exact repository name from the requirements.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.screens.searchResults",
+     "kind": "method",
+     "alias": "searchResults"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "searchResults",
+   "setup": "var A = window.ARC = window.ARC || {};\nif (!A.esc) A.esc = function (v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); };\nif (!A.uid) { var seq = 0; A.uid = function (p) { seq += 1; return String(p || 'x') + '-' + seq; }; }\nif (!A.state || !A.state.users) A.state = JSON.parse(JSON.stringify(window.SEED));\nif (!A.save) A.save = function () {};\nif (!A.render) A.render = function () {};\nif (!A.navigate) A.navigate = function () {};\nif (!A.notify) A.notify = function () {};\nif (!A.openDialog) A.openDialog = function () {};\nif (!A.closeDialog) A.closeDialog = function () {};\nif (!A.openPopover) A.openPopover = function () {};\nif (!A.closePopover) A.closePopover = function () {};\nif (!A.combobox) A.combobox = function () { return ''; };\nif (!A.currentUser) A.currentUser = function () { var s = A.state; return s.session ? (s.users.filter(function (u) { return u.id === s.session; })[0] || null) : null; };\nA.state.session = 'u-alice';",
+   "precondition": "var s = ARC.state;\nassert.strictEqual(s.session, 'u-alice', 'signed in as alice-dev');\nvar named = s.repositories.filter(function (r) { return r.name === 'acme-docs'; });\nassert.strictEqual(named.length, 2, 'the seed holds two distinct repositories named acme-docs');\nassert.ok(named.every(function (r) { return r.visibility === 'Public'; }), 'both matching repositories are Public and readable by the signed-in user');\nassert.ok(named.some(function (r) { return r.ownerType === 'user' && r.ownerId === 'u-alice'; }) && named.some(function (r) { return r.ownerType === 'org' && r.ownerId === 'o-acme'; }), 'one is a personal repository of the signed-in user, one belongs to the organization Acme Demo');",
+   "check": "var html = searchResults('acme-docs', 'Repositories');\nassert.ok(html.indexOf('alice-dev/acme-docs') !== -1, 'the matching personal repository is listed with its owner/name metadata');\nassert.ok(html.indexOf('Acme Demo/acme-docs') !== -1, 'every repository matching the query that the user may read must be listed, including the organization repository that shares the name');",
+   "requirement_text": "The top global search control has searchbox role and accessible name “Search”; entering a repository name and pressing Enter displays repository results directly, without requiring an additional type-filter click. Each repository result has a link whose accessible name is exactly its repository name, while the result also displays its owner/name metadata. Clicking it opens a heading containing the repository name; reloading preserves that overview. A query with no matching repository displays “No results”, including when the visitor returns home and repeats the same query. Seed data provides a named public repository and a private repository inaccessible to visitors; searching the private name exposes no result link for it. Visitors or signed-in users can search repositories they are authorized to view. The system accepts a search query, applies repository-oriented filters or scope constraints, and displays matching repositories with sufficient metadata for the user to open the target repository.\n\nScreenshot reference:\n![image](reference/github-repository-search-results.png)"
+  }
+ ],
+ "first_execution": [
+  {
+   "id": "REQ-4-4#contract-1",
+   "status": "fail",
+   "calls": {
+    "saveFile": 2,
+    "repoById": 2,
+    "repos": 2,
+    "arr": 14,
+    "S": 22,
+    "me": 2,
+    "fileAt": 4,
+    "files": 6,
+    "U": 8,
+    "commits": 4,
+    "headCommitOf": 2,
+    "commitsOf": 2,
+    "codePath": 2,
+    "repoRoute": 2,
+    "ownerNameOf": 2,
+    "userById": 2,
+    "users": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a file path conflicting with the existing src/ directory must be rejected as an invalid path\n\n1 !== 0\n",
+   "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: a file path conflicting with the existing src/ directory must be rejected as an invalid path\n\n1 !== 0\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:9:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-6-6#contract-1",
+   "status": "fail",
+   "calls": {
+    "reopenPR": 2,
+    "prById": 2,
+    "rprs": 2,
+    "arr": 4,
+    "S": 4,
+    "ractivities": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Merged is terminal: the server must reject status changes for a merged pull request\n\n'Open' !== 'Merged'\n",
+   "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Merged is terminal: the server must reject status changes for a merged pull request\n\n'Open' !== 'Merged'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:7:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-5-4#contract-1",
+   "status": "fail",
+   "calls": {
+    "closeIssue": 2,
+    "issueById": 2,
+    "rissues": 2,
+    "arr": 4,
+    "S": 4,
+    "ractivities": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "only Triage, Maintain or Admin may change issue status; a Write-only collaborator must be rejected\n\n'Closed' !== 'Open'\n",
+   "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: only Triage, Maintain or Admin may change issue status; a Write-only collaborator must be rejected\n\n'Closed' !== 'Open'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:9:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-3-1#contract-1",
+   "status": "fail",
+   "calls": {
+    "searchResults": 1,
+    "me": 1,
+    "visibleRepos": 1,
+    "repos": 1,
+    "arr": 9,
+    "S": 9,
+    "canView": 5,
+    "rankOf": 5,
+    "roleOf": 5,
+    "isOrgOwner": 2,
+    "membs": 2,
+    "ownerNameOf": 6,
+    "userById": 5,
+    "users": 5,
+    "orgById": 1,
+    "orgs": 1,
+    "repoCard": 2,
+    "repoRoute": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "every repository matching the query that the user may read must be listed, including the organization repository that shares the name",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: every repository matching the query that the user may read must be listed, including the organization repository that shares the name\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:5:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  }
+ ],
+ "probes": [
+  {
+   "id": "REQ-4-4#contract-1",
+   "requirement": "REQ-4-4",
+   "explanation": "REQ-4-4 requires a new file path to be rejected when it 'must not conflict with an existing file or directory on the current branch', and a rejected submission must not change the file, branch head or commit history. On the seeded repository alice-dev/acme-docs the branch main already contains 'src/search.ts' (seed rd-f2), so the path segment 'src' is an existing directory on that branch. The editor's validation only tests emptiness, a leading '/', a '..' segment, and an exact file-path match, so it never sees a file/directory collision: submitting File name 'src' creates a file at a path that is already a directory and adds a commit, instead of reporting 'Invalid file path' and changing nothing. The fixture is valid: the repository is a public personal repository of the signed-in account alice-dev (so repository Admin, Write permitted), branch main exists with the seeded files, no file named 'src' exists yet, and the control submission of a unique path through the very same handler succeeds and adds exactly one file. Check asserts the persisted repository content (no file record at the conflicting path) and that the rejected submission added no commit; the control proves the handler itself works.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.actions.do-save-file",
+     "kind": "method",
+     "alias": "saveFile"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "saveFile",
+   "setup": "var A = window.ARC = window.ARC || {};\nif (!A.esc) A.esc = function (v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); };\nif (!A.uid) { var seq = 0; A.uid = function (p) { seq += 1; return String(p || 'x') + '-' + seq; }; }\nif (!A.state || !A.state.users) A.state = JSON.parse(JSON.stringify(window.SEED));\nif (!A.save) A.save = function () {};\nif (!A.render) A.render = function () {};\nif (!A.navigate) A.navigate = function () {};\nif (!A.notify) A.notify = function () {};\nif (!A.openDialog) A.openDialog = function () {};\nif (!A.closeDialog) A.closeDialog = function () {};\nif (!A.openPopover) A.openPopover = function () {};\nif (!A.closePopover) A.closePopover = function () {};\nif (!A.combobox) A.combobox = function () { return ''; };\nif (!A.currentUser) A.currentUser = function () { var s = A.state; return s.session ? (s.users.filter(function (u) { return u.id === s.session; })[0] || null) : null; };\nA.state.session = 'u-alice';",
+   "precondition": "var s = ARC.state;\nassert.strictEqual(s.session, 'u-alice', 'signed in as alice-dev');\nassert.ok(s.repositories.some(function (r) { return r.id === 'r-acme-docs' && r.ownerType === 'user' && r.ownerId === 'u-alice' && r.visibility === 'Public'; }), 'a public personal repository owned by the signed-in user');\nassert.ok(s.files.some(function (f) { return f.repoId === 'r-acme-docs' && f.branch === 'main' && f.path === 'src/search.ts'; }), 'src/search.ts exists on main, so src is an existing directory on that branch');\nassert.ok(!s.files.some(function (f) { return f.repoId === 'r-acme-docs' && f.branch === 'main' && f.path === 'src'; }), 'no file named src exists on main yet');",
+   "check": "var filesMain = function (p) { return ARC.state.files.filter(function (f) { return f.repoId === 'r-acme-docs' && f.branch === 'main' && f.path === p; }).length; };\nvar commitsMain = function () { return ARC.state.commits.filter(function (c) { return c.repoId === 'r-acme-docs' && c.branch === 'main'; }).length; };\nsaveFile({ el: { dataset: { repo: 'r-acme-docs', branch: 'main', path: '' } }, form: { 'fe-name': 'pw-file-control.md', 'fe-contents': 'control content', 'fe-message': 'Add pw-file-control.md' } });\nassert.strictEqual(filesMain('pw-file-control.md'), 1, 'control: a valid unique path still creates a file');\nvar before = commitsMain();\nsaveFile({ el: { dataset: { repo: 'r-acme-docs', branch: 'main', path: '' } }, form: { 'fe-name': 'src', 'fe-contents': 'must not be saved', 'fe-message': 'Add src' } });\nassert.strictEqual(filesMain('src'), 0, 'a file path conflicting with the existing src/ directory must be rejected as an invalid path');\nassert.strictEqual(commitsMain(), before, 'the rejected submission must not add a commit');",
+   "requirement_text": "This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-4-1 (Browse Repository Files and Directories) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes. The file editor is the form opened from Edit or Add file on the Code page; the user edits file content at a path on the current branch and submits it. Only Write, Maintain, Admin, or organization Owner may submit; Read and Triage may only view. A single submission stores the file-path and content change, commit message, author, parent commit, and target branch as one indivisible record and moves the target branch to point to that new commit. A new or renamed file path must not be empty, must not begin with `/`, must not contain a `..` path segment, and must not conflict with an existing file or directory on the current branch; the commit message must contain 1–72 non-empty characters after trimming leading and trailing whitespace. If the path conflicts, content validation fails, the commit message is noncompliant, the branch is protected, or persistence fails, the page displays the reason and does not change the file, branch head, or commit history. An invalid path displays “Invalid file path”, and an empty commit message displays “Commit message is required”. From the writable Code page, the unique “Add file” button opens the “Create new file” menuitem. The editor has a field labeled “File name”, a textbox named “File contents”, an initially empty field labeled “Commit message”, and a “Commit changes” button. Creating a unique file such as `pw-file-<unique suffix>.md` with nonempty text and a message such as `Add <file name>` immediately opens a view displaying the exact saved content. Its “Commits” link opens history displaying the exact submitted message. Submitting `../invalid.md` with content `must not be saved` and no commit message reports the invalid path and/or required message and changes neither files nor history. The example content is ordinary text, not a forbidden content value by itself; rejection follows from the invalid path or missing message.\n\nScreenshot reference:\n![image](reference/github-web-file-editor.png)"
+  },
+  {
+   "id": "REQ-6-6#contract-1",
+   "requirement": "REQ-6-6",
+   "explanation": "REQ-6-6 states that a merged pull request is terminal: the close/reopen operations are not displayed and 'the server rejects status changes'. The reopen-pr handler unconditionally writes status 'Open' with no terminal-state guard, so a merged PR can be rewritten back to Open. Correction made to the fixture: the Merged PR now also carries the record fields the real merge path writes (mergedBy, mergedAt, mergeCommit), so the fixture is a legitimately merged PR rather than a bare status flag. The fixture is otherwise valid: rd-p1 ('Improve onboarding') lives in the public seeded repository acme-docs and was authored by the signed-in account alice-dev, so role and actor prerequisites would all be satisfied; the control shows the same handler correctly reopening the ordinary Closed PR rd-p2 authored by the same account. Check asserts the persisted PR status, which is exactly the status shown on the detail page.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.actions.reopen-pr",
+     "kind": "method",
+     "alias": "reopenPR"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "reopenPR",
+   "setup": "var A = window.ARC = window.ARC || {};\nif (!A.esc) A.esc = function (v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); };\nif (!A.uid) { var seq = 0; A.uid = function (p) { seq += 1; return String(p || 'x') + '-' + seq; }; }\nif (!A.state || !A.state.users) A.state = JSON.parse(JSON.stringify(window.SEED));\nif (!A.save) A.save = function () {};\nif (!A.render) A.render = function () {};\nif (!A.navigate) A.navigate = function () {};\nif (!A.notify) A.notify = function () {};\nif (!A.openDialog) A.openDialog = function () {};\nif (!A.closeDialog) A.closeDialog = function () {};\nif (!A.openPopover) A.openPopover = function () {};\nif (!A.closePopover) A.closePopover = function () {};\nif (!A.combobox) A.combobox = function () { return ''; };\nif (!A.currentUser) A.currentUser = function () { var s = A.state; return s.session ? (s.users.filter(function (u) { return u.id === s.session; })[0] || null) : null; };\nA.state.session = 'u-alice';\n(function () {\n  var merged = ARC.state.pullRequests.filter(function (p) { return p.id === 'rd-p1'; })[0];\n  merged.status = 'Merged';\n  merged.mergedBy = 'alice-dev';\n  merged.mergedAt = '1 day ago';\n  merged.mergeCommit = 'rd-mc-1';\n})();",
+   "precondition": "var s = ARC.state;\nvar merged = s.pullRequests.filter(function (p) { return p.id === 'rd-p1'; })[0];\nvar closed = s.pullRequests.filter(function (p) { return p.id === 'rd-p2'; })[0];\nassert.ok(s.repositories.some(function (r) { return r.id === 'r-acme-docs' && r.visibility === 'Public'; }), 'both pull requests live in the readable seeded repository acme-docs');\nassert.ok(merged && merged.status === 'Merged' && merged.author === 'alice-dev' && merged.mergedBy && merged.mergeCommit, 'rd-p1 is a merged pull request (merger, time and merge commit stored) authored by the signed-in user');\nassert.ok(closed && closed.status === 'Closed' && closed.author === 'alice-dev', 'rd-p2 is a closed pull request authored by the signed-in user');\nassert.strictEqual(s.session, 'u-alice', 'signed in as the pull request author');",
+   "check": "var statusOf = function (id) { return ARC.state.pullRequests.filter(function (p) { return p.id === id; })[0].status; };\nreopenPR({ el: { dataset: { pr: 'rd-p2' } } });\nassert.strictEqual(statusOf('rd-p2'), 'Open', 'control: the author reopens an ordinary closed pull request');\nreopenPR({ el: { dataset: { pr: 'rd-p1' } } });\nassert.strictEqual(statusOf('rd-p1'), 'Merged', 'Merged is terminal: the server must reject status changes for a merged pull request');",
+   "requirement_text": "The PR page provides Close pull request and Reopen pull request as buttons for authorized users. Close pull request immediately sets Closed without an extra confirmation dialog, then Reopen pull request immediately restores Open. After reload, Close pull request is available again. For a viewer who is neither author nor Maintain/Admin/Owner, both controls are absent, rather than merely disabled or rejected after activation. Seed data supplies the author and a separate Read viewer, an authored Open PR for the close/reopen cycle, and a separate Open PR readable by that viewer for permission validation. When the proposed change should not proceed, the PR author, Maintain, Admin, or organization Owner may close an unmerged Open or Draft PR without merging; the same roles may reopen a Closed PR as Open. The system stores the status, operator, and time and records the transition, while keeping the PR discussion, reviews, diff, and branch references viewable; closing or reopening must not update any branch. Merged is terminal, the page does not display close or reopen operations, and the server rejects status changes. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-6-2-3 (Create a Pull Request from Comparison Results) and REQ-1-1-2 (Sign In with an Existing Account); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-5-4#contract-1",
+   "requirement": "REQ-5-4",
+   "explanation": "REQ-5-4 and the REQ-5 role lists state explicitly that status changes belong to Triage, Maintain or Admin only and that 'Write and Read users may only view the status', with the server rejecting their submissions (the module repeats that the role lists are per-operation, not an implicit cumulative ladder). The close-issue handler performs no role gate at all — it looks up the issue and writes status 'Closed' — while the app's rank helper used for the UI treats a Write grant as satisfying its >= Triage test, so a Write-only collaborator both sees the control and can close the issue. The fixture is valid: bob-reviewer holds exactly one direct Write grant (seed g-1) on the public personal repository acme-docs owned by alice-dev, so no organization-Owner path applies; he has no other grant and no team membership, the target issue rd-i1 ('Improve onboarding') is Open, and the control shows the same handler closing an issue while the repository Admin (owner alice-dev) is signed in, proving the handler and fixture are otherwise sound. Check asserts the persisted issue status.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.actions.close-issue",
+     "kind": "method",
+     "alias": "closeIssue"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "closeIssue",
+   "setup": "var A = window.ARC = window.ARC || {};\nif (!A.esc) A.esc = function (v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); };\nif (!A.uid) { var seq = 0; A.uid = function (p) { seq += 1; return String(p || 'x') + '-' + seq; }; }\nif (!A.state || !A.state.users) A.state = JSON.parse(JSON.stringify(window.SEED));\nif (!A.save) A.save = function () {};\nif (!A.render) A.render = function () {};\nif (!A.navigate) A.navigate = function () {};\nif (!A.notify) A.notify = function () {};\nif (!A.openDialog) A.openDialog = function () {};\nif (!A.closeDialog) A.closeDialog = function () {};\nif (!A.openPopover) A.openPopover = function () {};\nif (!A.closePopover) A.closePopover = function () {};\nif (!A.combobox) A.combobox = function () { return ''; };\nif (!A.currentUser) A.currentUser = function () { var s = A.state; return s.session ? (s.users.filter(function (u) { return u.id === s.session; })[0] || null) : null; };\nA.state.session = 'u-bob';",
+   "precondition": "var s = ARC.state;\nassert.strictEqual(s.session, 'u-bob', 'signed in as bob-reviewer');\nassert.ok(s.repositories.some(function (r) { return r.id === 'r-acme-docs' && r.ownerType === 'user' && r.ownerId === 'u-alice'; }), 'acme-docs is a personal repository owned by alice-dev, so no organization-owner path applies to bob');\nassert.ok(s.grants.some(function (g) { return g.repoId === 'r-acme-docs' && g.subjectType === 'user' && g.subjectId === 'u-bob' && g.role === 'Write'; }), 'bob holds a direct Write grant on the target repository');\nassert.ok(!s.grants.some(function (g) { return g.repoId === 'r-acme-docs' && g.subjectType === 'user' && g.subjectId === 'u-bob' && g.role !== 'Write'; }), 'bob has no other direct grant on the repository');\nassert.ok(!s.teamMembers.some(function (tm) { return tm.userId === 'u-bob'; }), 'bob has no team membership that could raise his effective role');\nassert.strictEqual(s.issues.filter(function (i) { return i.id === 'rd-i1'; })[0].status, 'Open', 'the target issue is Open');",
+   "check": "var statusOf = function (id) { return ARC.state.issues.filter(function (i) { return i.id === id; })[0].status; };\nARC.state.session = 'u-alice';\ncloseIssue({ el: { dataset: { issue: 'rd-i3' } }, data: { issue: 'rd-i3' } });\nassert.strictEqual(statusOf('rd-i3'), 'Closed', 'control: a repository Admin (owner) closes an issue');\nARC.state.session = 'u-bob';\ncloseIssue({ el: { dataset: { issue: 'rd-i1' } }, data: { issue: 'rd-i1' } });\nassert.strictEqual(statusOf('rd-i1'), 'Open', 'only Triage, Maintain or Admin may change issue status; a Write-only collaborator must be rejected');",
+   "requirement_text": "Only users with Triage, Maintain, or Admin may close or reopen an issue from the issue detail view; Write and Read users may only view the status. The system stores the Open or Closed status, operator, and time, records the transition in activity history, and shows it to subsequent viewers; the status transition must not modify the title, description, comments, labels, assignees, or milestone. The closable seed issue starts Open. The detail page offers a “Close issue” button when Open and a “Reopen issue” button when Closed; activating either immediately saves the change without an additional confirmation. Closing displays Closed status and a “Closed issue” activity, and reopening displays Open status. After reopening and reload the “Close issue” button is available again. On the separate protected issue, the Read viewer sees neither close nor reopen button; hiding both controls is required, in addition to rejecting unauthorized requests. This feature builds on the persisted objects, opened pages, or authenticated-session context provided by REQ-5-1-2 (View an Issue and Its Discussion); it must reuse that context and keep pages and data consistent after the context changes."
+  },
+  {
+   "id": "REQ-3-1#contract-1",
+   "requirement": "REQ-3-1",
+   "explanation": "REQ-3-1 requires the system to accept a search query and 'display matching repositories with sufficient metadata for the user to open the target repository', explicitly including each result's owner/name metadata so that repositories which share a name in different namespaces remain distinguishable and openable. The search screen builds its match list from the visibility helper that de-duplicates matching repositories by bare repository name (preferring the user-owned one), so for the query 'acme-docs' only alice-dev/acme-docs is returned; the equally matching public organization repository Acme Demo/acme-docs — which the signed-in account may read — is dropped before the query filter even runs, and no link to it appears in the results. The fixture is valid: the seed contains exactly two public repositories named 'acme-docs' in different namespaces (one personal to alice-dev, one owned by the organization Acme Demo), the signed-in account alice-dev owns one and is an organization Owner of the other, so both are authorized-view matches for the exact repository name required by the scenario. Check asserts on the rendered results HTML; the first assertion is the control that the personal match is listed with its owner/name metadata, the second asserts the organization match is listed too.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "APP.screens.searchResults",
+     "kind": "method",
+     "alias": "searchResults"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "searchResults",
+   "setup": "var A = window.ARC = window.ARC || {};\nif (!A.esc) A.esc = function (v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); };\nif (!A.uid) { var seq = 0; A.uid = function (p) { seq += 1; return String(p || 'x') + '-' + seq; }; }\nif (!A.state || !A.state.users) A.state = JSON.parse(JSON.stringify(window.SEED));\nif (!A.save) A.save = function () {};\nif (!A.render) A.render = function () {};\nif (!A.navigate) A.navigate = function () {};\nif (!A.notify) A.notify = function () {};\nif (!A.openDialog) A.openDialog = function () {};\nif (!A.closeDialog) A.closeDialog = function () {};\nif (!A.openPopover) A.openPopover = function () {};\nif (!A.closePopover) A.closePopover = function () {};\nif (!A.combobox) A.combobox = function () { return ''; };\nif (!A.currentUser) A.currentUser = function () { var s = A.state; return s.session ? (s.users.filter(function (u) { return u.id === s.session; })[0] || null) : null; };\nA.state.session = 'u-alice';",
+   "precondition": "var s = ARC.state;\nassert.strictEqual(s.session, 'u-alice', 'signed in as alice-dev');\nvar named = s.repositories.filter(function (r) { return r.name === 'acme-docs'; });\nassert.strictEqual(named.length, 2, 'the seed holds two distinct repositories named acme-docs');\nassert.ok(named.every(function (r) { return r.visibility === 'Public'; }), 'both matching repositories are Public and readable by the signed-in user');\nassert.ok(named.some(function (r) { return r.ownerType === 'user' && r.ownerId === 'u-alice'; }) && named.some(function (r) { return r.ownerType === 'org' && r.ownerId === 'o-acme'; }), 'one is a personal repository of the signed-in user, one belongs to the organization Acme Demo');",
+   "check": "var html = searchResults('acme-docs', 'Repositories');\nassert.ok(html.indexOf('alice-dev/acme-docs') !== -1, 'control: the matching personal repository is listed with its owner/name metadata');\nassert.ok(html.indexOf('Acme Demo/acme-docs') !== -1, 'every repository matching the query that the user may read must be listed, including the organization repository that shares the name');",
+   "requirement_text": "The top global search control has searchbox role and accessible name “Search”; entering a repository name and pressing Enter displays repository results directly, without requiring an additional type-filter click. Each repository result has a link whose accessible name is exactly its repository name, while the result also displays its owner/name metadata. Clicking it opens a heading containing the repository name; reloading preserves that overview. A query with no matching repository displays “No results”, including when the visitor returns home and repeats the same query. Seed data provides a named public repository and a private repository inaccessible to visitors; searching the private name exposes no result link for it. Visitors or signed-in users can search repositories they are authorized to view. The system accepts a search query, applies repository-oriented filters or scope constraints, and displays matching repositories with sufficient metadata for the user to open the target repository.\n\nScreenshot reference:\n![image](reference/github-repository-search-results.png)"
+  }
+ ],
+ "source_hashes": {
+  "frontend/public/app.js": "00ba3b5695dbfff1fad1995359c97e63b0a15d23fae46db9aa93ceca33dbb712",
+  "frontend/public/seed.js": "da79083c422a3ecac61fafd7a0b10ed726cee3a6e9b26a5f72c6a443c01c6a03"
+ },
+ "validation": [
+  {
+   "id": "REQ-4-4#contract-1",
+   "status": "fail",
+   "calls": {
+    "saveFile": 2,
+    "repoById": 2,
+    "repos": 2,
+    "arr": 14,
+    "S": 22,
+    "me": 2,
+    "fileAt": 4,
+    "files": 6,
+    "U": 8,
+    "commits": 4,
+    "headCommitOf": 2,
+    "commitsOf": 2,
+    "codePath": 2,
+    "repoRoute": 2,
+    "ownerNameOf": 2,
+    "userById": 2,
+    "users": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a file path conflicting with the existing src/ directory must be rejected as an invalid path\n\n1 !== 0\n",
+   "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: a file path conflicting with the existing src/ directory must be rejected as an invalid path\n\n1 !== 0\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:9:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-6-6#contract-1",
+   "status": "fail",
+   "calls": {
+    "reopenPR": 2,
+    "prById": 2,
+    "rprs": 2,
+    "arr": 4,
+    "S": 4,
+    "ractivities": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "Merged is terminal: the server must reject status changes for a merged pull request\n\n'Open' !== 'Merged'\n",
+   "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Merged is terminal: the server must reject status changes for a merged pull request\n\n'Open' !== 'Merged'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:7:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-5-4#contract-1",
+   "status": "fail",
+   "calls": {
+    "closeIssue": 2,
+    "issueById": 2,
+    "rissues": 2,
+    "arr": 4,
+    "S": 4,
+    "ractivities": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "only Triage, Maintain or Admin may change issue status; a Write-only collaborator must be rejected\n\n'Closed' !== 'Open'\n",
+   "error": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: only Triage, Maintain or Admin may change issue status; a Write-only collaborator must be rejected\n\n'Closed' !== 'Open'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:9:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  },
+  {
+   "id": "REQ-3-1#contract-1",
+   "status": "fail",
+   "calls": {
+    "searchResults": 1,
+    "me": 1,
+    "visibleRepos": 1,
+    "repos": 1,
+    "arr": 9,
+    "S": 9,
+    "canView": 5,
+    "rankOf": 5,
+    "roleOf": 5,
+    "isOrgOwner": 2,
+    "membs": 2,
+    "ownerNameOf": 6,
+    "userById": 5,
+    "users": 5,
+    "orgById": 1,
+    "orgs": 1,
+    "repoCard": 2,
+    "repoRoute": 2
+   },
+   "assertions": 2,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "every repository matching the query that the user may read must be listed, including the organization repository that shares the name",
+   "error": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: every repository matching the query that the user may read must be listed, including the organization repository that shares the name\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:5:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/source-owners-20261002/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)"
+  }
+ ]
+}

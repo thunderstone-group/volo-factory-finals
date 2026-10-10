@@ -1,0 +1,1203 @@
+id: ROOT
+name: Sheet Finals Proxy Evolution Prose
+type: FOLDER
+description: |-
+  This product extends the participant's selected online spreadsheet workspace. Workbook and worksheet management, cell editing, formulas, data organization, validation and pivot analysis continue to follow the original requirements, with the changes and additions below. The new work extends formulas, range naming, data cleanup and workbook organization. This remains a public single-user workspace: the original task does not define accounts or passwords. Sharing, real-time collaboration, advanced visual styling, charts, macros and external office integrations remain outside scope.
+
+  The workbooks and cell contents described as existing are evaluation seed data, available before the corresponding scenario. Each scenario begins at the home page in a fresh unauthenticated browser session and has a separate EV-suffixed workbook. The scenarios can be performed independently and in any order on one running application, without relying on a server reset or another scenario's changes. Successful edits remain visible through the same workbook when the user navigates away, reopens it or refreshes. Other workbooks and worksheets remain unchanged unless an operation explicitly includes them.
+
+  Quoted control wording is the exact English accessible name, and the role, scope and observable-state rules in the atomic requirements determine the visible result. The implementation may choose its framework, storage and workbook-entry format; users perform these operations through the described interface without a private setup API.
+dependencies: []
+children:
+- id: EV-1.1
+  name: Calculate IF with a comparison
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-1-1
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    The existing formula editor accepts conditional expressions using `IF(condition, true_value, false_value)`, comparison operators and quoted strings. A formula evaluates only its selected branch, while existing arithmetic and aggregate functions remain available. The user selects the destination cell, enters the expression in “Formula bar” and commits with Enter; the grid shows the result while the formula bar retains the expression. Editing the source cell recalculates the conditional result. Refreshing restores the saved source value, formula and current result.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Calculate IF with a comparison
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Calculate EV-1.1`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=12 and B1 is blank.
+    - keyword: WHEN
+      content: The user opens “Calculate EV-1.1”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid, enters `=IF(A1>=10,"Ready","Wait")`
+        in the visibly labeled “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `Ready`.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid, enters `4` in the visibly labeled
+        “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `Wait`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `Wait`.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `=IF(A1>=10,"Ready","Wait")`.
+- id: EV-1.2
+  name: Count matching values with COUNTIF
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-1-1
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    The formula engine supports `COUNTIF(range, criterion)` in addition to the existing aggregate functions. It counts cells matching the criterion, including numeric comparison prefixes and exact text comparisons that ignore letter case. The user enters the formula through “Formula bar” for a selected cell. Committing a change in the source range recalculates the count rather than retaining the original result, and refreshing preserves the source edit and the resulting count.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Count matching values with COUNTIF
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Count EV-1.2`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=5, A2=10, A3=15, A4=20. B1 is blank.
+    - keyword: WHEN
+      content: The user opens “Count EV-1.2”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid, enters `=COUNTIF(A1:A4,">10")`
+        in the visibly labeled “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `2`.
+    - keyword: WHEN
+      content: The user selects cell `A2` in the “Worksheet grid” grid, enters `11` in the visibly labeled
+        “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `3`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `3`.
+- id: EV-1.3
+  name: Sum matching rows with SUMIF
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-1-1
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    Users can total matching records with `SUMIF(criteria_range, criterion, sum_range)`. The criterion accepts case-insensitive text matching or a numeric comparison; only numeric values in corresponding matching rows contribute to the sum. Entering the expression through “Formula bar” displays the calculated total in the destination cell. Editing a value on a nonmatching row must leave that total unchanged. Formula expressions, source values and results remain consistent after refresh.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Sum matching rows with SUMIF
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Sum EV-1.3`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=East, A2=West, A3=East; B1=12, B2=99, B3=8.
+    - keyword: WHEN
+      content: The user opens “Sum EV-1.3”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `C1` in the “Worksheet grid” grid, enters `=SUMIF(A1:A3,"East",B1:B3)`
+        in the visibly labeled “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `C1` in the “Worksheet grid” grid displays exactly `20`.
+    - keyword: WHEN
+      content: The user selects cell `B2` in the “Worksheet grid” grid, enters `1000` in the visibly labeled
+        “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `C1` in the “Worksheet grid” grid displays exactly `20`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `C1` in the “Worksheet grid” grid displays exactly `20`.
+- id: EV-1.4
+  name: Recover from formula errors with IFERROR
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-2-2
+  dependencies:
+  - REQ-4-2-2
+  description: |-
+    A formula can handle an error with `IFERROR(expression, fallback)`. The fallback is used only when the expression produces an error; once the source is corrected, the same formula returns its ordinary result without being rewritten. The user enters and edits values through “Formula bar”, and the worksheet displays the recalculated result. An unrelated error, such as `#DIV/0!` in another cell, remains visible. Refreshing preserves both the corrected result and any still-existing independent error.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Recover from formula errors with IFERROR
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Recover EV-1.4`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=0 and C1 has formula =1/0.
+    - keyword: WHEN
+      content: The user opens “Recover EV-1.4”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid, enters `=IFERROR(10/A1,"Pending")`
+        in the visibly labeled “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `Pending`. Cell `C1` in the “Worksheet
+        grid” grid displays exactly `#DIV/0!`.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid, enters `2` in the visibly labeled
+        “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `5`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `5`. Cell `C1` in the “Worksheet
+        grid” grid displays exactly `#DIV/0!`.
+- id: EV-1.5
+  name: Recalculate cross-worksheet references
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-2-1
+  dependencies:
+  - REQ-4-2-1
+  description: |-
+    Formulas may refer to another worksheet using `SheetName!A1`, including a worksheet name enclosed in single quotes. The user can write such an expression in “Formula bar”, switch to the source worksheet's tab and edit the referenced value there. Returning to the dependent worksheet immediately shows its recalculated result. The source sheet's content must not replace the dependent sheet's content, and reopening or refreshing retains the formula and the result calculated from the latest source value.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Recalculate cross-worksheet references
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Recalculate EV-1.5`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. Tabs are Sheet1 and Rates; Sheet1!A1=10, Rates!A1=2. Sheet1 is active.
+    - keyword: WHEN
+      content: The user opens “Recalculate EV-1.5”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid, enters `=A1*'Rates'!A1` in the
+        visibly labeled “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `20`.
+    - keyword: WHEN
+      content: The user selects the “Rates” worksheet tab, selects cell `A1` in the “Worksheet grid” grid,
+        enters `3` in the visibly labeled “Formula bar” field, presses `Enter` in “Formula bar”, and selects
+        the “Sheet1” worksheet tab.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `30`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `30`.
+- id: EV-1.6
+  name: Sort by a secondary column
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-1-1
+  dependencies:
+  - REQ-5-1-1
+  description: |-
+    The existing “Sort range” operation supports a secondary key. Its dialog retains “Sort by”, “Order” and the “Data has header row” checkbox, and adds the optional “Then by” combobox, initially “None”, and “Then order”. Clicking “Sort” compares whole records by the primary column first, using the second column only for tied primary keys. The declared header stays in place, and cells outside the selected rectangle remain unchanged. The sorted records and their column alignment persist after refresh.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Selecting an option uses the labeled combobox; when collapsed, the selector displays only its selected option.
+  scenarios:
+  - name: Sort by a secondary column
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Sort EV-1.6`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=Team,B1=Score; A2=Blue,B2=5; A3=Red,B3=3; A4=Blue,B4=9; D1=Sentinel.
+    - keyword: WHEN
+      content: The user opens “Sort EV-1.6”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user brings cells `A1` and `B4` into view in the “Worksheet grid” grid, then drags
+        from `A1` to `B4` to select that rectangle, clicks the “Data” button, clicks the “Sort range”
+        menu command, checks the “Data has header row” checkbox in the “Sort range” dialog, selects the
+        “Team” option in the “Sort by” combobox in the “Sort range” dialog, selects the “Ascending” option
+        in the “Order” combobox in the “Sort range” dialog, selects the “Score” option in the “Then by”
+        combobox in the “Sort range” dialog, selects the “Descending” option in the “Then order” combobox
+        in the “Sort range” dialog, and clicks the “Sort” button in the “Sort range” dialog.
+    - keyword: THEN
+      content: Cell `A2` in the “Worksheet grid” grid displays exactly `Blue`. Cell `B2` in the “Worksheet
+        grid” grid displays exactly `9`. Cell `B3` in the “Worksheet grid” grid displays exactly `5`.
+        Cell `A4` in the “Worksheet grid” grid displays exactly `Red`. Cell `D1` in the “Worksheet grid”
+        grid displays exactly `Sentinel`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B2` in the “Worksheet grid” grid displays exactly `9`.
+- id: EV-1.7
+  name: Allow invalid input with a validation warning
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-5-2-1
+  dependencies:
+  - REQ-5-2-1
+  description: |-
+    Numeric and dropdown validation can warn instead of rejecting a user's value. The “Data validation” dialog retains its existing fields and adds the “On invalid data” combobox with “Reject input” selected by default and “Show warning” as the alternative. Reject input keeps the original complete-operation rejection behavior. With Show warning, an invalid value is committed and “Validation warning” is displayed when that cell is selected. Saving and reopening retain both the rule's parameters and the invalid-data policy; refreshing also preserves the committed value.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Selecting an option uses the labeled combobox; when collapsed, the selector displays only its selected option.
+  scenarios:
+  - name: Allow invalid input with a validation warning
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Allow EV-1.7`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=5.
+    - keyword: WHEN
+      content: The user opens “Allow EV-1.7”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid, clicks the “Data” button, clicks
+        the “Data validation” menu command, selects the “Number range” option in the “Rule type” combobox
+        in the “Data validation” dialog, enters `0` in the visibly labeled “Minimum” field in the “Data
+        validation” dialog, enters `10` in the visibly labeled “Maximum” field in the “Data validation”
+        dialog, selects the “Show warning” option in the “On invalid data” combobox in the “Data validation”
+        dialog, clicks the “Save” button in the “Data validation” dialog, selects cell `A1` in the “Worksheet
+        grid” grid, enters `12` in the visibly labeled “Formula bar” field, and presses `Enter` in “Formula
+        bar”.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `12`. The complete text `Validation
+        warning` appears visibly once.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `12`.
+    - keyword: WHEN
+      content: The user clicks the “Data” button and clicks the “Data validation” menu command.
+    - keyword: THEN
+      content: The “On invalid data” combobox in the “Data validation” dialog shows “Show warning” as
+        its selected option.
+- id: EV-1.8
+  name: Paste only calculated values
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-3-2-1
+  dependencies:
+  - REQ-3-2-1
+  description: |-
+    The grid's context menu provides “Paste values only” alongside the existing copy and paste operations. After a user copies a rectangular selection, this command writes its calculated values into the selected destination with the same two-dimensional layout, removing formula expressions from the target cells. Source cells remain unchanged, and ordinary Paste continues to copy formulas. “Formula bar” therefore shows an ordinary value for a values-only target. Subsequent source edits recalculate the source formulas but leave those pasted values fixed, including after refresh.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Paste only calculated values
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Paste EV-1.8`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=7; B1 has formula =A1*2; D1 is blank.
+    - keyword: WHEN
+      content: The user opens “Paste EV-1.8”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid, presses `Control+c` on cell `B1`
+        in the “Worksheet grid” grid, right-clicks cell `D1` in the “Worksheet grid” grid, and clicks
+        the “Paste values only” menu command.
+    - keyword: THEN
+      content: Cell `D1` in the “Worksheet grid” grid displays exactly `14`.
+    - keyword: WHEN
+      content: The user selects cell `D1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `14`.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid, enters `8` in the visibly labeled
+        “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `16`. Cell `D1` in the “Worksheet
+        grid” grid displays exactly `14`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `D1` in the “Worksheet grid” grid displays exactly `14`.
+- id: EV-1.9
+  name: Undo and redo a worksheet rename
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-3-2-2
+  dependencies:
+  - REQ-3-2-2
+  description: |-
+    Workbook session undo history also covers worksheet renaming. The worksheet-options menu's “Rename” command opens the “Rename worksheet” dialog, with the current “Worksheet name” and a “Save” button. After a successful rename, “Undo” restores the previous tab name and keeps its data; “Redo” reapplies the saved name. These operations use the same workbook's session history and must not modify another workbook. The name and data visible after Redo remain after refresh.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Undo and redo a worksheet rename
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Undo EV-1.9`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. Sheet1!A1=Preserved.
+    - keyword: WHEN
+      content: The user opens “Undo EV-1.9”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Worksheet options for Sheet1” button, clicks the “Rename” menu command,
+        enters `Renamed EV-1.9` in the visibly labeled “Worksheet name” field in the “Rename worksheet”
+        dialog, clicks the “Save” button in the “Rename worksheet” dialog, and clicks the “Undo” button.
+    - keyword: THEN
+      content: The “Sheet1” worksheet tab appears once and is visible. The “Renamed EV-1.9” worksheet
+        tab does not appear. Cell `A1` in the “Worksheet grid” grid displays exactly `Preserved`.
+    - keyword: WHEN
+      content: The user clicks the “Redo” button.
+    - keyword: THEN
+      content: The “Renamed EV-1.9” worksheet tab appears once and is visible.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Renamed EV-1.9” worksheet tab appears once and is visible. Cell `A1` in the “Worksheet
+        grid” grid displays exactly `Preserved`.
+- id: EV-1.10
+  name: Concatenate cell text in a formula
+  type: ATOMIC
+  change_type: CHANGE
+  original_requirement_id: REQ-4-1-1
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    The formula language supports text concatenation with `&` and quoted strings. Cell text can be joined with literal text and numeric values; a numeric operand contributes the text of its displayed value. The selected cell's “Formula bar” retains the complete expression while the grid displays its combined result. Editing a referenced cell updates that result, and refresh preserves both the formula and the result produced from the current source values.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Concatenate cell text in a formula
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Concatenate EV-1.10`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=Order, B1=42.
+    - keyword: WHEN
+      content: The user opens “Concatenate EV-1.10”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: 'The user selects cell `C1` in the “Worksheet grid” grid, enters `=A1&" #"&B1` in the visibly
+        labeled “Formula bar” field, and presses `Enter` in “Formula bar”.'
+    - keyword: THEN
+      content: 'Cell `C1` in the “Worksheet grid” grid displays exactly `Order #42`.'
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid, enters `43` in the visibly labeled
+        “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: 'Cell `C1` in the “Worksheet grid” grid displays exactly `Order #43`.'
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: 'Cell `C1` in the “Worksheet grid” grid displays exactly `Order #43`.'
+- id: EV-2.1
+  name: Create a named range for formulas
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    Users can define a workbook-scoped name for a cell range through Data and “Named ranges”. This opens the “Named ranges” region; “Add named range” opens the “Named range” dialog with “Name”, an A1-style “Range” on the active worksheet, and “Save”. Range names are case-insensitive and are resolved by formulas throughout the workbook. Saving makes the definition available to an expression entered through “Formula bar”. Refreshing retains the definition, its original cells and the calculated formula result.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Create a named range for formulas
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Create EV-2.1`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=2,A2=3,A3=5.
+    - keyword: WHEN
+      content: The user opens “Create EV-2.1”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Data” button, clicks the “Named ranges” menu command, clicks the “Add
+        named range” button in the “Named ranges” region, enters `Revenue` in the visibly labeled “Name”
+        field in the “Named range” dialog, enters `A1:A3` in the visibly labeled “Range” field in the
+        “Named range” dialog, clicks the “Save” button in the “Named range” dialog, selects cell `B1`
+        in the “Worksheet grid” grid, enters `=SUM(Revenue)` in the visibly labeled “Formula bar” field,
+        and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `10`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `10`.
+- id: EV-2.2
+  name: Rename a named range and its references
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.1
+  description: |-
+    An existing named range can be renamed without breaking its formulas. Data and “Named ranges” open the range-management region, where each saved range has its own region identified by its name and an “Edit” button. The “Named range” dialog permits changing “Name” and saving. Renaming updates every formula reference to the old name atomically; it does not change the selected range or the formulas' calculated values. Selecting a dependent cell shows the updated expression in “Formula bar”, including after refresh.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Rename a named range and its references
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Rename EV-2.2`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=4,A2=6; named range Revenue refers to Sheet1!A1:A2; B1 has formula
+        =SUM(Revenue).
+    - keyword: WHEN
+      content: The user opens “Rename EV-2.2”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Data” button, clicks the “Named ranges” menu command, clicks the “Edit”
+        button in the “Revenue” region, enters `SalesTotal` in the visibly labeled “Name” field in the
+        “Named range” dialog, and clicks the “Save” button in the “Named range” dialog.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `10`.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `=SUM(SalesTotal)`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `10`. The “Formula bar” field  displays
+        the saved value `=SUM(SalesTotal)`.
+- id: EV-2.3
+  name: Delete a named range without deleting data
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.1
+  description: |-
+    Users can delete a named-range definition while preserving the underlying worksheet cells. The saved range's own named region in “Named ranges” provides “Delete”, followed by a “Delete named range” confirmation dialog and its “Delete” button. Once confirmed, formulas still referring to that now-unresolved name display `#NAME?`; their original expressions remain available in “Formula bar”. The source cells retain their values, and both the missing-name error and the unchanged source data persist after refresh.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Delete a named range without deleting data
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Delete EV-2.3`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=4,A2=6; Revenue refers to Sheet1!A1:A2; B1 has formula =SUM(Revenue).
+    - keyword: WHEN
+      content: The user opens “Delete EV-2.3”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Data” button, clicks the “Named ranges” menu command, clicks the “Delete”
+        button in the “Revenue” region, and clicks the “Delete” button in the “Delete named range” dialog.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `4`. Cell `A2` in the “Worksheet
+        grid” grid displays exactly `6`. Cell `B1` in the “Worksheet grid” grid displays exactly `#NAME?`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `#NAME?`.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `=SUM(Revenue)`.
+- id: EV-2.4
+  name: Find case-sensitive text
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-3
+  description: |-
+    The “Find and replace” button opens the “Find and replace” dialog for the active worksheet. A user enters the literal search text in “Find” and may enable the “Match case” checkbox. “Find next” visits matching cells in row-major order, selects the matching cell and reports `Match <coordinate>` in the dialog. It wraps after the last match and never changes cell data. Clicking “Close” returns to the grid with that match selected, using the same selected-state semantics as ordinary cell selection.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Checking, selection and pressed states are exposed through their native or ARIA state as well as the visible interface.
+  scenarios:
+  - name: Find case-sensitive text
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Find EV-2.4`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=alpha, B2=Alpha, C3=ALPHA.
+    - keyword: WHEN
+      content: The user opens “Find EV-2.4”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Find and replace” button, enters `Alpha` in the visibly labeled “Find”
+        field in the “Find and replace” dialog, checks the “Match case” checkbox in the “Find and replace”
+        dialog, and clicks the “Find next” button in the “Find and replace” dialog.
+    - keyword: THEN
+      content: The complete text `Match B2` appears visibly once in the “Find and replace” dialog.
+    - keyword: WHEN
+      content: The user clicks the “Close” button in the “Find and replace” dialog.
+    - keyword: THEN
+      content: Cell `B2` remains visible and is selected in the “Worksheet grid” grid. Cell `A1` in the
+        “Worksheet grid” grid displays exactly `alpha`.
+- id: EV-2.5
+  name: Replace all text on the active worksheet
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.4
+  description: |-
+    The active worksheet can be updated with a literal replacement through the “Find and replace” dialog. “Find” supplies the text to match, “Replace with” supplies its replacement, and “Replace all” applies every match while honoring “Match case”. The dialog reports the number of replacements. Successful replacement is atomic and remains after the user closes the dialog, navigates between worksheet tabs and refreshes. Cells on other worksheets keep their original values.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Replace all text on the active worksheet
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Replace EV-2.5`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. Tabs are Sheet1 and Other. Sheet1 has A1=cat, A2=catfish, A3=dog;
+        Other!A1=cat. Sheet1 is active.
+    - keyword: WHEN
+      content: The user opens “Replace EV-2.5”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Find and replace” button, enters `cat` in the visibly labeled “Find”
+        field in the “Find and replace” dialog, enters `fox` in the visibly labeled “Replace with” field
+        in the “Find and replace” dialog, and clicks the “Replace all” button in the “Find and replace”
+        dialog.
+    - keyword: THEN
+      content: The complete text `2 replacements` appears visibly once in the “Find and replace” dialog.
+    - keyword: WHEN
+      content: The user clicks the “Close” button in the “Find and replace” dialog.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `fox`. Cell `A2` in the “Worksheet
+        grid” grid displays exactly `foxfish`.
+    - keyword: WHEN
+      content: The user selects the “Other” worksheet tab.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `cat`.
+    - keyword: WHEN
+      content: The user selects the “Sheet1” worksheet tab and refreshes the current page.
+    - keyword: THEN
+      content: Cell `A2` in the “Worksheet grid” grid displays exactly `foxfish`.
+- id: EV-2.6
+  name: Replace text inside formulas
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.4
+  description: |-
+    Find and replace can operate on formula expressions as well as ordinary cell text. The “Search in formulas” checkbox in the “Find and replace” dialog enables matching against original expressions. With that option selected, “Replace all” updates matching expressions, reports the replacement count and recalculates their results. With it off, Replace all must not modify formula expressions. After closing the dialog or refreshing, the grid shows the new results and selecting a changed cell reveals the updated expression in “Formula bar”.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Replace text inside formulas
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Replace EV-2.6`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=2,A2=5; B1 has formula =A1*2 and B2 has formula =A1+1.
+    - keyword: WHEN
+      content: The user opens “Replace EV-2.6”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Find and replace” button, enters `A1` in the visibly labeled “Find”
+        field in the “Find and replace” dialog, enters `A2` in the visibly labeled “Replace with” field
+        in the “Find and replace” dialog, checks the “Search in formulas” checkbox in the “Find and replace”
+        dialog, and clicks the “Replace all” button in the “Find and replace” dialog.
+    - keyword: THEN
+      content: The complete text `2 replacements` appears visibly once in the “Find and replace” dialog.
+    - keyword: WHEN
+      content: The user clicks the “Close” button in the “Find and replace” dialog.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `10`. Cell `B2` in the “Worksheet
+        grid” grid displays exactly `6`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `10`.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `=A2*2`.
+- id: EV-2.7
+  name: Duplicate a worksheet independently
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-1-1
+  - REQ-5-2-1
+  description: |-
+    “Duplicate” in a worksheet's options menu creates an independent copy immediately after the source and makes it active. The new tab is named “Copy of <name>”. Values, formulas and validation rules are copied with independent identities, so editing the duplicate does not change the source worksheet. Switching between the tabs restores each sheet's own values and results. The copy survives refresh, and reopening “Data validation” on a copied constrained cell shows the copied parameters.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Duplicate a worksheet independently
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Duplicate EV-2.7`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. Sheet1 has A1=5,B1 formula =A1*2; A1 has Reject input numeric validation
+        from 0 to 10.
+    - keyword: WHEN
+      content: The user opens “Duplicate EV-2.7”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Worksheet options for Sheet1” button and clicks the “Duplicate” menu
+        command.
+    - keyword: THEN
+      content: The “Copy of Sheet1” worksheet tab appears once and is visible. Cell `B1` in the “Worksheet
+        grid” grid displays exactly `10`.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid, enters `8` in the visibly labeled
+        “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `16`.
+    - keyword: WHEN
+      content: The user selects the “Sheet1” worksheet tab.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `5`. Cell `B1` in the “Worksheet
+        grid” grid displays exactly `10`.
+    - keyword: WHEN
+      content: The user selects the “Copy of Sheet1” worksheet tab and refreshes the current page.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `8`.
+    - keyword: WHEN
+      content: The user clicks the “Data” button and clicks the “Data validation” menu command.
+    - keyword: THEN
+      content: The “Maximum” field in the “Data validation” dialog displays the saved value `10`.
+- id: EV-2.8
+  name: Hide a worksheet without losing its data
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-1-2
+  description: |-
+    A worksheet can be hidden through “Hide” in its options menu without deleting its cells. Hiding the selected worksheet removes its visible tab and activates an adjacent visible worksheet, while ensuring that at least one worksheet stays visible. The hidden state and data persist after refresh. “Hidden sheets” opens the “Hidden sheets” dialog, where each retained hidden worksheet can be found through “Show <name>”. The newly active sheet continues to display its own data.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Checking, selection and pressed states are exposed through their native or ARIA state as well as the visible interface.
+  scenarios:
+  - name: Hide a worksheet without losing its data
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Hide EV-2.8`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. Tabs are Sheet1 and Archive; Sheet1!A1=Current, Archive!A1=Retained.
+        Archive is active.
+    - keyword: WHEN
+      content: The user opens “Hide EV-2.8”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Worksheet options for Archive” button and clicks the “Hide” menu command.
+    - keyword: THEN
+      content: The “Archive” worksheet tab does not appear. The “Sheet1” worksheet tab remains visible
+        and is selected. Cell `A1` in the “Worksheet grid” grid displays exactly `Current`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Archive” worksheet tab does not appear.
+    - keyword: WHEN
+      content: The user clicks the “Hidden sheets” button.
+    - keyword: THEN
+      content: The “Show Archive” button appears once and is visible in the “Hidden sheets” dialog.
+- id: EV-2.9
+  name: Show a hidden worksheet
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-2.8
+  description: |-
+    Users can restore a hidden worksheet by opening “Hidden sheets” and clicking its “Show <name>” button in the “Hidden sheets” dialog. The worksheet returns to its original position among the tabs and becomes active. Its stored cells are restored without copying data from the previously active worksheet. Refreshing keeps the restored tab, its selected state and its saved values.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Checking, selection and pressed states are exposed through their native or ARIA state as well as the visible interface.
+  scenarios:
+  - name: Show a hidden worksheet
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Show EV-2.9`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. Sheet1 is visible and active with A1=Current. Archive follows it,
+        hidden, with A1=Retained.
+    - keyword: WHEN
+      content: The user opens “Show EV-2.9”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Hidden sheets” button and clicks the “Show Archive” button in the
+        “Hidden sheets” dialog.
+    - keyword: THEN
+      content: The “Archive” worksheet tab remains visible and is selected. Cell `A1` in the “Worksheet
+        grid” grid displays exactly `Retained`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Archive” worksheet tab appears once and is visible. Cell `A1` in the “Worksheet grid”
+        grid displays exactly `Retained`.
+- id: EV-2.10
+  name: Move a worksheet left
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-1-2
+  description: |-
+    The worksheet-options menu provides “Move left” to move a worksheet one position toward the start of the tab bar. The operation changes only its order; its active state and stored cells remain unchanged. The visible order is also represented by the “Worksheet order” list, whose entries are the worksheet names in tab order. Refreshing or reopening the workbook preserves that order and the same active worksheet.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Checking, selection and pressed states are exposed through their native or ARIA state as well as the visible interface.
+  scenarios:
+  - name: Move a worksheet left
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Move EV-2.10`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. Visible tabs are Sheet1, Second, Third in that order; Third is active
+        with A1=Third data. Other sheets are blank.
+    - keyword: WHEN
+      content: The user opens “Move EV-2.10”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Worksheet options for Third” button and clicks the “Move left” menu
+        command.
+    - keyword: THEN
+      content: The “Worksheet order” list  shows `Sheet1`, then `Third`, then `Second`, in that reading
+        order, with no additional entries. Cell `A1` in the “Worksheet grid” grid displays exactly `Third
+        data`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The “Worksheet order” list  shows `Sheet1`, then `Third`, then `Second`, in that reading
+        order, with no additional entries. The “Third” worksheet tab remains visible and is selected.
+- id: EV-3.1
+  name: Attach a note to a cell
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-1
+  description: |-
+    A user can attach a note to the selected cell without changing its value. “Insert note” opens the “Cell note” dialog, with a visibly labeled “Note” field and “Save”. Once saved, the cell provides “Show note for <coordinate>” to reopen the stored note. The note remains after refresh, and its dialog can be closed through “Close” to inspect the unchanged cell value.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Attach a note to a cell
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Attach EV-3.1`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=42.
+    - keyword: WHEN
+      content: The user opens “Attach EV-3.1”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid, clicks the “Insert note” button,
+        enters `Verified total EV-3.1` in the visibly labeled “Note” field in the “Cell note” dialog,
+        clicks the “Save” button in the “Cell note” dialog, refreshes the current page, and clicks the
+        “Show note for A1” button.
+    - keyword: THEN
+      content: The “Note” field in the “Cell note” dialog displays the saved value `Verified total EV-3.1`.
+    - keyword: WHEN
+      content: The user clicks the “Close” button in the “Cell note” dialog.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `42`.
+- id: EV-3.2
+  name: Edit then remove a cell note
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-3.1
+  description: |-
+    A cell's existing note can be edited or removed independently of the cell's value. “Show note for <coordinate>” opens the “Cell note” dialog with the stored “Note” text. “Save” replaces the note and persists the revised text after refresh. “Delete note” removes it and closes the dialog; after refresh the corresponding Show note control is absent, while the original grid value remains unchanged.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Edit then remove a cell note
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Edit EV-3.2`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=42 with note `Old note EV-3.2`.
+    - keyword: WHEN
+      content: The user opens “Edit EV-3.2”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Show note for A1” button, enters `Updated note EV-3.2` in the visibly
+        labeled “Note” field in the “Cell note” dialog, clicks the “Save” button in the “Cell note” dialog,
+        refreshes the current page, and clicks the “Show note for A1” button.
+    - keyword: THEN
+      content: The “Note” field in the “Cell note” dialog displays the saved value `Updated note EV-3.2`.
+    - keyword: WHEN
+      content: The user clicks the “Delete note” button in the “Cell note” dialog and refreshes the current
+        page.
+    - keyword: THEN
+      content: The “Show note for A1” button does not appear. Cell `A1` in the “Worksheet grid” grid displays
+        exactly `42`.
+- id: EV-3.3
+  name: Trim whitespace only in the selection
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-3
+  - REQ-3-2-2
+  description: |-
+    Data and “Trim whitespace” clean only ordinary text cells inside the user's selected rectangle. The operation removes leading and trailing ASCII spaces and collapses each internal run of ASCII spaces to one; formulas and cells outside the rectangle are left unchanged. It is a single undoable operation. “Formula bar” allows the user to inspect the complete saved text, including any spaces intentionally retained outside the selection. Undo restores the original text, Redo reapplies the cleanup, and refreshing preserves the successful cleanup.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Trim whitespace only in the selection
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Trim EV-3.3`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=`  North   East  `, A2=`  West  `, B1=`  Outside  `.
+    - keyword: WHEN
+      content: The user opens “Trim EV-3.3”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user brings cells `A1` and `A2` into view in the “Worksheet grid” grid, then drags
+        from `A1` to `A2` to select that rectangle, clicks the “Data” button, and clicks the “Trim whitespace”
+        menu command.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `North East`. Cell `A2` in the
+        “Worksheet grid” grid displays exactly `West`. Cell `B1` in the “Worksheet grid” grid displays
+        exactly `  Outside  `.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `North East`.
+    - keyword: WHEN
+      content: The user selects cell `A2` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `West`.
+    - keyword: WHEN
+      content: The user selects cell `B1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `  Outside  `.
+    - keyword: WHEN
+      content: The user clicks the “Undo” button and selects cell `A1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `  North   East  `.
+    - keyword: WHEN
+      content: The user clicks the “Redo” button and refreshes the current page.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `North East`.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid.
+    - keyword: THEN
+      content: The “Formula bar” field  displays the saved value `North East`.
+- id: EV-3.4
+  name: Split a selected column by a delimiter
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-3
+  - REQ-3-2-2
+  description: |-
+    The user can split the contents of a selected column through Data and “Split text to columns”. Its dialog has a “Separator” combobox and a “Split” button. Choosing “Comma” separates each selected cell into adjacent columns on the same row, preserving empty fields and the order of the original rows. The change is committed as one undoable operation, remains after refresh and does not affect cells outside the destination rectangle described in the scenario.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Selecting an option uses the labeled combobox; when collapsed, the selector displays only its selected option.
+  scenarios:
+  - name: Split a selected column by a delimiter
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Split EV-3.4`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=`red,green,blue`, A2=`one,,three`; D1=Outside. Destination B1:C2
+        is blank.
+    - keyword: WHEN
+      content: The user opens “Split EV-3.4”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user brings cells `A1` and `A2` into view in the “Worksheet grid” grid, then drags
+        from `A1` to `A2` to select that rectangle, clicks the “Data” button, clicks the “Split text to
+        columns” menu command, selects the “Comma” option in the “Separator” combobox in the “Split text
+        to columns” dialog, and clicks the “Split” button in the “Split text to columns” dialog.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `red`. Cell `B1` in the “Worksheet
+        grid” grid displays exactly `green`. Cell `C1` in the “Worksheet grid” grid displays exactly `blue`.
+        Cell `B2` in the “Worksheet grid” grid displays exactly ``. Cell `C2` in the “Worksheet grid”
+        grid displays exactly `three`. Cell `D1` in the “Worksheet grid” grid displays exactly `Outside`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `C2` in the “Worksheet grid” grid displays exactly `three`.
+- id: EV-3.5
+  name: Remove duplicate records from a range
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-3-1-3
+  description: |-
+    Data and “Remove duplicates” remove repeated records within a selected rectangle. The “Remove duplicates” dialog has a “Data has header row” checkbox and a confirmation button also called “Remove duplicates”. Records are compared using exact values across all selected columns; the first copy of each record remains in its original relative order. Any declared header stays in place, trailing cells within the selected rectangle are cleared and outside cells are untouched. The application reports the number removed, and refresh preserves the remaining records.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Remove duplicate records from a range
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Remove EV-3.5`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=Name,B1=Count; A2=Apple,B2=2; A3=Pear,B3=3; A4=Apple,B4=2; D4=Outside.
+    - keyword: WHEN
+      content: The user opens “Remove EV-3.5”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user brings cells `A1` and `B4` into view in the “Worksheet grid” grid, then drags
+        from `A1` to `B4` to select that rectangle, clicks the “Data” button, clicks the “Remove duplicates”
+        menu command, checks the “Data has header row” checkbox in the “Remove duplicates” dialog, and
+        clicks the “Remove duplicates” button in the “Remove duplicates” dialog.
+    - keyword: THEN
+      content: The complete text `1 duplicate removed` appears visibly once. Cell `A1` in the “Worksheet
+        grid” grid displays exactly `Name`. Cell `A2` in the “Worksheet grid” grid displays exactly `Apple`.
+        Cell `A3` in the “Worksheet grid” grid displays exactly `Pear`. Cell `A4` in the “Worksheet grid”
+        grid displays exactly ``. Cell `B4` in the “Worksheet grid” grid displays exactly ``. Cell `D4`
+        in the “Worksheet grid” grid displays exactly `Outside`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `A3` in the “Worksheet grid” grid displays exactly `Pear`.
+- id: EV-3.6
+  name: Freeze the top worksheet row
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-1-2
+  description: |-
+    Users can keep the top rows in view while scrolling the active worksheet. View and “Freeze rows” open the “Freeze rows” dialog, where “Rows to freeze” accepts a nonnegative integer and “Save” applies it. That many top rows stay fixed during vertical grid scrolling. The “Frozen rows” region reports the saved count. The setting belongs to the current worksheet: refreshing retains it, and switching to another tab shows that sheet's own independently saved setting.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Freeze the top worksheet row
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Freeze EV-3.6`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. Tabs are Sheet1 and Other; Sheet1!A1=Header, Other!A1=Other data.
+        No rows are frozen.
+    - keyword: WHEN
+      content: The user opens “Freeze EV-3.6”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “View” button, clicks the “Freeze rows” menu command, enters `1` in
+        the visibly labeled “Rows to freeze” field in the “Freeze rows” dialog, and clicks the “Save”
+        button in the “Freeze rows” dialog.
+    - keyword: THEN
+      content: The complete text `1 row frozen` appears visibly once in the “Frozen rows” region.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: The complete text `1 row frozen` appears visibly once in the “Frozen rows” region.
+    - keyword: WHEN
+      content: The user selects the “Other” worksheet tab.
+    - keyword: THEN
+      content: The complete text `0 rows frozen` appears visibly once in the “Frozen rows” region.
+    - keyword: WHEN
+      content: The user selects the “Sheet1” worksheet tab.
+    - keyword: THEN
+      content: The complete text `1 row frozen` appears visibly once in the “Frozen rows” region.
+- id: EV-3.7
+  name: Hide a column without deleting its values
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-2-2-2
+  description: |-
+    A column-header context menu offers “Hide column”. Hiding removes that column header and its grid cells from the visible worksheet but retains their values and their role in formula references. Dependent formulas continue to calculate from those values. A “Show column <letter>” button is available for each hidden column. Refreshing preserves the hidden state without deleting or shifting the underlying data.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Hide a column without deleting its values
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Hide EV-3.7`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=2,B1=8,C1 has formula =A1+B1.
+    - keyword: WHEN
+      content: The user opens “Hide EV-3.7”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user right-clicks the “B” columnheader in the “Worksheet grid” grid and clicks the
+        “Hide column” menu command.
+    - keyword: THEN
+      content: The “B” columnheader does not appear in the “Worksheet grid” grid. Cell `B1` does not appear
+        in the “Worksheet grid” grid. Cell `C1` in the “Worksheet grid” grid displays exactly `10`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` does not appear in the “Worksheet grid” grid. The “Show column B” button appears
+        once and is visible.
+- id: EV-3.8
+  name: Show a hidden column
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - EV-3.7
+  description: |-
+    “Show column <letter>” restores a hidden column at its original position in the worksheet. Its column header and grid cells become visible again, with their saved values unchanged. Formulas that refer to those cells continue to show the correct result before and after restoration. Refreshing preserves the restored column and its contents.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Show a hidden column
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Show EV-3.8`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=2,B1=8,C1 has formula =A1+B1; column B is hidden.
+    - keyword: WHEN
+      content: The user opens “Show EV-3.8”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Show column B” button.
+    - keyword: THEN
+      content: The “B” columnheader appears once and is visible in the “Worksheet grid” grid. Cell `B1`
+        in the “Worksheet grid” grid displays exactly `8`. Cell `C1` in the “Worksheet grid” grid displays
+        exactly `10`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `8`.
+- id: EV-3.9
+  name: Toggle display of formula expressions
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-4-1-1
+  description: |-
+    The View menu has a “Show formulas” menuitemcheckbox. Checking it displays the original expression in formula cells instead of the calculated result; ordinary values continue to display normally. Unchecking it restores calculated results. This setting changes only presentation and belongs to the current worksheet. After refresh the saved setting is still checked or unchecked as appropriate, and the View menu exposes that same checked state.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present. Checking, selection and pressed states are exposed through their native or ARIA state as well as the visible interface.
+  scenarios:
+  - name: Toggle display of formula expressions
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Toggle EV-3.9`, separate from the workbooks
+        used in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=3,B1 has formula =A1*4.
+    - keyword: WHEN
+      content: The user opens “Toggle EV-3.9”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “View” button and clicks the “Show formulas” menuitemcheckbox.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `=A1*4`. Cell `A1` in the “Worksheet
+        grid” grid displays exactly `3`.
+    - keyword: WHEN
+      content: The user refreshes the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `=A1*4`.
+    - keyword: WHEN
+      content: The user clicks the “View” button.
+    - keyword: THEN
+      content: The “Show formulas” menuitemcheckbox remains visible and is checked.
+    - keyword: WHEN
+      content: The user clicks the “Show formulas” menuitemcheckbox.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `12`.
+- id: EV-3.10
+  name: Make an independent workbook copy
+  type: ATOMIC
+  change_type: ADD
+  dependencies:
+  - REQ-1-2-1
+  - REQ-1-1-1
+  description: |-
+    “Make a copy” opens the “Copy workbook” dialog with “Workbook name” and “Create copy”. Creating the copy duplicates all worksheets, formulas, notes and rules into a separate workbook and opens it under its new heading. Editing its values recalculates its own formulas without changing the source workbook. Both records remain available through their workbook-name links on the home page; reopening the original and the copy, or refreshing the copy, shows their separate saved states.
+
+    The user opens the seeded workbook through its workbook-name entry on the home page. Its active worksheet is displayed by the ARIA grid “Worksheet grid”, with coordinate-named gridcells and selection represented by aria-selected. Worksheet tabs retain their tab role and selected state; row and column headers retain their corresponding header roles. Menu commands use menuitem semantics unless a different role is stated. The visible controls used for this workflow are unique within the page or the stated dialog or region. Navigation entries may be links or buttons unless a particular role is stated, while form submissions use buttons and inputs have the visible labels shown below. The named sections, dialogs, articles and lists use their corresponding accessible roles; list items show the complete stated text in reading order. A control described as absent is not present.
+  scenarios:
+  - name: Make an independent workbook copy
+    steps:
+    - keyword: GIVEN
+      content: The visitor starts at the application home page in a fresh, unauthenticated browser session.
+        The evaluation seed contains the public workbook `Make EV-3.10`, separate from the workbooks used
+        in the other scenarios. Unless stated otherwise, it has only Sheet1, active with A1 selected,
+        at least 100 rows and 26 columns, and all unspecified cells blank; there are no filters, validation
+        rules, notes or named ranges. A1=6,B1 has formula =A1*3. No workbook named `Independent EV-3.10`
+        exists.
+    - keyword: WHEN
+      content: The user opens “Make EV-3.10”.
+    - keyword: THEN
+      content: The “Worksheet grid” grid appears once and is visible.
+    - keyword: WHEN
+      content: The user clicks the “Make a copy” button, enters `Independent EV-3.10` in the visibly labeled
+        “Workbook name” field in the “Copy workbook” dialog, and clicks the “Create copy” button in the
+        “Copy workbook” dialog.
+    - keyword: THEN
+      content: The “Independent EV-3.10” heading appears once and is visible.
+    - keyword: WHEN
+      content: The user selects cell `A1` in the “Worksheet grid” grid, enters `7` in the visibly labeled
+        “Formula bar” field, and presses `Enter` in “Formula bar”.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `21`.
+    - keyword: WHEN
+      content: The user returns to the application home page and opens “Make EV-3.10”.
+    - keyword: THEN
+      content: Cell `A1` in the “Worksheet grid” grid displays exactly `6`. Cell `B1` in the “Worksheet
+        grid” grid displays exactly `18`.
+    - keyword: WHEN
+      content: The user returns to the application home page, opens “Independent EV-3.10”, and refreshes
+        the current page.
+    - keyword: THEN
+      content: Cell `B1` in the “Worksheet grid” grid displays exactly `21`.

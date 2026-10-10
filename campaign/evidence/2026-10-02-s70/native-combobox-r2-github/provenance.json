@@ -1,0 +1,9 @@
+{
+  "scope": "Only the generic ARC.combobox renderer changed on a copy of the exact R2 app; seed and business code are unchanged. Uses browser-native form/picker behavior, no environment or evaluator detection.",
+  "before_sha256": "80330bfd2549363e8a631a9309b06852156b4f7bde85f9601b142180a6c6bb14",
+  "after_sha256": "f9b2c062e1afd560c5e49e11b1caaf28a68541158d5271e8900dc407985ec6c5",
+  "component_checks": "Same click-by-name, duplicate-option, Escape, callback and FormData checks; native open state/value replace button-specific DOM assertions; native selection path added.",
+  "browser_reference": "https://developer.chrome.com/blog/a-customizable-select",
+  "initial_prototype_sha256": "fb0fb3ba804b3ea1d3ce08555b042199793f1229f4e13caec960f03977bee4b5",
+  "fixture_correction": "Standalone component fixture uses argv[2] for the library; original unit script used node -e and argv[1]. Early no-control errors loaded the fixture script itself, not the library."
+}

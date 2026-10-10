@@ -1,0 +1,1724 @@
+{
+  "usage": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 11,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 11
+    },
+    "completed_calls": 11,
+    "completion_tokens": 413399,
+    "draft_call_limit": 4,
+    "estimated_cost_cny": 2.888054,
+    "estimated_repair_cost_cny": 1.48383,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 413399,
+    "known_prompt_tokens": 1654280,
+    "prompt_tokens": 1654280,
+    "refused_calls": 0,
+    "repair_call_limit": 24,
+    "repair_cny_limit": 10.0,
+    "side_calls": 7,
+    "unknown_usage_calls": []
+  },
+  "smoke": {
+    "executed": true,
+    "problems": [
+      "frontend/public/app.js:425 does not parse (SyntaxError: Unexpected identifier 'C_ROW_ACTIONS') — the line reads `(owner ? AR C_ROW_ACTIONS(owner, name, m.user) : '') + '</article>';`. The browser drops the whole file, so the scaffold renders its empty defaults on every screen and every test fails; re-emit the file with this line fixed",
+      "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Add comment\" shares comment with a field label",
+      "frontend/public/app.js:1725 marks an input readonly ('<p class=\"field\"><label for=\"in-filename\">File name</label><input id=\"in-filena); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+      "45 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"not-an-email\", \"short\", \"different\", \"pw-user-<unique suffix>\", \"Replacement-password-456!\", \"000000\", \"does-not-match\", \"New-password-456!\", \"Required-password-789!\", \"organization name/repository name\", \"-invalid-organization\", \"mobile-guild\", \"Mobile Guild\", \"organization name/team name\", \"mobile-team\", \"Remove <username>\", \"organization-account-role\", \"unknown-reviewer\", \"Member menu <username>\", \"owner/repository name\", \"clone page entry\", \"Repository created by Playwright\", \"Forked from <source repository name>\", \"owner/fork name\", \"commit history\", \"no-such-token\", \"current branch\", \"Branch <current branch name>\", \"Create branch: <name>\", \"pw-branch-<unique suffix>\", \"Create branch: feature/api-v2\", \"Branch <new default branch name>\", \"pw-file-<unique suffix>.md\", \"Add <file name>\", \"must not be saved\", \"docs/guide.md\", \"activity timeline\", \"subject-target-reaction type\", \"merge code changes from the compare branch into the base branch\", \"at least 1 valid Approve from someone other than the PR author\", \"required check `test` is success\", \"Save changes\", \"test: success\", \"<addition count> additions, <deletion count> deletions\", \"PR-reviewer request\""
+    ],
+    "vocabulary_missing": 45,
+    "scenarios": null,
+    "repair": {
+      "accepted": true,
+      "reason": "1 more scenario(s) pass",
+      "files": [
+        "frontend/public/app.js"
+      ]
+    },
+    "tests": {
+      "seconds": 861.6,
+      "calls": 6,
+      "cost_cny": 0.945314,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 14
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 16
+        },
+        {
+          "file": "t06-REQ-6.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 25
+        }
+      ],
+      "used": true
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "fatal": 1,
+        "failing": [],
+        "passing_before": 0,
+        "accepted": false,
+        "reason": "the application is still broken as a whole: frontend script error on load (the page is blank for every test): Could not parse CSS stylesheet; frontend script error on load (the page is blank for every test): Uncaught [TypeError: self.repoHref is not a function]",
+        "scenarios": null,
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [
+              "self.repoHref is not a function"
+            ],
+            "actions": [],
+            "screens": [
+              "#/"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "replied": true,
+        "seconds": 553.1,
+        "cost_cny": 0.046028
+      },
+      {
+        "round": 2,
+        "fatal": 1,
+        "failing": [],
+        "passing_before": 0,
+        "accepted": true,
+        "reason": "the application works again",
+        "scenarios": {
+          "counts": {
+            "pass": 42,
+            "fail": 42,
+            "error": 21
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 84
+          },
+          "seconds": 268.9,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-1-3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('123456', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('123456', { exact: true }) resolved to 2 elements:\n    1) <strong>123456</strong> aka getByRole('strong')\n    2) <p role=\"status\">123456</p> aka getByRole('status').filter({ hasText: '123456' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n"
+            },
+            {
+              "id": "REQ-1-1-3#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('123456', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('123456', { exact: true }) resolved to 2 elements:\n    1) <strong>123456</strong> aka getByRole('strong')\n    2) <p role=\"status\">123456</p> aka getByRole('status').filter({ hasText: '123456' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n"
+            },
+            {
+              "id": "REQ-1-1-3#3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('123456', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('123456', { exact: true }) resolved to 2 elements:\n    1) <strong>123456</strong> aka getByRole('strong')\n    2) <p role=\"status\">123456</p> aka getByRole('status').filter({ hasText: '123456' })\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n"
+            },
+            {
+              "id": "REQ-2-2-1",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New team', exact: true })\n\n\n  210 |   await openOrganization(page);\n  211 |   await page.getByRole('link', { name: 'Teams', exact: true }).click();\n> 212 |   await page.getByRole('link', { name: 'New team', exact: true }).click();\n      |                                                       "
+            },
+            {
+              "id": "REQ-2-2-1#2",
+              "observation": "Blocked by helper:t02-REQ-2.spec.cjs:64 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-2-2-2",
+              "observation": "Blocked by helper:t02-REQ-2.spec.cjs:64 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-2-2-2#2",
+              "observation": "Blocked by helper:t02-REQ-2.spec.cjs:64 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-2-2-4",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Member menu pw-member-muq5e6ixzb6q', exact: true })\n\n\n  367 |   await expect(page.getByText(username, { exact: true }).first()).toBeVisible();\n  368 |\n> 369 |   await page.getByRole('button', { name: 'Member menu ' + username, exact: true }).click();\n      |                                 "
+            },
+            {
+              "id": "REQ-2-3",
+              "observation": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Save', exact: true }) resolved to 3 elements:\n    1) <button type=\"button\" data-id=\"g-1\" data-action=\"save-grant\">Save</button> aka getByRole('article').filter({ hasText: 'bob-' }).getByRole('button')\n    2) <button type=\"button\" data-id=\"g-2\" data-action=\"save-grant\">Save</button> aka getByRole('article').filter({ ha"
+            },
+            {
+              "id": "REQ-2-3#2",
+              "observation": "Error: expect(locator).toBeAttached() failed\n\nLocator: getByRole('option', { name: 'Write', selected: true })\nExpected: attached\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeAttached\" with timeout 5000ms\n  - waiting for getByRole('option', { name: 'Write', selected: true })\n\n\n  445 |   await page.getByRole('button', { name: 'Add', exact: true }).click();\n  446 |   await e"
+            },
+            {
+              "id": "REQ-3-1",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Public', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Public', { exact: true }).first()\n\n\n  70 |   const result = page.getByRole('link', { name: 'acme-docs', exact: true });\n  71 |   await expect(result.first()"
+            },
+            {
+              "id": "REQ-3-2-1",
+              "observation": "Blocked by helper:t03-REQ-3.spec.cjs:49 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-3-2-1#2",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New repository', exact: true })\n\n\n  156 |\n  157 |   await page.goto('/');\n> 158 |   await page.getByRole('link', { name: 'New repository', exact: true }).click();\n      |                                                                         ^\n  159 |   await expect(page.getByLabel('Owner', "
+            },
+            {
+              "id": "REQ-3-2-1#3",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New repository', exact: true })\n\n\n  182 |\n  183 |   await page.goto('/');\n> 184 |   await page.getByRole('link', { name: 'New repository', exact: true }).click();\n      |                                                                         ^\n  185 |   await page.getByRole('button', { name:"
+            },
+            {
+              "id": "REQ-3-2-2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Forked from acme-docs').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Forked from acme-docs').first()\n\n\n  212 |\n  213 |   await expect(page.getByRole('heading', { name: new RegExp(forkName) })).toBeVisible();\n> 214 |   await exp"
+            },
+            {
+              "id": "REQ-3-2-2#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Forked from acme-docs').first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Forked from acme-docs').first()\n\n\n  231 |\n  232 |   await expect(page.getByRole('heading', { name: new RegExp(forkName) })).toBeVisible();\n> 233 |   await exp"
+            },
+            {
+              "id": "REQ-3-4",
+              "observation": "Blocked by helper:t03-REQ-3.spec.cjs:49 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-3-4#2",
+              "observation": "Blocked by helper:t03-REQ-3.spec.cjs:49 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-4-1",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-4-2-1",
+              "observation": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: 'Commits', exact: true }) resolved to 2 elements:\n    1) <a href=\"#/repos/acme-demo/acme-docs/commits/main\">Commits</a> aka getByRole('link', { name: 'Commits' }).first()\n    2) <a href=\"#/repos/acme-demo/acme-docs/commits/main/README.md\">Commits</a> aka getByRole('link', { name: 'Commits' }).nth(1)\n\nCall log:\n  - waitin"
+            },
+            {
+              "id": "REQ-4-2-2",
+              "observation": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: 'Commits', exact: true }) resolved to 2 elements:\n    1) <a href=\"#/repos/acme-demo/acme-docs/commits/main\">Commits</a> aka getByRole('link', { name: 'Commits' }).first()\n    2) <a href=\"#/repos/acme-demo/acme-docs/commits/main/README.md\">Commits</a> aka getByRole('link', { name: 'Commits' }).nth(1)\n\nCall log:\n  - waitin"
+            },
+            {
+              "id": "REQ-4-2-3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('search flow', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('search flow', { exact: true }).first()\n\n\n  109 |   await page.getByRole('link', { name: 'README.md', exact: true }).first().click();\n  110 |\n> 111 |   "
+            },
+            {
+              "id": "REQ-4-2-3#3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'README.md', exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'README.md', exact: true }).first()\n\n\n  131 |   await expect(page.getByRole('link', { name: 'README.md', exact: true }).firs"
+            },
+            {
+              "id": "REQ-4-3-1",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('link', { name: 'main-only.md', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('link', { name: 'main-only.md', exact: true })\n\n\n  160 |\n  161 |   await expect(page.getByRole('button', { name: 'Branch feature-search', exact: "
+            },
+            {
+              "id": "REQ-4-3-1#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('No matching branch', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('No matching branch', { exact: true })\n\n\n  178 |   await page.getByRole('textbox', { name: 'Find branch', exact: true }).fill('no-such-branch');\n  179 |\n"
+            },
+            {
+              "id": "REQ-4-3-3",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New repository', exact: true })\n\n\n  241 |   // Build the GIVEN state: an own repository holding `main` and `release`.\n  242 |   const repo = `pw-repo-${u()}`;\n> 243 |   await page.getByRole('link', { name: 'New repository', exact: true }).click();\n      |                                      "
+            },
+            {
+              "id": "REQ-4-4",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Playwright saved content muq5g397i18a', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Playwright saved content muq5g397i18a', { exact: true }).first()\n\n\n  306 |   await page.getByRole('button', { name: 'Commit c"
+            },
+            {
+              "id": "REQ-4-4#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Playwright saved content muq5g7lhjzqx', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Playwright saved content muq5g7lhjzqx', { exact: true }).first()\n\n\n  329 |   await page.getByRole('button', { name: 'Commit c"
+            },
+            {
+              "id": "REQ-5-1-1",
+              "observation": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: 'Open', exact: true }) resolved to 2 elements:\n    1) <a href=\"#/repos/acme-demo/acme-docs/issues\">Open</a> aka getByRole('link', { name: 'Open' }).first()\n    2) <a href=\"#\" data-value=\"open\" data-action=\"issue-status\">Open</a> aka getByRole('link', { name: 'Open' }).nth(1)\n\nCall log:\n  - waiting for getByRole('link', {"
+            },
+            {
+              "id": "REQ-5-1-1#2",
+              "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search issues', exact: true })\n\n\n  82 |\n  83 |   await page.getByRole('link', { name: 'Closed', exact: true }).click();\n> 84 |   await page.getByRole('searchbox', { name: 'Search issues', exact: true }).fill(CLOSED_ISSUE);\n     |                                                            "
+            },
+            {
+              "id": "REQ-5-1-2#3",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Issues', exact: true })\n\n\n  131 |\n  132 |   // Reopen the same issue from the list and check the persisted record again.\n> 133 |   await page.getByRole('link', { name: 'Issues', exact: true }).click();\n      |                                                                 ^\n  134 |   await o"
+            },
+            {
+              "id": "REQ-5-2-1",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Issues', exact: true })\n\n\n  151 |   await expect(page.getByText('alice-dev', { exact: true }).first()).toBeVisible();\n  152 |\n> 153 |   await page.getByRole('link', { name: 'Issues', exact: true }).click();\n      |                                                                 ^\n  154 |   aw"
+            },
+            {
+              "id": "REQ-5-2-2",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Issues', exact: true })\n\n\n  202 |   await expect(page.getByText(newDescription, { exact: true })).toBeVisible();\n  203 |\n> 204 |   await page.getByRole('link', { name: 'Issues', exact: true }).click();\n      |                                                                 ^\n  205 |   await e"
+            },
+            {
+              "id": "REQ-5-3-1",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'bob-reviewer', exact: true })\n\n\n  264 |   await page.getByRole('button', { name: 'Assignees', exact: true }).click();\n  265 |   await page.getByRole('textbox', { name: 'Search assignees', exact: true }).fill('bob-reviewer');\n> 266 |   await page.getByRole('option', { name: 'bob-reviewer', e"
+            },
+            {
+              "id": "REQ-5-3-3",
+              "observation": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  54 |\n  55 | async function expectOptionSelected(option, selected) {\n> 56 |   await expect.poll(() => optionIsSelected(option)).toBe(selected);\n     |   ^\n  57 | }\n  58 |\n  59 | test('REQ-5-1-1: List and Filter Repository Issues - Scenar"
+            },
+            {
+              "id": "REQ-6-1",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:165 (shared with 1 other test(s))."
+            },
+            {
+              "id": "REQ-6-1#3",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:70 (shared with 4 other test(s))."
+            },
+            {
+              "id": "REQ-6-2-1",
+              "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\nExpected: 1\nReceived: 2\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\n    9 × locator resolved to 2 elements\n      - unexpected value \"2\"\n\n\n  250 |   await page.get"
+            },
+            {
+              "id": "REQ-6-2-1#2",
+              "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\nExpected: 1\nReceived: 2\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\n    9 × locator resolved to 2 elements\n      - unexpected value \"2\"\n\n\n  272 |   // WHEN select"
+            },
+            {
+              "id": "REQ-6-2-1#3",
+              "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\nExpected: 1\nReceived: 2\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\n    9 × locator resolved to 2 elements\n      - unexpected value \"2\"\n\n\n  299 |   // THEN only t"
+            },
+            {
+              "id": "REQ-6-2-2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Commit summary', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Commit summary', { exact: true }).first()\n\n\n  328 |   const create = page.getByRole('button', { name: 'Create pull request', exact: true });\n  329 |"
+            },
+            {
+              "id": "REQ-6-2-2#2",
+              "observation": "Error: expect(locator).toBeDisabled() failed\n\nLocator: getByRole('button', { name: 'Create pull request', exact: true }).first()\nExpected: disabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Create pull request', exact: true }).first()\n\n\n  352 |   // THEN the system reports that there are no diff"
+            },
+            {
+              "id": "REQ-6-2-3",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Pull requests', exact: true })\n\n\n  137 |   const { draft = false, description = null } = opts;\n  138 |   const label = draft ? 'Create draft pull request' : 'Create pull request';\n> 139 |   await page.getByRole('link', { name: 'Pull requests', exact: true }).click();\n      |                  "
+            },
+            {
+              "id": "REQ-6-2-3#2",
+              "observation": "The test used the name 'comparable change for the pull request', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            },
+            {
+              "id": "REQ-6-2-4",
+              "observation": "The test used the name 'draft change for the pull request', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            },
+            {
+              "id": "REQ-6-2-4#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('draft-feature', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('draft-feature', { exact: true }).first()\n\n\n  439 |   await page.getByRole('link', { name: title, exact: true }).click();\n  440 |   await expect(page."
+            },
+            {
+              "id": "REQ-6-3-1",
+              "observation": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: /^(Improve onboarding|Fix search)$/ }) resolved to 2 elements:\n    1) <a href=\"#/repos/acme-demo/acme-docs/pulls/1\">Improve onboarding</a> aka getByRole('link', { name: 'Improve onboarding' })\n    2) <a href=\"#/repos/acme-demo/acme-docs/pulls/2\">Fix search</a> aka getByRole('link', { name: 'Fix search' })\n\nCall log:\n  - "
+            },
+            {
+              "id": "REQ-6-3-1#2",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:70 (shared with 4 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-1#3",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:70 (shared with 4 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-2",
+              "observation": "Error: locator.click: Error: strict mode violation: getByRole('link', { name: /^(Improve onboarding|Fix search)$/ }) resolved to 2 elements:\n    1) <a href=\"#/repos/acme-demo/acme-docs/pulls/1\">Improve onboarding</a> aka getByRole('link', { name: 'Improve onboarding' })\n    2) <a href=\"#/repos/acme-demo/acme-docs/pulls/2\">Fix search</a> aka getByRole('link', { name: 'Fix search' })\n\nCall log:\n  - "
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-4",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:70 (shared with 4 other test(s))."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:70 (shared with 4 other test(s))."
+            },
+            {
+              "id": "REQ-6-5#2",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:165 (shared with 1 other test(s))."
+            },
+            {
+              "id": "REQ-6-6",
+              "observation": "The test used the name 'change for the close/reopen pull request', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            },
+            {
+              "id": "helper:t02-REQ-2.spec.cjs:64",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New team', exact: true })\n\n\n  62 |   await openOrganization(page);\n  63 |   await page.getByRole('link', { name: 'Teams', exact: true }).click();\n> 64 |   await page.getByRole('link', { name: 'New team', exact: true }).click();\n     |                                                           "
+            },
+            {
+              "id": "helper:t03-REQ-3.spec.cjs:49",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New repository', exact: true })\n\n\n  47 | async function createRepository(page, { name, description = '', visibility = 'Private', readme = true }) {\n  48 |   await page.goto('/');\n> 49 |   await page.getByRole('link', { name: 'New repository', exact: true }).click();\n     |                    "
+            },
+            {
+              "id": "helper:t06-REQ-6.spec.cjs:165",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New repository', exact: true })\n\n\n  163 |\n  164 | async function createRepository(page, repo) {\n> 165 |   await page.getByRole('link', { name: 'New repository', exact: true }).click();\n      |                                                                         ^\n  166 |   await page.getBy"
+            },
+            {
+              "id": "helper:t06-REQ-6.spec.cjs:70",
+              "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\nExpected: 1\nReceived: 2\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\n    9 × locator resolved to 2 elements\n      - unexpected value \"2\"\n\n\n  68 |   await page.getB"
+            },
+            {
+              "id": "helper:t06-REQ-6.spec.cjs:103",
+              "observation": "Error: locator.selectOption: Error: Element is not a <select> element\nCall log:\n  - waiting for getByRole('combobox', { name: 'Role', exact: true })\n    - locator resolved to <button type=\"button\" id=\"cb-role-1\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-role-1-list\" aria-labelledby=\"cb-role-1-label\" data-options=\"[{\"value\":\"Read\",\"la"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [
+              "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+            ],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Dashboard",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Edit",
+                "action": "edit-file"
+              },
+              {
+                "scope": "dialog",
+                "name": "Commit changes",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Edit",
+                "action": "edit-file"
+              },
+              {
+                "scope": "dialog",
+                "name": "Commit changes",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Edit",
+                "action": "edit-file"
+              },
+              {
+                "scope": "dialog",
+                "name": "Commit changes",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/orgs/acme-demo",
+              "#/repos/acme-demo/acme-docs",
+              "#/repos/alice-dev/acme-docs-fork",
+              "#/repos/bob-reviewer/bob-notes",
+              "#/dashboard",
+              "#/orgs",
+              "#/orgs/acme-demo/repositories",
+              "#/orgs/acme-demo/people"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js",
+          "frontend/public/styles.css"
+        ],
+        "replied": true,
+        "seconds": 588.4,
+        "cost_cny": 0.019523
+      },
+      {
+        "round": 3,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-1-3",
+          "REQ-1-1-3#2",
+          "REQ-1-1-3#3",
+          "REQ-2-2-1",
+          "REQ-2-2-4",
+          "REQ-2-3",
+          "REQ-2-3#2",
+          "REQ-3-1",
+          "REQ-3-2-1#2",
+          "REQ-3-2-1#3",
+          "REQ-3-2-2",
+          "REQ-3-2-2#2",
+          "REQ-4-2-1",
+          "REQ-4-2-2",
+          "REQ-4-2-3",
+          "REQ-4-2-3#3",
+          "REQ-4-3-1",
+          "REQ-4-3-1#2",
+          "REQ-4-3-3",
+          "REQ-4-4",
+          "REQ-4-4#2",
+          "REQ-5-1-1",
+          "REQ-5-1-1#2",
+          "REQ-5-1-2#3",
+          "REQ-5-2-1",
+          "REQ-5-2-2",
+          "REQ-5-3-1",
+          "REQ-5-3-3",
+          "REQ-6-2-1",
+          "REQ-6-2-1#2",
+          "REQ-6-2-1#3",
+          "REQ-6-2-2",
+          "REQ-6-2-2#2",
+          "REQ-6-2-3",
+          "REQ-6-2-4#2",
+          "REQ-6-3-1",
+          "REQ-6-3-2",
+          "helper:t02-REQ-2.spec.cjs:64",
+          "helper:t03-REQ-3.spec.cjs:49",
+          "helper:t06-REQ-6.spec.cjs:166",
+          "helper:t06-REQ-6.spec.cjs:70",
+          "helper:t06-REQ-6.spec.cjs:103"
+        ],
+        "passing_before": 45,
+        "accepted": true,
+        "gained": [
+          "REQ-1-1-3",
+          "REQ-1-1-3#3",
+          "REQ-3-1",
+          "REQ-3-2-1",
+          "REQ-3-2-1#2",
+          "REQ-3-2-1#3",
+          "REQ-3-2-2",
+          "REQ-3-2-2#2",
+          "REQ-4-2-1",
+          "REQ-4-2-2",
+          "REQ-4-2-3",
+          "REQ-4-2-3#3",
+          "REQ-4-3-1",
+          "REQ-4-3-1#2",
+          "REQ-4-3-3",
+          "REQ-4-4",
+          "REQ-4-4#2",
+          "REQ-5-1-1",
+          "REQ-5-1-1#2",
+          "REQ-5-1-2#3",
+          "REQ-5-2-1",
+          "REQ-5-2-2",
+          "REQ-6-2-1",
+          "REQ-6-2-1#3",
+          "REQ-6-3-2",
+          "REQ-6-5",
+          "REQ-6-5#2"
+        ],
+        "lost": [
+          "REQ-4-2-3#4"
+        ],
+        "reason": "27 more scenario(s) pass, 1 lost",
+        "scenarios": {
+          "counts": {
+            "pass": 71,
+            "fail": 23,
+            "error": 8
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 94
+          },
+          "seconds": 148.9,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-1-3#2",
+              "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('Password updated', { exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByText('Password updated', { exact: true })\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n\n\n  293 |   await page.getByLabel('Confirm password', { exact: "
+            },
+            {
+              "id": "REQ-2-2-1",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New team', exact: true })\n\n\n  210 |   await openOrganization(page);\n  211 |   await page.getByRole('link', { name: 'Teams', exact: true }).click();\n> 212 |   await page.getByRole('link', { name: 'New team', exact: true }).click();\n      |                                                       "
+            },
+            {
+              "id": "REQ-2-2-1#2",
+              "observation": "Blocked by helper:t02-REQ-2.spec.cjs:64 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-2-2-2",
+              "observation": "Blocked by helper:t02-REQ-2.spec.cjs:64 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-2-2-2#2",
+              "observation": "Blocked by helper:t02-REQ-2.spec.cjs:64 (shared with 2 other test(s))."
+            },
+            {
+              "id": "REQ-2-2-4",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Member menu pw-member-muq5t1qzq6tw', exact: true })\n\n\n  367 |   await expect(page.getByText(username, { exact: true }).first()).toBeVisible();\n  368 |\n> 369 |   await page.getByRole('button', { name: 'Member menu ' + username, exact: true }).click();\n      |                                 "
+            },
+            {
+              "id": "REQ-2-3",
+              "observation": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Save', exact: true }) resolved to 3 elements:\n    1) <button type=\"button\" data-id=\"g-1\" data-action=\"save-grant\">Save</button> aka getByRole('article').filter({ hasText: 'bob-' }).getByRole('button')\n    2) <button type=\"button\" data-id=\"g-2\" data-action=\"save-grant\">Save</button> aka getByRole('article').filter({ ha"
+            },
+            {
+              "id": "REQ-2-3#2",
+              "observation": "Error: expect(locator).toBeAttached() failed\n\nLocator: getByRole('option', { name: 'Write', selected: true })\nExpected: attached\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeAttached\" with timeout 5000ms\n  - waiting for getByRole('option', { name: 'Write', selected: true })\n\n\n  445 |   await page.getByRole('button', { name: 'Add', exact: true }).click();\n  446 |   await e"
+            },
+            {
+              "id": "REQ-3-4",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Public', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Public', { exact: true }).first()\n\n\n  341 |   }\n  342 |\n> 343 |   await expect(page.getByText('Public', { exact: true }).first()).toBeVisible();\n      |    "
+            },
+            {
+              "id": "REQ-3-4#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Private', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Private', { exact: true }).first()\n\n\n  372 |   await page.reload();\n  373 |   await expect(page.getByRole('button', { name: 'Change visibility', exact: tru"
+            },
+            {
+              "id": "REQ-4-1",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-4-2-3#4",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'acme-docs', exact: true }).first()\n\n\n  41 |   await search.fill(name);\n  42 |   await search.press('Enter');\n> 43 |   await page.getByRole('link', { name, exact: true }).first().click();\n     |                                                               ^\n  44 | }\n  45 |\n  46 | async functi"
+            },
+            {
+              "id": "REQ-5-3-1",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'bob-reviewer', exact: true })\n\n\n  264 |   await page.getByRole('button', { name: 'Assignees', exact: true }).click();\n  265 |   await page.getByRole('textbox', { name: 'Search assignees', exact: true }).fill('bob-reviewer');\n> 266 |   await page.getByRole('option', { name: 'bob-reviewer', e"
+            },
+            {
+              "id": "REQ-5-3-3",
+              "observation": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  54 |\n  55 | async function expectOptionSelected(option, selected) {\n> 56 |   await expect.poll(() => optionIsSelected(option)).toBe(selected);\n     |   ^\n  57 | }\n  58 |\n  59 | test('REQ-5-1-1: List and Filter Repository Issues - Scenar"
+            },
+            {
+              "id": "REQ-6-1",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('1 approval', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('1 approval', { exact: true }).first()\n\n\n  186 |   // THEN the settings page displays exactly one rule with both requirements\n  187 |   await expect(page"
+            },
+            {
+              "id": "REQ-6-1#3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('test: success', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('test: success', { exact: true }) resolved to 2 elements:\n    1) <p class=\"meta\">test: success</p> aka locator('#main-content').getByText('test: success')\n    2) <span class=\"status-text\">test: success</span> aka locator('#status-root').getByTe"
+            },
+            {
+              "id": "REQ-6-2-1#2",
+              "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\nExpected: 1\nReceived: 2\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('link', { name: /^(Improve onboarding|Fix search)$/ })\n    9 × locator resolved to 2 elements\n      - unexpected value \"2\"\n\n\n  277 |   // THEN reload"
+            },
+            {
+              "id": "REQ-6-2-2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Commit summary', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Commit summary', { exact: true }).first()\n\n\n  329 |   const create = page.getByRole('button', { name: 'Create pull request', exact: true });\n  330 |"
+            },
+            {
+              "id": "REQ-6-2-2#2",
+              "observation": "Error: expect(locator).toBeDisabled() failed\n\nLocator: getByRole('button', { name: 'Create pull request', exact: true }).first()\nExpected: disabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeDisabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Create pull request', exact: true }).first()\n\n\n  353 |   // THEN the system reports that there are no diff"
+            },
+            {
+              "id": "REQ-6-2-3",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Pull requests', exact: true })\n\n\n  138 |   const { draft = false, description = null } = opts;\n  139 |   const label = draft ? 'Create draft pull request' : 'Create pull request';\n> 140 |   await page.getByRole('link', { name: 'Pull requests', exact: true }).click();\n      |                  "
+            },
+            {
+              "id": "REQ-6-2-4#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('draft-feature', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('draft-feature', { exact: true }).first()\n\n\n  440 |   await page.getByRole('link', { name: title, exact: true }).click();\n  441 |   await expect(page."
+            },
+            {
+              "id": "REQ-6-3-1",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Commit summary', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Commit summary', { exact: true }).first()\n\n\n  473 |   await expect(page.getByRole('link', { name: 'Conversation', exact: true })).toBeVisible();\n  4"
+            },
+            {
+              "id": "REQ-6-3-1#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Commit summary', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Commit summary', { exact: true }).first()\n\n\n  492 |   await expect(page.getByRole('link', { name: 'Conversation', exact: true })).toBeVisible();\n  4"
+            },
+            {
+              "id": "REQ-6-3-1#3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Changed files', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Changed files', { exact: true }).first()\n\n\n  517 |   await expect(page.getByRole('link', { name: 'Files changed', exact: true })).toBeVisible();\n  51"
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-4",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('option', { name: 'bob-reviewer', exact: true })\n\n\n  651 |   await page.getByRole('button', { name: 'Reviewers', exact: true }).click();\n  652 |   await page.getByRole('textbox', { name: 'Search', exact: true }).fill(BOB);\n> 653 |   await page.getByRole('option', { name: BOB, exact: true }).click();\n      |  "
+            },
+            {
+              "id": "helper:t02-REQ-2.spec.cjs:64",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'New team', exact: true })\n\n\n  62 |   await openOrganization(page);\n  63 |   await page.getByRole('link', { name: 'Teams', exact: true }).click();\n> 64 |   await page.getByRole('link', { name: 'New team', exact: true }).click();\n     |                                                           "
+            },
+            {
+              "id": "helper:t06-REQ-6.spec.cjs:103",
+              "observation": "Error: locator.selectOption: Error: Element is not a <select> element\nCall log:\n  - waiting for getByRole('combobox', { name: 'Role', exact: true })\n    - locator resolved to <button type=\"button\" id=\"cb-role-1\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-role-1-list\" aria-labelledby=\"cb-role-1-label\" data-options=\"[{\"value\":\"Read\",\"la"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [
+              "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+            ],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Dashboard",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/orgs/acme-demo",
+              "#/repos/acme-demo/acme-docs",
+              "#/repos/alice-dev/acme-docs-fork",
+              "#/repos/bob-reviewer/bob-notes",
+              "#/dashboard",
+              "#/orgs",
+              "#/orgs/acme-demo/repositories",
+              "#/orgs/acme-demo/people"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/seed.js",
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 283.1,
+        "cost_cny": 0.158257
+      },
+      {
+        "round": 4,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-1-3#2",
+          "REQ-2-2-1",
+          "REQ-2-2-4",
+          "REQ-2-3",
+          "REQ-2-3#2",
+          "REQ-3-4",
+          "REQ-3-4#2",
+          "REQ-4-2-3#4",
+          "REQ-5-3-1",
+          "REQ-5-3-3",
+          "REQ-6-1",
+          "REQ-6-1#3",
+          "REQ-6-2-1#2",
+          "REQ-6-2-2",
+          "REQ-6-2-2#2",
+          "REQ-6-2-3",
+          "REQ-6-2-4#2",
+          "REQ-6-3-1",
+          "REQ-6-3-1#2",
+          "REQ-6-3-1#3",
+          "REQ-6-4",
+          "helper:t02-REQ-2.spec.cjs:64",
+          "helper:t06-REQ-6.spec.cjs:103"
+        ],
+        "passing_before": 71,
+        "accepted": true,
+        "skipped_hunks": [
+          "EDIT frontend/public/app.js hunk 1: a marker line (`<<<<<<< SEARCH`, `=======` or `>>>>>>> REPLACE`) sits inside the hunk; write each hunk as exactly SEARCH, one `=======`, REPLACE",
+          "EDIT frontend/public/app.js hunk 17: SEARCH matches nothing (it starts `var ck = list('checks').filter(function (c) { return c.pr === pr.id && c.commit `); the current lines there are:\n      }).join(' ');\n      var prot = list('protections').find(function (p) { return p.repo === repo.id && p.branch "
+        ],
+        "order_recheck": {
+          "REQ-6-6#2": "fail"
+        },
+        "gained": [
+          "REQ-1-1-3#2",
+          "REQ-2-2-1",
+          "REQ-2-2-1#2",
+          "REQ-2-2-2",
+          "REQ-2-2-2#2",
+          "REQ-2-2-4",
+          "REQ-2-3",
+          "REQ-2-3#2",
+          "REQ-3-4",
+          "REQ-3-4#2",
+          "REQ-4-2-3#4",
+          "REQ-5-3-1",
+          "REQ-5-3-3",
+          "REQ-6-1",
+          "REQ-6-1#3",
+          "REQ-6-2-1#2",
+          "REQ-6-2-2",
+          "REQ-6-2-2#2",
+          "REQ-6-2-3",
+          "REQ-6-2-4#2"
+        ],
+        "lost": [
+          "REQ-6-6#2"
+        ],
+        "reason": "20 more scenario(s) pass, 1 lost",
+        "scenarios": {
+          "counts": {
+            "pass": 90,
+            "error": 5,
+            "fail": 6
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 96
+          },
+          "seconds": 57.2,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-4-1",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-1",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Changed files', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Changed files', { exact: true }).first()\n\n\n  475 |   await expect(page.getByText('Commit summary', { exact: true }).first()).toBeVisible();\n  476 |  "
+            },
+            {
+              "id": "REQ-6-3-1#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Changed files', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Changed files', { exact: true }).first()\n\n\n  495 |   await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();\n  496 |   a"
+            },
+            {
+              "id": "REQ-6-3-1#3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Changed files', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Changed files', { exact: true }).first()\n\n\n  517 |   await expect(page.getByRole('link', { name: 'Files changed', exact: true })).toBeVisible();\n  51"
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Blocked by helper:t06-REQ-6.spec.cjs:103 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-6-4",
+              "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('button', { name: 'Remove bob-reviewer', exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Remove bob-reviewer', exact: true })\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n\n\n  660 |\n  661 |   // TH"
+            },
+            {
+              "id": "REQ-6-6#2",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: /^(Improve onboarding|Fix search)$/ }).first()\n\n\n  761 |   await signIn(page, username);\n  762 |   await openPullRequests(page);\n> 763 |   await page.getByRole('link', { name: SEEDED_PRS }).first().click();\n      |                                                              ^\n  764 |   await "
+            },
+            {
+              "id": "helper:t06-REQ-6.spec.cjs:103",
+              "observation": "Error: locator.selectOption: Error: Element is not a <select> element\nCall log:\n  - waiting for getByRole('combobox', { name: 'Role', exact: true })\n    - locator resolved to <button type=\"button\" id=\"cb-role-1\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"listbox\" data-action=\"arc:combobox\" aria-controls=\"cb-role-1-list\" aria-labelledby=\"cb-role-1-label\" data-options=\"[{\"value\":\"Read\",\"la"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [
+              "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+            ],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Dashboard",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/orgs/acme-demo",
+              "#/repos/acme-demo/acme-docs",
+              "#/repos/alice-dev/acme-docs-fork",
+              "#/repos/bob-reviewer/bob-notes",
+              "#/dashboard",
+              "#/orgs",
+              "#/orgs/acme-demo/repositories",
+              "#/orgs/acme-demo/people"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js",
+          "frontend/public/styles.css"
+        ],
+        "replied": true,
+        "seconds": 517.5,
+        "cost_cny": 0.436325
+      },
+      {
+        "round": 5,
+        "fatal": 0,
+        "failing": [
+          "REQ-6-3-1",
+          "REQ-6-3-1#2",
+          "REQ-6-3-1#3",
+          "REQ-6-4",
+          "REQ-6-6#2",
+          "helper:t06-REQ-6.spec.cjs:103"
+        ],
+        "passing_before": 90,
+        "accepted": true,
+        "gained": [
+          "REQ-6-3-1",
+          "REQ-6-3-1#2",
+          "REQ-6-3-1#3",
+          "REQ-6-3-3",
+          "REQ-6-4",
+          "REQ-6-6#2"
+        ],
+        "lost": [
+          "REQ-6-5"
+        ],
+        "reason": "6 more scenario(s) pass, 1 lost",
+        "scenarios": {
+          "counts": {
+            "pass": 95,
+            "error": 1,
+            "fail": 4
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 51.8,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-4-1",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Pending review', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Pending review', { exact: true }).first()\n\n\n  590 |   await page.reload();\n  591 |   await expect(page.getByText(body, { exact: true }).first()).toB"
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Approved', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Approved', { exact: true }).first()\n\n\n  609 |\n  610 |   // THEN the decision and its reviewer are displayed\n> 611 |   await expect(page.getByText('Approve"
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Changes requested', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('Changes requested', { exact: true }).first()\n\n\n  631 |\n  632 |   // THEN the request-changes status and the exact summary are displayed\n> 633 |  "
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Error: expect(locator).toBeEnabled() failed\n\nLocator:  getByRole('button', { name: 'Merge pull request', exact: true }).first()\nExpected: enabled\nReceived: disabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true }).first()\n    9 × locator resolved to <button disabled type=\"button\">Merge pull req"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [
+              "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+            ],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Dashboard",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/orgs/acme-demo",
+              "#/repos/acme-demo/acme-docs",
+              "#/repos/alice-dev/acme-docs-fork",
+              "#/repos/bob-reviewer/bob-notes",
+              "#/dashboard",
+              "#/orgs",
+              "#/orgs/acme-demo/repositories",
+              "#/orgs/acme-demo/people"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 131.8,
+        "cost_cny": 0.082263
+      },
+      {
+        "round": 6,
+        "fatal": 0,
+        "failing": [
+          "REQ-6-3-3#2",
+          "REQ-6-3-4",
+          "REQ-6-3-4#2",
+          "REQ-6-5"
+        ],
+        "passing_before": 95,
+        "accepted": true,
+        "gained": [
+          "REQ-6-3-3#2",
+          "REQ-6-3-4",
+          "REQ-6-3-4#2"
+        ],
+        "reason": "3 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 98,
+            "error": 1,
+            "fail": 1
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 35.5,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-4-1",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Error: expect(locator).toBeEnabled() failed\n\nLocator:  getByRole('button', { name: 'Merge pull request', exact: true }).first()\nExpected: enabled\nReceived: disabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Merge pull request', exact: true }).first()\n    9 × locator resolved to <button disabled type=\"button\">Merge pull req"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [
+              "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+            ],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Dashboard",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/orgs/acme-demo",
+              "#/repos/acme-demo/acme-docs",
+              "#/repos/alice-dev/acme-docs-fork",
+              "#/repos/bob-reviewer/bob-notes",
+              "#/dashboard",
+              "#/orgs",
+              "#/orgs/acme-demo/repositories",
+              "#/orgs/acme-demo/people"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 91.9,
+        "cost_cny": 0.058814
+      },
+      {
+        "round": 7,
+        "fatal": 0,
+        "failing": [
+          "REQ-6-5"
+        ],
+        "passing_before": 98,
+        "accepted": false,
+        "unconfirmed": [
+          "REQ-6-5"
+        ],
+        "gained": [],
+        "reason": "no failing scenario passes after the change",
+        "scenarios": {
+          "counts": {
+            "pass": 98,
+            "error": 1,
+            "fail": 1
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 30.0,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-4-1",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": ""
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [
+              "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+            ],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Dashboard",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/orgs/acme-demo",
+              "#/repos/acme-demo/acme-docs",
+              "#/repos/alice-dev/acme-docs-fork",
+              "#/repos/bob-reviewer/bob-notes",
+              "#/dashboard",
+              "#/orgs",
+              "#/orgs/acme-demo/repositories",
+              "#/orgs/acme-demo/people"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "replied": true,
+        "seconds": 63.8,
+        "cost_cny": 0.02482
+      },
+      {
+        "round": 8,
+        "fatal": 0,
+        "failing": [
+          "REQ-6-5"
+        ],
+        "passing_before": 98,
+        "accepted": true,
+        "focus": [
+          "REQ-6-5"
+        ],
+        "gained": [
+          "REQ-6-5"
+        ],
+        "reason": "1 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 99,
+            "error": 1
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 29.8,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-4-1",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [
+              "Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+            ],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Dashboard",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/orgs/acme-demo",
+              "#/repos/acme-demo/acme-docs",
+              "#/repos/alice-dev/acme-docs-fork",
+              "#/repos/bob-reviewer/bob-notes",
+              "#/dashboard",
+              "#/orgs",
+              "#/orgs/acme-demo/repositories",
+              "#/orgs/acme-demo/people"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 91.7,
+        "cost_cny": 0.049449
+      }
+    ],
+    "problems_after": [
+      "Requirement-derived UI observation: Clicking \"GitHub\" (data-action arc:nav) reached neither its registered APP handler nor a UI/state change. Keep the scaffold's delegated events reachable; capture listeners must not stop these actions."
+    ],
+    "scenarios_after": {
+      "counts": {
+        "pass": 99,
+        "error": 1
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 99
+      },
+      "seconds": 29.8,
+      "source_contracts": {},
+      "failing": [
+        {
+          "id": "REQ-4-1",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "source_review": {
+      "proposed": 4,
+      "probes": 4,
+      "results": [
+        {
+          "id": "REQ-6-1#contract-1",
+          "status": "error",
+          "message": "Expected one exact source binding: APP.pullSidebar, found 0"
+        },
+        {
+          "id": "REQ-6-5#contract-1",
+          "status": "error",
+          "message": "Expected one exact source binding: APP.pullSidebar, found 0"
+        },
+        {
+          "id": "REQ-5-3-1#contract-1",
+          "status": "error",
+          "message": "Expected one exact source binding: APP.assigneePicker, found 0"
+        },
+        {
+          "id": "REQ-6-3-3#contract-1",
+          "status": "error",
+          "message": "Expected one exact source binding: APP, found 2"
+        }
+      ],
+      "skipped": null,
+      "seconds": 577.9,
+      "calls": 2,
+      "cost_cny": 0.608351
+    }
+  }
+}

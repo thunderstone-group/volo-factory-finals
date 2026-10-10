@@ -1,0 +1,6 @@
+{
+  "basis": "Public requirement and actual read/write owner mismatch",
+  "changed": "renderFilterDialog reads the same session filter collection as create/open/apply",
+  "source_run": "5d3438cb9865",
+  "scope": "diagnostic only, excluded from agent package"
+}

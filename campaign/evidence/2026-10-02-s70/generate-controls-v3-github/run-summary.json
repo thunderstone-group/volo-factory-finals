@@ -1,0 +1,1997 @@
+{
+  "usage": {
+    "billing_status": "unknown",
+    "calls": 15,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 15
+    },
+    "completed_calls": 14,
+    "completion_tokens": null,
+    "draft_call_limit": 4,
+    "estimated_cost_cny": 3.001811,
+    "estimated_repair_cost_cny": 1.743053,
+    "failed_calls": 1,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 412693,
+    "known_prompt_tokens": 2096917,
+    "prompt_tokens": null,
+    "refused_calls": 0,
+    "repair_call_limit": 24,
+    "repair_cny_limit": 10.0,
+    "side_calls": 6,
+    "unknown_usage_calls": [
+      8
+    ]
+  },
+  "smoke": {
+    "executed": true,
+    "problems": [
+      "unreachable link: #/new, #/signout has no screen in APP.screens and renders the fallback screen; remove the link or add the screen",
+      "1 field label(s) are substrings of another field label, so getByLabel('Email') matches both and fails in strict mode. Rename so no label is a whole-word substring of another, and NEVER rename a label the requirement quotes — rename the other one (e.g. keep \"Name\", rename \"Name filter\" to \"Filter by title\"): \"Search\" is contained in \"Search repositories\" — keep \"Search\" exactly (quoted in the requirement) and rename \"Search repositories\"",
+      "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Add comment\" shares comment with a field label",
+      "1 quoted control name(s) never appear as a WHOLE accessible name or text node; the suite anchors quoted names (`/^Name$/i`), so an icon, bullet, ellipsis or extra word in the same name fails it. Render each exactly as quoted, alone in its element's text or aria-label/placeholder (icons and translations go in a separate aria-hidden sibling element): “Update” appears only as `, updated:`",
+      "frontend/public/app.js:1390 marks an input readonly (<input type=\"text\" id=\"clone-value\" aria-label=\"Clone value\" readonly value=\"${e); the suite fills fields by typing and a readonly field times out on every fill. Make it a plain text input that accepts typing; open any picker from a separate button, not from the field",
+      "49 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"not-an-email\", \"short\", \"different\", \"pw-user-<unique suffix>\", \"Replacement-password-456!\", \"000000\", \"does-not-match\", \"New-password-456!\", \"Required-password-789!\", \"organization name/repository name\", \"-invalid-organization\", \"mobile-guild\", \"Mobile Guild\", \"organization name/team name\", \"mobile-team\", \"Remove <username>\", \"organization-account-role\", \"unknown-reviewer\", \"Member menu <username>\", \"owner/repository name\", \"clone page entry\", \"Repository created by Playwright\", \"Forked from <source repository name>\", \"owner/fork name\", \"commit history\", \"code search\", \"no-such-token\", \"current branch\", \"No matching branch\", \"Branch <current branch name>\", \"Create branch: <name>\", \"pw-branch-<unique suffix>\", \"Create branch: feature/api-v2\", \"Branch <new default branch name>\", \"pw-file-<unique suffix>.md\", \"Add <file name>\", \"must not be saved\", \"docs/guide.md\", \"activity timeline\", \"subject-target-reaction type\", \"Closed issue\", \"merge code changes from the compare branch into the base branch\", \"at least 1 valid Approve from someone other than the PR author\", \"required check `test` is success\", \"Save changes\", \"test: success\", \"<addition count> additions, <deletion count> deletions\", \"reviewer request\", \"PR-reviewer request\""
+    ],
+    "vocabulary_missing": 49,
+    "scenarios": {
+      "counts": {
+        "error": 82,
+        "pass": 8,
+        "fail": 17
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 25
+      },
+      "seconds": 464.9,
+      "source_contracts": {},
+      "failing": [
+        {
+          "id": "REQ-1-1-1",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-1#2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-1#3",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-2#2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-2#3",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-2#4",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-3",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-3#2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-1-3#3",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-2#2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-3",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-3#2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-1-3#3",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:21 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-1",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-1#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-2#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-2#3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-1",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-1#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-2#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:22 (shared with 2 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-3#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-4",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:22 (shared with 2 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-4#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:22 (shared with 2 other test(s))."
+        },
+        {
+          "id": "REQ-2-3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-2-3#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:15 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-3-1#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-1#3",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-1#4",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-1",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-1#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-1#3",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-3#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-4",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-3-4#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:19 (shared with 10 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-2",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('src/search.ts', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('src/search.ts', { exact: true }).first()\n\n\n  89 |   await page.getByRole('link', { name: 'Commits' }).first().click();\n  90 |   await page.getByText("
+        },
+        {
+          "id": "REQ-4-2-3#2",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('No code results', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('No code results', { exact: true }).first()\n\n\n  115 |   await expect(page.getByText('No code results', { exact: true }).first()).toBeVisible();\n  11"
+        },
+        {
+          "id": "REQ-4-2-3#3",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:18 (shared with 6 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-3#4",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:18 (shared with 6 other test(s))."
+        },
+        {
+          "id": "REQ-4-3-1#2",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('No matching branch', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('No matching branch', { exact: true }).first()\n\n\n  172 |   const findBranch = page.getByRole('textbox', { name: 'Find branch', exact: true });\n  "
+        },
+        {
+          "id": "REQ-4-3-2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:18 (shared with 6 other test(s))."
+        },
+        {
+          "id": "REQ-4-3-2#2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:18 (shared with 6 other test(s))."
+        },
+        {
+          "id": "REQ-4-3-3",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:18 (shared with 6 other test(s))."
+        },
+        {
+          "id": "REQ-4-3-3#2",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Create an account', exact: true })\n\n\n  27 |   await page.goto('/');\n  28 |   await page.getByRole('link', { name: 'Sign in', exact: true }).click();\n> 29 |   await page.getByRole('link', { name: 'Create an account', exact: true }).click();\n     |                                               "
+        },
+        {
+          "id": "REQ-4-4",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:18 (shared with 6 other test(s))."
+        },
+        {
+          "id": "REQ-4-4#2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:18 (shared with 6 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-1",
+          "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search issues', exact: true })\n\n\n  62 |\n  63 |   await page.getByRole('link', { name: 'Open', exact: true }).first().click();\n> 64 |   await page.getByRole('searchbox', { name: 'Search issues', exact: true }).fill('onboarding');\n     |                                                      "
+        },
+        {
+          "id": "REQ-5-1-1#2",
+          "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('searchbox', { name: 'Search issues', exact: true })\n\n\n  86 |\n  87 |   await page.getByRole('link', { name: 'Closed', exact: true }).first().click();\n> 88 |   await page.getByRole('searchbox', { name: 'Search issues', exact: true }).fill(CLOSED_ISSUE_TITLE);\n     |                                              "
+        },
+        {
+          "id": "REQ-5-1-2",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Describe the onboarding improvement.', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('Describe the onboarding improvement.', { exact: true }) resolved to 2 elements:\n    1) <div class=\"issue-body\">Describe the onboarding improvement.</div> aka locator('div').filter({ hasText: /^Describe the onboarding imp"
+        },
+        {
+          "id": "REQ-5-1-2#2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-2#3",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-1",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-1#2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-2#2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-3",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-3#2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-3",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-4",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:14 (shared with 11 other test(s))."
+        },
+        {
+          "id": "REQ-5-4#2",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Create an account', exact: true })\n\n\n  21 |   await page.goto('/');\n  22 |   await page.getByRole('link', { name: 'Sign in', exact: true }).click();\n> 23 |   await page.getByRole('link', { name: 'Create an account', exact: true }).click();\n     |                                               "
+        },
+        {
+          "id": "REQ-6-1",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-1#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-1#3",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-2-1#2",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-2-1#3",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-2-2",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-2-2#2",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-2-3",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-2-3#2",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-2-4",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-2-4#2",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-3-1",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Improve onboarding', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Improve onboarding', exact: true })\n\n\n  243 |\n  244 |   await page.getByRole('link', { name: 'Commits', exact: true "
+        },
+        {
+          "id": "REQ-6-3-1#2",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-3-1#3",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-3-2",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('src/search.ts', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('src/search.ts', { exact: true })\n\n\n  282 |   await openOpenPr(page, 'Improve onboarding');\n  283 |   await page.getByRole('link', { name: 'Files changed', ex"
+        },
+        {
+          "id": "REQ-6-3-3",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-4",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-5",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-5#2",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-6",
+          "observation": "Blocked by helper:t06-REQ-6.spec.cjs:9 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-6-6#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "helper:t01-REQ-1.spec.cjs:21",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByLabel('Username or email', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByLabel('Username or email', { exact: true })\n\n\n  19 |   await page.goto('/');\n  20 |   await signInLink(page).click();\n> 21 |   await expect(usernameField(page"
+        },
+        {
+          "id": "helper:t02-REQ-2.spec.cjs:15",
+          "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Username or email', { exact: true })\n\n\n  13 | async function signIn(page, usernameOrEmail, password = PASSWORD) {\n  14 |   await openSignIn(page);\n> 15 |   await page.getByLabel('Username or email', { exact: true }).fill(usernameOrEmail);\n     |                                                               ^"
+        },
+        {
+          "id": "helper:t02-REQ-2.spec.cjs:22",
+          "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Create an account', exact: true })\n\n\n  20 | async function registerAccount(page, username, email) {\n  21 |   await openSignIn(page);\n> 22 |   await page.getByRole('link', { name: 'Create an account', exact: true }).click();\n     |                                                               "
+        },
+        {
+          "id": "helper:t03-REQ-3.spec.cjs:19",
+          "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Username or email', { exact: true })\n\n\n  17 |   await page.goto('/');\n  18 |   await page.getByRole('link', { name: 'Sign in', exact: true }).click();\n> 19 |   await page.getByLabel('Username or email', { exact: true }).fill(EMAIL);\n     |                                                               ^\n  20 "
+        },
+        {
+          "id": "helper:t04-REQ-4.spec.cjs:18",
+          "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Username or email', { exact: true })\n\n\n  16 |   await page.goto('/');\n  17 |   await page.getByRole('link', { name: 'Sign in', exact: true }).click();\n> 18 |   await page.getByLabel('Username or email', { exact: true }).fill(username);\n     |                                                               ^\n  "
+        },
+        {
+          "id": "helper:t05-REQ-5.spec.cjs:14",
+          "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Username or email', { exact: true })\n\n\n  12 |   await page.goto('/');\n  13 |   await page.getByRole('link', { name: 'Sign in', exact: true }).click();\n> 14 |   await page.getByLabel('Username or email', { exact: true }).fill(usernameOrEmail);\n     |                                                            "
+        },
+        {
+          "id": "helper:t06-REQ-6.spec.cjs:9",
+          "observation": "TimeoutError: locator.fill: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByLabel('Username or email', { exact: true })\n\n\n   7 |   await page.goto('/');\n   8 |   await page.getByRole('link', { name: 'Sign in', exact: true }).click();\n>  9 |   await page.getByLabel('Username or email', { exact: true }).fill(username);\n     |                                                               ^\n  "
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "repair": {
+      "accepted": false,
+      "reason": "the application is still broken as a whole: backend `node server.js` exited with code 0 before answering GET /api/health: uncaught Error: listen EADDRINUSE: address already in use :::63640\n    at Server.setupListenHandle [as _listen2] (node:net:2016:16)\n    at listenInCluster (node:net:2073:12)\n    at Server.listen (node:net:2178:7)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-github/.oneshot-hbi034_8/app/backend/server.js:86:8)\n    at Module._compile (node:internal/modules"
+    },
+    "browser_before": [
+      {
+        "executed": true,
+        "diagnostic_only": true,
+        "errors": [],
+        "page_errors": [],
+        "actions": [
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Home",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Explore",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Agree to the terms",
+            "action": ""
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "GitHub",
+            "action": "arc:nav"
+          }
+        ],
+        "screens": [
+          "#/",
+          "#/signin",
+          "#/signup",
+          "#/forgot",
+          "#/r/alice-dev/acme-docs",
+          "#/org/org1",
+          "#/explore",
+          "#/settings",
+          "#/r/alice-dev/acme-docs/issues",
+          "#/r/alice-dev/acme-docs/pulls",
+          "#/r/alice-dev/acme-docs/settings",
+          "#/r/alice-dev/acme-docs/commits"
+        ],
+        "browser": "143.0.7499.4",
+        "playwright": "1.57.0"
+      }
+    ],
+    "tests": {
+      "seconds": 826.7,
+      "calls": 6,
+      "cost_cny": 0.873557,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 14
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 16
+        },
+        {
+          "file": "t06-REQ-6.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 25
+        }
+      ],
+      "used": true
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "fatal": 0,
+        "failing": [
+          "REQ-4-2-2",
+          "REQ-4-2-3#2",
+          "REQ-4-3-1#2",
+          "REQ-4-3-3#2",
+          "REQ-5-1-1",
+          "REQ-5-1-1#2",
+          "REQ-5-1-2",
+          "REQ-5-4#2",
+          "REQ-6-3-1",
+          "REQ-6-3-2",
+          "helper:t01-REQ-1.spec.cjs:21",
+          "helper:t02-REQ-2.spec.cjs:15",
+          "helper:t02-REQ-2.spec.cjs:22",
+          "helper:t03-REQ-3.spec.cjs:19",
+          "helper:t04-REQ-4.spec.cjs:18",
+          "helper:t05-REQ-5.spec.cjs:14",
+          "helper:t06-REQ-6.spec.cjs:9"
+        ],
+        "passing_before": 8,
+        "accepted": true,
+        "gained": [
+          "REQ-1-1-1",
+          "REQ-1-1-1#3",
+          "REQ-1-1-2",
+          "REQ-1-1-2#2",
+          "REQ-1-1-2#3",
+          "REQ-1-1-2#4",
+          "REQ-1-1-3",
+          "REQ-1-1-3#2",
+          "REQ-1-1-3#3",
+          "REQ-1-2#2",
+          "REQ-2-1-1",
+          "REQ-2-1-1#2",
+          "REQ-2-1-2",
+          "REQ-2-1-2#2",
+          "REQ-2-1-2#3",
+          "REQ-2-2-1",
+          "REQ-2-2-1#2",
+          "REQ-2-2-2",
+          "REQ-2-2-2#2",
+          "REQ-2-2-3",
+          "REQ-2-2-4",
+          "REQ-2-2-4#2",
+          "REQ-3-1#2",
+          "REQ-3-1#3",
+          "REQ-3-1#4",
+          "REQ-3-2-1",
+          "REQ-3-2-1#2",
+          "REQ-3-2-1#3",
+          "REQ-3-2-2",
+          "REQ-3-2-3#2",
+          "REQ-3-4",
+          "REQ-3-4#2",
+          "REQ-4-2-2",
+          "REQ-4-2-3#2",
+          "REQ-4-2-3#3",
+          "REQ-4-2-3#4",
+          "REQ-4-3-1#2",
+          "REQ-4-3-2",
+          "REQ-4-3-2#2",
+          "REQ-4-3-3#2",
+          "REQ-4-4",
+          "REQ-4-4#2",
+          "REQ-5-1-1",
+          "REQ-5-1-1#2",
+          "REQ-5-1-2",
+          "REQ-5-1-2#2",
+          "REQ-5-1-2#3",
+          "REQ-5-2-1",
+          "REQ-5-2-1#2",
+          "REQ-5-2-2",
+          "REQ-5-2-2#2",
+          "REQ-5-2-3",
+          "REQ-5-2-3#2",
+          "REQ-5-3-2",
+          "REQ-5-3-3",
+          "REQ-5-4",
+          "REQ-5-4#2",
+          "REQ-6-1",
+          "REQ-6-1#3",
+          "REQ-6-2-1#2",
+          "REQ-6-2-1#3",
+          "REQ-6-2-2#2",
+          "REQ-6-3-1",
+          "REQ-6-3-1#2",
+          "REQ-6-3-1#3",
+          "REQ-6-3-2",
+          "REQ-6-5#2",
+          "REQ-6-6"
+        ],
+        "reason": "68 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 76,
+            "fail": 13,
+            "error": 13
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 89
+          },
+          "seconds": 107.3,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-1-1#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByLabel('Username or email', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByLabel('Username or email', { exact: true })\n\n\n  148 |   await page.getByLabel('Confirm password', { exact: true }).fill(SEED_PASSWORD);\n  149 |   await page.g"
+            },
+            {
+              "id": "REQ-1-2",
+              "observation": "Blocked by helper:t01-REQ-1.spec.cjs:67 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-1-3",
+              "observation": "Blocked by helper:t01-REQ-1.spec.cjs:67 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-1-3#2",
+              "observation": "Blocked by helper:t01-REQ-1.spec.cjs:67 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-1-3#3",
+              "observation": "Blocked by helper:t01-REQ-1.spec.cjs:67 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-2-2-3#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByLabel('Username or email', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByLabel('Username or email', { exact: true })\n\n\n  350 |   await page.getByRole('button', { name: 'Add member', exact: true }).last().click();\n  351 |   await ex"
+            },
+            {
+              "id": "REQ-2-3",
+              "observation": "Blocked by helper:t02-REQ-2.spec.cjs:118 (shared with 1 other test(s))."
+            },
+            {
+              "id": "REQ-2-3#2",
+              "observation": "Blocked by helper:t02-REQ-2.spec.cjs:118 (shared with 1 other test(s))."
+            },
+            {
+              "id": "REQ-3-2-2#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Create fork', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Create fork', exact: true })\n\n\n  236 |\n  237 |   // the conflicting name creates no fork: the fork form is still the active v"
+            },
+            {
+              "id": "REQ-4-3-3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('combobox', { name: 'Default branch', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('combobox', { name: 'Default branch', exact: true })\n\n\n  215 |   await page.getByRole('link', { name: 'Branches', exact: true }).first().cl"
+            },
+            {
+              "id": "REQ-5-3-1",
+              "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('bob-reviewer', { exact: true })\nExpected: 0\nReceived: 2\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByText('bob-reviewer', { exact: true })\n    9 × locator resolved to 2 elements\n      - unexpected value \"2\"\n\n\n  278 |   await page.getByRole('option', { name: 'bob-reviewer', exa"
+            },
+            {
+              "id": "REQ-6-1#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-2-2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('src/search.ts', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('src/search.ts', { exact: true })\n\n\n  123 |   await page.getByRole('button', { name: 'Compare changes', exact: true }).click();\n  124 |\n> 125 |   await expect"
+            },
+            {
+              "id": "REQ-6-2-3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('src/search.ts', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('src/search.ts', { exact: true })\n\n\n  152 |   await page.getByRole('combobox', { name: 'compare', exact: true }).selectOption('feature-search');\n  153 |   awa"
+            },
+            {
+              "id": "REQ-6-2-3#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('src/search.ts', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByText('src/search.ts', { exact: true })\n\n\n  177 |   await page.getByRole('combobox', { name: 'compare', exact: true }).selectOption('feature-search');\n  178 |   awa"
+            },
+            {
+              "id": "REQ-6-2-4",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Create draft pull request', exact: true })\n    - locator resolved to <button disabled type=\"button\" data-draft=\"yes\" data-action=\"pr-form-open\">Create draft pull request</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not"
+            },
+            {
+              "id": "REQ-6-2-4#2",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Draft onboarding update', exact: true })\n\n\n  219 |   await signIn(page);\n  220 |   await openPullRequests(page);\n> 221 |   await page.getByRole('link', { name: 'Draft onboarding update', exact: true }).click();\n      |                                                                           "
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-4",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Remove bob-reviewer', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Remove bob-reviewer', exact: true })\n\n\n  310 |   await page.getByRole('textbox', { name: 'Search', exact: true }).fil"
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-6#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "helper:t01-REQ-1.spec.cjs:67",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Password and authentication', exact: true })\n\n\n  65 |   await accountMenu(page).click();\n  66 |   await page.getByRole('link', { name: 'Settings', exact: true }).click();\n> 67 |   await page.getByRole('link', { name: 'Password and authentication', exact: true }).click();\n     |               "
+            },
+            {
+              "id": "helper:t02-REQ-2.spec.cjs:118",
+              "observation": "Error: locator.fill: Error: strict mode violation: getByLabel('Search', { exact: true }) resolved to 2 elements:\n    1) <input name=\"q\" value=\"\" type=\"search\" id=\"global-search\" aria-label=\"Search\" placeholder=\"Search\"/> aka getByRole('searchbox', { name: 'Search' })\n    2) <input type=\"text\" name=\"search\" id=\"ap-search\" placeholder=\"Search\" data-change=\"access-search\"/> aka getByRole('textbox', {"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Home",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Explore",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/r/alice-dev/acme-docs",
+              "#/org/org1",
+              "#/explore",
+              "#/settings",
+              "#/r/alice-dev/acme-docs/issues",
+              "#/r/alice-dev/acme-docs/pulls",
+              "#/r/alice-dev/acme-docs/settings",
+              "#/r/alice-dev/acme-docs/commits"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js",
+          "frontend/public/seed.js"
+        ],
+        "replied": true,
+        "seconds": 290.8,
+        "cost_cny": 0.242534
+      },
+      {
+        "round": 2,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-1-1#2",
+          "REQ-2-2-3#2",
+          "REQ-3-2-2#2",
+          "REQ-4-3-3",
+          "REQ-5-3-1",
+          "REQ-6-2-2",
+          "REQ-6-2-3",
+          "REQ-6-2-3#2",
+          "REQ-6-2-4",
+          "REQ-6-2-4#2",
+          "REQ-6-4",
+          "helper:t01-REQ-1.spec.cjs:67",
+          "helper:t02-REQ-2.spec.cjs:118"
+        ],
+        "passing_before": 76,
+        "accepted": true,
+        "skipped_hunks": [
+          "EDIT frontend/public/app.js hunk 1: SEARCH matches 2 places (it starts `const u = me();`); add context lines to make it unique"
+        ],
+        "gained": [
+          "REQ-1-1-1#2",
+          "REQ-2-2-3#2",
+          "REQ-3-2-2#2",
+          "REQ-4-3-3",
+          "REQ-5-3-1",
+          "REQ-6-2-2",
+          "REQ-6-2-3",
+          "REQ-6-2-3#2",
+          "REQ-6-2-4",
+          "REQ-6-2-4#2",
+          "REQ-6-4"
+        ],
+        "reason": "11 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 87,
+            "error": 11,
+            "fail": 3
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 90
+          },
+          "seconds": 47.8,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-2",
+              "observation": "Blocked by helper:t01-REQ-1.spec.cjs:67 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-1-3",
+              "observation": "Blocked by helper:t01-REQ-1.spec.cjs:67 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-1-3#2",
+              "observation": "Blocked by helper:t01-REQ-1.spec.cjs:67 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-1-3#3",
+              "observation": "Blocked by helper:t01-REQ-1.spec.cjs:67 (shared with 3 other test(s))."
+            },
+            {
+              "id": "REQ-2-3",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  431 |   const row = page.getByRole('row', { name: MEMBER });\n  432 |   await expect(row).toHaveCount(1);\n> 433 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  434 |\n  435 |   // saving the same role for the same subject ag"
+            },
+            {
+              "id": "REQ-2-3#2",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  453 |   let row = page.getByRole('row', { name: team });\n  454 |   await expect(row).toHaveCount(1);\n> 455 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  456 |\n  457 |   // replace the Write role with Read\n  458 |   await"
+            },
+            {
+              "id": "REQ-6-1#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-6#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "helper:t01-REQ-1.spec.cjs:67",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Password and authentication', exact: true })\n\n\n  65 |   await accountMenu(page).click();\n  66 |   await page.getByRole('link', { name: 'Settings', exact: true }).click();\n> 67 |   await page.getByRole('link', { name: 'Password and authentication', exact: true }).click();\n     |               "
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Home",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Explore",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/r/alice-dev/acme-docs",
+              "#/org/org1",
+              "#/explore",
+              "#/settings",
+              "#/r/alice-dev/acme-docs/issues",
+              "#/r/alice-dev/acme-docs/pulls",
+              "#/r/alice-dev/acme-docs/settings",
+              "#/r/alice-dev/acme-docs/commits"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js",
+          "frontend/public/seed.js"
+        ],
+        "replied": true,
+        "seconds": 274.3,
+        "cost_cny": 0.264631
+      },
+      {
+        "round": 3,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-3",
+          "REQ-2-3#2",
+          "helper:t01-REQ-1.spec.cjs:67"
+        ],
+        "passing_before": 87,
+        "accepted": false,
+        "follow_up": "search",
+        "follow_up_finish": "stop",
+        "reason": "EDIT frontend/public/app.js hunk 1: SEARCH matches 2 places (it starts `return `<h1>Password and authentication</h1>`); add context lines to make it unique",
+        "replied": true,
+        "seconds": 105.7,
+        "cost_cny": 0.111417
+      },
+      {
+        "round": 4,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-3",
+          "REQ-2-3#2",
+          "helper:t01-REQ-1.spec.cjs:67"
+        ],
+        "passing_before": 87,
+        "accepted": true,
+        "focus": [
+          "helper:t01-REQ-1.spec.cjs:67"
+        ],
+        "skipped_hunks": [
+          "EDIT frontend/public/app.js hunk 1: SEARCH matches nothing (it starts `case 'settings': return sx.settings.call(this);`); the current lines there are:\n        case 'explore': return sx.explore.call(this);\n        case 'login': case 'signin': return sx.signin.call(this);\n        case 'signup': return"
+        ],
+        "gained": [
+          "REQ-1-2",
+          "REQ-1-3",
+          "REQ-1-3#2",
+          "REQ-1-3#3"
+        ],
+        "reason": "4 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 91,
+            "fail": 2,
+            "error": 7
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 93
+          },
+          "seconds": 27.0,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-2-3",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  431 |   const row = page.getByRole('row', { name: MEMBER });\n  432 |   await expect(row).toHaveCount(1);\n> 433 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  434 |\n  435 |   // saving the same role for the same subject ag"
+            },
+            {
+              "id": "REQ-2-3#2",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  453 |   let row = page.getByRole('row', { name: team });\n  454 |   await expect(row).toHaveCount(1);\n> 455 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  456 |\n  457 |   // replace the Write role with Read\n  458 |   await"
+            },
+            {
+              "id": "REQ-6-1#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-6#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Home",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Explore",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/r/alice-dev/acme-docs",
+              "#/org/org1",
+              "#/explore",
+              "#/settings",
+              "#/r/alice-dev/acme-docs/issues",
+              "#/r/alice-dev/acme-docs/pulls",
+              "#/r/alice-dev/acme-docs/settings",
+              "#/r/alice-dev/acme-docs/commits"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 49.2,
+        "cost_cny": 0.019253
+      },
+      {
+        "round": 5,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-3",
+          "REQ-2-3#2"
+        ],
+        "passing_before": 91,
+        "accepted": false,
+        "gained": [],
+        "reason": "no failing scenario passes after the change",
+        "scenarios": {
+          "counts": {
+            "pass": 91,
+            "fail": 2,
+            "error": 7
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 93
+          },
+          "seconds": 27.1,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-2-3",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  431 |   const row = page.getByRole('row', { name: MEMBER });\n  432 |   await expect(row).toHaveCount(1);\n> 433 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  434 |\n  435 |   // saving the same role for the same subject ag"
+            },
+            {
+              "id": "REQ-2-3#2",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  453 |   let row = page.getByRole('row', { name: team });\n  454 |   await expect(row).toHaveCount(1);\n> 455 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  456 |\n  457 |   // replace the Write role with Read\n  458 |   await"
+            },
+            {
+              "id": "REQ-6-1#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-6#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Home",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Explore",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/r/alice-dev/acme-docs",
+              "#/org/org1",
+              "#/explore",
+              "#/settings",
+              "#/r/alice-dev/acme-docs/issues",
+              "#/r/alice-dev/acme-docs/pulls",
+              "#/r/alice-dev/acme-docs/settings",
+              "#/r/alice-dev/acme-docs/commits"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "replied": true,
+        "seconds": 82.2,
+        "cost_cny": 0.05038
+      },
+      {
+        "round": 6,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-3",
+          "REQ-2-3#2"
+        ],
+        "passing_before": 91,
+        "accepted": false,
+        "focus": [
+          "REQ-2-3",
+          "REQ-2-3#2"
+        ],
+        "gained": [],
+        "reason": "no failing scenario passes after the change",
+        "scenarios": {
+          "counts": {
+            "pass": 91,
+            "fail": 2,
+            "error": 7
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 93
+          },
+          "seconds": 27.3,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-2-3",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  431 |   const row = page.getByRole('row', { name: MEMBER });\n  432 |   await expect(row).toHaveCount(1);\n> 433 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  434 |\n  435 |   // saving the same role for the same subject ag"
+            },
+            {
+              "id": "REQ-2-3#2",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  453 |   let row = page.getByRole('row', { name: team });\n  454 |   await expect(row).toHaveCount(1);\n> 455 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  456 |\n  457 |   // replace the Write role with Read\n  458 |   await"
+            },
+            {
+              "id": "REQ-6-1#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-6#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Home",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Explore",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/r/alice-dev/acme-docs",
+              "#/org/org1",
+              "#/explore",
+              "#/settings",
+              "#/r/alice-dev/acme-docs/issues",
+              "#/r/alice-dev/acme-docs/pulls",
+              "#/r/alice-dev/acme-docs/settings",
+              "#/r/alice-dev/acme-docs/commits"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "replied": true,
+        "seconds": 193.7,
+        "cost_cny": 0.356395
+      },
+      {
+        "round": 7,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-3",
+          "REQ-2-3#2"
+        ],
+        "passing_before": 91,
+        "accepted": false,
+        "follow_up": "search",
+        "follow_up_finish": "stop",
+        "gained": [],
+        "reason": "no failing scenario passes after the change",
+        "scenarios": {
+          "counts": {
+            "pass": 91,
+            "fail": 2,
+            "error": 7
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 93
+          },
+          "seconds": 27.3,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-2-3",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  431 |   const row = page.getByRole('row', { name: MEMBER });\n  432 |   await expect(row).toHaveCount(1);\n> 433 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  434 |\n  435 |   // saving the same role for the same subject ag"
+            },
+            {
+              "id": "REQ-2-3#2",
+              "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  453 |   let row = page.getByRole('row', { name: team });\n  454 |   await expect(row).toHaveCount(1);\n> 455 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  456 |\n  457 |   // replace the Write role with Read\n  458 |   await"
+            },
+            {
+              "id": "REQ-6-1#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-3#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-3-4#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-5",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            },
+            {
+              "id": "REQ-6-6#2",
+              "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Home",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Explore",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "Agree to the terms",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "GitHub",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/signin",
+              "#/signup",
+              "#/forgot",
+              "#/r/alice-dev/acme-docs",
+              "#/org/org1",
+              "#/explore",
+              "#/settings",
+              "#/r/alice-dev/acme-docs/issues",
+              "#/r/alice-dev/acme-docs/pulls",
+              "#/r/alice-dev/acme-docs/settings",
+              "#/r/alice-dev/acme-docs/commits"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "replied": true,
+        "seconds": 163.4,
+        "cost_cny": 0.118029
+      },
+      {
+        "round": 8,
+        "fatal": 0,
+        "failing": [
+          "REQ-2-3",
+          "REQ-2-3#2"
+        ],
+        "passing_before": 91,
+        "accepted": false,
+        "follow_up": "search",
+        "follow_up_finish": "stop",
+        "reason": "the application is still broken as a whole: backend `node server.js` exited with code 0 before answering GET /api/health: uncaught Error: listen EADDRINUSE: address already in use :::63640\n    at Server.setupListenHandle [as _listen2] (node:net:2016:16)\n    at listenInCluster (node:net:2073:12)\n    at Server.listen (node:net:2178:7)\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-github/.oneshot-hbi034_8/app/backend/server.js:86:8)\n    at Module._compile (node:internal/modules",
+        "scenarios": null,
+        "replied": true,
+        "seconds": 304.0,
+        "cost_cny": 0.269335
+      }
+    ],
+    "stopped": "4 repairs in a row were discarded",
+    "problems_after": [],
+    "scenarios_after": {
+      "counts": {
+        "pass": 91,
+        "fail": 2,
+        "error": 7
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 93
+      },
+      "seconds": 27.0,
+      "source_contracts": {},
+      "failing": [
+        {
+          "id": "REQ-2-3",
+          "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  431 |   const row = page.getByRole('row', { name: MEMBER });\n  432 |   await expect(row).toHaveCount(1);\n> 433 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  434 |\n  435 |   // saving the same role for the same subject ag"
+        },
+        {
+          "id": "REQ-2-3#2",
+          "observation": "Error: expect: Property 'toBeSelected' not found.\n\n  453 |   let row = page.getByRole('row', { name: team });\n  454 |   await expect(row).toHaveCount(1);\n> 455 |   await expect(row.getByRole('option', { name: 'Write', exact: true })).toBeSelected();\n      |                                                                        ^\n  456 |\n  457 |   // replace the Write role with Read\n  458 |   await"
+        },
+        {
+          "id": "REQ-6-1#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-3#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-3-4#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-5",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        },
+        {
+          "id": "REQ-6-6#2",
+          "observation": "Skipped by the test (its GIVEN state cannot be built from the requirements)."
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "source_review": {
+      "proposed": 4,
+      "probes": 4,
+      "results": [
+        {
+          "id": "REQ-6-5#contract-1",
+          "status": "error",
+          "calls": {
+            "mergeBlockers": 0,
+            "submitReview": 0
+          },
+          "assertions": 0,
+          "phase": "setup",
+          "error_name": "TypeError",
+          "message": "Cannot read properties of undefined (reading 'submit-review')",
+          "error": "TypeError: Cannot read properties of undefined (reading 'submit-review')\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-github/agent/contract_runner.cjs:65:47)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47"
+        },
+        {
+          "id": "REQ-6-5#contract-2",
+          "status": "error",
+          "calls": {
+            "mergeBlockers": 0,
+            "submitReview": 0
+          },
+          "assertions": 0,
+          "phase": "setup",
+          "error_name": "TypeError",
+          "message": "Cannot read properties of undefined (reading 'submit-review')",
+          "error": "TypeError: Cannot read properties of undefined (reading 'submit-review')\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-github/agent/contract_runner.cjs:65:47)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47"
+        },
+        {
+          "id": "REQ-2-2-4#contract-1",
+          "status": "error",
+          "calls": {
+            "confirmRemoveMember": 0
+          },
+          "assertions": 0,
+          "phase": "setup",
+          "error_name": "TypeError",
+          "message": "Cannot read properties of undefined (reading 'confirm-remove-member')",
+          "error": "TypeError: Cannot read properties of undefined (reading 'confirm-remove-member')\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-github/agent/contract_runner.cjs:65:47)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47"
+        },
+        {
+          "id": "REQ-6-2-3#contract-1",
+          "status": "error",
+          "calls": {
+            "createPR": 0
+          },
+          "assertions": 0,
+          "phase": "setup",
+          "error_name": "TypeError",
+          "message": "Cannot read properties of undefined (reading 'create-pr')",
+          "error": "TypeError: Cannot read properties of undefined (reading 'create-pr')\n    at Object.<anonymous> (~/projects/arcbench-campaign/evidence/2026-10-02-s70/generate-controls-v3-github/agent/contract_runner.cjs:65:47)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47"
+        }
+      ],
+      "skipped": null,
+      "seconds": 294.5,
+      "calls": 2,
+      "cost_cny": 0.311079
+    }
+  }
+}

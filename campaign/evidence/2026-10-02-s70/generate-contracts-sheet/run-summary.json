@@ -1,0 +1,1519 @@
+{
+  "usage": {
+    "billing_status": "tokens_reported_cost_not_estimated",
+    "calls": 9,
+    "calls_by_model": {
+      "deepseek-v4-flash-vision-exp": 9
+    },
+    "completed_calls": 9,
+    "completion_tokens": 383353,
+    "draft_call_limit": 4,
+    "estimated_cost_cny": 2.56757,
+    "estimated_repair_cost_cny": 1.286076,
+    "failed_calls": 0,
+    "failure_limit": 5,
+    "fallback_model": null,
+    "known_completion_tokens": 383353,
+    "known_prompt_tokens": 1049322,
+    "prompt_tokens": 1049322,
+    "refused_calls": 0,
+    "repair_call_limit": 24,
+    "repair_cny_limit": 10.0,
+    "side_calls": 5,
+    "unknown_usage_calls": []
+  },
+  "smoke": {
+    "executed": true,
+    "problems": [
+      "clicking `Cancel` (data-action `arc:close`) on screen `#/workbook/wb-q3-sales` throws: SP.gridSize is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+      "clicking `Sheets` (data-action `arc:nav`) on screen `#/workbook/wb-q3-sales` throws: SP.gridSize is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+      "clicking `New blank workbook` (data-action `goto-new-workbook`) on screen `#/workbook/wb-q3-sales` throws: SP.gridSize is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+      "clicking `Create` on screen `#/workbook/wb_v67avsq` throws: SP.gridSize is not a function. A click handler that throws renders nothing, so the suite's next step waits for a result that never comes; guard every lookup (a missing record must not dereference undefined) and never throw from a handler",
+      "browser interaction error: SP.gridSize is not a function",
+      "1 button label(s) collide with field labels; the fill helper's first rung is getByLabel(/word/i).first(), which returns the button and then fails to type. Rename each button so it shares no word with any field label (steppers: \"Minus\"/\"Plus\"; vote: \"Upvote\"/\"Downvote\"; submit: \"Send\"): button aria-label \"Worksheet options for \" shares worksheet with a field label",
+      "50 phrase(s) quoted in the requirements never appear in the delivered source, and the suite matches every quoted string verbatim as visible text, a control's accessible name, a message or a seed value. Add each one exactly as written where the requirement implies it (a control name, a heading, a status message, a seed row, or a placeholder for a value the user types): \"Last updated: <last updated value>\", \"the requested workflow,the requested workflow page entry the requested workflow\", \"A1=Region\", \"the requested workflow\", \"the requested workflow,the requested workflow\", \"the requested workflow UTF-8 CSV,the requested workflow\", \"the requested workflow CSV the requested workflow,the requested workflow\", \"the requested workflow CSV,the requested workflow\", \"the requested workflow Sheet1 the requested workflow\", \"Worksheet options for <worksheet name>\", \"East/1200\", \"North/800\", \"the requested workflow Sheet2,the requested workflow\", \"the requested workflow SheetN the requested workflow\", \"the requested workflow, the requested workflow\", \"<target worksheet name>\", \"the requested workflow 3 the requested workflow,the requested workflow\", \"the requested workflow B the requested workflow,the requested workflow\", \"Edit <cell coordinate>\", \"A1:B2\", \"Item/Qty\", \"Pen/4\", \"D1:E2\", \"Escape the requested workflow,the requested workflow\", \"the requested workflow B2 the requested workflow,the requested workflow\", \"the requested workflow A1 the requested workflow\", \"the requested workflow C3 the requested workflow\", \"the requested workflow A1:B2 the requested workflow D1:E2,the requested workflow\", \"A1=2\", \"B1=3\", \"=A1+B1\", \"=C1*2\", \"A1:C6\", \"Region/Sales/Status\", \"East/1200/Open\", \"North/800/Closed\", \"South/700/Open\", \"the requested workflow Sales the requested workflow,the requested workflow\", \"the requested workflow ISO the requested workflow\", \"Filter <header text>\", \"the requested workflow, the requested workflow,the requested workflow\", \"CSV the requested workflow\", \"Open dropdown for <cell coordinate>\", \"Please select one of the following values: <comma-separated allowed values>\", \"Please enter a number between <minimum> and <maximum>\", \"the requested workflow A1:A2 the requested workflow,the requested workflow\", \"Source range: <cell range>\", \"<summarization method> of <value field>\", \"the requested workflow COUNT the requested workflow\", \"AVERAGE the requested workflow\""
+    ],
+    "vocabulary_missing": 50,
+    "scenarios": {
+      "counts": {
+        "fail": 13,
+        "error": 92,
+        "pass": 1
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 14
+      },
+      "seconds": 547.5,
+      "source_contracts": {},
+      "failing": [
+        {
+          "id": "REQ-1-1-1",
+          "observation": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator: getByRole('tab', { name: 'Sheet1', exact: true })\nExpected: \"true\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet1', exact: true })\n\n\n  101 |   await expect(page.getByText(/^Last updated:/).first()).toBeVisible();\n  102 |   await"
+        },
+        {
+          "id": "REQ-1-1-1#2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:26 (shared with 1 other test(s))."
+        },
+        {
+          "id": "REQ-1-2-1",
+          "observation": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('tab')\nExpected: 1\nReceived: 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" with timeout 5000ms\n  - waiting for getByRole('tab')\n    9 × locator resolved to 0 elements\n      - unexpected value \"0\"\n\n\n  155 |\n  156 |   // THEN: the editor shows only the blank worksheet Sheet1, active, with A1 selected.\n> 157 |   await e"
+        },
+        {
+          "id": "REQ-1-2-2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:34 (shared with 2 other test(s))."
+        },
+        {
+          "id": "REQ-1-2-2#2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:34 (shared with 2 other test(s))."
+        },
+        {
+          "id": "REQ-1-3-1",
+          "observation": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator: getByRole('tab', { name: 'Sheet1', exact: true })\nExpected: \"true\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet1', exact: true })\n\n\n  242 |\n  243 |   // THEN: a new workbook opens on Sheet1 with the complete rows, columns and o"
+        },
+        {
+          "id": "REQ-1-3-1#2",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator: getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"East\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A2', exact: true })\n\n\n  271 |\n  272 |   // THEN: the fields are parsed in their original row and column order.\n> 273 |   awai"
+        },
+        {
+          "id": "REQ-1-3-1#3",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator: getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Item\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n\n\n  288 |\n  289 |   // THEN: the first row stays ordinary data, the multi-line field and the empty field "
+        },
+        {
+          "id": "REQ-1-3-2",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:26 (shared with 1 other test(s))."
+        },
+        {
+          "id": "REQ-1-3-2#2",
+          "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator: getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"Smith, John\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n\n\n  356 |     'Region,Sales,Note\\nEast,1200,\"Smith, John\"\\nNorth,800,\"He said \"\"hi\"\"\"\\nSouth,,700\\"
+        },
+        {
+          "id": "REQ-1-3-2#3",
+          "observation": "Blocked by helper:t01-REQ-1.spec.cjs:34 (shared with 2 other test(s))."
+        },
+        {
+          "id": "REQ-1-3-2#4",
+          "observation": "Error: expect(locator).toHaveAttribute(expected) failed\n\nLocator: getByRole('tab', { name: 'Sheet1', exact: true })\nExpected: \"true\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveAttribute\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet1', exact: true })\n\n\n  407 |   const name = 'Order' + u();\n  408 |   await importCsv(page, name + '.csv', 'A,B\\n1,2\\"
+        },
+        {
+          "id": "REQ-2-1-1",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-1#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-2#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-2#3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-2#4",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-2#5",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-3#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-3#3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-4",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-4#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-4#3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-1-4#4",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-1",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-1#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-1#3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-1#4",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-1#5",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-2#2",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-2#3",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-2#4",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-2-2-2#5",
+          "observation": "Blocked by helper:t02-REQ-2.spec.cjs:23 (shared with 23 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-1",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-1#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-1#3",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-1#4",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-2#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-2#3",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-2#4",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-2#5",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-3",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-1-3#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-1",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-1#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-1#3",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-1#4",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2#2",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2#3",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2#4",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2#5",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2#6",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-3-2-2#7",
+          "observation": "Blocked by helper:t03-REQ-3.spec.cjs:20 (shared with 21 other test(s))."
+        },
+        {
+          "id": "REQ-4-1-1",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-1-1#2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-1-1#3",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-1-1#4",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-1-1#5",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-1-2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-1-2#2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-1",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-1#2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-1#3",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-2#2",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-2#3",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-2#4",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-4-2-2#5",
+          "observation": "Blocked by helper:t04-REQ-4.spec.cjs:14 (shared with 14 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-1",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-1#2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-1#3",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-1#4",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-1#5",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-1#6",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-2#2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-2#3",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-2#4",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-1-2#5",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-1",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-1#2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-1#3",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-1#4",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-1#5",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-2-1#6",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1#2",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1#3",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1#4",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1#5",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1#6",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1#7",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1#8",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "REQ-5-3-1#9",
+          "observation": "Blocked by helper:t05-REQ-5.spec.cjs:20 (shared with 25 other test(s))."
+        },
+        {
+          "id": "helper:t01-REQ-1.spec.cjs:26",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet1', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet1', exact: true })\n\n\n  24 |   await page.goto('/');\n  25 |   await page.getByRole('link', { name, exact: true }).click();\n> 26 |   "
+        },
+        {
+          "id": "helper:t01-REQ-1.spec.cjs:34",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet1', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet1', exact: true })\n\n\n  32 |   await page.getByRole('button', { name: 'New blank workbook', exact: true }).click();\n  33 |   await p"
+        },
+        {
+          "id": "helper:t02-REQ-2.spec.cjs:23",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet1', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet1', exact: true })\n\n\n  21 |   await page.getByRole('button', { name: 'New blank workbook', exact: true }).click();\n  22 |   await p"
+        },
+        {
+          "id": "helper:t03-REQ-3.spec.cjs:20",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('grid', { name: 'Worksheet grid', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true })\n\n\n  18 |   await page.goto('/');\n  19 |   await page.getByRole('link', { name: 'Q3 Sales', exa"
+        },
+        {
+          "id": "helper:t04-REQ-4.spec.cjs:14",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('grid', { name: 'Worksheet grid' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid' })\n\n\n  12 |   await page.goto('/');\n  13 |   await page.getByRole('link', { name: WORKBOOK, exact: true }).click();\n> 14 | "
+        },
+        {
+          "id": "helper:t05-REQ-5.spec.cjs:20",
+          "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('grid', { name: 'Worksheet grid', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true })\n\n\n  18 |   await page.getByRole('button', { name: 'New blank workbook', exact: true }).click()"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "repair": {
+      "accepted": true,
+      "reason": "1 more scenario(s) pass",
+      "files": [
+        "frontend/public/app.js"
+      ]
+    },
+    "browser_before": [
+      {
+        "executed": true,
+        "diagnostic_only": true,
+        "errors": [],
+        "page_errors": [
+          "SP.gridSize is not a function"
+        ],
+        "actions": [
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "New blank workbook",
+            "action": "goto-new-workbook"
+          },
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          },
+          {
+            "scope": "page",
+            "name": "Sheets",
+            "action": "arc:nav"
+          }
+        ],
+        "screens": [
+          "#/",
+          "#/workbook/wb_v67avsq",
+          "#/workbook/wb-q3-sales",
+          "#/new"
+        ],
+        "browser": "143.0.7499.4",
+        "playwright": "1.57.0"
+      }
+    ],
+    "tests": {
+      "seconds": 806.5,
+      "calls": 5,
+      "cost_cny": 0.896408,
+      "scenarios": 100,
+      "tests": 100,
+      "audit_checks": 0,
+      "audit_errors": 0,
+      "files": [
+        {
+          "file": "t01-REQ-1.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 13
+        },
+        {
+          "file": "t02-REQ-2.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 24
+        },
+        {
+          "file": "t03-REQ-3.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 22
+        },
+        {
+          "file": "t04-REQ-4.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 15
+        },
+        {
+          "file": "t05-REQ-5.spec.cjs",
+          "calls": 1,
+          "finish": "stop",
+          "tests": 26
+        }
+      ],
+      "used": true
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-1-1",
+          "REQ-1-2-1",
+          "REQ-1-3-1",
+          "REQ-1-3-1#2",
+          "REQ-1-3-1#3",
+          "REQ-1-3-2#2",
+          "REQ-1-3-2#4",
+          "helper:t01-REQ-1.spec.cjs:26",
+          "helper:t01-REQ-1.spec.cjs:34",
+          "helper:t02-REQ-2.spec.cjs:23",
+          "helper:t03-REQ-3.spec.cjs:20",
+          "helper:t04-REQ-4.spec.cjs:14",
+          "helper:t05-REQ-5.spec.cjs:20"
+        ],
+        "passing_before": 1,
+        "accepted": true,
+        "gained": [
+          "REQ-1-1-1",
+          "REQ-1-1-1#2",
+          "REQ-1-2-1",
+          "REQ-1-2-2",
+          "REQ-1-2-2#2",
+          "REQ-1-3-1",
+          "REQ-1-3-1#2",
+          "REQ-1-3-1#3",
+          "REQ-1-3-2",
+          "REQ-1-3-2#3",
+          "REQ-1-3-2#4",
+          "REQ-2-1-1",
+          "REQ-2-1-1#2",
+          "REQ-2-1-2",
+          "REQ-2-1-2#2",
+          "REQ-2-1-2#3",
+          "REQ-2-1-2#4",
+          "REQ-2-1-2#5",
+          "REQ-2-1-3",
+          "REQ-2-1-4",
+          "REQ-2-1-4#2",
+          "REQ-2-1-4#3",
+          "REQ-2-1-4#4",
+          "REQ-2-2-1",
+          "REQ-2-2-1#2",
+          "REQ-2-2-1#3",
+          "REQ-2-2-1#4",
+          "REQ-2-2-1#5",
+          "REQ-2-2-2",
+          "REQ-2-2-2#2",
+          "REQ-2-2-2#3",
+          "REQ-2-2-2#4",
+          "REQ-2-2-2#5",
+          "REQ-3-1-1",
+          "REQ-3-1-1#2",
+          "REQ-3-1-1#3",
+          "REQ-3-1-1#4",
+          "REQ-3-1-2",
+          "REQ-3-1-2#2",
+          "REQ-3-1-2#3",
+          "REQ-3-1-2#4",
+          "REQ-3-1-2#5",
+          "REQ-3-1-3",
+          "REQ-3-1-3#2",
+          "REQ-3-2-2",
+          "REQ-3-2-2#2",
+          "REQ-3-2-2#4",
+          "REQ-3-2-2#5",
+          "REQ-3-2-2#6",
+          "REQ-4-1-1#2",
+          "REQ-4-1-1#3",
+          "REQ-4-1-1#4",
+          "REQ-4-2-2#3",
+          "REQ-5-1-1",
+          "REQ-5-1-1#2",
+          "REQ-5-1-1#3",
+          "REQ-5-1-1#4",
+          "REQ-5-1-1#5",
+          "REQ-5-1-1#6",
+          "REQ-5-1-2#2",
+          "REQ-5-1-2#3",
+          "REQ-5-1-2#4",
+          "REQ-5-2-1#2",
+          "REQ-5-2-1#3",
+          "REQ-5-2-1#4",
+          "REQ-5-2-1#5",
+          "REQ-5-3-1",
+          "REQ-5-3-1#2",
+          "REQ-5-3-1#3",
+          "REQ-5-3-1#4",
+          "REQ-5-3-1#5",
+          "REQ-5-3-1#6",
+          "REQ-5-3-1#7",
+          "REQ-5-3-1#8",
+          "REQ-5-3-1#9"
+        ],
+        "reason": "75 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 76,
+            "fail": 13,
+            "error": 12
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 89
+          },
+          "seconds": 174.2,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-3-2#2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"Smith, John\"\nReceived: \"1200\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div class=\"cell\" data-cell=\"B2\" role=\"gridcell\" aria-label=\"B2\" aria-selected="
+            },
+            {
+              "id": "REQ-2-1-3#2",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet2', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet2', exact: true })\n\n\n  328 |\n  329 |   await expect(page.getByText('Worksheet name cannot be empty', { exact: true })).toBeVisible("
+            },
+            {
+              "id": "REQ-2-1-3#3",
+              "observation": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('tab', { name: 'Sheet2', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('tab', { name: 'Sheet2', exact: true })\n\n\n  343 |\n  344 |   await expect(page.getByText('Worksheet name already exists', { exact: true })).toBeVisible()"
+            },
+            {
+              "id": "REQ-3-2-1",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div class=\"cell\" tabindex=\"0\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-sel"
+            },
+            {
+              "id": "REQ-3-2-1#2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div class=\"cell\" tabindex=\"0\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-sel"
+            },
+            {
+              "id": "REQ-3-2-1#3",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'D1', exact: true })\nExpected: \"Item\"\nReceived: \"East\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'D1', exact: true })\n    9 × locator resolved to <div class=\"cell\" tabindex=\"0\" data-cell=\"D1\" role=\"gridcell\" aria-label=\"D1\" aria-sel"
+            },
+            {
+              "id": "REQ-3-2-1#4",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"1200\"\nReceived: \"4\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div class=\"cell\" data-cell=\"B2\" role=\"gridcell\" aria-label=\"B2\" aria-selected=\"false\">4<"
+            },
+            {
+              "id": "REQ-3-2-2#3",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A1', exact: true })\nExpected: \"Alpha\"\nReceived: \"Item\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A1', exact: true })\n    9 × locator resolved to <div class=\"cell\" data-cell=\"A1\" role=\"gridcell\" aria-label=\"A1\" aria-selected=\"false"
+            },
+            {
+              "id": "REQ-3-2-2#7",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'A3', exact: true })\nExpected: \"Pen\"\nReceived: \"2\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'A3', exact: true })\n    9 × locator resolved to <div class=\"cell\" tabindex=\"0\" data-cell=\"A3\" role=\"gridcell\" aria-label=\"A3\" aria-selecte"
+            },
+            {
+              "id": "REQ-4-1-1",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-1-1#5",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-1-2",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-1-2#2",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-2-1",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-2-1#2",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-2-1#3",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-2-2",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-2-2#2",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-2-2#4",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-4-2-2#5",
+              "observation": "Blocked by helper:t04-REQ-4.spec.cjs:40 (shared with 10 other test(s))."
+            },
+            {
+              "id": "REQ-5-1-2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator: getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"East\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'A2', ex"
+            },
+            {
+              "id": "REQ-5-1-2#5",
+              "observation": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByRole('menuitem', { name: 'Clear filter', exact: true })\n\n\n  423 |   // clearing the filter restores every record in the original order and values\n  424 |   await openDataMenu(page);\n> 425 |   await page.getByRole('menuitem', { name: 'Clear filter', exact: true }).click();\n      |                                   "
+            },
+            {
+              "id": "REQ-5-2-1",
+              "observation": "The test used the name 'West', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            },
+            {
+              "id": "REQ-5-2-1#6",
+              "observation": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByRole('dialog', { name: 'Data validation', exact: true }).getByLabel('Allowed values', { exact: true })\nExpected: \"East,North\"\nReceived: \"East, North\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" with timeout 5000ms\n  - waiting for getByRole('dialog', { name: 'Data validation', exact: true }).getByLabel('Allowed values', { "
+            },
+            {
+              "id": "helper:t04-REQ-4.spec.cjs:40",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid' }).getByRole('gridcell', { name: 'C1', exact: true })\nExpected: \"5\"\nReceived: \"Status\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid' }).getByRole('gridcell', { name: 'C1', exact: true })\n    9 × locator resolve"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "New blank workbook",
+                "action": "goto-new-workbook"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet2",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Cancel",
+                "action": "arc:close"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet3",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/workbook/wb-q3-sales",
+              "#/new"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js",
+          "frontend/public/styles.css"
+        ],
+        "replied": true,
+        "seconds": 297.7,
+        "cost_cny": 0.157407
+      },
+      {
+        "round": 2,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-3-2#2",
+          "REQ-2-1-3#2",
+          "REQ-2-1-3#3",
+          "REQ-3-2-1",
+          "REQ-3-2-1#2",
+          "REQ-3-2-1#3",
+          "REQ-3-2-1#4",
+          "REQ-3-2-2#3",
+          "REQ-3-2-2#7",
+          "REQ-5-1-2",
+          "REQ-5-1-2#5",
+          "REQ-5-2-1#6",
+          "helper:t04-REQ-4.spec.cjs:40"
+        ],
+        "passing_before": 76,
+        "accepted": true,
+        "gained": [
+          "REQ-2-1-3#2",
+          "REQ-2-1-3#3",
+          "REQ-3-2-1",
+          "REQ-3-2-1#2",
+          "REQ-3-2-1#3",
+          "REQ-3-2-1#4",
+          "REQ-3-2-2#3",
+          "REQ-3-2-2#7",
+          "REQ-4-1-1",
+          "REQ-4-1-1#5",
+          "REQ-4-1-2#2",
+          "REQ-4-2-1",
+          "REQ-4-2-1#2",
+          "REQ-4-2-1#3",
+          "REQ-4-2-2",
+          "REQ-4-2-2#2",
+          "REQ-4-2-2#4",
+          "REQ-4-2-2#5",
+          "REQ-5-1-2#5",
+          "REQ-5-2-1#6"
+        ],
+        "reason": "20 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 96,
+            "fail": 3,
+            "error": 1
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 66.7,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-3-2#2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"Smith, John\"\nReceived: \"1200\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div class=\"cell\" data-cell=\"B2\" role=\"gridcell\" aria-label=\"B2\" aria-selected="
+            },
+            {
+              "id": "REQ-4-1-2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('grid', { name: 'Worksheet grid' }).getByRole('gridcell', { name: 'C1', exact: true })\nExpected: \"5\"\nReceived: \"#ERROR!\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid' }).getByRole('gridcell', { name: 'C1', exact: true })\n    9 × locator resolv"
+            },
+            {
+              "id": "REQ-5-1-2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator: getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"East\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'A2', ex"
+            },
+            {
+              "id": "REQ-5-2-1",
+              "observation": "The test used the name 'West', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "New blank workbook",
+                "action": "goto-new-workbook"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet2",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Cancel",
+                "action": "arc:close"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet3",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/workbook/wb-q3-sales",
+              "#/new"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 299.0,
+        "cost_cny": 0.234554
+      },
+      {
+        "round": 3,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-3-2#2",
+          "REQ-4-1-2",
+          "REQ-5-1-2"
+        ],
+        "passing_before": 96,
+        "accepted": true,
+        "gained": [
+          "REQ-4-1-2"
+        ],
+        "reason": "1 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 97,
+            "fail": 2,
+            "error": 1
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 62.0,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-3-2#2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"Smith, John\"\nReceived: \"1200\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div class=\"cell\" data-cell=\"B2\" role=\"gridcell\" aria-label=\"B2\" aria-selected="
+            },
+            {
+              "id": "REQ-5-1-2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator: getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'A2', exact: true })\nExpected: \"East\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('grid', { name: 'Worksheet grid', exact: true }).getByRole('gridcell', { name: 'A2', ex"
+            },
+            {
+              "id": "REQ-5-2-1",
+              "observation": "The test used the name 'West', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "New blank workbook",
+                "action": "goto-new-workbook"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet2",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Cancel",
+                "action": "arc:close"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet3",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/workbook/wb-q3-sales",
+              "#/new"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 187.1,
+        "cost_cny": 0.119654
+      },
+      {
+        "round": 4,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-3-2#2",
+          "REQ-5-1-2"
+        ],
+        "passing_before": 97,
+        "accepted": true,
+        "first_try": {
+          "reason": "the change broke 3 passing scenario(s): REQ-5-1-2#2, REQ-5-1-2#3, REQ-5-1-2#4, and fixed only 1",
+          "gained": 1,
+          "lost": 3
+        },
+        "follow_up": "regression",
+        "follow_up_finish": "stop",
+        "gained": [
+          "REQ-5-1-2"
+        ],
+        "reason": "1 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 98,
+            "fail": 1,
+            "error": 1
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 56.8,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-3-2#2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"Smith, John\"\nReceived: \"1200\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div class=\"cell\" data-src=\"B2\" data-cell=\"B2\" role=\"gridcell\" aria-label=\"B2\" "
+            },
+            {
+              "id": "REQ-5-2-1",
+              "observation": "The test used the name 'West', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "New blank workbook",
+                "action": "goto-new-workbook"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet2",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Cancel",
+                "action": "arc:close"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet3",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/workbook/wb-q3-sales",
+              "#/new"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 437.5,
+        "cost_cny": 0.269751
+      },
+      {
+        "round": 5,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-3-2#2"
+        ],
+        "passing_before": 98,
+        "accepted": false,
+        "gained": [],
+        "reason": "no failing scenario passes after the change",
+        "scenarios": {
+          "counts": {
+            "pass": 98,
+            "fail": 1,
+            "error": 1
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 56.5,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-1-3-2#2",
+              "observation": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  getByRole('gridcell', { name: 'B2', exact: true })\nExpected: \"Smith, John\"\nReceived: \"1200\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" with timeout 5000ms\n  - waiting for getByRole('gridcell', { name: 'B2', exact: true })\n    9 × locator resolved to <div class=\"cell\" data-src=\"B2\" data-cell=\"B2\" role=\"gridcell\" aria-label=\"B2\" "
+            },
+            {
+              "id": "REQ-5-2-1",
+              "observation": "The test used the name 'West', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "New blank workbook",
+                "action": "goto-new-workbook"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet2",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Cancel",
+                "action": "arc:close"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet3",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/workbook/wb-q3-sales",
+              "#/new"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "replied": true,
+        "seconds": 135.2,
+        "cost_cny": 0.070259
+      },
+      {
+        "round": 6,
+        "fatal": 0,
+        "failing": [
+          "REQ-1-3-2#2"
+        ],
+        "passing_before": 98,
+        "accepted": true,
+        "focus": [
+          "REQ-1-3-2#2"
+        ],
+        "gained": [
+          "REQ-1-3-2#2"
+        ],
+        "reason": "1 more scenario(s) pass",
+        "scenarios": {
+          "counts": {
+            "pass": 99,
+            "error": 1
+          },
+          "coverage": {
+            "total": 100,
+            "parsed": 99
+          },
+          "seconds": 52.5,
+          "source_contracts": {},
+          "failing": [
+            {
+              "id": "REQ-5-2-1",
+              "observation": "The test used the name 'West', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+            }
+          ],
+          "invariants": [],
+          "translation": {}
+        },
+        "browser_after": [
+          {
+            "executed": true,
+            "diagnostic_only": true,
+            "errors": [],
+            "page_errors": [],
+            "actions": [
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              },
+              {
+                "scope": "page",
+                "name": "New blank workbook",
+                "action": "goto-new-workbook"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet1",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Save",
+                "action": ""
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet2",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "dialog",
+                "name": "Cancel",
+                "action": "arc:close"
+              },
+              {
+                "scope": "page",
+                "name": "Worksheet options for Sheet3",
+                "action": "sheet-menu"
+              },
+              {
+                "scope": "page-popover",
+                "name": "Rename",
+                "action": "rename-sheet"
+              },
+              {
+                "scope": "page",
+                "name": "Sheets",
+                "action": "arc:nav"
+              }
+            ],
+            "screens": [
+              "#/",
+              "#/workbook/wb-q3-sales",
+              "#/new"
+            ],
+            "browser": "143.0.7499.4",
+            "playwright": "1.57.0"
+          }
+        ],
+        "files": [
+          "frontend/public/app.js"
+        ],
+        "replied": true,
+        "seconds": 176.8,
+        "cost_cny": 0.109314
+      }
+    ],
+    "problems_after": [],
+    "scenarios_after": {
+      "counts": {
+        "pass": 99,
+        "error": 1
+      },
+      "coverage": {
+        "total": 100,
+        "parsed": 99
+      },
+      "seconds": 52.5,
+      "source_contracts": {},
+      "failing": [
+        {
+          "id": "REQ-5-2-1",
+          "observation": "The test used the name 'West', which the requirements never give: Error: expect(locator).toBeVisible() failed"
+        }
+      ],
+      "invariants": [],
+      "translation": {}
+    },
+    "source_review": {
+      "error": "ValueError: Missing or oversized probe setup",
+      "seconds": 297.6,
+      "calls": 1,
+      "cost_cny": 0.325135
+    }
+  }
+}

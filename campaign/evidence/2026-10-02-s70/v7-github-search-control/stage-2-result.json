@@ -1,0 +1,196 @@
+{
+  "record_type": "selftest",
+  "counts_on_leaderboard": false,
+  "id": "d1af2bb6-86d2-45a5-9c48-52ac6f03c4b5",
+  "githubId": "134906805",
+  "githubLogin": "Daily-AC",
+  "taskId": "github-stage-2-req-test",
+  "createdAt": 1790988495548,
+  "status": "failed",
+  "result": {
+    "submission_id": "d1af2bb6-86d2-45a5-9c48-52ac6f03c4b5",
+    "task_id": "github-stage-2-req-test",
+    "visibility": "public",
+    "status": "failed",
+    "passed": 27,
+    "total": 29,
+    "detail": "2/29 tests failed",
+    "tests": [
+      {
+        "title": "REQ-3-1-search-repositories.spec.ts REQ-3-1: Search for and Locate Repositories - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-1-search-repositories.spec.ts REQ-3-1: Search for and Locate Repositories - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-1-search-repositories.spec.ts REQ-3-1: Search for and Locate Repositories - Scenario 3",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-1-search-repositories.spec.ts REQ-3-1: Search for and Locate Repositories - Scenario 4",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-2-1-create-repository.spec.ts REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-2-1-create-repository.spec.ts REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-2-1-create-repository.spec.ts REQ-3-2-1: Create a Repository with Owner, Visibility, and Initialization Options - Scenario 3",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-2-2-fork-repository.spec.ts REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-2-2-fork-repository.spec.ts REQ-3-2-2: Fork a Repository into Another Namespace - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-2-3-copy-clone-url.spec.ts REQ-3-2-3: Copy a Repository Clone Value - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-2-3-copy-clone-url.spec.ts REQ-3-2-3: Copy a Repository Clone Value - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-3-view-public-repository.spec.ts REQ-3-3: View a Public Repository Overview - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-4-change-repository-visibility.spec.ts REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-3-4-change-repository-visibility.spec.ts REQ-3-4: Change Repository Visibility with Permission Checks - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-1-browse-files.spec.ts REQ-4-1: Browse Repository Files and Directories - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-2-1-view-commit-history.spec.ts REQ-4-2-1: View Repository Commit History - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-2-2-view-commit-diff.spec.ts REQ-4-2-2: Inspect Commit and Revision Differences - Scenario 1",
+        "ok": false,
+        "error": "Error: Could not find a visible navigation target named \"Document search flow\"",
+        "screenshot": "output/REQ-4-2-2-view-commit-diff-eace5-on-Differences---Scenario-1/test-failed-1.png"
+      },
+      {
+        "title": "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 3",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-2-3-search-code.spec.ts REQ-4-2-3: Search Code Within a Repository - Scenario 4",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-3-1-switch-branches.spec.ts REQ-4-3-1: List and Switch Repository Branches - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-3-1-switch-branches.spec.ts REQ-4-3-1: List and Switch Repository Branches - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-3-2-create-branch.spec.ts REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-3-2-create-branch.spec.ts REQ-4-3-2: Create a Branch from an Existing Revision - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-3-3-change-default-branch.spec.ts REQ-4-3-3: Change the Repository Default Branch - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-3-3-change-default-branch.spec.ts REQ-4-3-3: Change the Repository Default Branch - Scenario 2",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-4-manage-files.spec.ts REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 1",
+        "ok": true,
+        "error": null,
+        "screenshot": null
+      },
+      {
+        "title": "REQ-4-4-manage-files.spec.ts REQ-4-4: Manage Repository Files Through the Web Interface - Scenario 2",
+        "ok": false,
+        "error": "Test timeout of 60000ms exceeded.",
+        "screenshot": "output/REQ-4-4-manage-files-REQ-4-06595--Web-Interface---Scenario-2/test-failed-1.png"
+      }
+    ]
+  },
+  "updatedAt": 1790988639676
+}

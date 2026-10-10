@@ -1,0 +1,1 @@
+{"ok":true,"checks":{"env_file":"~/.config/arcbench/volo.env","cookie":"present","whoami":{"http":200,"username":"VOLO-AI","logged_in":true},"gateway_key":"present","balance":{"account":"qife....com","available":"400.429013","currency":"CNY"}}}

@@ -1,0 +1,13 @@
+{
+  "app": "ui-checkpoint-v2-sheet",
+  "judge": "cov99n-arm",
+  "counts": {
+    "pass": 95,
+    "fail": 5
+  },
+  "seconds": 65.7,
+  "coverage": {
+    "total": 100,
+    "parsed": 100
+  }
+}

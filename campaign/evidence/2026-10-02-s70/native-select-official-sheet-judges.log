@@ -1,0 +1,2 @@
+{"app": "native-select-official-sheet", "judge": "cov99n-arm", "counts": {"pass": 87, "fail": 13}, "seconds": 109.5, "coverage": {"total": 100, "parsed": 100}}
+{"app": "native-select-official-sheet", "judge": "g99", "counts": {"pass": 80, "fail": 20}, "seconds": 131.0, "coverage": {"total": 100, "parsed": 100}}

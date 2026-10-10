@@ -1,0 +1,95 @@
+/private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tools/debug-run.sh: line 32: 37722 Terminated: 15          ( cd "$WORK/app/backend" && PORT=$PORT exec node server.js > "$OUT/backend.log" 2>&1 )
+passed 42/48
+--- timedOut: REQ-2-1-4 S3: 透视表源工作表不能删除，源数据和透视结果均保持
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByRole('dialog', { name: 'Delete worksheet', exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByRole('dialog', { name: 'Delete worksheet', exact: true })
+      273 |   await sheetMenu(page, sheet, 'Delete');
+      274 |   const dlg = dialog(page, 'Delete worksheet');
+    > 275 |   await expect(dlg).toBeVisible();
+          |                     ^
+      276 |   await expect(dlg).toContainText(sheet);
+      277 |   await btn(dlg, 'Delete worksheet').click();
+      278 |   return dlg;
+--- timedOut: REQ-3-1-2 S1: 从 B2 原子粘贴二维表格，保留空字段和矩形外数据
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'B2', exact: true })
+    Expected: "Alpha"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'B2', exact: true })
+        13 × locator resolved to <div tabindex="0" role="gridcell" aria-label="B2" data-coord="B2" data-ctx="cell" aria-selected="true" class="cell selected">…</div>
+           - unexpected value ""
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-3-1-2 S2: 粘贴中任一值违反校验时整批拒绝且不留下部分状态
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toBeVisible() failed
+    Locator: getByText('Please enter a number from 0 to 100', { exact: true })
+    Expected: visible
+    Error: element(s) not found
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for getByText('Please enter a number from 0 to 100', { exact: true })
+      286 |   await pressCtrlV(page);
+      287 |
+    > 288 |   await expect(message(page, 'Please enter a number from 0 to 100')).toBeVisible();
+          |                                                                      ^
+      289 |   const original = { B2: 'Ann', C2: '10', B3: 'Bob', C3: '20' };
+      290 |   await expectCells(page, original);
+      291 |   await page.reload();
+--- timedOut: REQ-3-1-2 S3: 右键粘贴替换目标公式并重算依赖项
+    Test timeout of 10000ms exceeded.
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('menuitem', { name: 'Paste', exact: true })
+      302 |   await cell(page, 'B1').click();
+      303 |   await cell(page, 'B1').click({ button: 'right' });
+    > 304 |   await menuItem(page, 'Paste').click();
+          |                                 ^
+      305 |
+      306 |   await expectCells(page, { A1: '5', B1: '7', C1: '8' });
+      307 |   await expectFormula(page, 'B1', '7');
+        at /private/tmp/claude-501/-Users-e0-7-projects/6ff2d48d-638b-4409-938c-065153a02d4b/scratchpad/oracle/sheet-A/tests/22-REQ-3-1-2.spec.cjs:304:33
+--- timedOut: REQ-3-1-2 S4: 从 A1 粘贴单行表格并保持外部单元格不变
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'A1', exact: true })
+    Expected: "East"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'A1', exact: true })
+        13 × locator resolved to <div tabindex="0" role="gridcell" aria-label="A1" data-coord="A1" data-ctx="cell" aria-selected="true" class="cell selected">…</div>
+           - unexpected value ""
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }
+--- timedOut: REQ-3-1-2 S5: 从 C3 粘贴两行两列表格并保留源外内容
+    Test timeout of 10000ms exceeded.
+    Error: expect(locator).toHaveText(expected) failed
+    Locator:  getByRole('gridcell', { name: 'C3', exact: true })
+    Expected: "North"
+    Received: ""
+    Call log:
+      - Expect "toHaveText" with timeout 10000ms
+      - waiting for getByRole('gridcell', { name: 'C3', exact: true })
+        13 × locator resolved to <div tabindex="0" role="gridcell" aria-label="C3" data-coord="C3" data-ctx="cell" aria-selected="true" class="cell selected">…</div>
+           - unexpected value ""
+      67 |
+      68 | async function expectCells(page, expected) {
+    > 69 |   for (const [ref, value] of Object.entries(expected)) await expect(cell(page, ref)).toHaveText(value);
+         |                                                                                      ^
+      70 | }

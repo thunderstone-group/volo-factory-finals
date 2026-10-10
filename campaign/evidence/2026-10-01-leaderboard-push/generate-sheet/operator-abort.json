@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-01T15:45:44.151597+00:00",
+  "action": "SIGINT then SIGTERM if writer threads remain",
+  "pid": 80333,
+  "reason": "Second local task also lost two draft streams with zero completed code; stop the overloaded batch and retry sequentially after transport recovers.",
+  "progress": [
+    {
+      "phase": "receiving",
+      "updated_at": 1790869543.096046,
+      "elapsed_seconds": 892.028,
+      "attempts": 3,
+      "completed_calls": 0,
+      "call": 3,
+      "model": "deepseek-v4-flash",
+      "request_sha256": "6c5b64e5d8bcbe211bf69fdd6bde699e47902efc1c130dda29d4dc246bcc8288",
+      "stream": {
+        "received_bytes": 199377,
+        "sse_events": 702,
+        "content_chars": 0,
+        "reasoning_chars": 3214
+      },
+      "error_type": null,
+      "http_status": null,
+      "finish_reason": null,
+      "usage": {}
+    }
+  ],
+  "accounting": "Transport-aborted sample, side writer usage may remain incomplete; reconcile metering.",
+  "observed_exit": -15
+}

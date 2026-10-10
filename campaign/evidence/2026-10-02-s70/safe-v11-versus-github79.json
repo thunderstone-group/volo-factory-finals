@@ -1,0 +1,13 @@
+{
+  "baseline_official_run": "afc04ffe5b63",
+  "baseline_official_passed": 79,
+  "baseline_fixed_passed": 107,
+  "candidate_fixed_passed": 107,
+  "candidate_official_passed": null,
+  "gained": [
+    "REQ-6-1"
+  ],
+  "lost": [
+    "REQ-4-2-2"
+  ]
+}

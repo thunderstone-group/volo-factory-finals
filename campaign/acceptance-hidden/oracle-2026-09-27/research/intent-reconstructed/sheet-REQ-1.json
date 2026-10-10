@@ -1,0 +1,154 @@
+{
+ "tests": [
+  {
+   "id": "REQ-1-1-1",
+   "n": 1,
+   "title": "Open 'Q3 Sales' from home and verify editor state matches seeded workbook; refresh direct URL restores same workbook",
+   "checks": [
+    "Home page link has accessible name 'Q3 Sales' and shows 'Last updated: <value>'",
+    "Clicking link opens editor with workbook name 'Q3 Sales', same last-updated value, worksheet tabs/order, active Sheet1, row/column structure, grid values, formula bar, filters, validation entry points, and pivot results",
+    "Grid cell A1 is accessible as A1 and displays 'Region'; no data from another workbook appears",
+    "Refreshing the current editor page entry reloads exactly 'Q3 Sales' with Sheet1 active and A1=Region without navigating through home page"
+   ]
+  },
+  {
+   "id": "REQ-1-1-1",
+   "n": 2,
+   "title": "In a later browser session visit the exact editor page entry for Q3 Sales; verify it restores Q3 Sales state and does not show another workbook's data",
+   "checks": [
+    "Direct URL entry identifies the same workbook 'Q3 Sales' in a fresh/later session without home navigation",
+    "Active worksheet, tab order, and grid values (Sheet1, A1=Region) match the most recent successful state",
+    "Grid does not contain values from another workbook",
+    "No temporary blank page or different workbook is opened"
+   ]
+  },
+  {
+   "id": "REQ-1-2-1",
+   "n": 1,
+   "title": "Create blank workbook via 'New blank workbook' and 'Create'; verify only blank Sheet1 active with A1 selected and state persists after refresh or reopen",
+   "checks": [
+    "Home page has button with accessible name 'New blank workbook'",
+    "Creation page submit button is named 'Create'",
+    "After creation editor shows only a blank worksheet named Sheet1, active, with A1 selected",
+    "No other worksheet/data is present",
+    "Refreshing or returning home and reopening shows the same blank Sheet1 with A1 selected"
+   ]
+  },
+  {
+   "id": "REQ-1-2-2",
+   "n": 1,
+   "title": "Rename open workbook to a trimmed non-empty name via 'Rename workbook'; verify editor title and home link update and persist after refresh/reopen",
+   "checks": [
+    "Editor shows 'Rename workbook' button next to title",
+    "Dialog has text box 'Workbook name' prefilled with last saved name and a 'Save' button",
+    "After save, editor title and home-page link display the new name, with leading/trailing spaces trimmed",
+    "Reopening or refreshing shows the most recently saved name"
+   ]
+  },
+  {
+   "id": "REQ-1-2-2",
+   "n": 2,
+   "title": "Attempt to save whitespace-only workbook name; verify 'Workbook name cannot be empty' and original name remains after refresh",
+   "checks": [
+    "Entering only spaces in 'Workbook name' is rejected after trimming",
+    "Error 'Workbook name cannot be empty' is shown beside the control",
+    "Editor title and home-page link retain the original workbook name",
+    "No empty-name record persists after refresh"
+   ]
+  },
+  {
+   "id": "REQ-1-3-1",
+   "n": 1,
+   "title": "Import UTF-8 CSV with Chinese, English, and numeric text and empty fields; verify new workbook named without .csv, Sheet1 populated in original order, and persistence",
+   "checks": [
+    "Home page 'Import CSV' button opens dialog named 'Import CSV' with 'CSV file' control and 'Confirm import' button",
+    "Imported workbook name is the file name with final .csv removed",
+    "Sheet1 opens with complete rows/columns and original text, preserving empty fields and first row as ordinary data",
+    "Chinese text, English text, and numeric text are all present",
+    "After refresh/reopen grid content and row/column order remain unchanged"
+   ]
+  },
+  {
+   "id": "REQ-1-3-1",
+   "n": 2,
+   "title": "Import CSV with quoted commas, escaped double quotes, and embedded line breaks; verify fields parsed correctly and persist",
+   "checks": [
+    "Fields containing commas are kept intact inside quotes",
+    "Escaped pairs of double quotes are decoded correctly",
+    "Line breaks within quoted fields do not start new rows",
+    "Parsed grid matches original row/column order and persists after refresh/reopen"
+   ]
+  },
+  {
+   "id": "REQ-1-3-1",
+   "n": 3,
+   "title": "Import CSV with empty fields; verify empty cells are preserved in exact row/column positions and first row remains ordinary data after reopen",
+   "checks": [
+    "Empty fields are preserved as empty cells, not dropped",
+    "Row and column order exactly matches the CSV source",
+    "First row is ordinary data, not treated as a header",
+    "After refresh/reopen empty cells and order remain unchanged"
+   ]
+  },
+  {
+   "id": "REQ-1-3-1",
+   "n": 4,
+   "title": "Import malformed CSV with unclosed double quote; verify rejection 'Invalid CSV file format. Import failed.', no workbook link, and no partial result retained",
+   "checks": [
+    "Error 'Invalid CSV file format. Import failed.' is displayed",
+    "No workbook link with the attempted file name appears on the home page",
+    "No partial import result is displayed in the editor or retained after refresh",
+    "Original seeded state remains unchanged"
+   ]
+  },
+  {
+   "id": "REQ-1-3-2",
+   "n": 1,
+   "title": "Click 'Export CSV' on editor toolbar; verify download ends .csv with current worksheet values and state unchanged after export/refresh",
+   "checks": [
+    "Button with accessible name 'Export CSV' exists on editor toolbar",
+    "Clicking starts a download whose suggested filename ends with '.csv'",
+    "Downloaded UTF-8 text contains the active worksheet's values in actual row/column order",
+    "Active worksheet, filter view, grid values, and formula bar content remain unchanged before/after export and after refresh"
+   ]
+  },
+  {
+   "id": "REQ-1-3-2",
+   "n": 2,
+   "title": "Export worksheet with empty cells in used range; verify CSV preserves empty fields in correct row/column order",
+   "checks": [
+    "Empty cells within the used range are represented as empty fields in CSV",
+    "Row and column order of exported data matches the grid's actual order",
+    "No rows or columns are omitted because they contain blanks"
+   ]
+  },
+  {
+   "id": "REQ-1-3-2",
+   "n": 3,
+   "title": "Export cells containing commas, double quotes, and line breaks; verify CSV escapes them according to CSV rules",
+   "checks": [
+    "Text with commas is quoted in exported CSV",
+    "Double quotes are escaped as pairs of double quotes",
+    "Line breaks within fields are preserved inside quoted values",
+    "Exported CSV can be parsed back to the original cell values"
+   ]
+  },
+  {
+   "id": "REQ-1-3-2",
+   "n": 4,
+   "title": "Export active worksheet Sheet1 with formula cells; verify CSV contains calculated results rather than formulas and grid/formula bar state persists unchanged",
+   "checks": [
+    "Ordinary cells export their displayed values",
+    "Formula cells export current calculated results, not '=' expressions",
+    "After export, formula bar still shows original formula and grid shows same result",
+    "Active worksheet and worksheet state remain unchanged after refresh"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 44494,
+  "completion_tokens": 13220
+ },
+ "cost_cny": 0.124,
+ "finish": "stop"
+}

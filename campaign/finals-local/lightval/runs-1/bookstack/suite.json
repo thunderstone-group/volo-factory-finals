@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "file": "t00-light.spec.cjs",
+   "scenarios": [
+    "EV-1.1",
+    "EV-1.2",
+    "EV-2.1",
+    "EV-3.1",
+    "EV-3.2"
+   ],
+   "calls": 0,
+   "tests": [
+    "EV-1.1: Reject invalid credentials",
+    "EV-1.2: Sort pages and chapters inside a book",
+    "EV-2.1: Add a comment to a page",
+    "EV-3.1: Search child pages inside a book",
+    "EV-3.2: Open revisions for a page"
+   ],
+   "compiler": "light"
+  }
+ ],
+ "scenarios": 5,
+ "tests": 5,
+ "seconds": 0,
+ "prerequisites": ""
+}

@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-01T15:40:54.999063+00:00",
+  "action": "SIGINT to owned local GitHub candidate process",
+  "pid": 80332,
+  "reason": "The draft has reached its third transport attempt without one complete call; official and other local calls also show failures. Stop this local sample before fallback escalation and retry later at lower concurrency.",
+  "progress": [
+    {
+      "phase": "receiving",
+      "updated_at": 1790869250.310603,
+      "elapsed_seconds": 599.243,
+      "attempts": 3,
+      "completed_calls": 0,
+      "call": 3,
+      "model": "deepseek-v4-flash",
+      "request_sha256": "3ebd43f54b93224550bcc548d9c37b6a85c865fc493f589097654eff56f48f17",
+      "stream": {
+        "received_bytes": 125850,
+        "sse_events": 443,
+        "content_chars": 0,
+        "reasoning_chars": 1950
+      },
+      "error_type": null,
+      "http_status": null,
+      "finish_reason": null,
+      "usage": {}
+    }
+  ],
+  "accounting": "Aborted sample, no quality score. Side-writer requests may have incomplete trace; reconcile all charges from practice metering.",
+  "follow_up": {
+    "at": "2026-10-01T15:42:32.418875+00:00",
+    "signal": "SIGTERM",
+    "reason": "Main trace flushed after SIGINT, but ThreadPoolExecutor writer threads kept the process alive and continued retries; terminate the owned child to stop those calls."
+  },
+  "observed_exit": -15
+}

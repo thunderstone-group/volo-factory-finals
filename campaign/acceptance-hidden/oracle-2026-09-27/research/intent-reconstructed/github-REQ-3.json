@@ -1,0 +1,168 @@
+{
+ "tests": [
+  {
+   "id": "REQ-3-1",
+   "n": 1,
+   "title": "Visitor searches unique keyword, selects Repositories filter, opens public acme-docs while private secret-research stays hidden; clearing query drops results and direct private access is denied",
+   "checks": [
+    "Global search box has accessible name Search; typing the keyword and pressing Enter shows repository results directly",
+    "Result for acme-docs has a link with accessible name exactly acme-docs and displays alice-dev/acme-docs, description, Public visibility, and update time",
+    "No result for secret-research is shown to the visitor",
+    "Clicking the acme-docs result opens an overview heading containing alice-dev/acme-docs",
+    "Clearing the query or switching to a non-matching filter removes old results; directly reopening secret-research still requires authentication or denies access after refresh"
+   ]
+  },
+  {
+   "id": "REQ-3-1",
+   "n": 2,
+   "title": "Signed-in user searches for acme-docs and opens it; session-authenticated repository overview persists after refresh or reopening",
+   "checks": [
+    "After sign-in, the account menu shows alice-dev and protected pages are accessible",
+    "Searching acme-docs from any page and pressing Enter yields the repository result whose link name is exactly acme-docs",
+    "Clicking the result opens the alice-dev/acme-docs overview heading",
+    "Refreshing or reopening the visible destination preserves the repository overview and authenticated state",
+    "A rejected or empty search leaves the original page state unchanged"
+   ]
+  },
+  {
+   "id": "REQ-3-1",
+   "n": 3,
+   "title": "Searching a nonexistent repository query displays No results and stays empty after returning home and repeating the same query",
+   "checks": [
+    "Entering a query with no matching repository displays No results",
+    "No repository result link or metadata is rendered for the absent query",
+    "Returning to the home page and repeating the same query still displays No results",
+    "Reloading the results page does not restore stale matches or old result links"
+   ]
+  },
+  {
+   "id": "REQ-3-1",
+   "n": 4,
+   "title": "Searching the exact private repository name secret-research exposes no result link to an unauthorized visitor and direct access remains denied",
+   "checks": [
+    "Searching secret-research does not display a result link for the private repository",
+    "No unauthorized private-repository metadata appears in results",
+    "Directly opening secret-research redirects to sign-in or displays access denied",
+    "After refresh or reopening, the private repository content is not shown to the visitor"
+   ]
+  },
+  {
+   "id": "REQ-3-2-1",
+   "n": 1,
+   "title": "Signed-in user creates a private repository with README and description in personal namespace; overview, README, initialization commit, and repository list persist after reload",
+   "checks": [
+    "New repository form shows labeled Owner, Repository name, Description, Public/Private radios, Add a README file checkbox, and Create repository button",
+    "Submitting a unique name with Private, README checked, and the described description opens the owner/repository overview",
+    "Overview heading contains the new repository name, Private marker, descriptive text, and README file link",
+    "Default branch contains README and commit history contains one initialization commit",
+    "Repository appears in the target owner's repository list; after refresh owner, visibility, README, and initialization commit remain"
+   ]
+  },
+  {
+   "id": "REQ-3-2-1",
+   "n": 2,
+   "title": "Duplicate and empty repository names in the default personal namespace are rejected; creation form stays open and no repository is created",
+   "checks": [
+    "Submitting a duplicate repository name in the default personal namespace keeps the form open and does not open the existing repository heading",
+    "An empty repository name is rejected without requiring further input",
+    "The form remains on the creation page and retains non-sensitive input after the rejected submit",
+    "After refresh or reopening, no new repository appears and the existing repository state is unchanged"
+   ]
+  },
+  {
+   "id": "REQ-3-2-1",
+   "n": 3,
+   "title": "Repository creation in an unauthorized organization namespace or any persistence failure is rejected atomically with no partial repository, branch, README, or commit",
+   "checks": [
+    "Selecting an organization namespace where the user lacks repository-creation permission displays the applicable reason and blocks creation",
+    "No repository record is created for the failed submission",
+    "No default branch, README file, or initialization commit is created as a partial result",
+    "After reload, failed input and existing repository states remain unchanged and no partial repository is visible"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 1,
+   "title": "User forks readable public acme-docs into a target namespace as an independent repository; overview shows Forked from acme-docs and copied history, and fork/source relationship persists after reload",
+   "checks": [
+    "Source overview displays Fork button; fork form contains Repository name field, Create fork button, and defaults to the signed-in user's personal namespace",
+    "Creating the fork opens the target owner/fork-name heading with visible Forked from acme-docs text and a source repository link",
+    "Default branch of the fork contains the accessible files and history copied from the source; source repository remains unchanged",
+    "Fork appears in the target owner's repository list; refreshing the fork page and repository list preserves the fork and source link"
+   ]
+  },
+  {
+   "id": "REQ-3-2-2",
+   "n": 2,
+   "title": "Fork with conflicting existing name acme-docs-fork, missing target permission, or inaccessible source is rejected and no fork is created",
+   "checks": [
+    "Using the existing fork name acme-docs-fork in the target personal namespace shows a conflict and does not create a fork",
+    "A user without creation permission in the target namespace cannot create the fork",
+    "An inaccessible private source repository cannot be forked by an unauthorized user",
+    "After reload, no new fork record exists and the source repository, branches, and history are unchanged"
+   ]
+  },
+  {
+   "id": "REQ-3-2-3",
+   "n": 1,
+   "title": "Visitor copies HTTPS or SSH clone value from Code popover on a public repository; page shows Copied, keeps repository heading, and leaves repository read-only state unchanged",
+   "checks": [
+    "Code button opens clone popover with HTTPS and SSH tabs and a Copy clone value button",
+    "Copying the selected protocol writes the complete clone value to the clipboard and displays Copied feedback",
+    "Repository heading remains visible and files, commit history, and visibility are unchanged",
+    "After closing and reopening the popover, the selected protocol remains visible and the repository heading persists; a user without private-repository access cannot obtain the clone value"
+   ]
+  },
+  {
+   "id": "REQ-3-2-3",
+   "n": 2,
+   "title": "Signed-in user with view permission copies a clone value from a private repository and the read-only session state persists after refresh or reopening",
+   "checks": [
+    "After sign-in with view permission, Code button on the private repository opens the clone popover",
+    "HTTPS or SSH clone value identifies the current repository and can be copied with Copied feedback",
+    "Copying does not modify repository files, commit history, or visibility",
+    "After refresh or reopening, the authenticated session and repository page remain accessible and unchanged; unauthorized users are not shown the clone popover"
+   ]
+  },
+  {
+   "id": "REQ-3-3",
+   "n": 1,
+   "title": "Visitor opens public acme-docs overview and sees owner/repository heading, Public marker, description, default branch, file list, and Code/Issues/Pull requests entries; reload preserves state and private address is denied",
+   "checks": [
+    "Opening the public repository address displays a heading containing alice-dev/acme-docs and a visible Public marker",
+    "Description, default branch, and file list are displayed on the overview",
+    "Code, Issues, and Pull requests navigation entries are available",
+    "Clicking a file name opens the file-content page; refreshing or reopening the same address preserves the repository heading and state",
+    "Opening secret-research without authorization does not show its content and access is denied"
+   ]
+  },
+  {
+   "id": "REQ-3-4",
+   "n": 1,
+   "title": "Admin changes a private repository to Public via Settings, General, Danger Zone and Confirm visibility; Public marker appears, visitor can open the address, and visibility persists after reload",
+   "checks": [
+    "Admin sees Change visibility button in Danger Zone and the confirmation flow provides Public radio and Confirm visibility",
+    "After confirming Public, repository overview displays the Public marker",
+    "Unauthenticated visitor refreshing or opening the same address sees the repository heading and can view public content; search and lists also show it",
+    "After refreshing the settings page and overview, visibility remains Public and the updated access rules stay in effect"
+   ]
+  },
+  {
+   "id": "REQ-3-4",
+   "n": 2,
+   "title": "Non-Admin collaborator does not see Change visibility and cannot change visibility; private repository remains Private with unchanged state after reload",
+   "checks": [
+    "Non-Admin signed-in user may have Settings or Branches available but no Change visibility button is rendered",
+    "Any attempted visibility-change request is rejected if submitted",
+    "Private marker and private access rules remain unchanged after the attempt and after reload",
+    "The absence of the Admin visibility control is not merely a disabled control; the operation is unavailable"
+   ]
+  }
+ ],
+ "usage": {
+  "prompt_tokens": 62949,
+  "completion_tokens": 14311
+ },
+ "cost_cny": 0.4959,
+ "finish": "stop"
+}

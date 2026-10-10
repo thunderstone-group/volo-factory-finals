@@ -1,0 +1,12 @@
+{
+  "record_type": "selftest",
+  "counts_on_leaderboard": false,
+  "id": "b173ec83-d708-4a5c-afeb-4ffa8826348b",
+  "task_id": "github-stage-2-req-test",
+  "package": {
+    "path": "~/projects/arcbench-campaign/evidence/2026-10-02-s70/home-native-repair-github/home-native-app.zip",
+    "bytes": 40400,
+    "sha256": "525bb211aae17971e4f6f4a068b05c48719a3a22f925e55fce8d8c242c27b0fb"
+  },
+  "url": "https://arcbench-selftest-web.vercel.app/submissions/b173ec83-d708-4a5c-afeb-4ffa8826348b"
+}

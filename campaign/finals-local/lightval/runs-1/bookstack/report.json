@@ -1,0 +1,66 @@
+{
+ "kind": "testgen",
+ "scenarios": [
+  {
+   "id": "EV-1.1",
+   "name": "Reject invalid credentials",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "EV-1.2",
+   "name": "Sort pages and chapters inside a book",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "EV-2.1",
+   "name": "Add a comment to a page",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.3
+  },
+  {
+   "id": "EV-3.1",
+   "name": "Search child pages inside a book",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  },
+  {
+   "id": "EV-3.2",
+   "name": "Open revisions for a page",
+   "file": "t00-light.spec.cjs",
+   "steps": [],
+   "compiler": "light",
+   "status": "pass",
+   "observation": "",
+   "source": "",
+   "seconds": 0.2
+  }
+ ],
+ "invariants": [],
+ "coverage": {
+  "total": 5,
+  "parsed": 5
+ },
+ "seconds": 2.2
+}

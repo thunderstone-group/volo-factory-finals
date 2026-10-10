@@ -1,0 +1,491 @@
+{
+ "proposed": [
+  {
+   "id": "REQ-5-1-2#contract-1",
+   "requirement": "REQ-5-1-2",
+   "explanation": "REQ-5-1-2 requires that each header provide a button named \"Filter <header text>\" and that clicking it open a dialog with that name offering value selection (\"Clear selection\", checkboxes for the distinct source values, \"Apply\") and the condition options. The real writer of a filter view is the create-filter action, which stores it in the browsing-session scope ARC.state.ui.filters[sheet.id] (setSheetFilters); the dialog renderer reached through the header button (open-filter-dialog -> renderFilterDialog) instead looks the filter up in the worksheet record's own sheet.filters array, which no code ever writes (blankSheet only initialises it to []). The lookup therefore always fails, ARC.closeDialog() is called and no filter dialog is ever presented, so value filtering, condition filtering, \"Clear selection\" and Apply are all unusable. Fixture: the seeded \"Q3 Sales\" workbook with its header row A1:C1 (Region/Sales/Status) and the data region A1:C4 selected, i.e. exactly the data region with headers that REQ-5-1-2 describes.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "open-filter-dialog",
+     "kind": "method",
+     "alias": "openFilterDialog"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "create-filter",
+     "kind": "method",
+     "alias": "createFilter"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "openFilterDialog",
+   "setup": "globalThis.notices = [];\nglobalThis.dialogOpens = [];\nglobalThis.dialogCloses = 0;\nglobalThis.uidN = 0;\nglobalThis.ARC = {state:{ui:{}},route:function(){return {name:'workbook',params:['wb-q3-sales']};},save:function(){},render:function(){},notify:function(m){globalThis.notices.push(String(m));},esc:function(s){return String(s==null?'':s);},uid:function(p){globalThis.uidN = globalThis.uidN + 1; return String(p)+'-'+globalThis.uidN;},openDialog:function(html,opts){globalThis.dialogOpens.push({html:String(html),title:opts&&opts.title});},closeDialog:function(){globalThis.dialogCloses = globalThis.dialogCloses + 1;},setInert:function(){},openPopover:function(){},closePopover:function(){},combobox:function(){return '';},dialogOpen:false};\nglobalThis.ARC.state.ui.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks));\nglobalThis.wb = globalThis.ARC.state.ui.workbooks[0];\nglobalThis.sheet = globalThis.wb.sheets[0];\nglobalThis.sheet.sel = {r1:0,c1:0,r2:3,c2:2};",
+   "precondition": "assert.strictEqual(wb.id, 'wb-q3-sales');\nassert.strictEqual(sheet.name, 'Sheet1');\nassert.strictEqual(sheet.cells.A1, 'Region');\nassert.strictEqual(sheet.cells.B1, 'Sales');\nassert.strictEqual(sheet.cells.C1, 'Status');\nassert.deepStrictEqual(sheet.sel, {r1:0,c1:0,r2:3,c2:2});\nassert.strictEqual(sheet.filters.length, 0);",
+   "check": "assert.strictEqual(typeof createFilter, 'function');\nassert.strictEqual(typeof openFilterDialog, 'function');\ncreateFilter({});\nconst flist = ARC.state.ui.filters[sheet.id];\nassert.ok(Array.isArray(flist) && flist.length === 1, 'Create filter registers exactly one filter view for the sheet');\nconst filter = flist[0];\nassert.deepStrictEqual(filter.range, {r1:0,c1:0,r2:3,c2:2});\nglobalThis.dialogOpens.length = 0;\nglobalThis.dialogCloses = 0;\nopenFilterDialog({data:{id:'0',filter:filter.id}});\nassert.strictEqual(globalThis.dialogOpens.length, 1, 'clicking the header button \"Filter Region\" must present the filter dialog for that header');\nconst html = globalThis.dialogOpens[0].html;\nassert.ok(/Clear selection/.test(html), 'the value filter dialog provides \"Clear selection\"');\nassert.ok(html.indexOf('name=\"v\"') >= 0, 'the value filter dialog provides value checkboxes');\nassert.ok(/East/.test(html) && /North/.test(html) && /South/.test(html), 'checkboxes are generated from the distinct Region source values');\nassert.ok(/Apply/.test(html), 'the value filter dialog provides \"Apply\"');",
+   "requirement_text": "Users create a filter for a data region with headers in the current active worksheet through \"Create filter\" in the \"Data\" menu. Each header provides a button with the accessible name \"Filter <header text>\"; the dialog with the same name supports selecting specific values and condition options named \"Text contains\", \"Greater than\", \"Before\", \"Is empty\", and \"Is not empty\". The value-filter dialog provides \"Clear selection\", checkboxes generated from distinct source values, and \"Apply\"; each checkbox uses the displayed source value as its accessible name. The condition dialog provides a combo box labeled \"Condition\", a text box labeled \"Value\", and \"Apply\". \"Text contains\", \"Greater than\", and \"Before\" use the \"Value\" text box; \"Is empty\" and \"Is not empty\" require no value. Conditions on different columns are combined with AND; nonmatching rows are hidden only and are neither deleted nor reordered. After refresh or reopening, the same rows remain visible. CSV export and pivot summarization still include hidden rows within the filtered range. \"Clear filter\" restores all source records in their original order and with their original values; after refresh all remain visible, while formula and validation behavior are unchanged.\n"
+  },
+  {
+   "id": "REQ-4-2-2#contract-1",
+   "requirement": "REQ-4-2-2",
+   "explanation": "REQ-4-2-2 requires that a direct or indirect circular reference display #REF!. The evaluator does detect the cycle (cellValue returns the #REF! error while a cell is already being evaluated) but the aggregate evaluator collects only values of kind 'num' before summing, so an error produced by the cycle is silently discarded. A formula that includes its own cell through a range - =SUM(D5:D6) entered in D5 - therefore returns the sum of the remaining cells instead of #REF!. Fixture: the seeded \"Q3 Sales\" Sheet1 with one numeric source cell D6 added; =SUM(D5:D6) is a valid formula per REQ-4-1-1 (SUM over a contiguous range) and is written through the real commitCell path used for grid/formula-bar entry.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "commitCell",
+     "kind": "function",
+     "alias": "commitCell"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "makeEngine",
+     "kind": "function",
+     "alias": "makeEngine"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "commitCell",
+   "setup": "globalThis.notices = [];\nglobalThis.uidN = 0;\nglobalThis.ARC = {state:{ui:{}},route:function(){return {name:'workbook',params:['wb-q3-sales']};},save:function(){},render:function(){},notify:function(m){globalThis.notices.push(String(m));},esc:function(s){return String(s==null?'':s);},uid:function(p){globalThis.uidN = globalThis.uidN + 1; return String(p)+'-'+globalThis.uidN;},openDialog:function(){},closeDialog:function(){},setInert:function(){},openPopover:function(){},closePopover:function(){},combobox:function(){return '';},dialogOpen:false};\nglobalThis.ARC.state.ui.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks));\nglobalThis.wb = globalThis.ARC.state.ui.workbooks[0];\nglobalThis.sheet = globalThis.wb.sheets[0];\nglobalThis.sheet.cells.D6 = '5';",
+   "precondition": "assert.strictEqual(wb.id, 'wb-q3-sales');\nassert.strictEqual(sheet.cells.A1, 'Region');\nassert.strictEqual(sheet.cells.D6, '5');\nassert.strictEqual(makeEngine(sheet).display(5, 3), '5');\nassert.strictEqual(makeEngine(sheet).display(4, 3), '');",
+   "check": "assert.strictEqual(typeof commitCell, 'function');\nassert.strictEqual(commitCell(wb, sheet, 4, 3, '=SUM(D5:D6)'), true, 'the submitted formula is valid and must be stored in D5');\nassert.strictEqual(sheet.cells.D5, '=SUM(D5:D6)');\nassert.strictEqual(makeEngine(sheet).display(4, 3), '#REF!', 'a formula that includes its own cell through a range is a direct circular reference and must display #REF!');",
+   "requirement_text": "Formula errors use stable visible values: division by zero displays #DIV/0!, an invalid reference displays #REF!, an unsupported function displays #NAME?, a malformed expression displays #ERROR!, and a direct or indirect circular reference displays #REF!. When an error cell is selected, the formula bar displays the original formula submitted by the user; after refresh, both the error value and original formula persist. An error cell does not block viewing, editing, or recalculating other cells. After the user changes it to a valid formula through REQ-3-1-1, the grid displays the new result, the formula bar displays the new formula, related dependent results update, and the error no longer appears after refresh.\n"
+  },
+  {
+   "id": "REQ-2-2-1#contract-1",
+   "requirement": "REQ-2-2-1",
+   "explanation": "REQ-2-2-1 requires that when a row is deleted, formulas display the adjusted original formula with correct results and that references which cannot be preserved display an explicit error. Deleting the row that a formula references makes that reference unpreservable, yet the row-deletion rewriter silently deletes a dead operand that sits at the end of an expression together with its operator (cleanupDrops strips the mark and drops the term), so =A5+A6+A7 becomes =A5+A6 and the cell shows a normal number. Fixture: the seeded \"Q3 Sales\" Sheet1 with three source values A5=5, A6=6, A7=7 and D1='=A5+A6+A7' (displayed 18); deleting row 7 through the real delete-row transition removes the row and the reference that pointed at it.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "deleteRow",
+     "kind": "function",
+     "alias": "deleteRow"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "makeEngine",
+     "kind": "function",
+     "alias": "makeEngine"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "deleteRow",
+   "setup": "globalThis.notices = [];\nglobalThis.uidN = 0;\nglobalThis.ARC = {state:{ui:{}},route:function(){return {name:'workbook',params:['wb-q3-sales']};},save:function(){},render:function(){},notify:function(m){globalThis.notices.push(String(m));},esc:function(s){return String(s==null?'':s);},uid:function(p){globalThis.uidN = globalThis.uidN + 1; return String(p)+'-'+globalThis.uidN;},openDialog:function(){},closeDialog:function(){},setInert:function(){},openPopover:function(){},closePopover:function(){},combobox:function(){return '';},dialogOpen:false};\nglobalThis.ARC.state.ui.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks));\nglobalThis.wb = globalThis.ARC.state.ui.workbooks[0];\nglobalThis.sheet = globalThis.wb.sheets[0];\nglobalThis.sheet.cells.A5 = '5';\nglobalThis.sheet.cells.A6 = '6';\nglobalThis.sheet.cells.A7 = '7';\nglobalThis.sheet.cells.D1 = '=A5+A6+A7';",
+   "precondition": "assert.strictEqual(wb.id, 'wb-q3-sales');\nassert.strictEqual(sheet.cells.A7, '7');\nassert.strictEqual(makeEngine(sheet).raw(0, 3), '=A5+A6+A7');\nassert.strictEqual(makeEngine(sheet).display(0, 3), '18');",
+   "check": "assert.strictEqual(typeof deleteRow, 'function');\ndeleteRow(sheet, 6);\nassert.strictEqual(makeEngine(sheet).display(6, 0), '', 'control: the deleted row no longer holds the value 7');\nconst shown = makeEngine(sheet).display(0, 3);\nassert.ok(shown.charAt(0) === '#', 'deleting the row that D1 references cannot preserve that reference, so D1 must display an explicit formula error (#REF!) instead of a silently retargeted value; displayed: ' + shown);",
+   "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n"
+  },
+  {
+   "id": "REQ-5-2-1#contract-1",
+   "requirement": "REQ-5-2-1",
+   "explanation": "REQ-5-2-1 requires that an invalid value written through the grid or formula bar be rejected with the numeric message and that the original value remain, and its persisted multi-cell scenario uses a 0-to-100 numeric rule on B2:B4. The rule engine decides validity with parseFloat, which accepts any string that merely starts with a number, so '12abc' is accepted as 12 while the formula engine classifies the very same cell content as text - the cell ends up holding text inside a range constrained to numbers between 0 and 100. Fixture: the seeded Sheet1 with the persisted rule {B2:B4, number, 0..100} and valid values '20'/'50'/'80'; the control write '101' is rejected, proving the rule is active.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "commitCell",
+     "kind": "function",
+     "alias": "commitCell"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "commitCell",
+   "setup": "globalThis.notices = [];\nglobalThis.uidN = 0;\nglobalThis.ARC = {state:{ui:{}},route:function(){return {name:'workbook',params:['wb-q3-sales']};},save:function(){},render:function(){},notify:function(m){globalThis.notices.push(String(m));},esc:function(s){return String(s==null?'':s);},uid:function(p){globalThis.uidN = globalThis.uidN + 1; return String(p)+'-'+globalThis.uidN;},openDialog:function(){},closeDialog:function(){},setInert:function(){},openPopover:function(){},closePopover:function(){},combobox:function(){return '';},dialogOpen:false};\nglobalThis.ARC.state.ui.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks));\nglobalThis.wb = globalThis.ARC.state.ui.workbooks[0];\nglobalThis.sheet = globalThis.wb.sheets[0];\nglobalThis.sheet.cells.B2 = '20';\nglobalThis.sheet.cells.B3 = '50';\nglobalThis.sheet.cells.B4 = '80';\nglobalThis.sheet.validations = [{id:'vr-1', range:{r1:1,c1:1,r2:3,c2:1}, type:'number', min:0, max:100}];",
+   "precondition": "assert.strictEqual(wb.id, 'wb-q3-sales');\nassert.strictEqual(sheet.validations.length, 1);\nassert.strictEqual(sheet.validations[0].type, 'number');\nassert.deepStrictEqual(sheet.validations[0].range, {r1:1,c1:1,r2:3,c2:1});\nassert.strictEqual(sheet.cells.B2, '20');\nassert.strictEqual(sheet.cells.B3, '50');",
+   "check": "assert.strictEqual(typeof commitCell, 'function');\nassert.strictEqual(commitCell(wb, sheet, 2, 1, '101'), false, 'control: 101 is rejected by the persisted 0-to-100 rule on B2:B4');\nassert.strictEqual(sheet.cells.B3, '50', 'control: the rejected edit leaves the original value in place');\nassert.strictEqual(globalThis.notices[globalThis.notices.length - 1], 'Please enter a number from 0 to 100');\nassert.strictEqual(commitCell(wb, sheet, 2, 1, '12abc'), false, 'a non-numeric value is not a valid number for the 0-to-100 rule, so the whole write must be rejected');\nassert.strictEqual(sheet.cells.B3, '50', 'the original value must remain after a rejected write');",
+   "requirement_text": "Users select a target range and click \"Data validation\" in the \"Data\" menu. A dialog named \"Data validation\" provides a combo box labeled \"Rule type\"; \"Dropdown\" uses a text box labeled \"Allowed values\", where comma-separated items are trimmed of leading and trailing spaces; \"Number range\" uses text boxes labeled \"Minimum\" and \"Maximum\"; the \"Save\" button applies an inclusive rule. After a valid save succeeds, the dialog closes. A dropdown cell provides a button with the accessible name \"Open dropdown for <cell coordinate>\"; each option uses the ARIA option role and the trimmed allowed value as its accessible name. If an invalid value is entered through the grid, formula bar, paste, or range move, the entire operation is rejected and the original value remains; an invalid dropdown value displays \"Please select one of the following values: <comma-separated allowed values>\", while an invalid number displays \"Please enter a number between <minimum> and <maximum>\". In the persisted multi-cell 0-to-100 boundary scenario, rejecting 101 in B3 displays \"Please enter a number from 0 to 100\". If any target in a bulk operation is invalid, all targets retain their original values. Rules remain active after refresh. When an existing rule is reopened, the dialog is prefilled with the rule type and parameters and displays a \"Delete rule\" button; saving a modification makes the new range effective immediately, deleting removes the constraint, and either successful operation closes the dialog without changing existing cell values.\n"
+  }
+ ],
+ "first_execution": [
+  {
+   "id": "REQ-5-1-2#contract-1",
+   "status": "error",
+   "calls": {
+    "openFilterDialog": 1,
+    "createFilter": 1,
+    "homeScreen": 0,
+    "newWorkbookScreen": 0,
+    "workbookScreen": 0,
+    "routeWb": 2,
+    "findWb": 2,
+    "wbList": 2,
+    "publishSharedWorkbooks": 2,
+    "activeSheet": 2,
+    "sel": 1,
+    "isSingle": 1,
+    "record": 1,
+    "hist": 1,
+    "snapshot": 1,
+    "setSheetFilters": 1,
+    "touch": 1,
+    "sheetFilters": 1,
+    "makeEngine": 1,
+    "displayOf": 3,
+    "keyOf": 3,
+    "colName": 3,
+    "isNumericText": 3
+   },
+   "assertions": 4,
+   "phase": "check",
+   "error_name": "ReferenceError",
+   "message": "renderFilterDialog is not defined",
+   "error": "evalmachine.<anonymous>:385\n        renderFilterDialog();\n        ^\n\nReferenceError: renderFilterDialog is not defined\n    at open-filter-dialog (evalmachine.<anonymous>:385:9)\n    at value (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:41:26)\n    at evalmachine.<anonymous>:12:1\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)"
+  },
+  {
+   "id": "REQ-4-2-2#contract-1",
+   "status": "fail",
+   "calls": {
+    "commitCell": 1,
+    "makeEngine": 1,
+    "displayOf": 1,
+    "keyOf": 2,
+    "colName": 2,
+    "isNumericText": 0,
+    "fmtNum": 0,
+    "checkValue": 1,
+    "rulesForCell": 1,
+    "record": 1,
+    "hist": 1,
+    "snapshot": 1,
+    "setRaw": 1,
+    "touch": 1,
+    "tokenize": 1
+   },
+   "assertions": 4,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a formula that includes its own cell through a range is a direct circular reference and must display #REF!\n\n'#ERROR!' !== '#REF!'\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: a formula that includes its own cell through a range is a direct circular reference and must display #REF!\n\n'#ERROR!' !== '#REF!'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:6:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-2-2-1#contract-1",
+   "status": "error",
+   "calls": {
+    "deleteRow": 0,
+    "makeEngine": 2,
+    "keyOf": 2,
+    "colName": 2,
+    "displayOf": 1,
+    "tokenize": 1
+   },
+   "assertions": 4,
+   "phase": "precondition",
+   "error_name": "AssertionError",
+   "message": "Expected values to be strictly equal:\n\n'#ERROR!' !== '18'\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'#ERROR!' !== '18'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:6:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:75:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-5-2-1#contract-1",
+   "status": "fail",
+   "calls": {
+    "commitCell": 2,
+    "checkValue": 2,
+    "rulesForCell": 2,
+    "numMessage": 1,
+    "record": 1,
+    "hist": 1,
+    "snapshot": 1,
+    "setRaw": 1,
+    "keyOf": 1,
+    "colName": 1,
+    "touch": 1
+   },
+   "assertions": 5,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a non-numeric value is not a valid number for the 0-to-100 rule, so the whole write must be rejected\n\ntrue !== false\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: a non-numeric value is not a valid number for the 0-to-100 rule, so the whole write must be rejected\n\ntrue !== false\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:7:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  }
+ ],
+ "probes": [
+  {
+   "id": "REQ-5-1-2#contract-1",
+   "requirement": "REQ-5-1-2",
+   "explanation": "REQ-5-1-2 requires each header to provide a button named \"Filter <header text>\" and that activating it present a dialog with that name offering value selection (\"Clear selection\", one checkbox per distinct source value, \"Apply\") plus the condition options. Trace through the real writer/reader pair: create-filter stores the filter view in the browsing-session scope ARC.state.ui.filters[sheet.id] (via setSheetFilters), and the header button's action open-filter-dialog reads the same session scope, so it finds the filter and calls the real dialog renderer renderFilterDialog. That renderer looks the filter up in the worksheet record's own sheet.filters array, which is only ever initialised to [] (blankSheet) and never written, so the lookup always fails and it closes the dialog instead of rendering it; value and condition filtering, \"Clear selection\" and Apply are therefore unusable. Correction from the previous attempt: the earlier run errored with \"renderFilterDialog is not defined\" because the runner had only bound the two actions, not the renderer they call; the actual declared renderer function is now listed so the real observer is exercised rather than assumed. Fixture validity: the seeded \"Q3 Sales\" / Sheet1 has header row A1:C1 (Region/Sales/Status) and three data rows; the selected region A1:C4 is exactly the data region with headers the requirement describes, and the filter it creates is not on the seed (control).",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "open-filter-dialog",
+     "kind": "method",
+     "alias": "openFilterDialog"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "create-filter",
+     "kind": "method",
+     "alias": "createFilter"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "renderFilterDialog",
+     "kind": "function",
+     "alias": "renderFilterDialog"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "openFilterDialog",
+   "setup": "globalThis.notices = [];\nglobalThis.dialogOpens = [];\nglobalThis.dialogCloses = 0;\nglobalThis.uidN = 0;\nglobalThis.ARC = {state:{ui:{}},route:function(){return {name:'workbook',params:['wb-q3-sales']};},save:function(){},render:function(){},notify:function(m){globalThis.notices.push(String(m));},esc:function(s){return String(s==null?'':s);},uid:function(p){globalThis.uidN = globalThis.uidN + 1; return String(p)+'-'+globalThis.uidN;},openDialog:function(html,opts){globalThis.dialogOpens.push({html:String(html),title:opts&&opts.title});},closeDialog:function(){globalThis.dialogCloses = globalThis.dialogCloses + 1;},setInert:function(){},openPopover:function(){},closePopover:function(){},combobox:function(){return '';},dialogOpen:false};\nglobalThis.ARC.state.ui.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks));\nglobalThis.wb = globalThis.ARC.state.ui.workbooks[0];\nglobalThis.sheet = globalThis.wb.sheets[0];\nglobalThis.sheet.sel = {r1:0,c1:0,r2:3,c2:2};",
+   "precondition": "assert.strictEqual(wb.id, 'wb-q3-sales');\nassert.strictEqual(sheet.name, 'Sheet1');\nassert.strictEqual(sheet.cells.A1, 'Region');\nassert.strictEqual(sheet.cells.C1, 'Status');\nassert.deepStrictEqual(sheet.sel, {r1:0,c1:0,r2:3,c2:2});\nassert.strictEqual(sheet.filters.length, 0, 'control: the seeded worksheet has no filter view yet');",
+   "check": "assert.strictEqual(typeof createFilter, 'function');\nassert.strictEqual(typeof openFilterDialog, 'function');\nassert.strictEqual(typeof renderFilterDialog, 'function');\ncreateFilter({});\nconst flist = ARC.state.ui.filters[sheet.id];\nassert.ok(Array.isArray(flist) && flist.length === 1, 'Create filter registers exactly one filter view for the sheet');\nconst filter = flist[0];\nassert.deepStrictEqual(filter.range, {r1:0,c1:0,r2:3,c2:2});\nglobalThis.dialogOpens.length = 0;\nglobalThis.dialogCloses = 0;\nopenFilterDialog({data:{id:'0',filter:filter.id}});\nassert.strictEqual(globalThis.dialogOpens.length, 1, 'activating the header button \"Filter Region\" must present the filter dialog for that header');\nconst html = globalThis.dialogOpens[0].html;\nassert.ok(/Clear selection/.test(html), 'the value filter dialog provides \"Clear selection\"');\nassert.ok(html.indexOf('name=\"v\"') >= 0, 'the value filter dialog provides value checkboxes');\nassert.ok(/East/.test(html) && /North/.test(html) && /South/.test(html), 'checkboxes are generated from the distinct Region source values');\nassert.ok(/Apply/.test(html), 'the value filter dialog provides \"Apply\"');",
+   "requirement_text": "Users create a filter for a data region with headers in the current active worksheet through \"Create filter\" in the \"Data\" menu. Each header provides a button with the accessible name \"Filter <header text>\"; the dialog with the same name supports selecting specific values and condition options named \"Text contains\", \"Greater than\", \"Before\", \"Is empty\", and \"Is not empty\". The value-filter dialog provides \"Clear selection\", checkboxes generated from distinct source values, and \"Apply\"; each checkbox uses the displayed source value as its accessible name. The condition dialog provides a combo box labeled \"Condition\", a text box labeled \"Value\", and \"Apply\". \"Text contains\", \"Greater than\", and \"Before\" use the \"Value\" text box; \"Is empty\" and \"Is not empty\" require no value. Conditions on different columns are combined with AND; nonmatching rows are hidden only and are neither deleted nor reordered. After refresh or reopening, the same rows remain visible. CSV export and pivot summarization still include hidden rows within the filtered range. \"Clear filter\" restores all source records in their original order and with their original values; after refresh all remain visible, while formula and validation behavior are unchanged.\n"
+  },
+  {
+   "id": "REQ-4-2-2#contract-1",
+   "requirement": "REQ-4-2-2",
+   "explanation": "REQ-4-2-2 requires a direct or indirect circular reference to display #REF!. The evaluator does detect the cycle (cellValue returns the #REF! error while a cell is still being evaluated) but the aggregate path in evalNode collects only values of kind 'num' before applying SUM/COUNT/AVERAGE/MIN/MAX, so the cycle error is discarded. A formula that reaches its own cell through a range therefore returns a plain number instead of the required error. Correction from the previous attempt: the earlier run reported '#ERROR!' instead of an evaluated value because the formula-parser helpers (parseExpr/parseTerm/parseUnary/parsePrimary, mutually recursive) had not been bound, so parsing threw and the engine returned the malformed-expression error; the real parser declarations are now listed so the formula is actually evaluated. Fixture validity: the seeded Sheet1 gains one numeric source cell D6=5; =SUM(D5:D6) is a valid REQ-4-1-1 formula (SUM over a contiguous range) entered through the real commitCell path used by grid/formula-bar entry, and D5 is empty beforehand (control).",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "commitCell",
+     "kind": "function",
+     "alias": "commitCell"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "makeEngine",
+     "kind": "function",
+     "alias": "makeEngine"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "tokenize",
+     "kind": "function",
+     "alias": "tokenize"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "parseExpr",
+     "kind": "function",
+     "alias": "parseExpr"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "parseTerm",
+     "kind": "function",
+     "alias": "parseTerm"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "parseUnary",
+     "kind": "function",
+     "alias": "parseUnary"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "parsePrimary",
+     "kind": "function",
+     "alias": "parsePrimary"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "commitCell",
+   "setup": "globalThis.notices = [];\nglobalThis.uidN = 0;\nglobalThis.ARC = {state:{ui:{}},route:function(){return {name:'workbook',params:['wb-q3-sales']};},save:function(){},render:function(){},notify:function(m){globalThis.notices.push(String(m));},esc:function(s){return String(s==null?'':s);},uid:function(p){globalThis.uidN = globalThis.uidN + 1; return String(p)+'-'+globalThis.uidN;},openDialog:function(){},closeDialog:function(){},setInert:function(){},openPopover:function(){},closePopover:function(){},combobox:function(){return '';},dialogOpen:false};\nglobalThis.ARC.state.ui.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks));\nglobalThis.wb = globalThis.ARC.state.ui.workbooks[0];\nglobalThis.sheet = globalThis.wb.sheets[0];\nglobalThis.sheet.cells.D6 = '5';",
+   "precondition": "assert.strictEqual(wb.id, 'wb-q3-sales');\nassert.strictEqual(sheet.cells.A1, 'Region');\nassert.strictEqual(sheet.cells.D6, '5');\nassert.strictEqual(makeEngine(sheet).display(5, 3), '5', 'control: the source cell D6 evaluates as the number 5');\nassert.strictEqual(makeEngine(sheet).display(4, 3), '', 'control: D5 is empty before the formula is entered');",
+   "check": "assert.strictEqual(typeof commitCell, 'function');\nassert.strictEqual(commitCell(wb, sheet, 4, 3, '=SUM(D5:D6)'), true, 'the submitted formula is valid and must be stored in D5');\nassert.strictEqual(makeEngine(sheet).raw(4, 3), '=SUM(D5:D6)', 'the formula bar keeps the original submitted formula');\nassert.strictEqual(makeEngine(sheet).display(4, 3), '#REF!', 'a formula that includes its own cell through a range is a direct circular reference and must display #REF!');",
+   "requirement_text": "Formula errors use stable visible values: division by zero displays #DIV/0!, an invalid reference displays #REF!, an unsupported function displays #NAME?, a malformed expression displays #ERROR!, and a direct or indirect circular reference displays #REF!. When an error cell is selected, the formula bar displays the original formula submitted by the user; after refresh, both the error value and original formula persist. An error cell does not block viewing, editing, or recalculating other cells. After the user changes it to a valid formula through REQ-3-1-1, the grid displays the new result, the formula bar displays the new formula, related dependent results update, and the error no longer appears after refresh.\n"
+  },
+  {
+   "id": "REQ-2-2-1#contract-1",
+   "requirement": "REQ-2-2-1",
+   "explanation": "REQ-2-2-1 requires that when a row is deleted the affected formulas display the adjusted original formula with correct results, and that references which cannot be preserved display an explicit error. Deleting the row a formula references makes that reference unpreservable, yet the row-deletion rewriter marks the dead operand and cleanupDrops then deletes a dead operand that sits at the end of an expression together with its operator, so =A5+A6+A7 becomes =A5+A6 and the cell silently shows a normal number. Correction from the previous attempt: the earlier run failed the precondition with '#ERROR!' because the mutually recursive formula-parser helpers were not bound and the seed formula could not be parsed; the real parser declarations are now listed so the formula evaluates (control =18) before the deletion. Fixture validity: the seeded Sheet1 gains three numeric source cells A5=5, A6=6, A7=7 and D1='=A5+A6+A7'; deleting row 7 through the real deleteRow transition removes the row that D1 references.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "deleteRow",
+     "kind": "function",
+     "alias": "deleteRow"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "makeEngine",
+     "kind": "function",
+     "alias": "makeEngine"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "tokenize",
+     "kind": "function",
+     "alias": "tokenize"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "parseExpr",
+     "kind": "function",
+     "alias": "parseExpr"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "parseTerm",
+     "kind": "function",
+     "alias": "parseTerm"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "parseUnary",
+     "kind": "function",
+     "alias": "parseUnary"
+    },
+    {
+     "file": "frontend/public/app.js",
+     "name": "parsePrimary",
+     "kind": "function",
+     "alias": "parsePrimary"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "deleteRow",
+   "setup": "globalThis.notices = [];\nglobalThis.uidN = 0;\nglobalThis.ARC = {state:{ui:{}},route:function(){return {name:'workbook',params:['wb-q3-sales']};},save:function(){},render:function(){},notify:function(m){globalThis.notices.push(String(m));},esc:function(s){return String(s==null?'':s);},uid:function(p){globalThis.uidN = globalThis.uidN + 1; return String(p)+'-'+globalThis.uidN;},openDialog:function(){},closeDialog:function(){},setInert:function(){},openPopover:function(){},closePopover:function(){},combobox:function(){return '';},dialogOpen:false};\nglobalThis.ARC.state.ui.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks));\nglobalThis.wb = globalThis.ARC.state.ui.workbooks[0];\nglobalThis.sheet = globalThis.wb.sheets[0];\nglobalThis.sheet.cells.A5 = '5';\nglobalThis.sheet.cells.A6 = '6';\nglobalThis.sheet.cells.A7 = '7';\nglobalThis.sheet.cells.D1 = '=A5+A6+A7';",
+   "precondition": "assert.strictEqual(wb.id, 'wb-q3-sales');\nassert.strictEqual(sheet.cells.A7, '7');\nassert.strictEqual(makeEngine(sheet).raw(0, 3), '=A5+A6+A7');\nassert.strictEqual(makeEngine(sheet).display(0, 3), '18', 'control: the referenced source values evaluate to 18 before the deletion');",
+   "check": "assert.strictEqual(typeof deleteRow, 'function');\ndeleteRow(sheet, 6);\nassert.strictEqual(makeEngine(sheet).display(6, 0), '', 'control: the deleted row no longer holds the value 7');\nconst shown = makeEngine(sheet).display(0, 3);\nassert.ok(shown.charAt(0) === '#', 'deleting the row that D1 references cannot preserve that reference, so D1 must display an explicit formula error (#REF!) instead of a silently retargeted value; displayed: ' + shown);",
+   "requirement_text": "Users insert blank rows above or below a target row, or delete the target row, through the row-number menu in the current active worksheet. The row-number menu provides \"Insert 1 row above\", \"Insert 1 row below\", and \"Delete row\". On insertion, the target row and all subsequent complete records, validation rules, and formula references shift downward together; on deletion, subsequent rows shift upward and rules on the target row are removed. Affected formulas display the adjusted original formulas and correct results, and references that cannot be preserved display an explicit error; filters continue to apply to the original data region. If a shifted 0-to-100 numeric validation rule rejects an out-of-range value, the page displays \"Please enter a number from 0 to 100\". If the change overlaps a pivot-table source range, the existing pivot result remains unchanged until \"Refresh pivot table\" is clicked, after which it is recomputed using the adjusted range. If the operation fails, an error is displayed and the grid immediately and after refresh retains the pre-operation structure; partial row movement is not allowed.\n\nPage reference:\n![image](reference/manage-rows.png)\n"
+  },
+  {
+   "id": "REQ-5-2-1#contract-1",
+   "requirement": "REQ-5-2-1",
+   "explanation": "REQ-5-2-1 requires that an invalid value written through the grid or formula bar be rejected with the numeric message and that the original value remain, and its persisted multi-cell scenario uses a 0-to-100 numeric rule on B2:B4. The rule engine decides validity with parseFloat, which accepts any string that merely starts with a number, so '12abc' is accepted while the formula engine classifies the very same cell content as text - the cell ends up holding non-numeric text inside a range constrained to numbers between 0 and 100. This probe was not affected by the binding problems of the other probes; the previous run already reached the check phase and confirmed that the non-numeric write is accepted (returned true instead of false) while the in-range boundary control was rejected. Fixture validity: the seeded Sheet1 carries the persisted rule {B2:B4, number, 0..100} with valid values '20'/'50'/'80', and the control write '101' is rejected with the required 0-to-100 message, proving the rule is active.",
+   "functions": [
+    {
+     "file": "frontend/public/app.js",
+     "name": "commitCell",
+     "kind": "function",
+     "alias": "commitCell"
+    }
+   ],
+   "initializers": [
+    "frontend/public/seed.js"
+   ],
+   "subject": "commitCell",
+   "setup": "globalThis.notices = [];\nglobalThis.uidN = 0;\nglobalThis.ARC = {state:{ui:{}},route:function(){return {name:'workbook',params:['wb-q3-sales']};},save:function(){},render:function(){},notify:function(m){globalThis.notices.push(String(m));},esc:function(s){return String(s==null?'':s);},uid:function(p){globalThis.uidN = globalThis.uidN + 1; return String(p)+'-'+globalThis.uidN;},openDialog:function(){},closeDialog:function(){},setInert:function(){},openPopover:function(){},closePopover:function(){},combobox:function(){return '';},dialogOpen:false};\nglobalThis.ARC.state.ui.workbooks = JSON.parse(JSON.stringify(window.SEED.workbooks));\nglobalThis.wb = globalThis.ARC.state.ui.workbooks[0];\nglobalThis.sheet = globalThis.wb.sheets[0];\nglobalThis.sheet.cells.B2 = '20';\nglobalThis.sheet.cells.B3 = '50';\nglobalThis.sheet.cells.B4 = '80';\nglobalThis.sheet.validations = [{id:'vr-1', range:{r1:1,c1:1,r2:3,c2:1}, type:'number', min:0, max:100}];",
+   "precondition": "assert.strictEqual(wb.id, 'wb-q3-sales');\nassert.strictEqual(sheet.validations.length, 1);\nassert.strictEqual(sheet.validations[0].type, 'number');\nassert.deepStrictEqual(sheet.validations[0].range, {r1:1,c1:1,r2:3,c2:1});\nassert.strictEqual(sheet.cells.B2, '20');\nassert.strictEqual(sheet.cells.B3, '50');",
+   "check": "assert.strictEqual(typeof commitCell, 'function');\nassert.strictEqual(commitCell(wb, sheet, 2, 1, '101'), false, 'control: 101 is rejected by the persisted 0-to-100 rule on B2:B4');\nassert.strictEqual(sheet.cells.B3, '50', 'control: the rejected edit leaves the original value in place');\nassert.strictEqual(globalThis.notices[globalThis.notices.length - 1], 'Please enter a number from 0 to 100');\nassert.strictEqual(commitCell(wb, sheet, 2, 1, '12abc'), false, 'a non-numeric value is not a valid number for the 0-to-100 rule, so the whole write must be rejected');\nassert.strictEqual(sheet.cells.B3, '50', 'the original value must remain after a rejected write');",
+   "requirement_text": "Users select a target range and click \"Data validation\" in the \"Data\" menu. A dialog named \"Data validation\" provides a combo box labeled \"Rule type\"; \"Dropdown\" uses a text box labeled \"Allowed values\", where comma-separated items are trimmed of leading and trailing spaces; \"Number range\" uses text boxes labeled \"Minimum\" and \"Maximum\"; the \"Save\" button applies an inclusive rule. After a valid save succeeds, the dialog closes. A dropdown cell provides a button with the accessible name \"Open dropdown for <cell coordinate>\"; each option uses the ARIA option role and the trimmed allowed value as its accessible name. If an invalid value is entered through the grid, formula bar, paste, or range move, the entire operation is rejected and the original value remains; an invalid dropdown value displays \"Please select one of the following values: <comma-separated allowed values>\", while an invalid number displays \"Please enter a number between <minimum> and <maximum>\". In the persisted multi-cell 0-to-100 boundary scenario, rejecting 101 in B3 displays \"Please enter a number from 0 to 100\". If any target in a bulk operation is invalid, all targets retain their original values. Rules remain active after refresh. When an existing rule is reopened, the dialog is prefilled with the rule type and parameters and displays a \"Delete rule\" button; saving a modification makes the new range effective immediately, deleting removes the constraint, and either successful operation closes the dialog without changing existing cell values.\n"
+  }
+ ],
+ "source_hashes": {
+  "frontend/public/app.js": "4bbf516fc6608111a626683f39eef3e57000684fc62e06a0f06efc2ea293469a",
+  "frontend/public/seed.js": "7e83d4f8d5f8f4e5bcafc6572ce338f737a4445275b12c58804c091519d1dd41"
+ },
+ "validation": [
+  {
+   "id": "REQ-5-1-2#contract-1",
+   "status": "fail",
+   "calls": {
+    "openFilterDialog": 1,
+    "createFilter": 1,
+    "renderFilterDialog": 1,
+    "homeScreen": 0,
+    "newWorkbookScreen": 0,
+    "workbookScreen": 0,
+    "routeWb": 3,
+    "findWb": 3,
+    "wbList": 3,
+    "publishSharedWorkbooks": 3,
+    "activeSheet": 3,
+    "sel": 1,
+    "isSingle": 1,
+    "record": 1,
+    "hist": 1,
+    "snapshot": 1,
+    "setSheetFilters": 1,
+    "touch": 1,
+    "sheetFilters": 1,
+    "makeEngine": 1,
+    "displayOf": 3,
+    "keyOf": 3,
+    "colName": 3,
+    "isNumericText": 3
+   },
+   "assertions": 6,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "activating the header button \"Filter Region\" must present the filter dialog for that header\n\n0 !== 1\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: activating the header button \"Filter Region\" must present the filter dialog for that header\n\n0 !== 1\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:14:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-4-2-2#contract-1",
+   "status": "fail",
+   "calls": {
+    "commitCell": 1,
+    "makeEngine": 2,
+    "tokenize": 1,
+    "parseExpr": 2,
+    "parseTerm": 2,
+    "parseUnary": 2,
+    "parsePrimary": 2,
+    "displayOf": 1,
+    "keyOf": 3,
+    "colName": 3,
+    "isNumericText": 0,
+    "fmtNum": 0,
+    "checkValue": 1,
+    "rulesForCell": 1,
+    "record": 1,
+    "hist": 1,
+    "snapshot": 1,
+    "setRaw": 1,
+    "touch": 1
+   },
+   "assertions": 4,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a formula that includes its own cell through a range is a direct circular reference and must display #REF!\n\n'#ERROR!' !== '#REF!'\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: a formula that includes its own cell through a range is a direct circular reference and must display #REF!\n\n'#ERROR!' !== '#REF!'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:6:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-2-2-1#contract-1",
+   "status": "error",
+   "calls": {
+    "deleteRow": 0,
+    "makeEngine": 2,
+    "tokenize": 1,
+    "parseExpr": 1,
+    "parseTerm": 1,
+    "parseUnary": 1,
+    "parsePrimary": 1,
+    "keyOf": 2,
+    "colName": 2,
+    "displayOf": 1
+   },
+   "assertions": 4,
+   "phase": "precondition",
+   "error_name": "AssertionError",
+   "message": "control: the referenced source values evaluate to 18 before the deletion\n\n'#ERROR!' !== '18'\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: control: the referenced source values evaluate to 18 before the deletion\n\n'#ERROR!' !== '18'\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:6:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:75:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  },
+  {
+   "id": "REQ-5-2-1#contract-1",
+   "status": "fail",
+   "calls": {
+    "commitCell": 2,
+    "checkValue": 2,
+    "rulesForCell": 2,
+    "numMessage": 1,
+    "record": 1,
+    "hist": 1,
+    "snapshot": 1,
+    "setRaw": 1,
+    "keyOf": 1,
+    "colName": 1,
+    "touch": 1
+   },
+   "assertions": 5,
+   "phase": "check",
+   "error_name": "AssertionError",
+   "message": "a non-numeric value is not a valid number for the 0-to-100 rule, so the whole write must be rejected\n\ntrue !== false\n",
+   "error": "node:assert:149\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: a non-numeric value is not a valid number for the 0-to-100 rule, so the whole write must be rejected\n\ntrue !== false\n\n    at Proxy.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:15:55)\n    at evalmachine.<anonymous>:7:8\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at Object.<anonymous> (~/projects/volo-factory-worktrees/repair-evidence-20261003/oneshot/contract_runner.cjs:79:8)\n    at Module._compile (node:internal/modules/cjs/loader:1811:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1942:10)\n    at Module.load (node:internal/modules/cjs/loader:1532:32)\n    at Module._load (node:internal/modules/cjs/loader:1334:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)"
+  }
+ ]
+}

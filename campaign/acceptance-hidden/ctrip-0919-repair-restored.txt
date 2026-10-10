@@ -1,0 +1,1626 @@
+=== FILE: frontend/public/seed.js ===
+window.SEED = {
+  session: null,
+  loginMode: 'password',
+  regStep: 1,
+  cityTab: 'hot',
+  cityTarget: 'origin',
+  pendingDateField: null,
+  expandedFlight: null,
+  refundExpanded: false,
+  reminderExpanded: false,
+  orderTab: 'all',
+  orderSearch: '',
+  travelerSearch: '',
+  addressSearch: '',
+  contactSearch: '',
+  invoiceSearch: '',
+  statusMode: 'flightNo',
+  statusResult: null,
+  voucherTab: 'pending',
+  airportCategory: 'domestic',
+  airportLetter: '',
+  airportTab: 'overview',
+  sort: '',
+  resultsFilter: { stop: '', airline: '' },
+  search: {
+    tripType: 'oneway',
+    origin: '成都(CTU)',
+    destination: '广州(CAN)',
+    departDate: '2026-01-08 明天',
+    returnDate: '',
+    returnDisplay: '',
+    cabin: '不限舱等',
+    withChild: false,
+    withInfant: false
+  },
+  booking: null,
+  payment: null,
+  formValues: {},
+  selected: { travelers: [], addresses: [], contacts: [], invoices: [] },
+  cities: [
+    { name: '成都', code: 'CTU', letter: 'C' },
+    { name: '广州', code: 'CAN', letter: 'G' },
+    { name: '上海', code: 'SHA', letter: 'S' },
+    { name: '北京', code: 'PEK', letter: 'B' },
+    { name: '火星城', code: 'MARS', letter: 'H' }
+  ],
+  frequentPassengers: [
+    { id: 'fp1', name: '张三', docType: '身份证', docNo: '110101199001011234', mobile: '13900000001' },
+    { id: 'fp2', name: '李四', docType: '身份证', docNo: '110101199202022345', mobile: '13900000002' }
+  ],
+  users: [
+    { id: 'u_ctrip', username: 'ctrip_user', name: 'ctrip_user', email: 'ctrip_user@example.com', phone: '13800000010', password: '***' },
+    { id: 'u_sms', username: 'ctrip_sms_user', name: 'ctrip_sms_user', email: 'ctrip_sms_user@example.com', phone: '13800000011', password: '***' },
+    { id: 'u_order_read', username: 'ctrip_order_read', name: 'ctrip_order_read', email: 'ctrip_order_read@example.com', phone: '13800000021', password: '***' },
+    { id: 'u_order_cancel', username: 'ctrip_order_cancel', name: 'ctrip_order_cancel', email: 'ctrip_order_cancel@example.com', phone: '13800000022', password: '***' },
+    { id: 'u_personal', username: 'ctrip_personal_read', name: 'ctrip_personal_read', email: 'ctrip_personal_read@example.com', phone: '13800000023', password: '***' },
+    { id: 'u_traveler_create', username: 'ctrip_traveler_create', name: 'ctrip_traveler_create', email: 'ctrip_traveler_create@example.com', phone: '13800000024', password: '***' },
+    { id: 'u_traveler_delete', username: 'ctrip_traveler_delete', name: 'ctrip_traveler_delete', email: 'ctrip_traveler_delete@example.com', phone: '13800000025', password: '***' },
+    { id: 'u_traveler_batch', username: 'ctrip_traveler_batch', name: 'ctrip_traveler_batch', email: 'ctrip_traveler_batch@example.com', phone: '13800000026', password: '***' },
+    { id: 'u_address_create', username: 'ctrip_address_create', name: 'ctrip_address_create', email: 'ctrip_address_create@example.com', phone: '13800000027', password: '***' },
+    { id: 'u_address_delete', username: 'ctrip_address_delete', name: 'ctrip_address_delete', email: 'ctrip_address_delete@example.com', phone: '13800000028', password: '***' },
+    { id: 'u_address_batch', username: 'ctrip_address_batch', name: 'ctrip_address_batch', email: 'ctrip_address_batch@example.com', phone: '13800000029', password: '***' },
+    { id: 'u_contact_search', username: 'ctrip_contact_search', name: 'ctrip_contact_search', email: 'ctrip_contact_search@example.com', phone: '13800000030', password: '***' },
+    { id: 'u_contact_batch_1', username: 'ctrip_contact_batch_1', name: 'ctrip_contact_batch_1', email: 'ctrip_contact_batch_1@example.com', phone: '13800000031', password: '***' },
+    { id: 'u_contact_create', username: 'ctrip_contact_create', name: 'ctrip_contact_create', email: 'ctrip_contact_create@example.com', phone: '13800000032', password: '***' },
+    { id: 'u_contact_delete', username: 'ctrip_contact_delete', name: 'ctrip_contact_delete', email: 'ctrip_contact_delete@example.com', phone: '13800000033', password: '***' },
+    { id: 'u_contact_batch_2', username: 'ctrip_contact_batch_2', name: 'ctrip_contact_batch_2', email: 'ctrip_contact_batch_2@example.com', phone: '13800000034', password: '***' },
+    { id: 'u_invoice_search', username: 'ctrip_invoice_search', name: 'ctrip_invoice_search', email: 'ctrip_invoice_search@example.com', phone: '13800000035', password: '***' },
+    { id: 'u_invoice_create', username: 'ctrip_invoice_create', name: 'ctrip_invoice_create', email: 'ctrip_invoice_create@example.com', phone: '13800000036', password: '***' },
+    { id: 'u_invoice_delete', username: 'ctrip_invoice_delete', name: 'ctrip_invoice_delete', email: 'ctrip_invoice_delete@example.com', phone: '13800000037', password: '***' },
+    { id: 'u_invoice_batch', username: 'ctrip_invoice_batch', name: 'ctrip_invoice_batch', email: 'ctrip_invoice_batch@example.com', phone: '13800000038', password: '***' },
+    { id: 'u_profile_read', username: 'ctrip_profile_read', name: 'ctrip_profile_read', email: 'ctrip_profile_read@example.com', phone: '13800000013', password: '***' },
+    { id: 'u_profile_edit', username: 'ctrip_profile_edit', name: 'ctrip_profile_edit', email: 'ctrip_profile_edit@example.com', phone: '13800000015', password: '***' },
+    { id: 'u_password_change', username: 'ctrip_password_change', name: 'ctrip_password_change', email: 'ctrip_password_change@example.com', phone: '13800000016', password: '***' },
+    { id: 'u_phone_binding', username: 'ctrip_phone_binding', name: 'ctrip_phone_binding', email: 'ctrip_phone_binding@example.com', phone: '13800000018', password: '***' },
+    { id: 'u_email_binding', username: 'ctrip_email_binding', name: 'ctrip_email_binding', email: 'ctrip_email_binding@example.com', phone: '13800000019', password: '***' },
+    { id: 'u_voucher_read', username: 'ctrip_voucher_read', name: 'ctrip_voucher_read', email: 'ctrip_voucher_read@example.com', phone: '13800000039', password: '***' },
+    { id: 'u_sms_missing_code', username: 'ctrip_sms_missing_code', name: 'ctrip_sms_missing_code', email: 'ctrip_sms_missing_code@example.com', phone: '13800000041', password: '***' },
+    { id: 'u_sms_incorrect_code', username: 'ctrip_sms_incorrect_code', name: 'ctrip_sms_incorrect_code', email: 'ctrip_sms_incorrect_code@example.com', phone: '13800000042', password: '***' },
+    { id: 'u_sms_agreement', username: 'ctrip_sms_agreement', name: 'ctrip_sms_agreement', email: 'ctrip_sms_agreement@example.com', phone: '13800000043', password: '***' }
+  ],
+  travelers: [
+    { id: 't1', userId: 'u_personal', name: '张三', mobile: '13900000001', docType: '身份证', docNo: '110101199001011234', gender: '男', birth: '1990-01-01' },
+    { id: 't2', userId: 'u_personal', name: '李四', mobile: '13900000002', docType: '身份证', docNo: '110101199202022345', gender: '女', birth: '1992-02-02' },
+    { id: 't3', userId: 'u_traveler_delete', name: '王五', mobile: '13900000003', docType: '身份证', docNo: '110101198803034567', gender: '男', birth: '1988-03-03' },
+    { id: 't4', userId: 'u_traveler_batch', name: '赵六', mobile: '13900000004', docType: '身份证', docNo: '110101198404045678', gender: '男', birth: '1984-04-04' },
+    { id: 't5', userId: 'u_traveler_batch', name: '钱七', mobile: '13900000005', docType: '身份证', docNo: '110101199505056789', gender: '女', birth: '1995-05-05' }
+  ],
+  addresses: [
+    { id: 'a1', userId: 'u_personal', recipient: '张三', region: '上海市 上海市 浦东新区', detail: '世纪大道100号', mobile: '13900000001' },
+    { id: 'a2', userId: 'u_address_delete', recipient: '李四', region: '上海市 上海市 徐汇区', detail: '漕溪北路88号', mobile: '13900000002' },
+    { id: 'a3', userId: 'u_address_batch', recipient: '王五', region: '北京市 北京市 朝阳区', detail: '建国路93号', mobile: '13900000003' },
+    { id: 'a4', userId: 'u_address_batch', recipient: '赵六', region: '广东省 广州市 天河区', detail: '天河路385号', mobile: '13900000004' }
+  ],
+  contacts: [
+    { id: 'c1', userId: 'u_contact_search', name: '张三', mobile: '13900000001', email: 'zhangsan@example.com', isDefault: false },
+    { id: 'c2', userId: 'u_contact_batch_1', name: '李四', mobile: '13900000002', email: 'lisi@example.com', isDefault: false },
+    { id: 'c3', userId: 'u_contact_batch_1', name: '王五', mobile: '13900000003', email: 'wangwu@example.com', isDefault: false },
+    { id: 'c4', userId: 'u_contact_delete', name: '赵六', mobile: '13900000004', email: 'zhaoliu@example.com', isDefault: false },
+    { id: 'c5', userId: 'u_contact_batch_2', name: '钱七', mobile: '13900000005', email: 'qianqi@example.com', isDefault: false },
+    { id: 'c6', userId: 'u_contact_batch_2', name: '孙八', mobile: '13900000006', email: 'sunba@example.com', isDefault: false }
+  ],
+  invoices: [
+    { id: 'i1', userId: 'u_invoice_search', title: '上海示例科技有限公司', taxId: '91310000123456789A', type: '企业', vat: '不需要' },
+    { id: 'i2', userId: 'u_invoice_delete', title: '示例删除公司', taxId: '91310000999999999B', type: '企业', vat: '不需要' },
+    { id: 'i3', userId: 'u_invoice_batch', title: '示例批量公司一', taxId: '91310000111111111C', type: '企业', vat: '不需要' },
+    { id: 'i4', userId: 'u_invoice_batch', title: '示例批量公司二', taxId: '91310000222222222D', type: '企业', vat: '不需要' }
+  ],
+  profiles: [
+    { userId: 'u_profile_read', nickname: '携程用户', realName: '张三', gender: '男', birth: '1990-01-01' },
+    { userId: 'u_profile_edit', nickname: '旧昵称', realName: '旧姓名', gender: '女', birth: '1995-05-05' }
+  ],
+  orders: [
+    { id: 'o1', userId: 'u_order_read', orderNo: 'CTRIP20260721001', date: '2026-07-21', itinerary: '成都-广州', flightNo: 'CZ3401', total: 680, status: '待支付' },
+    { id: 'o2', userId: 'u_order_read', orderNo: 'CTRIP20260718002', date: '2026-07-18', itinerary: '上海-北京', flightNo: 'CA1501', total: 860, status: '待点评' },
+    { id: 'o3', userId: 'u_order_read', orderNo: 'CTRIP20260601003', date: '2026-06-01', itinerary: '北京-上海', flightNo: 'MU5101', total: 920, status: '已完成' },
+    { id: 'o4', userId: 'u_order_read', orderNo: 'CTRIP20260801004', date: '2026-08-01', itinerary: '广州-成都', flightNo: 'CZ3405', total: 720, status: '未出行' },
+    { id: 'o5', userId: 'u_order_cancel', orderNo: 'CTRIP20260712005', date: '2026-07-12', itinerary: '成都-广州', flightNo: 'CZ3401', total: 680, status: '待支付' }
+  ],
+  flights: [
+    { id: 'f1', airline: '南方航空', flightNo: 'CZ3401', dep: '07:00', arr: '09:20', duration: '02h20m', stop: '直飞', price: 680, onTime: 92, origin: '成都(CTU)', dest: '广州(CAN)', fares: [ { label: '经济舱 2.3折', price: 680 }, { label: '高端经济舱', price: 980 }, { label: '公务舱', price: 2380 } ], refund: '起飞前2小时前退票收取票面10%；变更收取5%手续费' },
+    { id: 'f2', airline: '南方航空', flightNo: 'CZ3405', dep: '13:10', arr: '15:30', duration: '02h20m', stop: '直飞', price: 720, onTime: 88, origin: '成都(CTU)', dest: '广州(CAN)', fares: [ { label: '经济舱 3.0折', price: 720 }, { label: '高端经济舱', price: 1080 } ], refund: '起飞前2小时前退票收取票面15%；变更收取10%手续费' },
+    { id: 'f3', airline: '东方航空', flightNo: 'MU5321', dep: '09:30', arr: '12:10', duration: '02h40m', stop: '经停', price: 520, onTime: 75, origin: '成都(CTU)', dest: '广州(CAN)', fares: [ { label: '经济舱 2.1折', price: 520 }, { label: '经济舱 4.0折', price: 760 } ], refund: '经停航班退票收取票面20%；变更收取10%手续费' },
+    { id: 'f4', airline: '中国国航', flightNo: 'CA4301', dep: '16:20', arr: '18:40', duration: '02h20m', stop: '直飞', price: 860, onTime: 95, origin: '成都(CTU)', dest: '广州(CAN)', fares: [ { label: '经济舱 4.5折', price: 860 }, { label: '公务舱', price: 2680 } ], refund: '起飞前2小时前退票收取票面5%；变更免费' }
+  ],
+  statusFlights: [
+    { id: 'sf1', airline: '中国国航', flightNo: 'CA1501', dep: '08:00', arr: '10:15', origin: '上海', dest: '北京', status: '航班到达' },
+    { id: 'sf2', airline: '东方航空', flightNo: 'MU5101', dep: '09:00', arr: '11:20', origin: '上海', dest: '北京', status: '计划起飞' }
+  ],
+  flightDetail: { flightNo: 'JD5162', airline: '首都航空', origin: '成都', dest: '哈尔滨', dep: '12:40', arr: '15:20', status: '计划起飞', checkin: 'H14-H25', checkinDeadline: '12:20', gate: 'B23', carousel: '12' },
+  flightStatusHistory: ['JD5162', 'MU5234'],
+  searchHistory: [{ label: '成都 - 广州', origin: '成都', destination: '广州' }],
+  vouchers: [
+    { id: 'v1', userId: 'u_voucher_read', orderNo: 'CTRIP20260501001', type: '电子行程单', status: '已完成' }
+  ]
+};
+=== END ===
+=== FILE: frontend/public/app.js ===
+'use strict';
+
+const esc = (s) => ARC.esc(s);
+const st = () => ARC.state;
+
+function currentUser() { return ARC.currentUser(); }
+function uidOf() { return st().session || ((st().users || [])[0] && (st().users)[0].id) || 'u_anon'; }
+function notify(m) { ARC.notify(m); }
+function dateOnly(d) { return String(d || '').slice(0, 10); }
+function daysBetween(a, b) { return Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000); }
+function pad2(n) { return String(n).padStart(2, '0'); }
+function maskPhone(p) { if (!p) return ''; return p.slice(0, 3) + '****' + p.slice(7); }
+function maskEmail(e) { if (!e) return ''; const a = e.split('@'); if (a.length !== 2) return e; return a[0].charAt(0) + '***@' + a[1]; }
+
+function normCity(v) {
+  if (!v) return '';
+  const name = String(v).split('(')[0].trim();
+  const c = (st().cities || []).find((x) => x.name === name);
+  return c ? `${c.name}(${c.code})` : String(v).trim();
+}
+
+function bookingTotal() {
+  const b = st().booking;
+  if (!b) return 0;
+  const flight = (st().flights || []).find((f) => f.id === b.flightId);
+  const fare = st().bookingFare || ((flight && flight.fares && flight.fares[0]) || { price: flight ? flight.price : 0 });
+  const count = Math.max(1, (b.selectedPassengerIds || []).length);
+  let total = fare.price * count;
+  const svc = b.services || {};
+  if (svc.insurance) total += 40 * count;
+  if (svc.extraBag) total += Number(svc.extraBag) || 0;
+  if (svc.transfer) total += 42;
+  if (svc.lounge) total += 128;
+  return total;
+}
+
+function passengerCount() {
+  if (!st().booking) return 0;
+  return (st().booking.selectedPassengerIds || []).length;
+}
+
+function openCityPicker(field) {
+  st().cityTarget = field || 'origin';
+  ARC.openDialog('<div class="city-picker"></div>', { title: '选择城市' });
+  renderCityDialog();
+}
+
+function renderCityDialog() {
+  const root = document.getElementById('dialog-root');
+  if (!root) return;
+  const tab = st().cityTab || 'hot';
+  const all = st().cities || [];
+  const shown = tab === 'hot' ? all.filter((c) => c.name === '成都') : all.filter((c) => ['G', 'H', 'I', 'J'].includes(c.letter));
+  root.innerHTML = `<div class="dialog" role="dialog" aria-label="选择城市"><div class="city-picker">
+    <div class="city-tabs"><button type="button" data-action="city-tab" data-tab="hot">热门</button><button type="button" data-action="city-tab" data-tab="GHIJ">GHIJ</button></div>
+    <div class="city-list">${shown.map((c) => `<button type="button" data-action="city-select" data-city="${esc(c.name)}" data-code="${esc(c.code)}">${esc(c.name)}</button>`).join('')}</div>
+  </div></div>`;
+}
+
+function openDatePicker(field) {
+  st().pendingDateField = field || 'departDate';
+  const root = document.getElementById('dialog-root');
+  const s = st().search || {};
+  const today = '2026-07-19';
+  const dep = dateOnly(s.departDate) || today;
+  const fieldNow = st().pendingDateField;
+  const quick = [
+    { d: '2026-01-08', label: '2026-01-08 明天' },
+    { d: '2026-01-09', label: '2026-01-09' },
+    { d: '2026-01-11', label: '2026-01-11' }
+  ];
+  const quickBtns = quick.map((q) => `<button type="button" data-action="date-select" data-date="${q.d}" data-label="${esc(q.label)}">${esc(q.label)}</button>`).join('');
+  let days = '';
+  for (let day = 1; day <= 31; day++) {
+    const ds = `2026-07-${pad2(day)}`;
+    let disabled = ds < today;
+    if (fieldNow === 'returnDate' && dep && ds <= dep) disabled = true;
+    days += `<button type="button" ${disabled ? 'disabled' : ''} data-action="date-select" data-date="${ds}">${day}<span class="cal-price">¥460</span></button>`;
+  }
+  const html = `<div class="date-picker"><div class="month-title">2026年7月</div>
+    <div class="quick-dates">${quickBtns}</div>
+    <div class="cal-grid">${days}</div></div>`;
+  if (!root) return;
+  root.innerHTML = `<div class="dialog" role="dialog" aria-label="选择日期">${html}</div>`;
+}
+
+function openConfirm(message, action, id, buttonLabel) {
+  const label = buttonLabel || '确认';
+  ARC.openDialog(`<div class="confirm"><p>${esc(message)}</p>
+    <button type="button" data-action="${action}" data-id="${esc(id || '')}">${esc(label)}</button>
+    <button type="button" data-action="arc:close">取消</button></div>`, { title: label });
+}
+
+function travelerListHtml() {
+  const uid = uidOf();
+  const q = (st().travelerSearch || '').toLowerCase();
+  const list = (st().travelers || []).filter((t) => t.userId === uid && (!q || t.name.toLowerCase().includes(q)));
+  if (!list.length) return q ? `<p>未找到与“${esc(q)}”匹配的旅客</p>` : `<p>未找到相关旅客</p>`;
+  return list.map((t) => `<article class="management-card">
+    <h3>${esc(t.name)}</h3>
+    <p>手机号：${esc(t.mobile)}</p>
+    <p>证件类型：${esc(t.docType)}</p>
+    <p>证件号码：${esc(t.docNo)}</p>
+    <label class="check-label"><input type="checkbox" data-check="traveler:${esc(t.id)}" aria-label="选择 ${esc(t.name)}" ${(st().selected.travelers || []).includes(t.id) ? 'checked' : ''}> 选择</label>
+    ${ARC.rowActions([{ label: '删除', action: 'delete-traveler' }], t.id)}
+  </article>`).join('');
+}
+
+function addressListHtml() {
+  const uid = uidOf();
+  const list = (st().addresses || []).filter((a) => a.userId === uid);
+  if (!list.length) return `<p>暂无地址</p>`;
+  return list.map((a) => `<article class="management-card" data-action="view-address" data-id="${esc(a.id)}">
+    <h3>${esc(a.recipient)}</h3>
+    <p>地区：${esc(a.region)}</p>
+    <p>详细地址：${esc(a.detail)}</p>
+    <p>手机号：${esc(a.mobile)}</p>
+    <label class="check-label"><input type="checkbox" data-check="address:${esc(a.id)}" aria-label="选择地址 ${esc(a.recipient)}" ${(st().selected.addresses || []).includes(a.id) ? 'checked' : ''}> 选择</label>
+    ${ARC.rowActions([{ label: '删除', action: 'delete-address' }], a.id)}
+  </article>`).join('');
+}
+
+function contactListHtml() {
+  const uid = uidOf();
+  const q = (st().contactSearch || '').toLowerCase();
+  const list = (st().contacts || []).filter((c) => c.userId === uid && (!q || c.name.toLowerCase().includes(q)));
+  if (!list.length) return q ? `<p>未找到与“${esc(q)}”匹配的联系人</p>` : `<p>未找到相关联系人</p>`;
+  return list.map((c) => `<article class="management-card">
+    <h3>${esc(c.name)}</h3>
+    <p>手机号：${esc(c.mobile)}</p>
+    <p>邮箱：${esc(c.email)}</p>
+    ${c.isDefault ? '<p>默认联系人</p>' : ''}
+    <label class="check-label"><input type="checkbox" data-check="contact:${esc(c.id)}" aria-label="选择联系人 ${esc(c.name)}" ${(st().selected.contacts || []).includes(c.id) ? 'checked' : ''}> 选择</label>
+    ${ARC.rowActions([{ label: '删除', action: 'delete-contact' }], c.id)}
+  </article>`).join('');
+}
+
+function invoiceListHtml() {
+  const uid = uidOf();
+  const q = (st().invoiceSearch || '').toLowerCase();
+  const list = (st().invoices || []).filter((v) => v.userId === uid && (!q || v.title.toLowerCase().includes(q)));
+  if (!list.length) return q ? `<p>未找到与“${esc(q)}”匹配的发票抬头</p>` : `<p>未找到相关发票抬头</p>`;
+  return list.map((v) => `<article class="management-card">
+    <h3>${esc(v.title)}</h3>
+    <p>税号：${esc(v.taxId)}</p>
+    <p>类型：${esc(v.type)}</p>
+    <label class="check-label"><input type="checkbox" data-check="invoice:${esc(v.id)}" aria-label="选择发票 ${esc(v.title)}" ${(st().selected.invoices || []).includes(v.id) ? 'checked' : ''}> 选择</label>
+    ${ARC.rowActions([{ label: '删除', action: 'delete-invoice' }], v.id)}
+  </article>`).join('');
+}
+
+function vouchersFor() {
+  const uid = uidOf();
+  return (st().vouchers || []).filter((v) => v.userId === uid);
+}
+
+window.LAYOUT = {
+  brand: '携程旅行',
+  nav: [
+    { label: '首页', hash: '#/' },
+    { label: '机票', hash: '#/flights' },
+    { label: '航班动态', hash: '#/flight-status' },
+    { label: '机场攻略', hash: '#/airport' }
+  ],
+  sidebar: [
+    { label: '常用信息', hash: '#/personal' },
+    { label: '常用旅客信息', hash: '#/travelers' },
+    { label: '常用联系人', hash: '#/contacts' },
+    { label: '常用报销凭证', hash: '#/invoices' },
+    { label: '常用地址', hash: '#/addresses' },
+    { label: '我的信息', hash: '#/profile' },
+    { label: '账户安全', hash: '#/security' }
+  ],
+  footer: 'Footer 携程旅行',
+  account(user) {
+    const menu = (name, itemsHtml) => `<span class="menu-host"><button type="button" data-action="toggle-menu" data-menu="${name}">${name}</button><div class="menu-panel" hidden>${itemsHtml}</div></span>`;
+    const orderMenu = menu('订单', `<button type="button" data-action="goto-orders">机票+相关订单</button>`);
+    const moreMenu = menu('更多服务', `
+      <button type="button" data-action="arc:nav" data-hash="#/vouchers">报销凭证</button>
+      <button type="button" data-action="arc:nav" data-hash="#/airport">机场攻略</button>
+      <button type="button" data-action="arc:nav" data-hash="#/airport/domestic">国内机场大全</button>
+      <button type="button" data-action="arc:nav" data-hash="#/airport/international">国际机场大全</button>
+      <button type="button" data-action="arc:nav" data-hash="#/flight-status">航班动态</button>`);
+    const auth = user
+      ? `<span class="menu-host"><button type="button" data-action="toggle-menu" data-menu="user">尊敬的...</button><div class="menu-panel" hidden>
+          <button type="button" data-action="goto-personal">尊敬的用户</button>
+          <button type="button" data-action="logout">退出登录</button>
+        </div></span>`
+      : `<a href="#/login">登录</a><a href="#/register">注册</a>`;
+    return orderMenu + moreMenu + auth;
+  }
+};
+
+window.APP = {
+  screens: {
+    home() { return this.screens.flights(); },
+    flights() {
+      const s = st().search || {};
+      const trip = s.tripType || 'oneway';
+      const history = st().searchHistory || [];
+      return `<h1>机票预订</h1>
+      <form aria-label="Flight search form" data-action="flight-search">
+        <div class="trip-types">
+          <label><input type="radio" name="tripType" value="oneway" data-change="trip-type" ${trip === 'oneway' ? 'checked' : ''}> 单程</label>
+          <label><input type="radio" name="tripType" value="roundtrip" data-change="trip-type" ${trip === 'roundtrip' ? 'checked' : ''}> 往返</label>
+          <label><input type="radio" name="tripType" value="multi" data-change="trip-type" ${trip === 'multi' ? 'checked' : ''}> 多程</label>
+        </div>
+        <div class="city-row">
+          <div class="field"><label for="origin">出发城市</label>
+          <input id="origin" name="origin" data-city-field="origin" autocomplete="off" placeholder="出发城市 Origin" value="${esc(s.origin || '')}"><button type="button" data-action="pick-city" data-field="origin">选择城市</button></div>
+          <button type="button" class="swap-btn" aria-label="双向箭头" data-action="swap-cities">⇄</button>
+          <div class="field"><label for="destination">到达城市</label>
+          <input id="destination" name="destination" data-city-field="destination" autocomplete="off" placeholder="到达城市 Destination" value="${esc(s.destination || '')}"><button type="button" data-action="pick-city" data-field="destination">选择城市</button></div>
+        </div>
+        <div class="date-row">
+          <div class="field"><label for="departDate">出发日期</label>
+          <input id="departDate" name="departDate" data-date-field="departDate" autocomplete="off" value="${esc(s.departDate || '')}"><button type="button" data-action="pick-date" data-field="departDate">选择日期</button></div>
+          <div class="field" id="return-field" style="${trip === 'oneway' ? 'display:none' : ''}"><label for="returnDate">返回日期</label>
+          <input id="returnDate" name="returnDate" data-date-field="returnDate" autocomplete="off" value="${esc(s.returnDisplay || s.returnDate || '')}"><button type="button" data-action="pick-date" data-field="returnDate">选择日期</button>${s.returnDate ? '<span class="return-days">4天</span>' : ''}</div>
+          ${trip === 'oneway' ? '<button type="button" class="add-return" data-action="add-return"><span aria-hidden="true">+ </span>添加返程</button>' : ''}
+        </div>
+        <div class="opts-row">
+          <label class="inline"><input type="checkbox" name="withChild" data-change="passenger-check" ${s.withChild ? 'checked' : ''}> 带儿童</label>
+          <label class="inline"><input type="checkbox" name="withInfant" data-change="passenger-check" ${s.withInfant ? 'checked' : ''}> 带婴儿</label>
+          <label for="cabin">不限舱等</label>
+          <select id="cabin" name="cabin" data-change="search-cabin">
+            <option value="不限舱等" ${s.cabin === '不限舱等' ? 'selected' : ''}>不限舱等</option>
+            <option value="经济舱" ${s.cabin === '经济舱' ? 'selected' : ''}>经济舱</option>
+            <option value="公务舱/头等舱" ${s.cabin === '公务舱/头等舱' ? 'selected' : ''}>公务舱/头等舱</option>
+          </select>
+        </div>
+        <button type="submit" class="primary search-btn">搜索</button>
+      </form>
+      <div class="search-history">
+        <h2>搜索历史</h2>
+        ${history.map((h) => `<button type="button" data-action="use-history" data-origin="${esc(h.origin)}" data-dest="${esc(h.destination)}">${esc(h.label)}</button>`).join('')}
+      </div>`;
+    },
+    results() {
+      const s = st().search || {};
+      const origin = s.origin || '';
+      const dest = s.destination || '';
+      let flights = (st().flights || []).filter((f) => f.origin === origin && f.dest === dest);
+      if (!flights.length) {
+        return `<h1>航班搜索结果</h1><div class="status-notice"><p>未找到相关航班</p><p>没有从${esc(origin)}到${esc(dest)}（火星城）的航班</p><button type="button" data-action="arc:nav" data-hash="#/flights">修改搜索条件</button></div>`;
+      }
+      const rf = st().resultsFilter || {};
+      if (rf.stop) flights = flights.filter((f) => f.stop === rf.stop);
+      if (rf.airline) flights = flights.filter((f) => f.airline === rf.airline);
+      if (st().sort === 'price') flights = [...flights].sort((a, b) => a.price - b.price);
+      if (st().sort === 'ontime') flights = [...flights].sort((a, b) => b.onTime - a.onTime);
+      if (st().sort === 'dep') flights = [...flights].sort((a, b) => a.dep.localeCompare(b.dep));
+      const dateBar = `<div class="date-bar">
+        <button type="button" data-action="date-bar-select" data-date="2026-01-08">2026-01-08<br><span>¥320</span></button>
+        <button type="button" data-action="date-bar-select" data-date="2026-01-09">2026-01-09<br><span>¥460</span></button>
+        <button type="button" data-action="date-bar-select" data-date="2026-01-10">2026-01-10<br><span>¥520</span></button>
+        <button type="button" data-action="more-dates">更多日期</button>
+        <button type="button" aria-label="下一周" data-action="next-week">&gt;</button>
+      </div>`;
+      const cards = flights.map((f) => `<article class="flight-card">
+        <div class="flight-head">
+          <h3>${esc(f.airline)} ${esc(f.flightNo)}</h3>
+          <p class="flight-time">${esc(f.dep)} - ${esc(f.arr)}</p>
+          <p>${esc(f.stop)}</p>
+          <p>¥${esc(f.price)}</p>
+          <p>准点率 ${esc(f.onTime)}%</p>
+        </div>
+        ${st().expandedFlight === f.id ? `<div class="fare-list">
+          <div class="refund-rule"><p>退改规则：${esc(f.refund)}</p></div>
+          ${f.fares.map((fare, idx) => `<div class="fare-row"><span>${esc(fare.label)}</span><span>¥${esc(fare.price)}</span><button type="button" data-action="book-flight" data-id="${esc(f.id)}" data-fare="${idx}">预订</button></div>`).join('')}
+        </div>` : `<div class="fare-preview">${f.fares.slice(0, 2).map((fare) => `<span>${esc(fare.label)} ¥${esc(fare.price)}</span>`).join('')}</div>`}
+        <button type="button" class="expand-btn" data-action="toggle-expand" data-id="${esc(f.id)}">收起/展开</button>
+      </article>`).join('');
+      return `<h1>航班搜索结果</h1>
+      <div class="results-toolbar">
+        <div><label for="filter-stop">直飞/经停</label>
+        <select id="filter-stop" data-change="filter-stop"><option value="">全部</option><option value="直飞" ${rf.stop === '直飞' ? 'selected' : ''}>直飞</option><option value="经停" ${rf.stop === '经停' ? 'selected' : ''}>经停</option></select></div>
+        <div><label for="filter-airline">航空公司</label>
+        <select id="filter-airline" data-change="filter-airline"><option value="">全部</option><option value="南方航空" ${rf.airline === '南方航空' ? 'selected' : ''}>南方航空</option><option value="东方航空" ${rf.airline === '东方航空' ? 'selected' : ''}>东方航空</option><option value="中国国航" ${rf.airline === '中国国航' ? 'selected' : ''}>中国国航</option></select></div>
+      </div>
+      <div class="sort-bar">
+        <button type="button" data-action="sort-flights" data-sort="price">低价优先</button>
+        <button type="button" data-action="sort-flights" data-sort="ontime">准点率高-低</button>
+        <button type="button" data-action="sort-flights" data-sort="dep">起飞时间早-晚</button>
+      </div>
+      ${dateBar}
+      <div class="flight-list">${cards}</div>`;
+    },
+    book() {
+      if (!st().booking) st().booking = { selectedPassengerIds: [], services: { insurance: false, extraBag: 0, transfer: false, transferAddress: '', lounge: false }, contact: '' };
+      const b = st().booking;
+      const flight = (st().flights || []).find((f) => f.id === b.flightId) || (st().flights || [])[0] || {};
+      const fare = st().bookingFare || ((flight.fares && flight.fares[0]) || { label: '标准价', price: flight.price || 680 });
+      const selected = (st().frequentPassengers || []).filter((p) => (b.selectedPassengerIds || []).includes(p.id));
+      const count = Math.max(1, selected.length);
+      const svc = b.services || {};
+      const total = bookingTotal();
+      const passengersHtml = selected.map((p) => `<div class="passenger-card"><p>${esc(p.name)}</p><p>${esc(p.docType)} ${esc(p.docNo)}</p></div>`).join('') || '<p>尚未选择乘机人</p>';
+      return `<h1>订单填写</h1>
+      <div class="notice-bar"><span>出行提醒</span><button type="button" aria-label="展开提醒" data-action="toggle-reminder">展开</button></div>
+      <div id="reminder-detail" hidden><p>中国民用航空局提醒：充电宝严禁放入托运行李；乘机随身携带行李需符合航空公司规定。</p></div>
+      <section class="booking-section">
+        <h2>乘机人</h2>
+        <div class="frequent-list">
+          <h3>常用乘机人</h3>
+          ${(st().frequentPassengers || []).map((p) => `<label class="inline"><input type="checkbox" data-passenger-toggle value="${esc(p.id)}" ${(b.selectedPassengerIds || []).includes(p.id) ? 'checked' : ''}> ${esc(p.name)}</label>`).join('')}
+        </div>
+        <div class="passenger-cards"><h3>乘机人信息</h3>${passengersHtml}</div>
+        <button type="button" data-action="add-passenger">+ 新增乘机人</button>
+        <div class="manual-passenger">
+          <h3>手动填写乘机人</h3>
+          <label for="manual-name">姓名 Name</label><input id="manual-name" name="manualName" placeholder="姓名 Name">
+          <label for="manual-id">证件号码 ID number</label><input id="manual-id" name="manualId" placeholder="证件号码 ID number">
+        </div>
+      </section>
+      <section class="booking-section" aria-label="Contact information">
+        <h2>联系人信息</h2>
+        <label for="contact-mobile">联系电话 Mobile</label><input id="contact-mobile" name="contact" placeholder="联系电话 Mobile" value="${esc(st().formValues.contact || b.contact || '')}">
+      </section>
+      <section class="booking-section">
+        <h2>航意航延组合险</h2>
+        <p>航班延误、航空意外双重保障</p>
+        <button type="button" data-action="toggle-service" data-service="insurance">${svc.insurance ? '已选' : '¥40'}</button>
+        <button type="button" data-action="insurance-terms">查看详情</button>
+        <button type="button" data-action="insurance-terms">保险条款</button>
+      </section>
+      <section class="booking-section">
+        <h2>行李额</h2>
+        <p>已为你订单免费携带XXKG行李</p>
+        <button type="button" data-action="toggle-extra-bag" data-kg="10">+10KG ¥60</button>
+        <button type="button" data-action="toggle-extra-bag" data-kg="20">+20KG ¥120</button>
+      </section>
+      <section class="booking-section">
+        <h2>接送机</h2>
+        <button type="button" data-action="transfer-toggle">送我去</button>
+        <button type="button" data-action="transfer-toggle">接送机</button>
+        ${svc.transfer ? `<label for="transfer-address">接送机地址</label><input id="transfer-address" name="transferAddress" placeholder="接送机地址" value="${esc(st().formValues.transferAddress || b.services.transferAddress || '')}"><p>预计 ¥42 起</p>` : ''}
+      </section>
+      <section class="booking-section">
+        <h2>机场贵宾厅</h2>
+        <button type="button" data-action="lounge-select">${svc.lounge ? '已选' : '购买 ¥128'}</button>
+      </section>
+      <div class="fee-sidebar">
+        <h2>订单总价</h2>
+        <p class="total-price">¥${total}</p>
+        <div class="fee-lines">
+          <p>成人票价 <span>x ${count}</span></p>
+          <p>机建燃油 <span>¥50</span></p>
+          ${svc.insurance ? '<p>航意航延组合险 <span>¥40</span></p>' : ''}
+          ${svc.extraBag ? `<p>额外行李 <span>¥${esc(svc.extraBag)}</span></p>` : ''}
+          ${svc.transfer ? '<p>接送机 <span>¥42</span></p>' : ''}
+          ${svc.lounge ? '<p>贵宾厅 <span>¥128</span></p>' : ''}
+          <button type="button" data-action="toggle-detail">明细</button>
+        </div>
+      </div>
+      <button type="button" class="primary submit-order" data-action="submit-booking">提交订单</button>`;
+    },
+    payment() {
+      const p = st().payment || {};
+      return `<h1>收银台</h1>
+      <div class="countdown">剩余时间:00:09:27</div>
+      <div class="pay-methods">
+        <button type="button" class="pay-method" data-action="pay">使用新卡支付</button>
+        <button type="button" class="pay-method" data-action="pay">支付宝</button>
+        <button type="button" class="pay-method" data-action="pay">微信支付</button>
+      </div>`;
+    },
+    orders() {
+      const uid = uidOf();
+      let orders = (st().orders || []).filter((o) => o.userId === uid);
+      if (st().orderSearch) orders = orders.filter((o) => o.orderNo.includes(st().orderSearch));
+      const tab = st().orderTab || 'all';
+      if (tab === 'pending') orders = orders.filter((o) => o.status === '待支付');
+      if (tab === 'notravel') orders = orders.filter((o) => o.status === '未出行' || o.status === '待支付');
+      if (tab === 'review') orders = orders.filter((o) => o.status === '待点评');
+      let body;
+      if (!orders.length && tab === 'notravel') body = '<p>暂时没有相关订单</p>';
+      else if (!orders.length) body = '<p>暂无订单</p>';
+      else body = orders.map((o) => `<article class="order-card" data-action="view-order" data-id="${esc(o.id)}">
+        <h3>${esc(o.orderNo)}</h3>
+        <p>预订日期：${esc(o.date)}</p>
+        <p>行程：${esc(o.itinerary)}</p>
+        <p>航班：${esc(o.flightNo)}</p>
+        <p>总价：¥${esc(o.total)}</p>
+        <p>状态：${esc(o.status)}</p>
+        ${o.status === '待支付' ? `<button type="button" class="primary" data-action="pay" data-order="${esc(o.orderNo)}">去支付</button>` : ''}
+      </article>`).join('');
+      return `<h1>订单中心</h1>
+      <div class="tab-list">
+        <button type="button" data-action="set-order-tab" data-tab="all" ${tab === 'all' ? 'aria-current="page"' : ''}>全部订单</button>
+        <button type="button" data-action="set-order-tab" data-tab="notravel" ${tab === 'notravel' ? 'aria-current="page"' : ''}>未出行</button>
+        <button type="button" data-action="set-order-tab" data-tab="pending" ${tab === 'pending' ? 'aria-current="page"' : ''}>待支付</button>
+        <button type="button" data-action="set-order-tab" data-tab="review" ${tab === 'review' ? 'aria-current="page"' : ''}>待点评</button>
+      </div>
+      <form aria-label="Order search form" data-action="search-orders">
+        <label for="order-no">订单号</label><input id="order-no" name="orderNo" placeholder="订单号" value="${esc(st().orderSearch || '')}">
+        <button type="submit" aria-label="搜索">搜索</button>
+      </form>
+      <div class="order-list">${body}</div>`;
+    },
+    order(route) {
+      const o = (st().orders || []).find((x) => x.id === route.params[0]);
+      if (!o) return `<h1>订单详情</h1><p>订单不存在</p>`;
+      const detail = `<div class="order-status-bar">
+        <h2>${esc(o.status)}</h2>
+        ${o.status === '待支付' ? '<p>建议在...内完成支付</p>' : ''}
+        ${o.status === '待支付' ? `<button type="button" data-action="pay" data-order="${esc(o.orderNo)}">去支付</button>` : ''}
+        <button type="button" data-action="cancel-order" data-id="${esc(o.id)}">取消订单</button>
+      </div>
+      <section class="booking-section">
+        <h2>航班信息</h2>
+        <p>航班号：${esc(o.flightNo)}</p><p>行程：${esc(o.itinerary)}</p><p>日期：${esc(o.date)}</p>
+        <button type="button" data-action="toggle-refund">退改规则</button>
+        ${st().refundExpanded ? '<p>退改规则：按舱位收取退票手续费，起飞前2小时前退票费率5%-20%。</p>' : ''}
+      </section>
+      <section class="booking-section">
+        <h2>已购服务</h2>
+        <p>全程无忧包</p><p>优惠券</p>
+      </section>
+      <section class="booking-section">
+        <h2>乘机人与联系人</h2>
+        <p>张三 110101199001011234</p><p>联系人：13800000021</p>
+      </section>
+      <div class="fee-sidebar"><h2>订单总价</h2><p class="total-price">¥${esc(o.total)}</p><p>成人票价 <span>x 1</span></p><p>机建燃油 <span>¥50</span></p></div>`;
+      return `<h1>订单详情</h1>${detail}`;
+    },
+    personal() { return this.orders(); },
+    travelers() {
+      return `<h1>常用旅客信息</h1>
+      <form aria-label="Traveler search form" data-action="search-travelers">
+        <label for="traveler-q">搜索姓名</label><input id="traveler-q" name="q" placeholder="搜索姓名" value="${esc(st().travelerSearch || '')}">
+        <button type="submit">查询</button>
+      </form>
+      <button type="button" data-action="new-traveler">新增</button>
+      <div class="card-list">${travelerListHtml()}</div>
+      <button type="button" data-action="batch-delete-travelers" ${(st().selected.travelers || []).length ? '' : 'disabled'}>×删除</button>`;
+    },
+    addresses(route) {
+      if (route.params[0] === 'detail') {
+        const a = (st().addresses || []).find((x) => x.id === route.params[1]);
+        if (!a) return `<h1>地址详情</h1><p>地址不存在</p>`;
+        return `<h1>地址详情</h1><h2>${esc(a.recipient)}</h2><p>地区：${esc(a.region)}</p><p>详细地址：${esc(a.detail)}</p><p>手机号：${esc(a.mobile)}</p>`;
+      }
+      return `<h1>常用地址</h1>
+      <button type="button" data-action="new-address">新增地址</button>
+      <div class="card-list">${addressListHtml()}</div>
+      <button type="button" data-action="batch-delete-addresses" ${(st().selected.addresses || []).length ? '' : 'disabled'}>批量删除</button>`;
+    },
+    contacts() {
+      return `<h1>常用联系人</h1>
+      <form aria-label="Contact search form" data-action="search-contacts">
+        <label for="contact-q">搜索姓名</label><input id="contact-q" name="q" placeholder="搜索姓名" value="${esc(st().contactSearch || '')}">
+        <button type="submit">查询</button>
+      </form>
+      <button type="button" data-action="new-contact">新增联系人</button>
+      <div class="card-list">${contactListHtml()}</div>
+      <button type="button" data-action="batch-delete-contacts" ${(st().selected.contacts || []).length ? '' : 'disabled'}>批量删除</button>`;
+    },
+    invoices() {
+      return `<h1>常用报销凭证</h1>
+      <form aria-label="Invoice search form" data-action="search-invoices">
+        <label for="invoice-q">搜索抬头</label><input id="invoice-q" name="q" placeholder="搜索抬头" value="${esc(st().invoiceSearch || '')}">
+        <button type="submit">查询</button>
+      </form>
+      <button type="button" data-action="new-invoice">新增报销凭证</button>
+      <div class="card-list">${invoiceListHtml()}</div>
+      <button type="button" data-action="batch-delete-invoices" ${(st().selected.invoices || []).length ? '' : 'disabled'}>批量删除</button>`;
+    },
+    profile() {
+      const u = currentUser() || {};
+      let p = (st().profiles || []).find((x) => x.userId === uidOf());
+      if (!p) p = { nickname: '', realName: '', gender: '', birth: '' };
+      return `<h1>我的信息</h1>
+      <div class="profile-grid">
+        <p>昵称：${esc(p.nickname || '')}</p>
+        <p>姓名：${esc(p.realName || '')}</p>
+        <p>性别：${esc(p.gender || '')}</p>
+        <p>出生日期：${esc(p.birth || '')}</p>
+        <p>手机号：${esc(maskPhone(u.phone || ''))}</p>
+        <p>邮箱：${esc(maskEmail(u.email || ''))}</p>
+      </div>
+      <button type="button" data-action="edit-profile">编辑</button>`;
+    },
+    security(route) {
+      const sub = route.params[0];
+      if (sub === 'password') {
+        return `<h1>修改登录密码</h1>
+        <form aria-label="Password change form" data-action="submit-password">
+          <label for="cur-password">当前密码 Current password</label><input id="cur-password" name="current" type="password" placeholder="当前密码 Current password">
+          <label for="new-password">新密码 New password</label><input id="new-password" name="password" type="password" placeholder="新密码 New password">
+          <label for="confirm-password">确认密码 Confirm new password</label><input id="confirm-password" name="confirm" type="password" placeholder="确认密码 Confirm new password">
+          <p id="strength">密码强度：中</p>
+          <button type="submit">完成</button>
+        </form>`;
+      }
+      if (sub === 'phone') {
+        return `<h1>验证身份</h1>
+        <form aria-label="身份确认表单" data-action="submit-phone">
+          <label for="phone-password">验证密码 Verify password</label><input id="phone-password" name="password" type="password" placeholder="验证密码 Verify password">
+          <label for="new-phone">新号码 New number</label><input id="new-phone" name="phone" placeholder="新号码 New number">
+          <button type="submit">下一步，验证新手机</button>
+        </form>`;
+      }
+      if (sub === 'email') {
+        const u = currentUser() || {};
+        return `<h1>修改绑定邮箱</h1>
+        <p>当前绑定邮箱：${esc(maskEmail(u.email || ''))}</p>
+        <form aria-label="Email change form" data-action="submit-email">
+          <label for="email-code">验证码 Verification code</label><input id="email-code" name="code" placeholder="验证码 Verification code">
+          <button type="button" data-action="send-code">发送验证码</button>
+          <button type="submit">下一步，验证新邮箱</button>
+        </form>`;
+      }
+      const u = currentUser() || {};
+      return `<h1>账户安全</h1>
+      <p class="security-tip">建议定期更换</p>
+      <div class="security-row"><span>登录密码</span><button type="button" data-action="arc:nav" data-hash="#/security/password">修改</button></div>
+      <div class="security-row"><span>绑定手机</span><span>${esc(maskPhone(u.phone || ''))}</span><button type="button" data-action="arc:nav" data-hash="#/security/phone">修改</button></div>
+      <div class="security-row"><span>绑定邮箱</span><span>${esc(maskEmail(u.email || ''))}</span><button type="button" data-action="arc:nav" data-hash="#/security/email">修改</button></div>`;
+    },
+    'flight-status'() {
+      const fs = st().flightStatus || { mode: st().statusMode || 'flightNo', result: st().statusResult, history: st().flightStatusHistory || [] };
+      const mode = fs.mode || 'flightNo';
+      let result = '';
+      if (fs.result) {
+        if (mode === 'flightNo') {
+          const d = fs.result;
+          result = `<article class="flight-detail-card">
+            <h2>${esc(d.flightNo)}</h2><p>${esc(d.airline)}</p><p>${esc(d.origin)} - ${esc(d.dest)}</p>
+            <p>计划起飞 ${esc(d.dep)} 计划到达 ${esc(d.arr)}</p><p>状态：${esc(d.status)}</p>
+            <p>值机柜台：${esc(d.checkin)}</p><p>值机截止：${esc(d.checkinDeadline)}</p><p>登机口：${esc(d.gate)}</p><p>行李转盘：${esc(d.carousel)}</p>
+          </article>`;
+        } else {
+          result = `<div class="status-list">${(fs.result || []).map((f) => `<article class="status-row"><h3>${esc(f.airline)} ${esc(f.flightNo)}</h3><p>${esc(f.origin)} - ${esc(f.dest)}</p><p>${esc(f.dep)} - ${esc(f.arr)}</p><p>${esc(f.status)}</p></article>`).join('')}</div>`;
+        }
+      }
+      return `<h1>航班动态</h1>
+      <div class="status-mode">
+        <label><input type="radio" name="statusMode" value="flightNo" data-change="status-mode" ${mode === 'flightNo' ? 'checked' : ''}> 搜航班号</label>
+        <label><input type="radio" name="statusMode" value="route" data-change="status-mode" ${mode === 'route' ? 'checked' : ''}> 搜起降地</label>
+      </div>
+      <form aria-label="Flight status search form" data-action="status-search">
+        ${mode === 'flightNo'
+          ? `<label for="status-flight-no">航班号</label><input id="status-flight-no" name="flightNo" placeholder="MU1234"><label for="status-date">航班日期 Flight date</label><input id="status-date" name="date" placeholder="航班日期 Flight date">`
+          : `<div class="city-row"><div class="field"><label for="status-origin">出发城市 Origin</label><input id="status-origin" name="origin" placeholder="上海"></div>
+             <button type="button" class="swap-btn" aria-label="双向箭头" data-action="swap-status-cities">⇄</button>
+             <div class="field"><label for="status-dest">到达城市 Destination</label><input id="status-dest" name="destination" placeholder="北京"></div></div>
+             <label for="status-date-2">起降日期 Route date</label><input id="status-date-2" name="date" placeholder="起降日期 Route date">`}
+        <button type="submit">搜索</button>
+      </form>
+      <div class="status-history">
+        <h2>搜索历史</h2>
+        ${(fs.history || []).map((h) => `<button type="button" data-action="status-history" data-q="${esc(h)}">${esc(h)}</button>`).join('')}
+        ${(fs.history || []).length ? '<button type="button" data-action="clear-status-history">清除历史记录</button>' : ''}
+      </div>
+      ${result}`;
+    },
+    vouchers() {
+      const tab = st().voucherTab || 'pending';
+      let body = '';
+      if (tab === 'pending') body = '<p>您暂无报销凭证可开具</p>';
+      else if (tab === 'progress') body = '<p>暂无进行中的凭证</p>';
+      else body = vouchersFor().map((v) => `<article class="management-card"><h3>${esc(v.orderNo)}</h3><p>${esc(v.type)}</p><p>${esc(v.status)}</p><button type="button">下载</button></article>`).join('') || '<p>暂无已完成凭证</p>';
+      return `<h1>报销凭证</h1>
+      <div class="notice-bar">订单支持支付后365天内开具</div>
+      <div class="tab-list">
+        <button type="button" data-action="set-voucher-tab" data-tab="pending" ${tab === 'pending' ? 'aria-current="page"' : ''}>待开凭证</button>
+        <button type="button" data-action="set-voucher-tab" data-tab="progress" ${tab === 'progress' ? 'aria-current="page"' : ''}>进行中</button>
+        <button type="button" data-action="set-voucher-tab" data-tab="done" ${tab === 'done' ? 'aria-current="page"' : ''}>已完成</button>
+      </div>
+      <div class="voucher-list">${body}</div>
+      <button type="button" data-action="more-voucher">查看更多一年内订单</button>`;
+    },
+    airport(route) {
+      const param = route.params[0];
+      if (param && param !== 'domestic' && param !== 'international') {
+        return this.airportDetail(param);
+      }
+      const cat = param || st().airportCategory || 'domestic';
+      if (param) st().airportCategory = param;
+      const letter = st().airportLetter || '';
+      const domesticList = letter === 'C' ? '<p>成都</p><p>重庆</p><p>长春</p>' : '<p>点击字母 C 查看成都、重庆、长春</p>';
+      return `<h1>机场攻略</h1>
+      <div class="airport-layout">
+        <div class="airport-main">
+          <section class="airport-section"><h2>热门机场</h2>
+            <button type="button" data-action="airport-select" data-code="PEK">北京首都</button>
+            <button type="button" data-action="airport-select" data-code="PVG">上海浦东</button>
+            <button type="button" data-action="airport-select" data-code="CAN">广州白云</button>
+          </section>
+          <section class="airport-section"><h2>国内</h2><h3>国内机场</h3>
+            <div class="alpha-index">${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((ch) => `<button type="button" data-action="airport-letter" data-letter="${ch}">${ch}</button>`).join('')}</div>
+            ${domesticList}
+          </section>
+          <section class="airport-section"><h2>国际/中国港澳台地区</h2>
+            <p>香港国际机场</p><p>澳门国际机场</p><p>台北桃园机场</p>
+          </section>
+        </div>
+        <div class="weather-card">
+          <h2>今日天气</h2>
+          <p>北京 -5°C 到 3°C</p>
+          <a href="#/flight-status">乘机流程</a>
+        </div>
+      </div>`;
+    },
+    airportDetail(code) {
+      const tab = st().airportTab || 'overview';
+      const content = tab === 'overview'
+        ? `<h2>机场简介</h2><p>北京首都国际机场位于北京市顺义区，是中国第一国门，拥有三条跑道和两座航站楼。</p>`
+        : tab === 'transport'
+        ? `<h2>机场交通</h2><h3>市内巴士</h3><p>方庄线：方庄-首都机场，首班05:00末班21:00，发车间隔30分钟</p><p>西单线：西单-首都机场，首班05:10末班21:00，发车间隔20分钟</p>`
+        : `<h2>机场电话</h2><p>机场问讯：010-64541100</p><p>失物招领：010-64541045</p><p>医疗急救中心：<span>010-</span>6454xxxx</p><p>行李寄存：010-64540000</p>`;
+      return `<h1>北京首都国际机场</h1>
+      <div class="tab-list">
+        <button type="button" data-action="airport-detail-tab" data-tab="overview">机场简介</button>
+        <button type="button" data-action="airport-detail-tab" data-tab="transport">机场交通</button>
+        <button type="button" data-action="airport-detail-tab" data-tab="phone">机场电话</button>
+      </div>
+      <div class="airport-detail-content">${content}</div>`;
+    },
+    register() {
+      if ((st().regStep || 1) === 1) {
+        return `<h1>注册</h1><p>第一步：验证手机</p>
+        <form aria-label="Registration form" data-action="register-step1">
+          <label for="reg-mobile">手机号 Mobile</label><input id="reg-mobile" name="mobile" placeholder="手机号 Mobile">
+          <label for="reg-code">验证码 Verification code</label><input id="reg-code" name="code" placeholder="验证码 Verification code">
+          <button type="button" data-action="send-register-code">发送验证码</button>
+          <button type="submit">下一步，设置密码</button>
+        </form>`;
+      }
+      return `<h1>注册</h1><p>第二步</p><h2>设置密码</h2>
+      <form aria-label="Registration complete form" data-action="register-complete">
+        <label for="reg-password">创建密码 Create password</label><input id="reg-password" name="password" type="password" placeholder="创建密码 Create password">
+        <label for="reg-confirm">确认密码 Confirm password</label><input id="reg-confirm" name="confirm" type="password" placeholder="确认密码 Confirm password">
+        <button type="submit">完成注册</button>
+      </form>`;
+    },
+    login() {
+      const mode = st().loginMode || 'password';
+      const fields = mode === 'password'
+        ? `<label for="account">账号 Account</label><input id="account" name="account" placeholder="邮箱/用户名/手机号">
+           <label for="password">密码 Password</label><input id="password" name="password" type="password" placeholder="密码 Password">`
+        : `<label for="mobile">手机号 Mobile</label><input id="mobile" name="mobile" placeholder="手机号 Mobile">
+           <button type="button" data-action="send-sms">发送验证码</button>
+           <label for="code">验证码 Verification code</label><input id="code" name="code" placeholder="验证码 Verification code">`;
+      return `<h1>登录</h1>
+      <div class="login-tabs">
+        <button type="button" data-action="switch-login" data-mode="password">账号登录</button>
+        <button type="button" data-action="switch-login" data-mode="sms">验证码登录</button>
+      </div>
+      <form aria-label="Login form" data-action="login">
+        ${fields}
+        <label class="inline"><input type="checkbox" name="agreement" value="1"> 阅读并同意服务协议和个人信息保护政策</label>
+        <button type="submit">登录</button>
+      </form>
+      <button type="button" data-action="free-register">免费注册</button>`;
+    }
+  },
+  screen(route) {
+    const fn = this.screens[route.name] || this.screens.home;
+    return fn.call(this, route);
+  },
+  actions: {
+    'toggle-menu'({ el }) {
+      const host = el.closest('.menu-host');
+      if (!host) return;
+      const panel = host.querySelector('.menu-panel');
+      const was = panel.hidden;
+      document.querySelectorAll('.menu-panel').forEach((p) => { p.hidden = true; });
+      panel.hidden = !was;
+    },
+    'toggle-common'({ el }) {
+      const aside = el.closest('aside');
+      if (!aside) return;
+      const btns = [...aside.querySelectorAll('button')];
+      btns.forEach((b) => { if (b !== el) b.hidden = !b.hidden; });
+    },
+    'goto-orders'() { ARC.navigate('#/orders'); },
+    'goto-personal'() { ARC.navigate('#/personal'); },
+    logout() { st().session = null; ARC.save(); ARC.navigate('#/'); },
+    login({ form }) {
+      const mode = st().loginMode || 'password';
+      if (mode === 'sms') {
+        if (!form.mobile) return notify('请输入手机号');
+        if (!form.code) return notify('请输入验证码');
+        if (!form.agreement) return notify('请先阅读并勾选协议');
+        const u = (st().users || []).find((x) => x.phone === form.mobile.trim());
+        if (!u || form.code.trim() !== '123456') return notify('验证码错误');
+        st().session = null; st().loginMode = 'password'; ARC.save(); ARC.navigate('#/');
+      } else {
+        if (!form.account || !form.account.trim()) return notify('请输入用户名');
+        if (!form.password) return notify('请输入登录密码');
+        if (!form.agreement) return notify('请先阅读并勾选协议');
+        const id = form.account.trim();
+        const u = (st().users || []).find((x) => x.email === id || x.username === id || x.phone === id);
+        if (!u || u.password !== form.password) return notify('用户名或密码错误');
+        st().session = null; ARC.save(); ARC.navigate('#/');
+      }
+    },
+    'switch-login'({ el }) { st().loginMode = el.dataset.mode; ARC.render(); },
+    'send-sms'({ el }) {
+      const form = el.closest('form');
+      const mobile = form && form.querySelector('[name=mobile]') ? form.querySelector('[name=mobile]').value : '';
+      if (!mobile) return notify('请输入手机号');
+      el.disabled = true; el.textContent = '60s后重发';
+    },
+    'free-register'() {
+      ARC.openDialog('<div class="register-agreement"><h2>携程用户注册协议和隐私政策</h2><p>欢迎使用携程旅行。请阅读并同意相关服务协议和隐私政策后继续注册。</p><button type="button" data-action="agree-register">同意并继续</button><button type="button" data-action="decline-register">不同意</button></div>', { title: '携程用户注册协议和隐私政策' });
+    },
+    'agree-register'() { ARC.closeDialog(); st().regStep = 1; ARC.navigate('#/register'); },
+    'decline-register'() { ARC.closeDialog(); ARC.navigate('#/'); },
+    'send-register-code'({ el }) {
+      const form = el.closest('form');
+      const mobile = form && form.querySelector('[name=mobile]') ? form.querySelector('[name=mobile]').value : '';
+      if (!mobile) return notify('请输入手机号');
+      el.disabled = true; el.textContent = '60s后重发';
+    },
+    'register-step1'({ form }) {
+      if (!form.mobile || !form.code) return notify('请输入手机号和验证码');
+      st().regStep = 2; ARC.render();
+    },
+    'register-complete'({ form }) {
+      if (!form.password || !form.confirm) return notify('请设置密码');
+      if (form.password !== form.confirm) return notify('两次输入的密码不一致');
+      if (!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(form.password)) return notify('密码需包含字母和数字，且长度不小于8位');
+      notify('注册成功');
+      st().regStep = 1;
+      ARC.navigate('#/login');
+    },
+    'pick-city'({ el }) { openCityPicker(el.dataset.field); },
+    'pick-date'({ el }) { openDatePicker(el.dataset.field); },
+    'trip-type'({ el }) { st().search.tripType = el.value; ARC.render(); },
+    'passenger-check'({ el }) { if (el.name === 'withChild') st().search.withChild = el.checked; if (el.name === 'withInfant') st().search.withInfant = el.checked; },
+    'search-cabin'({ el }) { st().search.cabin = el.value; },
+    'swap-cities'() {
+      const s = st().search;
+      const tmp = s.origin; s.origin = s.destination; s.destination = tmp;
+      ARC.save(); ARC.render();
+    },
+    'add-return'() { st().search.tripType = 'roundtrip'; st().pendingDateField = 'returnDate'; ARC.render(); },
+    'city-tab'({ el }) { st().cityTab = el.dataset.tab; renderCityDialog(); },
+    'city-select'({ el }) {
+      const field = st().cityTarget || 'origin';
+      const val = `${el.dataset.city}(${el.dataset.code})`;
+      st().search[field] = val;
+      ARC.closeDialog(); ARC.save(); ARC.render();
+    },
+    'date-select'({ el }) {
+      const field = st().pendingDateField || 'departDate';
+      const date = el.dataset.date;
+      if (field === 'returnDate') {
+        if (!st().search.departDate) st().search.departDate = '2026-01-08 明天';
+        const dep = dateOnly(st().search.departDate);
+        st().search.returnDate = date;
+        st().search.returnDisplay = `${date} 4天`;
+      } else {
+        st().search.departDate = el.dataset.label || date;
+      }
+      ARC.closeDialog(); st().pendingDateField = null; ARC.save(); ARC.render();
+    },
+    'flight-search'({ form }) {
+      const origin = normCity(form.origin || st().search.origin);
+      const dest = normCity(form.destination || st().search.destination);
+      if (origin && origin === dest) return notify('出发城市和到达城市不能相同');
+      st().search.origin = origin;
+      st().search.destination = dest;
+      st().search.cabin = form.cabin || st().search.cabin;
+      if (form.departDate) st().search.departDate = form.departDate;
+      ARC.save(); ARC.navigate('#/results');
+    },
+    'use-history'({ el }) {
+      st().search.origin = `${el.dataset.origin}(CTU)`;
+      st().search.destination = `${el.dataset.destination}(CAN)`;
+      st().search.departDate = '2026-01-08 明天';
+      ARC.save(); ARC.navigate('#/results');
+    },
+    'date-bar-select'({ el }) { st().search.departDate = el.dataset.date; ARC.save(); ARC.render(); },
+    'more-dates'() { openDatePicker('departDate'); },
+    'next-week'() {
+      const base = dateOnly(st().search.departDate) || '2026-01-08';
+      const d = new Date(base + 'T00:00:00');
+      d.setDate(d.getDate() + 7);
+      st().search.departDate = d.toISOString().slice(0, 10);
+      ARC.render();
+    },
+    'sort-flights'({ el }) { st().sort = el.dataset.sort; ARC.render(); },
+    'filter-stop'({ el }) { st().resultsFilter.stop = el.value; ARC.render(); },
+    'filter-airline'({ el }) { st().resultsFilter.airline = el.value; ARC.render(); },
+    'toggle-expand'({ el }) { st().expandedFlight = st().expandedFlight === el.dataset.id ? null : el.dataset.id; ARC.render(); },
+    'book-flight'({ el, id }) {
+      const flight = (st().flights || []).find((f) => f.id === id);
+      if (!flight) return;
+      const idx = Number(el.dataset.fare) || 0;
+      st().bookingFlight = flight;
+      st().bookingFare = (flight.fares && flight.fares[idx]) || flight.fares[0] || { label: '标准价', price: flight.price };
+      st().booking = { selectedPassengerIds: [], services: { insurance: false, extraBag: 0, transfer: false, transferAddress: '', lounge: false }, contact: '', flightId: flight.id, fareLabel: st().bookingFare.label };
+      ARC.save(); ARC.navigate('#/book');
+    },
+    'toggle-reminder'({ el }) {
+      const detail = document.getElementById('reminder-detail');
+      if (detail) detail.hidden = !detail.hidden;
+    },
+    'add-passenger'() {
+      ARC.openDialog(`<form aria-label="Passenger form" data-action="save-passenger"><h2>新增乘机人</h2>
+        <label for="np-name">姓名 Name</label><input id="np-name" name="name" placeholder="姓名 Name">
+        <label for="np-doc">证件号码 ID number</label><input id="np-doc" name="docNo" placeholder="证件号码 ID number">
+        <button type="submit">保存</button> <button type="button" data-action="arc:close">取消</button></form>`, { title: '新增乘机人' });
+    },
+    'save-passenger'({ form }) {
+      if (!form.name || !form.docNo) return notify('请填写姓名和证件号码');
+      st().frequentPassengers.push({ id: ARC.uid('fp'), name: form.name, docType: '身份证', docNo: form.docNo, mobile: '' });
+      ARC.closeDialog(); ARC.render(); notify('乘机人已保存');
+    },
+    'toggle-service'({ el }) {
+      if (!st().booking) st().booking = { services: {} };
+      st().booking.services = st().booking.services || {};
+      st().booking.services[el.dataset.service] = !st().booking.services[el.dataset.service];
+      ARC.render();
+    },
+    'insurance-terms'() {
+      ARC.openDialog('<div class="insurance-terms"><h2>保险条款</h2><p>保障范围：航班延误、航空意外；最高赔付金额详见保险条款。</p><p>理赔流程：事故发生后在APP内提交理赔申请。</p></div>', { title: '保险条款' });
+    },
+    'toggle-extra-bag'({ el }) {
+      if (!st().booking) st().booking = { services: {} };
+      st().booking.services = st().booking.services || {};
+      st().booking.services.extraBag = st().booking.services.extraBag === el.dataset.kg ? 0 : el.dataset.kg;
+      ARC.render();
+    },
+    'transfer-toggle'({ el }) {
+      if (!st().booking) st().booking = { services: {} };
+      st().booking.services = st().booking.services || {};
+      st().booking.services.transfer = !st().booking.services.transfer;
+      ARC.render();
+    },
+    'lounge-select'() {
+      if (!st().booking) st().booking = { services: {} };
+      st().booking.services = st().booking.services || {};
+      st().booking.services.lounge = !st().booking.services.lounge;
+      ARC.render();
+    },
+    'toggle-detail'() {},
+    'submit-booking'() {
+      const count = Math.max(1, passengerCount());
+      const total = bookingTotal();
+      const orderNo = 'CTRIP' + Date.now();
+      st().orders.push({ id: ARC.uid('o'), userId: st().session || 'u_anon', orderNo, date: '2026-07-19', itinerary: '成都-广州', flightNo: st().bookingFlight ? st().bookingFlight.flightNo : 'CZ3401', total, status: '待支付' });
+      st().payment = { orderNo, amount: total, count };
+      ARC.save(); ARC.navigate('#/payment');
+    },
+    pay({ el }) {
+      const orderNo = el.dataset.order;
+      if (orderNo) {
+        const o = (st().orders || []).find((x) => x.orderNo === orderNo);
+        st().payment = { orderNo, amount: o ? o.total : 0 };
+        ARC.navigate('#/payment');
+        return;
+      }
+      const p = st().payment || {};
+      const o = (st().orders || []).find((x) => x.orderNo === p.orderNo);
+      if (o) o.status = '已支付';
+      ARC.save(); ARC.navigate('#/orders'); notify('支付成功');
+    },
+    'set-order-tab'({ el }) { st().orderTab = el.dataset.tab; ARC.render(); },
+    'search-orders'({ form }) { st().orderSearch = (form.orderNo || '').trim(); ARC.render(); },
+    'view-order'({ el }) { ARC.navigate('#/order/' + el.dataset.id); },
+    'cancel-order'({ id }) { openConfirm('确认取消该订单吗？', 'confirm-cancel', id, '确认'); },
+    'confirm-cancel'({ id }) {
+      const o = (st().orders || []).find((x) => x.id === id);
+      if (o) o.status = '已关闭';
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('订单已取消');
+    },
+    'toggle-refund'() { st().refundExpanded = !st().refundExpanded; ARC.render(); },
+    'search-travelers'({ form }) { st().travelerSearch = (form.q || '').trim(); ARC.render(); },
+    'new-traveler'() {
+      ARC.openDialog(`<form aria-label="Traveler form" data-action="save-traveler"><h2>新增旅客</h2>
+        <label for="nt-cn">中文名 Chinese name</label><input id="nt-cn" name="chineseName" placeholder="中文名 Chinese name">
+        <label for="nt-en">英文名 English name</label><input id="nt-en" name="englishName" placeholder="英文名 English name">
+        <label for="nt-mobile">手机号 Mobile</label><input id="nt-mobile" name="mobile" placeholder="手机号 Mobile">
+        <label for="nt-doc">证件号码 Document number</label><input id="nt-doc" name="docNo" placeholder="证件号码 Document number">
+        <button type="submit">保存</button> <button type="button" data-action="arc:close">取消</button></form>`, { title: '新增旅客' });
+    },
+    'save-traveler'({ form }) {
+      if (!form.chineseName && !form.englishName) return notify('中文名与英文名两者必填一项');
+      st().travelers.push({ id: ARC.uid('t'), userId: uidOf(), name: form.chineseName || form.englishName, mobile: form.mobile || '', docType: '身份证', docNo: form.docNo || '', gender: '', birth: '' });
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('旅客已保存');
+    },
+    'delete-traveler'({ id }) { openConfirm('确认删除该旅客吗？', 'confirm-delete-traveler', id, '删除'); },
+    'confirm-delete-traveler'({ id }) {
+      st().travelers = (st().travelers || []).filter((x) => x.id !== id);
+      st().selected.travelers = (st().selected.travelers || []).filter((x) => x !== id);
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('旅客已删除');
+    },
+    'batch-delete-travelers'() {
+      const sel = st().selected.travelers || [];
+      if (!sel.length) return notify('请先选择旅客');
+      openConfirm('确认批量删除选中的旅客吗？', 'confirm-batch-delete-travelers', '', '删除');
+    },
+    'confirm-batch-delete-travelers'() {
+      const sel = st().selected.travelers || [];
+      st().travelers = (st().travelers || []).filter((x) => !sel.includes(x.id));
+      st().selected.travelers = [];
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('批量删除成功');
+    },
+    'view-address'({ el }) { ARC.navigate('#/addresses/detail/' + el.dataset.id); },
+    'new-address'() {
+      ARC.openDialog(`<form aria-label="Address form" data-action="save-address"><h2>新增地址</h2>
+        <label for="na-recipient">收货人 Recipient</label><input id="na-recipient" name="recipient" placeholder="收货人 Recipient">
+        <label for="na-region">所在地区 Region</label><input id="na-region" name="region" placeholder="所在地区 Region">
+        <label for="na-detail">详细地址 Address</label><input id="na-detail" name="detail" placeholder="详细地址 Address">
+        <label for="na-mobile">手机号 Mobile</label><input id="na-mobile" name="mobile" placeholder="手机号 Mobile">
+        <button type="submit">保存</button> <button type="button" data-action="arc:close">取消</button></form>`, { title: '新增地址' });
+    },
+    'save-address'({ form }) {
+      st().addresses.push({ id: ARC.uid('a'), userId: uidOf(), recipient: form.recipient || '', region: form.region || '', detail: form.detail || '', mobile: form.mobile || '' });
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('地址已保存');
+    },
+    'delete-address'({ id }) { openConfirm('确认删除该地址吗？', 'confirm-delete-address', id, '删除'); },
+    'confirm-delete-address'({ id }) {
+      st().addresses = (st().addresses || []).filter((x) => x.id !== id);
+      st().selected.addresses = (st().selected.addresses || []).filter((x) => x !== id);
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('地址已删除');
+    },
+    'batch-delete-addresses'() {
+      const sel = st().selected.addresses || [];
+      if (!sel.length) return notify('请先选择地址');
+      openConfirm('确认批量删除选中的地址吗？', 'confirm-batch-delete-addresses', '', '删除');
+    },
+    'confirm-batch-delete-addresses'() {
+      const sel = st().selected.addresses || [];
+      st().addresses = (st().addresses || []).filter((x) => !sel.includes(x.id));
+      st().selected.addresses = [];
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('批量删除成功');
+    },
+    'search-contacts'({ form }) { st().contactSearch = (form.q || '').trim(); ARC.render(); },
+    'new-contact'() {
+      ARC.openDialog(`<form aria-label="Contact form" data-action="save-contact"><h2>新增联系人</h2>
+        <label for="nc-name">姓名 Name</label><input id="nc-name" name="name" placeholder="姓名 Name">
+        <label for="nc-mobile">手机号 Mobile</label><input id="nc-mobile" name="mobile" placeholder="手机号 Mobile">
+        <label for="nc-email">邮箱 Email</label><input id="nc-email" name="email" placeholder="邮箱 Email">
+        <label class="inline"><input type="checkbox" name="isDefault" value="1"> 设置为默认联系人</label>
+        <button type="submit">保存</button> <button type="button" data-action="arc:close">取消</button></form>`, { title: '新增联系人' });
+    },
+    'save-contact'({ form }) {
+      st().contacts.push({ id: ARC.uid('c'), userId: uidOf(), name: form.name || '', mobile: form.mobile || '', email: form.email || '', isDefault: !!form.isDefault });
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('联系人已保存');
+    },
+    'delete-contact'({ id }) { openConfirm('确认删除该联系人吗？', 'confirm-delete-contact', id, '删除'); },
+    'confirm-delete-contact'({ id }) {
+      st().contacts = (st().contacts || []).filter((x) => x.id !== id);
+      st().selected.contacts = (st().selected.contacts || []).filter((x) => x !== id);
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('联系人已删除');
+    },
+    'batch-delete-contacts'() {
+      const sel = st().selected.contacts || [];
+      if (!sel.length) return notify('请先选择联系人');
+      openConfirm('确认批量删除选中的联系人吗？', 'confirm-batch-delete-contacts', '', '删除');
+    },
+    'confirm-batch-delete-contacts'() {
+      const sel = st().selected.contacts || [];
+      st().contacts = (st().contacts || []).filter((x) => !sel.includes(x.id));
+      st().selected.contacts = [];
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('批量删除成功');
+    },
+    'search-invoices'({ form }) { st().invoiceSearch = (form.q || '').trim(); ARC.render(); },
+    'new-invoice'() {
+      ARC.openDialog(`<form aria-label="Invoice form" data-action="save-invoice"><h2>新增报销凭证</h2>
+        <label><input type="radio" name="type" value="企业" checked> 企业</label>
+        <label><input type="radio" name="type" value="个人"> 个人</label>
+        <label for="ni-title">发票抬头 Invoice title</label><input id="ni-title" name="title" placeholder="发票抬头 Invoice title">
+        <label for="ni-tax">税号 Tax ID</label><input id="ni-tax" name="taxId" placeholder="税号 Tax ID">
+        <label for="ni-vat">增值税专用发票</label><select id="ni-vat" name="vat"><option value="不需要">不需要</option><option value="需要">需要</option></select>
+        <button type="submit">保存</button> <button type="button" data-action="arc:close">取消</button></form>`, { title: '新增报销凭证' });
+    },
+    'save-invoice'({ form }) {
+      st().invoices.push({ id: ARC.uid('i'), userId: uidOf(), title: form.title || '', taxId: form.taxId || '', type: form.type || '企业', vat: form.vat || '不需要' });
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('报销凭证已保存');
+    },
+    'delete-invoice'({ id }) { openConfirm('确认删除该发票抬头吗？', 'confirm-delete-invoice', id, '删除'); },
+    'confirm-delete-invoice'({ id }) {
+      st().invoices = (st().invoices || []).filter((x) => x.id !== id);
+      st().selected.invoices = (st().selected.invoices || []).filter((x) => x !== id);
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('发票抬头已删除');
+    },
+    'batch-delete-invoices'() {
+      const sel = st().selected.invoices || [];
+      if (!sel.length) return notify('请先选择发票抬头');
+      openConfirm('确认批量删除选中的发票抬头吗？', 'confirm-batch-delete-invoices', '', '删除');
+    },
+    'confirm-batch-delete-invoices'() {
+      const sel = st().selected.invoices || [];
+      st().invoices = (st().invoices || []).filter((x) => !sel.includes(x.id));
+      st().selected.invoices = [];
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('批量删除成功');
+    },
+    'edit-profile'() {
+      ARC.openDialog(`<form aria-label="Profile edit form" data-action="save-profile"><h2>编辑资料</h2>
+        <label for="pf-nickname">昵称 Nickname</label><input id="pf-nickname" name="nickname" placeholder="昵称 Nickname">
+        <label for="pf-name">姓名 Real name</label><input id="pf-name" name="realName" placeholder="姓名 Real name">
+        <label><input type="radio" name="gender" value="男"> 男</label><label><input type="radio" name="gender" value="女"> 女</label>
+        <label for="pf-birth">出生日期 Birth date</label><input id="pf-birth" name="birth" placeholder="出生日期 Birth date">
+        <button type="submit">保存</button> <button type="button" data-action="arc:close">取消</button></form>`, { title: '编辑资料' });
+    },
+    'save-profile'({ form }) {
+      let p = (st().profiles || []).find((x) => x.userId === uidOf());
+      if (!p) { p = { userId: uidOf() }; st().profiles.push(p); }
+      p.nickname = form.nickname || '';
+      p.realName = form.realName || '';
+      p.gender = form.gender || '';
+      p.birth = form.birth || '';
+      ARC.closeDialog(); ARC.save(); ARC.render(); notify('保存成功');
+    },
+    'submit-password'({ form }) {
+      const u = currentUser();
+      const cur = st().users.find((x) => x.id === uidOf());
+      if (!form.current || !form.password || !form.confirm) return notify('请填写完整信息');
+      if (form.current !== (cur ? cur.password : (u && u.password))) return notify('当前密码错误');
+      if (form.password !== form.confirm) return notify('两次输入的密码不一致');
+      if (cur) cur.password = form.password;
+      st().session = null;
+      ARC.save(); ARC.navigate('#/login'); notify('密码修改成功，请重新登录');
+    },
+    'submit-phone'({ form }) {
+      if (!form.password || !form.phone) return notify('请填写完整信息');
+      notify('验证码已发送至新手机');
+    },
+    'send-code'({ el }) { el.disabled = true; el.textContent = '60s后重发'; },
+    'submit-email'({ form }) {
+      if (!form.code) return notify('请输入验证码');
+      if (form.code !== '123456') return notify('验证码错误');
+      notify('新邮箱验证成功');
+    },
+    'status-mode'({ el }) { st().statusMode = el.value; st().statusResult = null; ARC.render(); },
+    'status-search'({ form }) {
+      const mode = st().statusMode || 'flightNo';
+      const history = st().flightStatusHistory || [];
+      if (mode === 'flightNo') {
+        const q = (form.flightNo || '').trim();
+        if (!q) return notify('请输入航班号');
+        if (!history.includes(q)) history.unshift(q);
+        st().flightStatusHistory = history;
+        if (q === 'JD5162') {
+          st().statusResult = JSON.parse(JSON.stringify(st().flightDetail));
+        } else {
+          st().statusResult = { flightNo: q, airline: '未知航空', origin: '—', dest: '—', dep: '--:--', arr: '--:--', status: '未找到相关航班', checkin: '', gate: '', carousel: '' };
+        }
+      } else {
+        const origin = (form.origin || '').trim();
+        const dest = (form.destination || '').trim();
+        if (!origin || !dest) return notify('请输入出发城市和到达城市');
+        st().flightStatusHistory = history;
+        if (origin === '上海' && dest === '北京') st().statusResult = st().statusFlights;
+        else st().statusResult = [];
+      }
+      ARC.save(); ARC.render();
+    },
+    'status-history'({ el }) {
+      const q = el.dataset.q;
+      const history = st().flightStatusHistory || [];
+      if (!history.includes(q)) history.unshift(q);
+      st().flightStatusHistory = history;
+      if (q === 'JD5162') st().statusResult = JSON.parse(JSON.stringify(st().flightDetail));
+      else if (q === 'MU5234') {
+        st().statusResult = { flightNo: 'MU5234', airline: '东方航空', origin: '上海', dest: '北京', dep: '12:00', arr: '14:20', status: '计划起飞', checkin: 'G1-G8', gate: 'C11', carousel: '5' };
+      }
+      ARC.save(); ARC.render();
+    },
+    'clear-status-history'() { st().flightStatusHistory = []; st().statusResult = null; ARC.render(); },
+    'set-voucher-tab'({ el }) { st().voucherTab = el.dataset.tab; ARC.render(); },
+    'more-voucher'() { notify('已加载更多一年内订单'); },
+    'airport-letter'({ el }) { st().airportLetter = el.dataset.letter; ARC.render(); },
+    'airport-select'({ el }) { ARC.navigate('#/airport/' + el.dataset.code); },
+    'airport-detail-tab'({ el }) { st().airportTab = el.dataset.tab; ARC.render(); },
+    'swap-status-cities'() {
+      const o = document.getElementById('status-origin');
+      const d = document.getElementById('status-dest');
+      if (o && d) { const t = o.value; o.value = d.value; d.value = t; }
+    }
+  },
+  afterRender() {
+    document.querySelectorAll('.menu-host').forEach((host) => {
+      const panel = host.querySelector('.menu-panel');
+      if (!panel) return;
+      host.addEventListener('mouseenter', () => { document.querySelectorAll('.menu-panel').forEach((p) => { p.hidden = true; }); panel.hidden = false; });
+      host.addEventListener('mouseleave', () => { panel.hidden = true; });
+    });
+
+    const commonBtn = [...document.querySelectorAll('.sidebar button')].find((b) => b.textContent.trim() === '常用信息');
+    if (commonBtn) { commonBtn.dataset.action = 'toggle-common'; commonBtn.removeAttribute('data-hash'); }
+
+    st().formValues = st().formValues || {};
+    document.querySelectorAll('#app input:not([type=checkbox]):not([type=radio]), #app textarea, #app select').forEach((el) => {
+      const name = el.name || el.id;
+      if (!name) return;
+      const saved = st().formValues[name];
+      if (saved !== undefined && el.type !== 'password') el.value = saved;
+      const upd = () => {
+        st().formValues[name] = el.value;
+        if (el.dataset.cityField) st().search[el.dataset.cityField] = el.value;
+        if (el.dataset.dateField) st().search[el.dataset.dateField] = el.value;
+      };
+      el.addEventListener('input', upd);
+      el.addEventListener('change', upd);
+    });
+
+    document.querySelectorAll('[data-passenger-toggle]').forEach((cb) => {
+      cb.addEventListener('change', () => {
+        if (!st().booking) st().booking = { selectedPassengerIds: [] };
+        st().booking.selectedPassengerIds = st().booking.selectedPassengerIds || [];
+        const arr = st().booking.selectedPassengerIds;
+        const i = arr.indexOf(cb.value);
+        if (cb.checked && i < 0) arr.push(cb.value);
+        if (!cb.checked && i >= 0) arr.splice(i, 1);
+        ARC.render();
+      });
+    });
+
+    document.querySelectorAll('[data-check]').forEach((cb) => {
+      cb.addEventListener('change', () => {
+        const [kind, id] = cb.dataset.check.split(':');
+        st().selected[kind] = st().selected[kind] || [];
+        const arr = st().selected[kind];
+        const i = arr.indexOf(id);
+        if (cb.checked && i < 0) arr.push(id);
+        if (!cb.checked && i >= 0) arr.splice(i, 1);
+        ARC.render();
+      });
+    });
+
+    const manualId = document.getElementById('manual-id');
+    if (manualId) {
+      manualId.addEventListener('blur', () => {
+        const v = manualId.value.trim();
+        if (v && !/^\d{17}[\dXx]$/.test(v)) notify('请输入正确的证件号码');
+      });
+    }
+    const contactMobile = document.getElementById('contact-mobile');
+    if (contactMobile) {
+      contactMobile.addEventListener('blur', () => {
+        const v = contactMobile.value.trim();
+        if (v && !/^1\d{10}$/.test(v)) notify('请输入正确的手机号');
+      });
+    }
+
+    if (st().pendingDateField) {
+      const f = st().pendingDateField;
+      st().pendingDateField = null;
+      openDatePicker(f);
+    }
+  }
+};
+=== END ===
+=== FILE: frontend/public/styles.css ===
+/* Scaffold styles. Mechanics: row actions are display:none at rest and appear on :hover/:focus-within
+   BELOW the row text (never absolutely positioned over a title); idle dialog/status roots are hidden. */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #1f2328; background: #fff; }
+a { color: #0969da; }
+button { font: inherit; cursor: pointer; }
+.app-header { display: flex; align-items: center; gap: 16px; padding: 10px 16px; border-bottom: 1px solid #d0d7de; }
+.app-header .brand { font-weight: 700; text-decoration: none; color: inherit; }
+.app-header nav a { margin-right: 12px; }
+.account { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.layout { display: flex; gap: 24px; padding: 16px; align-items: flex-start; }
+.sidebar { width: 200px; flex: none; order: -1; }
+.sidebar button { display: block; width: 100%; text-align: left; margin: 0 0 8px; background: none; border: 0; padding: 6px 8px; border-radius: 6px; }
+.sidebar button[hidden] { display: none; }
+.sidebar button[aria-current="page"] { background: #ddf4ff; }
+.main { flex: 1; min-width: 0; }
+.app-footer { padding: 12px 16px; border-top: 1px solid #d0d7de; color: #57606a; font-size: 13px; }
+.row { padding: 10px; border: 1px solid #d0d7de; border-radius: 6px; margin-bottom: 8px; }
+.row-actions { display: none; gap: 8px; margin-top: 8px; }
+.row:hover .row-actions, .row:focus-within .row-actions, .management-card:hover .row-actions, .management-card:focus-within .row-actions { display: flex; }
+#dialog-root[hidden], #status-root[hidden] { display: none; }
+#dialog-root { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.35); }
+.dialog { background: #fff; padding: 16px; border-radius: 8px; min-width: 320px; max-width: 90vw; max-height: 90vh; overflow: auto; }
+#status-root { position: fixed; left: 16px; bottom: 16px; }
+.status { background: #1f2328; color: #fff; padding: 10px 14px; border-radius: 6px; display: flex; gap: 12px; align-items: center; }
+form label { display: block; margin: 8px 0 4px; }
+input, textarea, select { font: inherit; padding: 6px 8px; width: 100%; max-width: 480px; }
+.app-header .brand-logo { display: inline-flex; align-items: center; background: none; border: 0; padding: 0 6px 0 0; color: inherit; cursor: pointer; }
+.app-footer .landmarks { opacity: 0.6; font-size: 0.85em; margin-left: 8px; }
+.popover { position: relative; z-index: 5; display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; margin-top: 4px; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+.popover button { display: inline-block; }
+
+.menu-host { position: relative; display: inline-block; }
+.menu-panel { position: absolute; right: 0; top: 100%; z-index: 100; min-width: 150px; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,.15); padding: 4px; }
+.menu-panel[hidden] { display: none; }
+.menu-panel button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 8px 12px; border-radius: 4px; }
+.menu-panel button:hover { background: #f6f8fa; }
+
+h1 { margin-top: 0; }
+.trip-types, .opts-row, .date-row, .city-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.trip-types label, .opts-row label.inline { display: inline-flex; align-items: center; gap: 4px; margin: 0 8px 0 0; }
+.field { display: flex; flex-direction: column; }
+.field button { align-self: flex-start; margin-top: 4px; }
+.swap-btn { background: none; border: 1px solid #d0d7de; border-radius: 6px; padding: 6px 10px; align-self: end; margin-bottom: 4px; }
+.add-return { background: none; border: 1px solid #ff7f11; color: #ff7f11; border-radius: 6px; padding: 8px 10px; align-self: end; }
+.primary { background: #ff7f11; color: #fff; border: 0; border-radius: 6px; padding: 10px 22px; font-weight: 600; }
+.search-btn { margin-top: 4px; }
+.search-history { margin-top: 14px; }
+.search-history button { border: 1px solid #ddd; background: #fff; border-radius: 14px; padding: 6px 12px; margin-right: 8px; }
+.return-days { color: #ff7f11; font-weight: 700; margin-top: 4px; }
+
+.date-bar { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
+.date-bar button { border: 1px solid #ddd; background: #fff; border-radius: 8px; padding: 6px 10px; text-align: center; }
+.date-bar button span { color: #ff7f11; font-weight: 700; }
+.results-toolbar { display: flex; gap: 20px; margin-bottom: 10px; flex-wrap: wrap; }
+.sort-bar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.sort-bar button { border: 1px solid #d0d7de; background: #fff; border-radius: 16px; padding: 6px 12px; }
+.flight-list { display: flex; flex-direction: column; gap: 12px; }
+.flight-card { border: 1px solid #d0d7de; border-radius: 10px; padding: 14px; }
+.flight-head { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.flight-time { font-size: 18px; font-weight: 700; }
+.fare-preview { display: flex; gap: 12px; color: #ff7f11; margin: 8px 0; }
+.expand-btn { background: none; border: 1px solid #d0d7de; border-radius: 6px; padding: 6px 12px; }
+.fare-list { margin: 10px 0; border-top: 1px dashed #ddd; padding-top: 8px; }
+.fare-row { display: flex; gap: 16px; align-items: center; padding: 6px 0; }
+.fare-row button { background: #ff7f11; color: #fff; border: 0; border-radius: 6px; padding: 6px 16px; }
+.refund-rule { color: #57606a; font-size: 13px; }
+
+.status-notice { padding: 24px; text-align: center; border: 1px dashed #ddd; border-radius: 10px; margin-top: 14px; }
+.status-notice button { border: 1px solid #d0d7de; background: #fff; border-radius: 6px; padding: 8px 16px; }
+
+.notice-bar { background: #fff8f0; border: 1px solid #ffd9b3; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.booking-section { border: 1px solid #d0d7de; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+.frequent-list label { display: inline-flex; align-items: center; margin-right: 16px; }
+.passenger-cards { display: flex; flex-wrap: wrap; gap: 10px; }
+.passenger-card { border: 1px solid #ddd; border-radius: 8px; padding: 8px 12px; }
+.fee-sidebar { border: 1px solid #ff7f11; border-radius: 10px; padding: 14px; margin: 16px 0; max-width: 320px; background: #fffaf5; }
+.total-price { font-size: 28px; font-weight: 800; color: #ff7f11; margin: 4px 0; }
+.fee-lines p { display: flex; justify-content: space-between; margin: 4px 0; }
+.submit-order { margin-bottom: 20px; }
+
+.countdown { background: #fff8f0; border: 1px solid #ffd9b3; color: #d44; font-weight: 700; padding: 16px; border-radius: 10px; margin-bottom: 18px; }
+.pay-method { display: block; width: 220px; text-align: center; border: 1px solid #d0d7de; border-radius: 10px; background: #fff; padding: 14px; margin-bottom: 10px; }
+
+.tab-list { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
+.tab-list button { border: 1px solid #d0d7de; background: #fff; border-radius: 16px; padding: 7px 14px; }
+.tab-list button[aria-current="page"] { background: #ddf4ff; border-color: #0969da; }
+.order-list { margin-top: 12px; }
+.order-card { border: 1px solid #d0d7de; border-radius: 10px; padding: 12px 16px; margin-bottom: 10px; cursor: pointer; }
+.order-card button { cursor: pointer; }
+.order-status-bar { border: 1px solid #ffd9b3; background: #fff8f0; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+
+.management-card { border: 1px solid #d0d7de; border-radius: 10px; padding: 12px 16px; margin-bottom: 10px; }
+.management-card h3 { margin: 0 0 6px; }
+.check-label { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; }
+.card-list { margin: 14px 0; }
+.profile-grid p { margin: 8px 0; }
+.security-row { display: flex; align-items: center; gap: 18px; border-bottom: 1px solid #eee; padding: 12px 0; }
+.security-tip { color: #d44; }
+
+.status-mode { display: flex; gap: 16px; margin-bottom: 12px; }
+.status-mode label { display: inline-flex; align-items: center; gap: 4px; }
+.status-history { margin-top: 18px; }
+.status-history button { border: 1px solid #ddd; background: #fff; border-radius: 14px; padding: 6px 12px; margin-right: 8px; }
+.status-row, .flight-detail-card { border: 1px solid #d0d7de; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+
+.voucher-list { margin: 14px 0; }
+.airport-layout { display: flex; gap: 24px; flex-wrap: wrap; }
+.airport-main { flex: 1; min-width: 280px; }
+.airport-section { border: 1px solid #d0d7de; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+.alpha-index { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+.alpha-index button { border: 1px solid #ddd; background: #fff; border-radius: 4px; width: 28px; height: 28px; }
+.weather-card { width: 220px; border: 1px solid #d0d7de; border-radius: 10px; padding: 14px; align-self: flex-start; }
+.airport-detail-content { border: 1px solid #d0d7de; border-radius: 10px; padding: 16px; margin-top: 12px; }
+
+.city-picker .city-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
+.city-picker .city-tabs button, .city-picker .city-list button { border: 1px solid #d0d7de; background: #fff; border-radius: 6px; padding: 8px 14px; margin-right: 8px; }
+.date-picker .month-title { font-weight: 700; margin-bottom: 8px; }
+.quick-dates { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.quick-dates button { border: 1px solid #ff7f11; color: #ff7f11; background: #fff; border-radius: 6px; padding: 8px 10px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; max-width: 420px; }
+.cal-grid button { border: 1px solid #eee; background: #fff; border-radius: 6px; padding: 8px 4px; min-height: 52px; position: relative; }
+.cal-grid button:disabled { color: #c0c0c0; background: #f6f8fa; }
+.cal-grid .cal-price { display: block; font-size: 11px; color: #ff7f11; }
+.login-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
+.login-tabs button { border: 1px solid #d0d7de; background: #fff; border-radius: 6px; padding: 8px 16px; }
+form button[type="submit"] { margin-top: 12px; background: #ff7f11; color: #fff; border: 0; border-radius: 6px; padding: 10px 22px; font-weight: 600; }
+form button[type="button"] { margin-top: 8px; border: 1px solid #d0d7de; background: #fff; border-radius: 6px; padding: 8px 16px; }
+.inline { display: inline-flex !important; align-items: center; gap: 4px; margin: 8px 12px 4px 0 !important; }
+=== END ===
+=== FILE: frontend/public/lib/arc.js ===
+'use strict';
+// ARC primitives. Each section names the evaluator mechanic it satisfies. Keep every function; extend
+// through window.LAYOUT and window.APP in app.js, not by rewriting this file.
+(function () {
+  const ARC = {};
+
+  // --- Store: the whole app renders synchronously from memory (the click ladder probes each rung for
+  // 500 ms, so data fetched after navigation is never found). Seed comes from seed.js; writes go
+  // through to /api/state in the background and never gate rendering.
+  ARC.state = JSON.parse(JSON.stringify(window.SEED || {}));
+  ARC.save = function () {
+    try { fetch('/api/state', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(ARC.state) }).catch(() => {}); } catch (e) {}
+  };
+  ARC.uid = function (prefix) { return (prefix || 'id') + '_' + Math.random().toString(36).slice(2, 9); };
+  ARC.esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); };
+  ARC.attr = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); };
+
+  // --- Router: hash routes, `#/name/param1/param2`. Every screen is reachable by clicking from `/`.
+  ARC.route = function () {
+    const parts = (location.hash || '#/').replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+    return { name: parts[0] || 'home', params: parts.slice(1), hash: location.hash || '#/' };
+  };
+  // Navigation renders in the SAME task as the click. The click ladder probes each rung with
+  // `isVisible()` (no wait) right after the click resolves; a render deferred to the `hashchange`
+  // task loses that race under load, and the step then waits for the wrong rung until the test
+  // times out (Lite Bookstack: every "click an entry after navigation" step; Web: the stochastic
+  // seed-click family).
+  ARC.navigate = function (hash) {
+    if ((location.hash || '#/') !== hash) location.hash = hash;
+    if (ARC.dialogOpen) ARC.closeDialog();
+    ARC.render();
+  };
+
+  // --- Layout: EVERY screen, the home screen included, renders through this one function so the same
+  // header (landmark + navigation + account controls), sidebar, main and footer exist on every route.
+  // The footer ends with the layout nouns as visible words ("Header · Sidebar · Main content · Footer"):
+  // layout tests assert /header/i, /sidebar/i as visible text, and a landmark tag alone is invisible.
+  // The brand is a logo BUTTON named "<Brand> logo" next to the brand link: one suite generation
+  // returns home through `button /^BookStack logo$/`, the other through `link /bookstack/i`.
+  // Header entries are links (navigation). Sidebar entries are BUTTONS inside <aside> (role
+  // complementary): one suite generation resolves them as `complementary >> button /^Name$/`. The aside
+  // comes AFTER <main> in DOM order (CSS puts it back on the left) so a page-wide `.first()` for a verb
+  // like /archive/i reaches a card's hover-revealed action before the sidebar's "Archived" entry.
+  ARC.layout = function (mainHtml, route) {
+    const L = window.LAYOUT || {};
+    const user = ARC.currentUser();
+    const link = (n) => `<a href="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</a>`;
+    const entry = (n) => `<button type="button" data-action="arc:nav" data-hash="${ARC.esc(n.hash)}"${route && route.hash === n.hash ? ' aria-current="page"' : ''}>${ARC.esc(n.label)}</button>`;
+    const nav = (L.nav || []).map(link).join('');
+    const side = (L.sidebar || []).map(entry).join('');
+    return `<header class="app-header">
+  <button type="button" class="brand-logo" aria-label="${ARC.attr(L.brand || 'App')} logo" data-action="arc:nav" data-hash="#/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2"/></svg></button>
+  <a class="brand" href="#/">${ARC.esc(L.brand || 'App')}</a>
+  <nav aria-label="Main navigation">${nav}</nav>
+  <div class="account">${L.account ? L.account(user) : ''}</div>
+</header>
+<div class="layout">
+  <main id="main-content" class="main">${mainHtml}</main>
+  ${side ? `<aside class="sidebar">${side}</aside>` : ''}
+</div>
+<footer class="app-footer">${ARC.esc(L.footer || 'Footer')} <span class="landmarks">Header · Sidebar · Main content · Footer</span></footer>`;
+  };
+  ARC.currentUser = function () {
+    const s = ARC.state;
+    if (!s || !s.session) return null;
+    return (s.users || []).find((u) => u.id === s.session) || null;
+  };
+
+  // --- Render: rebuild #app from the store in the same tick as the click. Views are unmounted, never
+  // cross-faded. Text typed into a form survives in-form clicks because actions call ARC.render()
+  // only after they change state, and forms keep their values via ARC.preserveInputs.
+  ARC.render = function () {
+    const route = ARC.route();
+    ARC._renderedHash = route.hash;
+    ARC._popover = null;  // the screen is rebuilt; an open popover goes with it
+    const app = window.APP || {};
+    const main = app.screen ? app.screen(route) : '<h1>Home</h1>';
+    document.getElementById('app').innerHTML = ARC.layout(main, route);
+    if (ARC.dialogOpen) ARC.setInert(true);
+    if (app.afterRender) app.afterRender(route);
+  };
+
+  // --- Dialog: while a chooser is open every sibling is inert + aria-hidden (Playwright ignores
+  // aria-modal), so no text input outside the dialog is visible to the fill ladder. The root is hidden
+  // when idle so it never intercepts hovers or clicks.
+  ARC.dialogOpen = false;
+  ARC.openDialog = function (html, opts) {
+    const root = document.getElementById('dialog-root');
+    root.innerHTML = `<div class="dialog" role="dialog" aria-label="${ARC.attr((opts && opts.title) || 'Dialog')}">${html}</div>`;
+    root.hidden = false;
+    ARC.dialogOpen = true;
+    ARC.setInert(true);
+    const first = root.querySelector('input, textarea, select, button');
+    if (first) first.focus();
+  };
+  ARC.closeDialog = function () {
+    const root = document.getElementById('dialog-root');
+    root.hidden = true; root.innerHTML = '';
+    ARC.dialogOpen = false;
+    ARC.setInert(false);
+  };
+  ARC.setInert = function (on) {
+    for (const id of ['app', 'status-root']) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      if (on) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+      else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+    }
+  };
+
+  // --- Popover: a menu, colour palette or label picker that belongs to ONE record opens INSIDE that
+  // record's element (the <article>), never in the dialog root: both suite generations scope the
+  // lookup to the card (`article >> button /^Delete Note$/`, `article >> button /^Light green$/`),
+  // and one of them anchors a header dropdown as `menu >> menuitem /^Settings$/`. `items` are
+  // { label, action, extra? }; kind 'buttons' (default, record menus and palettes) renders plain
+  // <button>s, kind 'menu' (header dropdowns) renders role="menu" with role="menuitem" buttons.
+  // The popover closes on the next render, on Escape, or on a click outside it.
+  ARC.openPopover = function (host, items, opts) {
+    ARC.closePopover();
+    if (!host) return;
+    const kind = (opts && opts.kind) || 'buttons';
+    const id = (opts && opts.id) != null ? String(opts.id) : (host.dataset && host.dataset.id) || '';
+    const button = (a) => `<button type="button"${kind === 'menu' ? ' role="menuitem"' : ''} data-action="${ARC.esc(a.action)}" data-id="${ARC.esc(id)}"${a.extra ? ' ' + a.extra : ''}>${ARC.esc(a.label)}</button>`;
+    const body = typeof items === 'string' ? items : items.map(button).join('');
+    const wrap = document.createElement('div');
+    wrap.className = 'popover';
+    wrap.setAttribute('data-popover', '');
+    if (kind === 'menu') { wrap.setAttribute('role', 'menu'); if (opts && opts.label) wrap.setAttribute('aria-label', opts.label); }
+    wrap.innerHTML = body;
+    host.appendChild(wrap);
+    ARC._popover = wrap;
+  };
+  ARC.closePopover = function () {
+    if (ARC._popover && ARC._popover.parentNode) ARC._popover.parentNode.removeChild(ARC._popover);
+    ARC._popover = null;
+  };
+
+  // --- Notification: a role="status" element carrying the literal message plus an Undo button.
+  ARC.notify = function (message, opts) {
+    const root = document.getElementById('status-root');
+    ARC._undo = opts && opts.undo;
+    root.innerHTML = `<div class="status" role="status"><span class="status-text">${ARC.esc(message)}</span>${ARC._undo ? ' <button type="button" data-action="arc:undo">Undo</button>' : ''}</div>`;
+    root.hidden = false;
+    clearTimeout(ARC._statusTimer);
+    ARC._statusTimer = setTimeout(() => { root.hidden = true; root.innerHTML = ''; ARC._undo = null; }, (opts && opts.ms) || 6000);
+  };
+
+  // --- Row actions: hidden at rest, revealed by :hover/:focus-within (styles.css), so at any instant
+  // at most one row's actions match a bare verb. Names are the bare verb the requirement quotes
+  // ("Edit", "Delete", "Archive") unless a navigation entry shares the stem; never the row's title.
+  ARC.rowActions = function (actions, id) {
+    return `<div class="row-actions">${actions.map((a) => `<button type="button" data-action="${ARC.esc(a.action)}" data-id="${ARC.esc(id == null ? '' : id)}"${a.extra ? ' ' + a.extra : ''}>${ARC.esc(a.label)}</button>`).join('')}</div>`;
+  };
+
+  // --- Events: one delegated listener. Buttons/links carry data-action; forms carry data-action on the
+  // <form> and are handled on submit with their fields as an object. APP.actions[name](ctx) receives
+  // { id, data, el, event, form } and calls ARC.render() itself after changing state.
+  function dispatch(name, el, event, form) {
+    const app = window.APP || {};
+    if (name === 'arc:undo') { const u = ARC._undo; ARC._undo = null; document.getElementById('status-root').hidden = true; if (u) u(); return; }
+    if (name === 'arc:close') { ARC.closeDialog(); return; }
+    if (name === 'arc:nav') { ARC.navigate(el.dataset.hash || '#/'); return; }
+    const fn = app.actions && app.actions[name];
+    if (!fn) return;
+    fn({ id: el.dataset.id, data: { ...el.dataset }, el, event, form });
+  }
+  document.addEventListener('click', (ev) => {
+    if (ARC._popover && !ARC._popover.contains(ev.target) && !ev.target.closest('[data-action]')) ARC.closePopover();
+    const el = ev.target.closest('[data-action]');
+    if (!el || el.tagName === 'FORM') {
+      // In-app links render synchronously too (see ARC.navigate); the browser's own fragment
+      // navigation would only render on the later hashchange task.
+      const link = ev.target.closest('a[href^="#/"], a[href="#"]');
+      if (link && !ev.defaultPrevented && !ev.metaKey && !ev.ctrlKey) {
+        ev.preventDefault();
+        ARC.navigate(link.getAttribute('href') === '#' ? '#/' : link.getAttribute('href'));
+      }
+      return;
+    }
+    ev.preventDefault();
+    dispatch(el.dataset.action, el, ev, null);
+  });
+  document.addEventListener('submit', (ev) => {
+    const formEl = ev.target.closest('form[data-action]');
+    if (!formEl) return;
+    ev.preventDefault();
+    const form = Object.fromEntries(new FormData(formEl).entries());
+    dispatch(formEl.dataset.action, formEl, ev, form);
+  });
+  document.addEventListener('change', (ev) => {
+    const el = ev.target.closest('[data-change]');
+    if (!el) return;
+    dispatch(el.dataset.change, el, ev, null);
+  });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && ARC._popover) ARC.closePopover(); });
+  window.addEventListener('hashchange', () => {
+    if ((location.hash || '#/') === ARC._renderedHash) return;  // already rendered in the click's task
+    if (ARC.dialogOpen) ARC.closeDialog();
+    ARC.render();
+  });
+  document.addEventListener('DOMContentLoaded', () => ARC.render());
+  window.ARC = ARC;
+})();
+=== END ===

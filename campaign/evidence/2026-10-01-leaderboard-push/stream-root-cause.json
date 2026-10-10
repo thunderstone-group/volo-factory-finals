@@ -1,0 +1,13 @@
+{
+  "source": "~/projects/arcbench-campaign/evidence/2026-10-01-leaderboard-push/short-test-deepseek-v4-flash-vision-exp/trace.json",
+  "observed_error": "JSONDecodeError: Unterminated string starting at: line 1 column 36 (char 35)",
+  "invalid_frame": "{\"created\":1790870706,\"usage\":null,\"mo",
+  "classification": "A truncated JSON data frame, not a valid alternate delta shape. No code text, finish marker or usage was received. Cannot reconstruct missing output.",
+  "cost_model_status": {
+    "deepseek_v4_flash": "multiple incomplete real streams",
+    "deepseek_v4_flash_vision_exp": "both long and compact prompts incomplete",
+    "qwen3_7_plus": "compact prompt incomplete",
+    "glm5_3_flash": "complete 46.5 s, estimated CNY 0.007094, but test wrongly moves an unselected column and is rejected semantically"
+  },
+  "next": "One bounded actual test-writing call each on GLM 5.3 and Kimi HighSpeed; max 16k output, no retries or fallback."
+}

@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenCollab 速读</title>
+<style>
+:root{
+  --ink:#1d1d1f; --muted:#6e6e73; --hair:#d2d2d7; --off:#c7c7cc;
+  --canvas:#ffffff; --canvas-alt:#f5f5f7;
+  --tile:#000000; --tile-raise:#1d1d1f; --tile-line:#3a3a3c;
+  --on-dark:#f5f5f7; --on-dark-muted:#a1a1a6;
+  --accent:#0066cc; --accent-dark:#2997ff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:56px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--canvas);color:var(--ink);font:400 17px/1.47 -apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+ol,ul{list-style:none}
+.i{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:980px;margin:0 auto}
+.tile{padding:80px 16px}
+.alt{background:var(--canvas-alt)}
+.dark{background:var(--tile);color:var(--on-dark)}
+.dark .muted,.dark small{color:var(--on-dark-muted)}
+.muted,small{color:var(--muted)}
+small{font-size:14px;line-height:1.43}
+h1,h2{font-weight:600;letter-spacing:-0.01em;text-wrap:balance}
+.acc{color:var(--accent)} .dark .acc{color:var(--accent-dark)}
+
+/* mini tree nav */
+.mini{position:sticky;top:0;z-index:10;background:var(--canvas);border-bottom:1px solid var(--hair);height:48px;display:flex;align-items:center;justify-content:center;gap:24px;padding:0 16px}
+.mini .home{font-size:14px;font-weight:600}
+.mini ol{display:flex;gap:4px}
+.mini li a{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9999px;color:var(--off);transition:color .2s ease-out,background .2s ease-out}
+.mini li a .i{width:20px;height:20px}
+.mini li a.on{color:var(--accent);background:var(--canvas-alt)}
+.mini .path{font-size:14px;color:var(--muted);min-width:92px}
+
+/* hero */
+.hero{padding:112px 16px 96px;text-align:center}
+.hero .kicker{font-size:14px;color:var(--muted)}
+.hero h1{font-size:56px;line-height:1.07;margin:12px 0 20px}
+.thesis{font-size:28px;line-height:1.14;font-weight:400;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.thesis .pair{display:inline-flex;align-items:center;gap:8px}
+.thesis .i{width:32px;height:32px}
+.thesis .neq{font-size:40px;color:var(--accent);font-weight:300}
+
+/* BFS tree */
+.layer{font-size:40px;line-height:1.1;text-align:center}
+.layer-sub{text-align:center;margin-top:8px}
+.tree{margin-top:48px;position:relative}
+.root{width:max-content;margin:0 auto;padding:10px 22px;border-radius:9999px;background:var(--ink);color:#fff;font-weight:600;font-size:17px}
+.edges{display:block;width:100%;height:56px}
+.edges line{stroke:var(--off);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.kids{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center}
+.kids a{display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 4px;border-radius:18px;transition:background .2s ease-out}
+.kids a:hover{background:#fff}
+.kids .role{font-size:14px;color:var(--accent);font-weight:600}
+.node{width:64px;height:64px;border-radius:9999px;background:#fff;border:1px solid var(--hair);display:flex;align-items:center;justify-content:center}
+.node .i{width:28px;height:28px}
+.kids b{font-size:17px;font-weight:600;line-height:1.24}
+.chain{display:grid;grid-template-columns:repeat(5,1fr);margin-top:28px;position:relative}
+.chain::before{content:"";position:absolute;left:10%;right:10%;top:50%;height:1px;background:var(--hair)}
+.chain span{justify-self:center;position:relative;background:var(--canvas-alt);padding:0 8px;font-size:14px;color:var(--muted)}
+
+/* DFS common */
+.crumb{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+.dark .crumb{color:var(--on-dark-muted)}
+.crumb .i{width:16px;height:16px}
+.crumb b{color:inherit;font-weight:600}
+.sec-h{font-size:40px;line-height:1.1;margin:10px 0 6px;display:flex;align-items:center;gap:14px}
+.sec-h .i{width:36px;height:36px}
+.sec-sub{font-size:21px;line-height:1.19;font-weight:600;color:var(--muted)}
+.dark .sec-sub{color:var(--on-dark-muted)}
+.block{margin-top:56px}
+.stat{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.stat b{font-size:56px;line-height:1;font-weight:600;letter-spacing:-0.02em}
+.stat span{font-size:17px}
+
+/* s1 org charts */
+.orgs{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap}
+.org{width:280px;text-align:center}
+.org figcaption{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px}
+.n{display:inline-flex;flex-direction:column;align-items:center;gap:6px;font-size:14px}
+.n .c{width:56px;height:56px;border-radius:9999px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;position:relative}
+.n.idle{color:var(--off)}
+.n.idle .c{border:1.5px dashed var(--off)}
+.n.hot .c{border-color:var(--accent);color:var(--accent)}
+.badge{position:absolute;right:-30px;top:-4px;display:flex;flex-direction:column;gap:2px;color:var(--accent)}
+.badge .i{width:20px;height:20px}
+.orgline{display:block;width:180px;height:36px;margin:4px auto}
+.orgline line{stroke:var(--ink);stroke-width:1.5}
+.orgline.dash line{stroke:var(--off);stroke-dasharray:4 4}
+.orgrow{display:flex;justify-content:space-between;width:200px;margin:0 auto}
+.big-arrow{color:var(--off)} .big-arrow .i{width:40px;height:40px}
+.fixes{display:grid;gap:12px;max-width:560px;margin:0 auto}
+.fixes li{display:grid;grid-template-columns:28px 1fr 24px 28px 1fr;align-items:center;gap:10px;padding:14px 18px;border-radius:18px;background:var(--canvas-alt)}
+.fixes .x{color:var(--muted)}
+.center{text-align:center}
+.center .stat{justify-content:center}
+
+/* s2 runtime */
+.ctrls{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.chip{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 12px;border-radius:18px;background:var(--tile-raise);text-align:center}
+.chip .i{width:28px;height:28px}
+.chip b{font-weight:600}
+.chip.on{color:var(--accent-dark);outline:1.5px solid var(--accent-dark)}
+.chip.on small{color:var(--accent-dark)}
+.downs{display:grid;grid-template-columns:repeat(3,1fr);justify-items:center;color:var(--on-dark-muted);padding:8px 0}
+.base{border:1.5px solid var(--tile-line);border-radius:18px;padding:28px 24px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+.fsm{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:14px;color:var(--on-dark-muted)}
+.gate{display:grid;grid-template-columns:auto 1fr;gap:14px 16px;align-items:center}
+.gate>.i{width:40px;height:40px;color:var(--accent-dark)}
+.gate .q{font-size:21px;font-weight:600}
+.forks{grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap}
+.forks span{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:9999px;background:var(--tile-raise);font-size:14px}
+.forks .i{width:18px;height:18px}
+.baselabel{margin-top:14px;text-align:center;font-size:14px;color:var(--on-dark-muted)}
+
+/* s3 events */
+.logs{display:grid;grid-template-columns:1fr auto 1.4fr;gap:28px;align-items:center}
+.prose{text-align:center;color:var(--off)}
+.prose .i{width:72px;height:72px;stroke-width:1.25}
+.prose p{font-size:14px;margin-top:8px;text-decoration:line-through}
+.ev{display:grid;gap:6px}
+.ev li{display:grid;grid-template-columns:44px 40px 24px 1fr;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:#fff;border:1px solid var(--hair);font-size:14px}
+.ev .step{font:500 13px/1 ui-monospace,"SF Mono",Menlo,monospace;color:var(--muted)}
+.ev .who{display:inline-flex;align-items:center;justify-content:center;width:32px;height:24px;border-radius:9999px;border:1px solid var(--hair);font-size:13px;font-weight:600}
+.ev .i{color:var(--accent);width:20px;height:20px}
+.recon{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.recon span{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+
+/* s4 adherence */
+.axes{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;text-align:center}
+.axes li{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:14px}
+.axes .c{width:52px;height:52px;border-radius:9999px;background:var(--tile-raise);display:flex;align-items:center;justify-content:center;position:relative}
+.axes .ok{position:absolute;right:-4px;bottom:-4px;width:20px;height:20px;border-radius:9999px;background:var(--accent-dark);color:#000;display:flex;align-items:center;justify-content:center}
+.axes .ok .i{width:14px;height:14px;stroke-width:2.5}
+.eq{text-align:center;margin-top:18px;font-size:17px;color:var(--on-dark-muted)}
+.eq b{color:var(--on-dark)}
+.range{max-width:640px;margin:0 auto}
+.track{position:relative;height:8px;border-radius:9999px;background:var(--tile-raise);margin:40px 0 12px}
+.seg{position:absolute;left:47.2%;right:2.8%;top:0;bottom:0;border-radius:9999px;background:var(--accent-dark)}
+.pin{position:absolute;top:-34px;transform:translateX(-50%);font-weight:600;font-size:21px}
+.range-cap{display:flex;justify-content:space-between;font-size:14px;color:var(--on-dark-muted)}
+.bars{display:grid;gap:18px;max-width:720px;margin:0 auto}
+.bar-row{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center}
+.bar-row .lbl{display:flex;align-items:center;gap:8px;font-size:14px}
+.bar-row .lbl .i{width:20px;height:20px}
+.bpair{display:grid;gap:4px;padding-right:44px}
+.b{height:14px;border-radius:9999px;position:relative}
+.b.adh{background:var(--tile-line)}
+.b.pass{background:var(--accent-dark)}
+.b em{position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%);font-style:normal;font-size:13px;white-space:nowrap}
+.b.adh em{color:var(--on-dark-muted)}
+.b.pass em{color:var(--accent-dark);font-weight:600}
+.legend{display:flex;gap:20px;justify-content:center;font-size:14px;color:var(--on-dark-muted);margin-top:8px}
+.legend i{display:inline-block;width:20px;height:8px;border-radius:9999px;margin-right:6px;vertical-align:middle}
+.cace{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-size:21px;font-weight:600}
+.cace .tk{padding:8px 16px;border-radius:9999px;background:var(--tile-raise)}
+
+/* s5 duo */
+.flow{display:grid;grid-template-columns:auto 24px auto 24px auto 24px auto 24px auto;align-items:center;justify-content:center;gap:10px}
+.st{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:14px;max-width:132px}
+.st .c{width:56px;height:56px;border-radius:9999px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.st.acc .c{border-color:var(--accent);color:var(--accent)}
+.st b{font-size:15px;font-weight:600;color:var(--ink)}
+.coders{display:grid;gap:14px;position:relative}
+.coders .handoff{display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;color:var(--muted)}
+.coders .handoff .i{width:14px;height:14px}
+.arr{color:var(--off)} .arr .i{width:24px;height:24px}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-top:2px}
+.tags span{font-size:12px;padding:2px 8px;border-radius:9999px;background:var(--canvas-alt);color:var(--muted);white-space:nowrap}
+.hyg{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.hyg .t{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:9999px;background:var(--canvas-alt);font-size:14px;font-weight:600}
+.hyg .t .i{width:20px;height:20px}
+.hyg .void{color:var(--muted);text-decoration:line-through}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.res h3{font-size:17px;font-weight:600;margin-bottom:12px}
+.vs{display:grid;gap:6px}
+.vs .r{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center;font-size:14px}
+.vs .b{height:18px}
+.vs .base-b{background:var(--off)}
+.vs .duo-b{background:var(--accent)}
+.vs .b em{color:var(--ink);font-weight:600}
+.delta{margin-top:10px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.delta b{font-size:28px;font-weight:600}
+.delta.weak b{color:var(--muted)}
+.cost{display:flex;align-items:center;justify-content:center;gap:12px;font-size:21px;font-weight:600}
+.cost .i{width:32px;height:32px}
+
+/* coda */
+.take{display:grid;gap:12px;max-width:720px;margin:0 auto}
+.take li{display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:center;padding:18px 22px;border-radius:18px;background:var(--tile-raise)}
+.take li>.i{width:32px;height:32px;color:var(--accent-dark)}
+.take b{font-size:21px;font-weight:600;line-height:1.19}
+.take .tag{font-size:14px;color:var(--on-dark-muted)}
+.math{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;font-size:21px;font-weight:600}
+.math .tk{padding:10px 18px;border-radius:9999px;background:var(--tile-raise)}
+.math .lt{color:var(--accent-dark);font-size:28px}
+.caveats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;color:var(--on-dark-muted);font-size:14px}
+.caveats span{display:inline-flex;align-items:center;gap:8px}
+.caveats .i{width:20px;height:20px}
+footer{padding:28px 16px;text-align:center;font-size:12px;color:var(--muted);background:var(--canvas-alt)}
+
+@media (max-width:734px){
+  .hero h1{font-size:40px}
+  .thesis{font-size:21px}
+  .layer,.sec-h{font-size:30px}
+  .sec-h .i{width:28px;height:28px}
+  .tile{padding:56px 16px}
+  .mini{gap:10px}
+  .mini .path{display:none}
+  .node{width:48px;height:48px}
+  .node .i{width:22px;height:22px}
+  .kids b{font-size:13px}
+  .kids small{display:none}
+  .kids .role{font-size:12px}
+  .chain span{font-size:12px;padding:0 4px}
+  .stat b{font-size:40px}
+  .orgs{flex-direction:column;gap:12px}
+  .orgs>.big-arrow{transform:rotate(90deg)}
+  .fixes li{grid-template-columns:24px 1fr 20px 24px 1fr;gap:8px;padding:12px;font-size:14px}
+  .base{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .gate{grid-template-columns:1fr;justify-items:center}
+  .forks{justify-content:center}
+  .chip small{font-size:12px}
+  .logs{grid-template-columns:1fr}
+  .logs>.big-arrow{transform:rotate(90deg);justify-self:center}
+  .axes{grid-template-columns:repeat(3,1fr);row-gap:20px}
+  .bar-row{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr;justify-items:center}
+  .flow .arr{transform:rotate(90deg)}
+  .coders{grid-template-columns:1fr 1fr}
+  .coders .handoff{grid-column:1/-1}
+  .res{grid-template-columns:1fr}
+  .take li{grid-template-columns:36px 1fr}
+  .take .tag{grid-column:2}
+  .take b{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-ghost" viewBox="0 0 24 24"><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+  <symbol id="i-fork" viewBox="0 0 24 24"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-battery" viewBox="0 0 24 24"><rect x="1" y="6" width="18" height="12" rx="2"/><line x1="23" y1="13" x2="23" y2="11"/></symbol>
+  <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="8" y1="12" x2="16" y2="12"/></symbol>
+  <symbol id="i-workflow" viewBox="0 0 24 24"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></symbol>
+  <symbol id="i-ring" viewBox="0 0 24 24"><circle cx="12" cy="3" r="1.2"/><circle cx="17.3" cy="4.7" r="1.2"/><circle cx="20.6" cy="9.2" r="1.2"/><circle cx="20.6" cy="14.8" r="1.2"/><circle cx="17.3" cy="19.3" r="1.2"/><circle cx="12" cy="21" r="1.2"/><circle cx="6.7" cy="19.3" r="1.2"/><circle cx="3.4" cy="14.8" r="1.2"/><circle cx="3.4" cy="9.2" r="1.2"/><circle cx="6.7" cy="4.7" r="1.2"/><path d="M10 12h4m-2-2v4"/></symbol>
+  <symbol id="i-lines" viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></symbol>
+  <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></symbol>
+  <symbol id="i-power" viewBox="0 0 24 24"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></symbol>
+  <symbol id="i-compress" viewBox="0 0 24 24"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></symbol>
+  <symbol id="i-usercheck" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-pie" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-rules" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="i-coins" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></symbol>
+  <symbol id="i-bars" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-mirror" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M8 7 4 12l4 5"/><path d="m16 7 4 5-4 5"/></symbol>
+</svg>
+
+<nav class="mini" aria-label="结构导航">
+  <a class="home" href="#map">OpenCollab</a>
+  <ol>
+    <li><a href="#s1" data-k="s1" aria-label="协作错觉"><svg class="i"><use href="#i-ghost"/></svg></a></li>
+    <li><a href="#s2" data-k="s2" aria-label="共享运行时"><svg class="i"><use href="#i-layers"/></svg></a></li>
+    <li><a href="#s3" data-k="s3" aria-label="事件流"><svg class="i"><use href="#i-list"/></svg></a></li>
+    <li><a href="#s4" data-k="s4" aria-label="遵从率"><svg class="i"><use href="#i-gauge"/></svg></a></li>
+    <li><a href="#s5" data-k="s5" aria-label="Duo"><svg class="i"><use href="#i-fork"/></svg></a></li>
+    <li><a href="#s6" data-k="s6" aria-label="对我们"><svg class="i"><use href="#i-mirror"/></svg></a></li>
+  </ol>
+  <span class="path" id="path">全景</span>
+</nav>
+
+<header class="hero">
+  <p class="kicker">arXiv 2609.38345 · 上交 / 剑桥 / NTU / 港大 / 帝国理工 / 北大 / 腾讯</p>
+  <h1>OpenCollab</h1>
+  <p class="thesis">
+    <span class="pair"><svg class="i"><use href="#i-users"/></svg>配了团队</span>
+    <span class="neq">≠</span>
+    <span class="pair"><svg class="i"><use href="#i-send"/></svg>真在协作</span>
+  </p>
+</header>
+
+<!-- BFS: the whole first layer -->
+<section id="map" class="tile alt" data-k="map">
+  <div class="wrap">
+    <h2 class="layer">全景</h2>
+    <p class="layer-sub muted">先横看五点，再逐个下钻</p>
+    <div class="tree">
+      <div class="root">OpenCollab</div>
+      <svg class="edges" viewBox="0 0 1000 56" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="500" y1="0" x2="100" y2="56"/><line x1="500" y1="0" x2="300" y2="56"/><line x1="500" y1="0" x2="500" y2="56"/><line x1="500" y1="0" x2="700" y2="56"/><line x1="500" y1="0" x2="900" y2="56"/>
+      </svg>
+      <ol class="kids">
+        <li><a href="#s1"><span class="role">问题</span><span class="node"><svg class="i"><use href="#i-ghost"/></svg></span><b>协作错觉</b><small>分工常没发生</small></a></li>
+        <li><a href="#s2"><span class="role">底座</span><span class="node"><svg class="i"><use href="#i-layers"/></svg></span><b>共享运行时</b><small>调用前查额度</small></a></li>
+        <li><a href="#s3"><span class="role">记录</span><span class="node"><svg class="i"><use href="#i-list"/></svg></span><b>事件流</b><small>每步带角色</small></a></li>
+        <li><a href="#s4"><span class="role">度量</span><span class="node"><svg class="i"><use href="#i-gauge"/></svg></span><b>遵从率</b><small>分工兑现了吗</small></a></li>
+        <li><a href="#s5"><span class="role">解法</span><span class="node"><svg class="i"><use href="#i-fork"/></svg></span><b>Duo</b><small>双候选择优</small></a></li>
+      </ol>
+      <div class="chain" aria-hidden="true"><span>为什么</span><span>怎么管</span><span>怎么看</span><span>怎么量</span><span>怎么赢</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DFS 1 -->
+<section id="s1" class="tile" data-k="s1">
+  <div class="wrap">
+    <p class="crumb">OpenCollab<svg class="i"><use href="#i-chev"/></svg><b>协作错觉</b></p>
+    <h2 class="sec-h"><svg class="i"><use href="#i-ghost"/></svg>协作错觉</h2>
+    <p class="sec-sub">声明的分工，运行时常常没发生</p>
+
+    <div class="block orgs">
+      <figure class="org">
+        <figcaption>声明</figcaption>
+        <div class="n"><span class="c"><svg class="i"><use href="#i-user"/></svg></span>牵头</div>
+        <svg class="orgline" viewBox="0 0 180 36" aria-hidden="true"><line x1="90" y1="0" x2="20" y2="36"/><line x1="90" y1="0" x2="160" y2="36"/></svg>
+        <div class="orgrow">
+          <div class="n"><span class="c"><svg class="i"><use href="#i-user"/></svg></span>Coder A</div>
+          <div class="n"><span class="c"><svg class="i"><use href="#i-user"/></svg></span>Coder B</div>
+        </div>
+      </figure>
+      <span class="big-arrow" aria-hidden="true"><svg class="i"><use href="#i-arrow"/></svg></span>
+      <figure class="org">
+        <figcaption>实际</figcaption>
+        <div class="n hot"><span class="c"><svg class="i"><use href="#i-user"/></svg>
+          <span class="badge"><svg class="i" aria-label="自己干"><use href="#i-wrench"/></svg><svg class="i" aria-label="额度耗尽"><use href="#i-battery"/></svg></span></span>牵头独揽</div>
+        <svg class="orgline dash" viewBox="0 0 180 36" aria-hidden="true"><line x1="90" y1="0" x2="20" y2="36"/><line x1="90" y1="0" x2="160" y2="36"/></svg>
+        <div class="orgrow">
+          <div class="n idle"><span class="c"><svg class="i"><use href="#i-user"/></svg></span>没轮到</div>
+          <div class="n idle"><span class="c"><svg class="i"><use href="#i-user"/></svg></span>没轮到</div>
+        </div>
+      </figure>
+    </div>
+
+    <div class="block center">
+      <p class="stat"><b class="acc">47.2%</b><span>默认配置下真按分工执行</span></p>
+    </div>
+
+    <div class="block">
+      <ul class="fixes">
+        <li><svg class="i"><use href="#i-megaphone"/></svg><span>提示里强制委托</span><svg class="i x"><use href="#i-arrow"/></svg><svg class="i x"><use href="#i-wave"/></svg><span>随措辞乱摆</span></li>
+        <li><svg class="i"><use href="#i-filter"/></svg><span>只算协作过的</span><svg class="i x"><use href="#i-arrow"/></svg><svg class="i x"><use href="#i-scale"/></svg><span>偏向难题</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DFS 2 -->
+<section id="s2" class="tile dark" data-k="s2">
+  <div class="wrap">
+    <p class="crumb">OpenCollab<svg class="i"><use href="#i-chev"/></svg><b>共享运行时</b></p>
+    <h2 class="sec-h"><svg class="i"><use href="#i-layers"/></svg>共享运行时</h2>
+    <p class="sec-sub">编排与执行分层，所有配置跑在同一底座</p>
+
+    <div class="block">
+      <div class="ctrls">
+        <div class="chip"><svg class="i"><use href="#i-user"/></svg><b>Single</b><small>单 agent</small></div>
+        <div class="chip"><svg class="i"><use href="#i-users"/></svg><b>Team</b><small>模型定交接</small></div>
+        <div class="chip on"><svg class="i"><use href="#i-workflow"/></svg><b>Workflow</b><small>脚本定交接 · Duo</small></div>
+      </div>
+      <div class="downs" aria-hidden="true"><svg class="i"><use href="#i-down"/></svg><svg class="i"><use href="#i-down"/></svg><svg class="i"><use href="#i-down"/></svg></div>
+      <div class="base">
+        <div class="fsm"><svg class="i" style="width:56px;height:56px;stroke-width:1.5"><use href="#i-ring"/></svg>10 状态机</div>
+        <div class="gate">
+          <svg class="i"><use href="#i-gauge"/></svg>
+          <span class="q">每次调模型前查额度</span>
+          <div class="forks">
+            <span><svg class="i acc"><use href="#i-check"/></svg>够 · 调用</span>
+            <span><svg class="i"><use href="#i-stop"/></svg>超 · 停下并记终止码</span>
+          </div>
+        </div>
+      </div>
+      <p class="baselabel">同模型 · 同工具 · 同预算 · 同上下文策略 · 同拓扑声明</p>
+    </div>
+  </div>
+</section>
+
+<!-- DFS 3 -->
+<section id="s3" class="tile alt" data-k="s3">
+  <div class="wrap">
+    <p class="crumb">OpenCollab<svg class="i"><use href="#i-chev"/></svg><b>事件流</b></p>
+    <h2 class="sec-h"><svg class="i"><use href="#i-list"/></svg>事件流</h2>
+    <p class="sec-sub">每一步都盖上角色章，程序可还原</p>
+
+    <div class="block logs">
+      <div class="prose"><svg class="i"><use href="#i-lines"/></svg><p>文字日志</p></div>
+      <span class="big-arrow" aria-hidden="true"><svg class="i"><use href="#i-arrow"/></svg></span>
+      <ol class="ev">
+        <li><span class="step">#01</span><span class="who">牵</span><svg class="i"><use href="#i-cpu"/></svg>调模型</li>
+        <li><span class="step">#02</span><span class="who">牵</span><svg class="i"><use href="#i-plus"/></svg>派生 A</li>
+        <li><span class="step">#03</span><span class="who">A</span><svg class="i"><use href="#i-terminal"/></svg>调工具</li>
+        <li><span class="step">#04</span><span class="who">A</span><svg class="i"><use href="#i-branch"/></svg>改工作树</li>
+        <li><span class="step">#05</span><span class="who">B</span><svg class="i"><use href="#i-ban"/></svg>越权 · 被拒</li>
+        <li><span class="step">#06</span><span class="who">A</span><svg class="i"><use href="#i-compress"/></svg>压缩上下文</li>
+        <li><span class="step">#07</span><span class="who">牵</span><svg class="i"><use href="#i-power"/></svg>终止</li>
+      </ol>
+    </div>
+
+    <div class="block recon">
+      <span><svg class="i acc"><use href="#i-user"/></svg>谁</span>
+      <span><svg class="i acc"><use href="#i-terminal"/></svg>做了什么</span>
+      <span><svg class="i acc"><use href="#i-coins"/></svg>花了多少</span>
+    </div>
+  </div>
+</section>
+
+<!-- DFS 4 -->
+<section id="s4" class="tile dark" data-k="s4">
+  <div class="wrap">
+    <p class="crumb">OpenCollab<svg class="i"><use href="#i-chev"/></svg><b>遵从率</b></p>
+    <h2 class="sec-h"><svg class="i"><use href="#i-gauge"/></svg>遵从率 Adherence</h2>
+    <p class="sec-sub">六项全过，这次运行才算真按分工</p>
+
+    <div class="block">
+      <ul class="axes">
+        <li><span class="c"><svg class="i"><use href="#i-usercheck"/></svg><span class="ok"><svg class="i"><use href="#i-check"/></svg></span></span>都参与</li>
+        <li><span class="c"><svg class="i"><use href="#i-send"/></svg><span class="ok"><svg class="i"><use href="#i-check"/></svg></span></span>真委托</li>
+        <li><span class="c"><svg class="i"><use href="#i-shield"/></svg><span class="ok"><svg class="i"><use href="#i-check"/></svg></span></span>守边界</li>
+        <li><span class="c"><svg class="i"><use href="#i-pie"/></svg><span class="ok"><svg class="i"><use href="#i-check"/></svg></span></span>分预算</li>
+        <li><span class="c"><svg class="i"><use href="#i-share"/></svg><span class="ok"><svg class="i"><use href="#i-check"/></svg></span></span>信息流通</li>
+        <li><span class="c"><svg class="i"><use href="#i-book"/></svg><span class="ok"><svg class="i"><use href="#i-check"/></svg></span></span>上下文策略</li>
+      </ul>
+    </div>
+
+    <div class="block range">
+      <div class="track"><span class="seg"></span><span class="pin" style="left:47.2%">47.2%</span><span class="pin acc" style="left:97.2%;transform:translateX(-80%)">97.2%</span></div>
+      <div class="range-cap"><span>只改一个维度</span><span>模型 · 工具 · 预算 · 上下文 · 拓扑</span></div>
+    </div>
+
+    <div class="block">
+      <div class="bars">
+        <div class="bar-row"><span class="lbl"><svg class="i"><use href="#i-users"/></svg>默认</span>
+          <div class="bpair"><span class="b adh" style="width:47.2%"><em>47.2</em></span><span class="b pass" style="width:75%"><em>75.0</em></span></div></div>
+        <div class="bar-row"><span class="lbl"><svg class="i"><use href="#i-megaphone"/></svg>强制委托</span>
+          <div class="bpair"><span class="b adh" style="width:91.7%"><em>91.7</em></span><span class="b pass" style="width:72.2%"><em>72.2</em></span></div></div>
+        <div class="bar-row"><span class="lbl"><svg class="i"><use href="#i-eye"/></svg>牵头只读</span>
+          <div class="bpair"><span class="b adh" style="width:94.4%"><em>94.4</em></span><span class="b pass" style="width:52.8%"><em>52.8</em></span></div></div>
+        <div class="bar-row"><span class="lbl"><svg class="i"><use href="#i-cpu"/></svg>换强模型</span>
+          <div class="bpair"><span class="b adh" style="width:97.2%"><em>97.2</em></span><span class="b pass" style="width:61.1%"><em>61.1</em></span></div></div>
+      </div>
+      <div class="legend"><span><i style="background:var(--tile-line)"></i>遵从率</span><span><i style="background:var(--accent-dark)"></i>通过率</span></div>
+    </div>
+
+    <div class="block cace">
+      <span class="tk">逼出协作</span><span class="acc">≠</span><span class="tk">更好</span>
+    </div>
+    <p class="eq">CACE = <b>提升</b> ÷ <b>遵从率</b> · 只算真协作的那部分</p>
+  </div>
+</section>
+
+<!-- DFS 5 -->
+<section id="s5" class="tile" data-k="s5">
+  <div class="wrap">
+    <p class="crumb">OpenCollab<svg class="i"><use href="#i-chev"/></svg><b>Duo</b></p>
+    <h2 class="sec-h"><svg class="i"><use href="#i-fork"/></svg>Duo</h2>
+    <p class="sec-sub">两个目标不同的候选，代码定流程</p>
+
+    <div class="block flow">
+      <div class="st"><span class="c"><svg class="i"><use href="#i-file"/></svg></span><b>任务</b></div>
+      <span class="arr"><svg class="i"><use href="#i-arrow"/></svg></span>
+      <div class="coders">
+        <div class="st acc"><span class="c"><svg class="i"><use href="#i-target"/></svg></span><b>Coder A</b>最小修复</div>
+        <div class="handoff"><svg class="i"><use href="#i-down"/></svg>测试命令</div>
+        <div class="st acc"><span class="c"><svg class="i"><use href="#i-layers"/></svg></span><b>Coder B</b>求完整</div>
+      </div>
+      <span class="arr"><svg class="i"><use href="#i-arrow"/></svg></span>
+      <div class="st"><span class="c"><svg class="i"><use href="#i-rules"/></svg></span><b>规则先判</b>
+        <span class="tags"><span>空候选</span><span>测试失败</span><span>同 diff→B</span></span></div>
+      <span class="arr"><svg class="i"><use href="#i-arrow"/></svg></span>
+      <div class="st"><span class="c"><svg class="i"><use href="#i-eye"/></svg></span><b>裁判 · 只读</b>
+        <span class="tags"><span>逐条需求</span><span>平局→B</span></span></div>
+      <span class="arr"><svg class="i"><use href="#i-arrow"/></svg></span>
+      <div class="st"><span class="c"><svg class="i"><use href="#i-code"/></svg></span><b>代码采用</b></div>
+    </div>
+
+    <div class="block hyg">
+      <span class="t"><svg class="i acc"><use href="#i-flask"/></svg>测过 <svg class="i acc"><use href="#i-check"/></svg></span>
+      <svg class="i muted"><use href="#i-arrow"/></svg>
+      <span class="t"><svg class="i"><use href="#i-pencil"/></svg>又改了</span>
+      <svg class="i muted"><use href="#i-arrow"/></svg>
+      <span class="t void"><svg class="i"><use href="#i-flask"/></svg>旧结果作废 <svg class="i"><use href="#i-help"/></svg></span>
+    </div>
+
+    <div class="block res">
+      <div>
+        <h3>DeepSWE</h3>
+        <div class="vs">
+          <div class="r"><span>单 agent</span><span class="b base-b" style="width:55.75%"><em>55.75</em></span></div>
+          <div class="r"><span>Duo</span><span class="b duo-b" style="width:69.91%"><em>69.91</em></span></div>
+        </div>
+        <p class="delta"><b class="acc">+14.2</b><small>只 Duo 过 21 · 只单 agent 过 5 · 显著</small></p>
+      </div>
+      <div>
+        <h3>Terminal-Bench 2.1</h3>
+        <div class="vs">
+          <div class="r"><span>单 agent</span><span class="b base-b" style="width:79.78%"><em>79.78</em></span></div>
+          <div class="r"><span>Duo</span><span class="b duo-b" style="width:83.15%"><em>83.15</em></span></div>
+        </div>
+        <p class="delta weak"><b>+3.4</b><small>6 : 3 · 不显著</small></p>
+      </div>
+    </div>
+
+    <div class="block cost">
+      <svg class="i"><use href="#i-coins"/></svg><span>token ×2.2</span><small>DeepSWE 11.95M → 26.11M</small>
+    </div>
+  </div>
+</section>
+
+<!-- coda -->
+<section id="s6" class="tile dark" data-k="s6">
+  <div class="wrap">
+    <p class="crumb">OpenCollab<svg class="i"><use href="#i-chev"/></svg><b>对我们</b></p>
+    <h2 class="sec-h"><svg class="i"><use href="#i-mirror"/></svg>对我们</h2>
+    <p class="sec-sub">同路的、能借的、这个赛制下不划算的</p>
+
+    <div class="block">
+      <ul class="take">
+        <li><svg class="i"><use href="#i-workflow"/></svg><b>交接写死在代码里</b><span class="tag">已同路</span></li>
+        <li><svg class="i"><use href="#i-target"/></svg><b>候选按目标拆，不靠同提示重抽</b><span class="tag">可借</span></li>
+        <li><svg class="i"><use href="#i-flask"/></svg><b>改过即作废 = 实现者不自验</b><span class="tag">可借</span></li>
+      </ul>
+    </div>
+
+    <div class="block math">
+      <span class="tk"><svg class="i" style="vertical-align:-5px"><use href="#i-coins"/></svg> 费用 ×2</span>
+      <svg class="i"><use href="#i-arrow"/></svg>
+      <span class="tk">S ×0.933</span>
+    </div>
+    <div class="block math" style="margin-top:20px">
+      <span class="tk">60/60 · 费用 ×2 ≈ 116.7</span>
+      <span class="lt">&lt;</span>
+      <span class="tk">我们 58/60 ≈ 120.49</span>
+    </div>
+
+    <div class="block caveats">
+      <span><svg class="i"><use href="#i-bars"/></svg>每配置 36 题 · 区间宽</span>
+      <span><svg class="i"><use href="#i-lock"/></svg>同一时刻只跑一个 agent</span>
+      <span><svg class="i"><use href="#i-workflow"/></svg>只测了一种拆法</span>
+    </div>
+  </div>
+</section>
+
+<footer>arXiv 2609.38345 · github.com/RISE-X-Lab/OpenCollab · 10-08 速读</footer>
+
+<script>
+(function () {
+  var links = document.querySelectorAll('.mini li a');
+  var path = document.getElementById('path');
+  var names = {map: '全景', s1: '协作错觉', s2: '共享运行时', s3: '事件流', s4: '遵从率', s5: 'Duo', s6: '对我们'};
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var k = e.target.getAttribute('data-k');
+      links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('data-k') === k); });
+      path.textContent = names[k] || '';
+    });
+  }, {rootMargin: '-45% 0px -50% 0px'});
+  document.querySelectorAll('section[data-k]').forEach(function (s) { io.observe(s); });
+})();
+</script>
+</body>
+</html>

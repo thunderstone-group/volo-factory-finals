@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Shell. #app is re-rendered synchronously on every state change; the dialog and status roots are
+     display:none until used so they never intercept pointer events while idle. Script order matters:
+     seed.js (data) -> lib/arc.js (primitives) -> app.js (your screens, layout config and actions). -->
+<div id="app"></div>
+<div id="dialog-root" hidden></div>
+<div id="status-root" hidden></div>
+<script src="seed.js"></script>
+<script src="lib/arc.js"></script>
+<script src="formula.js"></script>
+<script src="app.js"></script>
+<script src="evolution.js"></script>
+</body>
+</html>

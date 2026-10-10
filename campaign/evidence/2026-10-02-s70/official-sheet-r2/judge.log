@@ -1,0 +1,2 @@
+{"app": "official-sheet-r2", "judge": "cov99n-arm", "counts": {"pass": 93, "fail": 7}, "seconds": 77.7, "coverage": {"total": 100, "parsed": 100}}
+{"app": "official-sheet-r2", "judge": "g99", "counts": {"pass": 87, "fail": 13}, "seconds": 92.5, "coverage": {"total": 100, "parsed": 100}}

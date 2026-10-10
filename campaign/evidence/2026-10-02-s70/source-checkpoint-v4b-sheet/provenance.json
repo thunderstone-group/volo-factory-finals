@@ -1,0 +1,16 @@
+{
+  "source": "Actual assistant source snapshot in original call 6 before source-contract repair",
+  "source_snapshot_sha256": "b35e39c3c6a4de192680d659a085bea19cfcdb119a9fc588828d24304e794050",
+  "changes": [
+    {
+      "path": "frontend/public/app.js",
+      "before_sha256": "73048d9905fe18a531b1ca1a19dafac1239c86fcb07bd08efea90989420c48d0",
+      "after_sha256": "d8b36918f2fd11415e7d1d49bbe676f2d6091e5566565fd03dffd493ea041a26"
+    }
+  ],
+  "boundary": "Reconstructed pre-source code on a copy of the delivered app; all other files, including any runtime data, are held identical. This isolates the final code repair, not a separately generated baseline.",
+  "original_calls": [
+    6,
+    7
+  ]
+}
