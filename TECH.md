@@ -6,6 +6,10 @@
 
 <p align="center">左边是流水线的五个环节，每一章改动其中几格；右边是那一次决定的证据。<br><sub>Left: the five pipeline stages, changed chapter by chapter. Right: the evidence behind each decision.</sub></p>
 
+https://github.com/user-attachments/assets/cf817a4f-abc1-4f5f-91c9-258fa920ea33
+
+<p align="center"><sub>140 秒技术记录视频，<a href=".github/tech/volo-tech.mp4">下载 mp4</a> · 140-second technical log, <a href=".github/tech/volo-tech.mp4">download</a></sub></p>
+
 <p align="center"><a href="README.md">README</a> · <a href="#完整决策表--full-decision-log">完整决策表 Full log</a> · <a href="EXPERIMENTS.md">116 条实验 Experiments</a></p>
 
 ## 一览 · At a glance
