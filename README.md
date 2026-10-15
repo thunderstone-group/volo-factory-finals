@@ -1,24 +1,72 @@
-# VOLO Factory
+<p align="center">
+  <img src=".github/readme/hero.png" width="100%" alt="VOLO Factory：GOSIM 2026 智能体软件工厂黑客松，初赛第一、决赛第二，决赛隐藏测试 58/60">
+</p>
 
-VOLO Factory is the agent harness our team built for ARC-Bench, the "Agentic Software Factory Hackathon" of GOSIM Software Factory 2026: given only a requirements document, the agent must build a working web application (and, in the finals, extend an existing one), which is then scored by hidden Playwright tests, with model cost entering the score. We finished 2nd on the preliminary leaderboard (GitHub 79/100 + Sheet 87/100, pass rate 83.0%, score S 104.96) and 2nd of 20 teams in the finals, where the agent extended its own preliminary applications and passed 58 of 60 hidden tests for CNY 2.56 (S 120.49). The final agent is deliberately small: one model call drafts the change, the same model writes browser acceptance tests from the requirements alone, and a bounded repair loop keeps or reverts every edit under fixed rules, guarded by two deterministic checks for existing behaviour and requirement-stated placement. Mechanisms were promoted only against criteria written down before the run, and many were withdrawn when they missed; this repository keeps that whole trail, including the dead ends. It contains the full git history with every experiment branch, the dated roadmaps, ledger, reports and ADRs under `docs/`, curated text evidence under `campaign/` (including our self-written proxy evaluators), and the exact finals submission package with its two best generated apps under `submission/finals/`. Organizer materials (notices, requirement packs, runner scripts, the official benchmark repository) are referenced but not included.
+<h3 align="center">一份需求文档进去，一个能跑的 Web 应用出来。</h3>
 
-以下为中文。每个数字都指向 `docs/` 或 `campaign/` 里的出处；run id、提交号和榜位都是记录时刻的读数。
+<p align="center">
+  智能体一次起草全部代码，只读需求给自己写测试，按写死的规则修复，由不调模型的守卫把关交付。
+</p>
+
+<p align="center">
+  <a href="#成绩">成绩</a> ·
+  <a href="#整个方案就四步">方法</a> ·
+  <a href="#从第一天到决赛">历程</a> ·
+  <a href="EXPERIMENTS.md">116 条实验</a> ·
+  <a href="submission/finals/">决赛提交</a> ·
+  <a href="#english">English</a>
+</p>
+
+<br>
 
 ## 成绩
 
+<p align="center">
+  <img src=".github/readme/numbers.png" width="100%" alt="决赛两题模型总费用 2.56 元、token 1.66M、得分 S 120.49；131 条分支、116 条实验、42 条按读数砍掉">
+</p>
+
+**决赛** · 58/60 · ¥2.56 · S 120.49 · 二十支队伍里第二<br>
+**初赛** · 166/200 · ¥6.35 · S 104.96 · 组委会入围名单第一
+
+赛题只给一份需求文档：智能体从零写出 Web 应用（决赛是在自己初赛的应用上继续进化），由看不见的 Playwright 测试打分，模型费用计入成绩。
+
+<details>
+<summary><b>成绩细节与出处</b>：正式提交号、被选中的运行、计分公式、重跑波动</summary>
+<br>
+
+每个数字都指向 `docs/` 或 `campaign/` 里的出处；run id、提交号和榜位都是记录时刻的读数。
+
 | 阶段 | 正式提交与包 | 被选中的运行 | 合计 | 费用 | S | 名次 |
 |---|---|---|---|---|---|---|
-| 初赛 `hackathon`（2 题，各 100 条隐藏测试） | `12e3bab723fd`，v7 包 SHA-256 `4ae64326…` | GitHub `afc04ffe5b63` 79/100（1.636034 元）；Sheet `defb678bf0a1` 87/100（4.713723 元） | 166/200，p 83.0% | 6.349757 元 | 104.96 | 截止窗口快照第 2，终榜第 2 |
+| 初赛 `hackathon`（2 题，各 100 条隐藏测试） | `12e3bab723fd`，v7 包 SHA-256 `4ae64326…` | GitHub `afc04ffe5b63` 79/100（1.636034 元）；Sheet `defb678bf0a1` 87/100（4.713723 元） | 166/200，p 83.0% | 6.349757 元 | 104.96 | 平台截止快照第 2；组委会入围名单第 1 |
 | 决赛 `hackathon-evolution`（在初赛产物上继续进化，2 题共 60 条） | `218428c590f0`，包 `conv6-c2b48ef.zip`，SHA-256 `74247ff9ed35…` | GitHub `587401a01ed4` 28/30（1.407125 元）；Sheet `f3b82d5d29ba` 30/30（1.155562 元） | 58/60 | 2.562687 元 | 120.49 | 截止后 20:02 快照第 2；组委会 10-10 公布第 2 / 20 |
 
 出处：初赛 [`campaign/evidence/2026-10-02-s70/board-cutoff-window.json`](campaign/evidence/2026-10-02-s70/board-cutoff-window.json)、[选版报告](docs/reports/2026-10-03-final-candidate-selection.md)；决赛 [`campaign/evidence/2026-10-06-finals/codex-resume-20261008/deadline-check-2002.json`](campaign/evidence/2026-10-06-finals/codex-resume-20261008/deadline-check-2002.json)、[`submission/finals/README.md`](submission/finals/README.md)。
 
 - **计分。** 我们始终在奖励区，S = p / (b / 预期费用)^0.1，p 是两题合计通过率（百分数），b 是两题被选中运行的费用（元）；预期费用初赛是 0.8p、决赛是 0.24p（[`docs/reference/preliminary-rules.md`](docs/reference/preliminary-rules.md)，决赛按快照里的 `expected_cost` 核对）。
 - **榜上是多次重跑里最好的一次。** 平台取每队最新一次有效提交、每题该提交内最好的运行，b 只算被选中的两次。决赛包在 GitHub 上 6 次完成的读数是 25、28、28、26、25、27，Sheet 7 次是 25、27、29、30、30、30、27，28/30 不是这个包的期望值。
+- **初赛名次以组委会名单为准。** 平台截止快照上我们第 2；组委会评审后公布的[入围名单](https://create.gosim.org/factory26/#qualified)里 VOLO-AI 排第一，快照上唯一排在我们前面的队伍不在名单中。
 - **名次随时间变。** 决赛截止前 18:47 我们是实时榜第 1（[`docs/evidence/2026-10-08-v6-resume.json`](docs/evidence/2026-10-08-v6-resume.json)）；19:50 起第 1 名是另一队一次 60/60、S 124.53 的提交。决赛榜上我们的队名显示为「这一次能赢吗？」，与初赛的 VOLO-AI 是同一个 team_id。
 - **成绩曲线。** 初赛 S：09-24 基线 4.4，09-25 55.27（首次总榜第 1），09-28 59.75，10-02 79.48，10-03 104.96。决赛：首个正式读数 24/60，10-06 晚 50/60（S 98.82），10-08 57/60（S 119.06），最终 58/60。
 
-## 最终方法：决赛包做了什么
+</details>
+
+## 整个方案就四步
+
+<p align="center">
+  <img src=".github/readme/method.png" width="100%" alt="一次起草、自写测试、有界修复、守卫交付">
+</p>
+
+1. **一次起草。** 需求、方言卡和旧源码放进同一个请求，温度 0，一次写完全部改动。
+2. **自写测试。** 同一个模型看不到应用，只读需求写 Playwright 验收测试。
+3. **有界修复。** 只许定点编辑；每丢 1 条至少多过 3 条才保留，否则换回；24 次调用或 10 元封顶。
+4. **守卫交付。** 不调模型：重放旧应用的行为，核对需求写明的位置；出任何异常都交付最后一个完整版本。
+
+决赛前四名用的是同一个模型 `deepseek-v4-flash-vision-exp`，差距在 harness。
+
+<details>
+<summary><b>十条机制，每条为什么这样做</b></summary>
+<br>
 
 决赛包读需求，在平台注入的旧应用上做增量升级。改动留不留、什么时候停，由代码按固定规则判定；模型只写代码和写测试。代码以 [`submission/finals/package/source/`](submission/finals/package/source/) 为准（与 `main` 上的 `oneshot/` 相同，标签 `finals-submission`），行为说明见 [`docs/reference/oneshot.md`](docs/reference/oneshot.md)。正式提交指定的模型是网关上的 `deepseek-v4-flash-vision-exp`，回退模型 `kimi-k2.7-code-highspeed`。
 
@@ -33,7 +81,26 @@ VOLO Factory is the agent harness our team built for ARC-Bench, the "Agentic Sof
 9. **永不交付空。** 任何异常后交付最后一个完整版本；网关在出字前拒绝不计失败、退避重试；回退模型只接管失败的那一次调用。为什么：截断与断流曾让整题零分，一次起草连败曾让整个运行切到贵约 6 倍的回退模型，28.02 元换来 5/100（[4.1、4.28、4.31](docs/reference/roadmap.md)）。
 10. **同一提交循环重跑，按 S 定去留。** 为什么：b 只算被选中的运行，重跑不拉低 S，而同一个包的 GitHub 单样本在 15 到 21 之间波动（[决赛路线图 4.5 节](docs/reference/finals-roadmap.md)）。
 
-## 关键决策时间线
+</details>
+
+## 从第一天到决赛
+
+<p align="center">
+  <img src=".github/readme/path.png" width="100%" alt="得分曲线：09-24 开局 4.4，09-25 55.27 首次总榜第一，10-03 初赛 104.96，10-08 决赛 120.49">
+</p>
+
+- **09-15 删掉多轮工具循环。** 186 次调用的循环在练习题上 22/32、¥12.03；一次起草 27–29/32，每次不到 ¥1。从这天起，入口只剩一次起草。
+- **09-24 开赛，4.4 分。** 第二天接上「只读需求写测试、驱动修复」，Sheet 从 43 到 79，第一次登上总榜第一。
+- **09-28 减过头了。** 连测试和修复也删掉，最高只有 40.5，撤回。减法到此为止。
+- **10-03 初赛 104.96。** 组委会入围名单第一。
+- **10-07 删掉只为过测试的规则。** 用「没有隐藏测试，认真的工程师只读需求还会不会这么做」审了 146 组规则，S 不降反升。
+- **10-08 决赛 58/60，二十支队伍里第二。**
+
+图里灰色虚线是 10-02 主办方更新 GitHub 需求带来的跳升，不算我们机制的功劳。
+
+<details>
+<summary><b>关键决策时间线</b>：每次决定当时的读数与链接</summary>
+<br>
 
 北京时间。依据是做决定时手上的读数；PR 编号指原开发仓库（见「仓库地图」末尾）。
 
@@ -62,7 +129,19 @@ VOLO Factory is the agent harness our team built for ARC-Bench, the "Agentic Sof
 
 每次实验的假设、判据、读数和去留在 [`EXPERIMENTS.md`](EXPERIMENTS.md)。
 
-## 仓库地图
+</details>
+
+## 仓库里有什么
+
+- [`oneshot/`](oneshot/)：最终的智能体，从 `main.py` 的 `generate()` 读起
+- [`submission/finals/`](submission/finals/)：决赛提交原件，以及它生成的两份应用
+- [`EXPERIMENTS.md`](EXPERIMENTS.md)：116 条实验的假设、判据、读数和去留，包括砍掉的 42 条
+- [`docs/`](docs/README.md)：两份路线图、逐日账本、报告和 ADR
+- [`campaign/`](campaign/)：比赛期间的文本证据，以及我们自己写的代理评测
+
+<details>
+<summary><b>完整仓库地图、分支说明与阅读顺序</b></summary>
+<br>
 
 | 路径 | 内容 |
 |---|---|
@@ -80,7 +159,11 @@ VOLO Factory is the agent harness our team built for ARC-Bench, the "Agentic Sof
 
 两点说明：公开前历史经过改写（统一作者信息、去掉敏感字符串），文档里的短提交号是改写前的值，改写前后对照在 [`docs/archive/commit-map.txt`](docs/archive/commit-map.txt)（每行「旧 新」），包与源码的对应以标签 `finals-submission` 为准；PR 编号保留在合并提交说明里，可用 `git log --grep='pull request #121 '` 查。文档里的「甲方」「用户」指队长。
 
-## 局限与诚实说明
+</details>
+
+<details>
+<summary><b>局限与诚实说明</b>：样本量、代理裁判的偏差、用过的官方信号、灰区规则</summary>
+<br>
 
 - **很多去留只靠一两个读数。** 同一个包的单样本波动很大（决赛包 GitHub 25–28，另一个包 GitHub 15–21，初赛一个包 Sheet 75–86），初赛路线图第 7 节估计单样本对单样本只能分辨 24–32 个百分点以上的差异。第六版替换第五版时，事先写的「本地两样本都 ≥ 27」没有完全满足；双初稿择优按一次读数撤回；按组写测试每臂一个样本。
 - **本地数字来自代理裁判，不是官方。** 仿隐藏意图评估器（`campaign/acceptance-hidden/oracle-2026-09-27/`，GitHub Spearman 0.72，Sheet 比隐藏高约 17）、决赛代理题（`campaign/finals-proxy/`，第三版在 10 份官方产物上 292/300 逐条一致）和固定独立裁判都会偏乐观：同一份 GitHub 产物，独立裁判 69/66，官方 27/100（[10-02 瓶颈报告](docs/reports/2026-10-02-generalization-bottlenecks.md)）。受控修复的分数只说明机制。
@@ -88,3 +171,14 @@ VOLO Factory is the agent harness our team built for ARC-Bench, the "Agentic Sof
 - **外部变化混进了成绩。** 10-02 主办方更新 GitHub 需求（47 条里 40 条描述、46 个场景变化），同一提交 GitHub 从 18 到 46，S 59.61 到 79.48，这次跃升不能算到我们的机制上；09-24 赛题更正、09-25 Sheet 套件修复、10-08 两处断言放宽同理。
 - **改动常打包上场。** 10-02 的候选同时换了 agent 和模型，多数版本一次带几处改动；只有 `EXPERIMENTS.md` 里标为消融的几组一次只改一处。
 - **已知技术局限。** 生成代码没有 OS 级沙箱；守卫只看未登录界面；起草整份重写约 118 KB 的 `app.js` 会随机丢功能，这是决赛 GitHub 的主要上限；传输连续失败时单次调用会回退到 Kimi。名次以榜单快照和组委会公布为准。
+
+</details>
+
+## English
+
+VOLO Factory is the agent harness our team built for ARC-Bench, the Agentic Software Factory Hackathon of GOSIM 2026. Given only a requirements document, the agent builds a working web application (in the finals, it extends its own preliminary app); hidden Playwright tests score the result and model cost enters the score. We ranked **1st on the organizers' qualified list for the preliminary round** (GitHub 79/100 + Sheet 87/100, S 104.96; 2nd on the platform's cutoff snapshot, the team ahead was not on the reviewed list) and **2nd of 20 in the finals**, passing 58 of 60 hidden tests for CNY 2.56 (S 120.49).
+
+The final agent is deliberately small: one model call drafts the change, the same model writes browser acceptance tests from the requirements alone, and a bounded repair loop keeps or reverts every edit under fixed rules, guarded by two deterministic checks for existing behaviour and requirement-stated placement. Mechanisms were promoted only against criteria written down before the run, and many were withdrawn when they missed. This repository keeps that whole trail: the full git history with every experiment branch, dated roadmaps, ledger, reports and ADRs under `docs/`, curated evidence under `campaign/`, and the exact finals package with its two best generated apps under `submission/finals/`. Organizer materials are referenced but not included.
+
+<br>
+<p align="center"><sub>VOLO-AI · GOSIM Shenzhen 2026 · Agentic Software Factory Hackathon</sub></p>
